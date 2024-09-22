@@ -1,0 +1,12 @@
+@import url(components/Menu/Menu.css);
+@import url(components/Header/Header.css);
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+#root {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
