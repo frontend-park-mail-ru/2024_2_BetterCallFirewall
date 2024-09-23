@@ -4,6 +4,7 @@ import LoginForm from './components/LoginForm/LoginForm.js';
 import Menu from './components/Menu/Menu.js';
 import Post from './components/Post/Post.js';
 import SignupForm from './components/SignupForm/SignupForm.js';
+import Ajax from './modules/ajax.js';
 
 export const PAGE_LINKS = {
 	feed: '/feed',
@@ -13,6 +14,7 @@ export const PAGE_LINKS = {
 
 export default class App {
 	state;
+	handlers = {};
 	#structure = {};
 	config;
 	root;
@@ -40,6 +42,7 @@ export default class App {
 		this.render(pageLink);
 	}
 	clear() {
+		document.removeEventListener('scroll', this.handlers.scrollHandler);
 		Object.keys(this.#structure).forEach((key) => {
 			this.#structure[key].remove();
 		});
@@ -78,7 +81,7 @@ export default class App {
 		);
 		aside.render();
 
-		for (let i = 0; i < 100; i++) {
+		for (let i = 0; i < 50; i++) {
 			const post = new Post(
 				{ className: 'post', text: 'это пост' },
 				content.htmlElement,
@@ -103,6 +106,25 @@ export default class App {
 				this.goToPage(PAGE_LINKS.signup);
 			},
 		);
+
+		this.handlers.scrollHandler = () => {
+			const scrollPosition = window.scrollY;
+			const contentHeight = document.body.offsetHeight;
+			const windowHeight = window.innerHeight;
+
+			if (scrollPosition + windowHeight >= contentHeight) {
+				let config;
+				Ajax.get('/api/post', (data, error) => {
+					if (error) {
+					} else if (data) {
+						config = { className: 'post', ...data };
+						const post = new Post(config, content.htmlElement);
+						post.render();
+					}
+				});
+			}
+		};
+		document.addEventListener('scroll', this.handlers.scrollHandler);
 	}
 	#renderSignup() {
 		const config = this.config.signupConfig;
