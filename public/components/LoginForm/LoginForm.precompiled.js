@@ -10,8 +10,8 @@ templates['LoginForm.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function
 
   return "<form action=\"post\" class=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"className") : depth0), depth0))
-    + "\"></form>\r\n    <span>"
+    + "\"></form>\n    <span>"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"text") : depth0), depth0))
-    + "</span>\r\n</form>";
+    + "</span>\n</form>";
 },"useData":true});
 })();

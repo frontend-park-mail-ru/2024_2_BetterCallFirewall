@@ -2,7 +2,7 @@ express = require('express');
 const path = require('path');
 
 const ip = 'http://127.0.0.1';
-const port = 8080;
+const port = 8000;
 
 const posts = [{ text: 'Это пост' }, { text: 'А это другой пост' }];
 
@@ -12,7 +12,7 @@ app.use(express.static('./public', { fallthrough: true }));
 app.use(express.static('./node_modules'));
 
 app.use((req, res, next) => {
-	res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:8080');
+	res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:8000');
 	next();
 });
 

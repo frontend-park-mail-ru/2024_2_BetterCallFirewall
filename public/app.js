@@ -41,15 +41,41 @@ export default class App {
 	}
 	clear() {
 		Object.keys(this.#structure).forEach((key) => {
-			this.#structure[key].remove();
+			if (key !== 'menu') {
+				this.#structure[key].remove();
+				delete this.#structure[key];
+			}
 		});
 	}
+	#renderMenu() {
+		const menu = new Menu(this.config.homeConfig.menu, this.root);
+		if (!this.#structure.menu) {
+			this.#structure.menu = menu;
+			menu.render();
+		}
+		// хэндлеры добавлять после рендера, иначе стираются eventListenerы (при использовании innerHTML +=)
+		menu.addHandler(
+			menu.htmlElement.querySelector('a[data-section="feed"]'),
+			'click',
+			(event) => {
+				event.preventDefault();
+				this.goToPage(PAGE_LINKS.feed);
+			},
+		);
+		menu.addHandler(
+			menu.htmlElement.querySelector('a[data-section="signup"]'),
+			'click',
+			(event) => {
+				event.preventDefault();
+				this.goToPage(PAGE_LINKS.signup);
+			},
+		);
+	}
+
 	#renderFeed() {
 		const config = this.config.homeConfig;
 
-		const menu = new Menu(config.menu, this.root);
-		this.#structure.menu = menu;
-		menu.render();
+		this.#renderMenu();
 
 		const main = new Container({ key: 'main', ...config.main }, this.root);
 		main.render();
@@ -85,30 +111,16 @@ export default class App {
 			);
 			post.render();
 		}
-
-		// хэндлеры добавлять после рендера, иначе стираются eventListenerы (при использовании innerHTML +=)
-		menu.addHandler(
-			menu.htmlElement.querySelector('a[data-section="feed"]'),
-			'click',
-			(event) => {
-				event.preventDefault();
-				this.goToPage(PAGE_LINKS.feed);
-			},
-		);
-		menu.addHandler(
-			menu.htmlElement.querySelector('a[data-section="signup"]'),
-			'click',
-			(event) => {
-				event.preventDefault();
-				this.goToPage(PAGE_LINKS.signup);
-			},
-		);
 	}
 	#renderSignup() {
-		const config = this.config.signupConfig;
+		// const config = this.config.signupConfig;
+		this.#renderMenu();
+		const signUp = new SignupForm(this.config.signupConfig.inputs, this.root);
+		signUp.render();
+		this.#structure.signUp = signUp;
 
-		const signupForm = new SignupForm(config, this.root);
-		signupForm.render();
+		// const signupForm = new SignupForm(config, this.root);
+		// signupForm.render();
 	}
 	#renderLogin() {
 		const config = this.config.loginConfig;

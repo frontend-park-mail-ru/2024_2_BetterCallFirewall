@@ -5,3 +5,4 @@ handlebars public/components/Post/Post.hbs -f public/components/Post/Post.precom
 handlebars public/components/Container/Container.hbs -f public/components/Container/Container.precompiled.js
 handlebars public/components/SignupForm/SignupForm.hbs -f public/components/SignupForm/SignupForm.precompiled.js
 handlebars public/components/LoginForm/LoginForm.hbs -f public/components/LoginForm/LoginForm.precompiled.js
+handlebars public/components/Input/Input.hbs -f public/components/Input/Input.precompiled.js

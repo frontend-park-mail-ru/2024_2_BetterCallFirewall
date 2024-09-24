@@ -10,8 +10,8 @@ templates['Post.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(cont
 
   return "<div class=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"className") : depth0), depth0))
-    + "\">\r\n    <span>"
+    + "\">\n    <span>"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"text") : depth0), depth0))
-    + "</span>\r\n</div>";
+    + "</span>\n</div>";
 },"useData":true});
 })();
