@@ -4,7 +4,14 @@ const path = require('path');
 const ip = 'http://127.0.0.1';
 const port = 8080;
 
-const posts = [{ text: 'Это пост' }, { text: 'А это другой пост' }];
+const posts = [
+	{ title: 'Это заголовок поста', text: 'Это пост', date: '23.09.2024' },
+	{
+		title: 'Это заголовок другого поста',
+		text: 'А это другой пост',
+		date: '32.09.2024',
+	},
+];
 
 const app = express();
 
