@@ -70,7 +70,7 @@ export default class App {
 			main.htmlElement,
 		);
 		content.render();
-		this.#structure.main.content;
+		this.#structure.main.content = content;
 
 		const aside = new Container(
 			{
@@ -80,14 +80,9 @@ export default class App {
 			main.htmlElement,
 		);
 		aside.render();
+		this.#structure.main.aside = aside;
 
-		for (let i = 0; i < 50; i++) {
-			const post = new Post(
-				{ className: 'post', text: 'это пост' },
-				content.htmlElement,
-			);
-			post.render();
-		}
+		this.#fillContent();
 
 		// хэндлеры добавлять после рендера, иначе стираются eventListenerы (при использовании innerHTML +=)
 		menu.addHandler(
@@ -112,19 +107,48 @@ export default class App {
 			const contentHeight = document.body.offsetHeight;
 			const windowHeight = window.innerHeight;
 
-			if (scrollPosition + windowHeight >= contentHeight) {
-				let config;
-				Ajax.get('/api/post', (data, error) => {
-					if (error) {
-					} else if (data) {
-						config = { className: 'post', ...data };
-						const post = new Post(config, content.htmlElement);
-						post.render();
-					}
-				});
+			if (scrollPosition + windowHeight * 2 >= contentHeight) {
+				this.#addPost();
 			}
 		};
 		document.addEventListener('scroll', this.handlers.scrollHandler);
+	}
+	#addPost() {
+		let config;
+		Ajax.get('/api/post', (data, error) => {
+			if (error) {
+				console.log('add post error');
+			} else if (data) {
+				config = data;
+				const post = new Post(
+					config,
+					this.#structure.main.content.htmlElement,
+				);
+				post.render();
+			}
+		});
+	}
+	#addPostPromise() {
+		return Ajax.getPromise('/api/post');
+	}
+	#fillContent() {
+		const fill = async () => {
+			while (window.innerHeight * 2 > document.body.offsetHeight) {
+				const promise = this.#addPostPromise();
+				await promise
+					.then((data) => {
+						const post = new Post(
+							data,
+							this.#structure.main.content.htmlElement,
+						);
+						post.render();
+					})
+					.catch((error) => {
+						console.log('fill content error:', error);
+					});
+			}
+		};
+		fill();
 	}
 	#renderSignup() {
 		const config = this.config.signupConfig;
