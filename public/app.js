@@ -35,13 +35,13 @@ export default class App {
 				this.#renderFeed();
 		}
 	}
-	goToPage(pageLink) {
-		this.clear();
+	goToPage(pageLink, deleteEverything = false) {
+		this.clear(deleteEverything);
 		this.render(pageLink);
 	}
-	clear() {
+	clear(deleteEverything) {
 		Object.keys(this.#structure).forEach((key) => {
-			if (key !== 'menu') {
+			if (deleteEverything || key !== 'menu') {
 				this.#structure[key].remove();
 				delete this.#structure[key];
 			}
@@ -67,7 +67,7 @@ export default class App {
 			'click',
 			(event) => {
 				event.preventDefault();
-				this.goToPage(PAGE_LINKS.signup);
+				this.goToPage(PAGE_LINKS.signup, true);
 			},
 		);
 	}
@@ -114,8 +114,8 @@ export default class App {
 	}
 	#renderSignup() {
 		// const config = this.config.signupConfig;
-		this.#renderMenu();
-		const signUp = new SignupForm(this.config.signupConfig.inputs, this.root);
+		// this.#renderMenu();
+		const signUp = new SignupForm(this.config.signupConfig.inputs,this.config.signupConfig.button ,this.root);
 		signUp.render();
 		this.#structure.signUp = signUp;
 

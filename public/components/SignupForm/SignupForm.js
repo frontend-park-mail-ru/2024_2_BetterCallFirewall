@@ -1,7 +1,9 @@
+import FormButton from '../FormButton/FormButton.js';
 import Input from '../Input/Input.js';
 
 export default class SignupForm {
-	#config;
+	#configInputs;
+	#configButton;
 	#parent;
 	#inputs = [];
 	#className;
@@ -10,25 +12,31 @@ export default class SignupForm {
 	 * @param {Object} config
 	 * @param {HTMLElement} parent
 	 */
-	constructor(config, parent) {
-		this.#config = config;
+	constructor(configInputs, configButton, parent) {
+		this.#configInputs = configInputs;
+		this.#configButton = configButton;
 		this.#parent = parent;
-		this.#className = 'signup-form';
+		this.#className = 'form';
 	}
-	get configItems() {
-		return Object.entries(this.#config);
+	get configInputsItems() {
+		return Object.entries(this.#configInputs);
+	}
+	get configButtonItems() {
+		return Object.entries(this.#configButton); //
 	}
 	render() {
-		this.configItems.forEach(([key, value]) => {
+		// let button;
+		this.configInputsItems.forEach(([key, value]) => {
 			const input = new Input({key, ...value});
 			this.#inputs.push(input);
-			console.log(key, value);
 		});
+		const button = new FormButton(this.#configButton.text);
+		
 		const template = Handlebars.templates['SignupForm.hbs'];
-		console.log(this.#inputs);
 		const html = template({
 			inputs: this.#inputs.map((input) => input.render()),
 			className: this.#className,
+			button: button.render(),
 		});
 		this.#parent.innerHTML += html;
 		this.#inputs.forEach((input) => {

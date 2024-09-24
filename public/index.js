@@ -57,6 +57,9 @@ const signupConfig = {
 			text: 'Password again',
 			name: 'passwordAgain',
 		},
+	},
+	button: {
+		text: 'Sign Up!',
 	}
 };
 
