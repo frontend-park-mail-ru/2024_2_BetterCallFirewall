@@ -12,8 +12,8 @@ templates['Header.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(co
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"className") : depth0), depth0))
     + "\" data-section=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"key") : depth0), depth0))
-    + "\">\r\n    <span>"
+    + "\">\n    <span>"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"text") : depth0), depth0))
-    + "</span>\r\n</div>";
+    + "</span>\n</div>";
 },"useData":true});
 })();

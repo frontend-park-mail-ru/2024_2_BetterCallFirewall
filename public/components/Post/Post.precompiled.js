@@ -8,6 +8,7 @@ templates['Post.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(cont
         return undefined
     };
 
+
   return "<div class=\"post\">\r\n    <div class=\"post-header\">\r\n        <img src=\"\" alt=\"\">\r\n        <div class=\"post-header-text\">\r\n            <span>"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"title") : depth0), depth0))
     + "</span>\r\n            <span>"
