@@ -4,6 +4,7 @@ import LoginForm from './components/LoginForm/LoginForm.js';
 import Menu from './components/Menu/Menu.js';
 import Post from './components/Post/Post.js';
 import SignupForm from './components/SignupForm/SignupForm.js';
+import Ajax from './modules/ajax.js';
 
 export const PAGE_LINKS = {
 	feed: '/feed',
@@ -13,6 +14,7 @@ export const PAGE_LINKS = {
 
 export default class App {
 	state;
+	handlers = {};
 	#structure = {};
 	config;
 	root;
@@ -40,6 +42,7 @@ export default class App {
 		this.render(pageLink);
 	}
 	clear(deleteEverything) {
+		document.removeEventListener('scroll', this.handlers.scrollHandler);
 		Object.keys(this.#structure).forEach((key) => {
 			if (deleteEverything || key !== 'menu') {
 				this.#structure[key].remove();
@@ -93,7 +96,7 @@ export default class App {
 			main.htmlElement,
 		);
 		content.render();
-		this.#structure.main.content;
+		this.#structure.main.content = content;
 
 		const aside = new Container(
 			{
@@ -103,14 +106,57 @@ export default class App {
 			main.htmlElement,
 		);
 		aside.render();
+		this.#structure.main.aside = aside;
 
-		for (let i = 0; i < 100; i++) {
-			const post = new Post(
-				{ className: 'post', text: 'это пост' },
-				content.htmlElement,
-			);
-			post.render();
-		}
+		this.#fillContent();
+
+		this.handlers.scrollHandler = () => {
+			const scrollPosition = window.scrollY;
+			const contentHeight = document.body.offsetHeight;
+			const windowHeight = window.innerHeight;
+
+			if (scrollPosition + windowHeight * 2 >= contentHeight) {
+				this.#addPost();
+			}
+		};
+		document.addEventListener('scroll', this.handlers.scrollHandler);
+	}
+	#addPost() {
+		let config;
+		Ajax.get('/api/post', (data, error) => {
+			if (error) {
+				console.log('add post error');
+			} else if (data) {
+				config = data;
+				const post = new Post(
+					config,
+					this.#structure.main.content.htmlElement,
+				);
+				post.render();
+			}
+		});
+	}
+	#addPostPromise() {
+		return Ajax.getPromise('/api/post');
+	}
+	#fillContent() {
+		const fill = async () => {
+			while (window.innerHeight * 2 > document.body.offsetHeight) {
+				const promise = this.#addPostPromise();
+				await promise
+					.then((data) => {
+						const post = new Post(
+							data,
+							this.#structure.main.content.htmlElement,
+						);
+						post.render();
+					})
+					.catch((error) => {
+						console.log('fill content error:', error);
+					});
+			}
+		};
+		fill();
 	}
 	#renderSignup() {
 		// const config = this.config.signupConfig;
