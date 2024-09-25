@@ -14,8 +14,8 @@ templates['MenuLink.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"className") : depth0), depth0))
     + "\" data-section=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"key") : depth0), depth0))
-    + "\">"
+    + "\">\n    <span class=\"menu-item\">"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"text") : depth0), depth0))
-    + "</a>";
+    + "</span>\n</a>";
 },"useData":true});
 })();
