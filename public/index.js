@@ -20,10 +20,16 @@ const homeConfig = {
 	main: {
 		className: 'main',
 		header: {
-			text: 'Здесь будет header',
+			search: {
+				placeholder: 'Search for friends, groups, pages',
+				img: 'http://127.0.0.1:8000/public/img/search.jpg',
+			},
 		},
 		content: {
 			className: 'content',
+		},
+		aside: {
+			className: 'aside',
 		},
 	},
 };

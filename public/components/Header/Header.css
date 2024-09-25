@@ -1,5 +1,9 @@
 .header {
     position: sticky;
+    grid-area: header;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     top: 0;
     background-color: white;
     padding-bottom: 20px;

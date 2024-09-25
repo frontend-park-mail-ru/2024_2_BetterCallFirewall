@@ -2,7 +2,7 @@ express = require('express');
 const path = require('path');
 
 const ip = 'http://127.0.0.1';
-const port = 8080;
+const port = 8000;
 
 const posts = [
 	{ title: 'Это заголовок поста', text: 'Это пост', date: '23.09.2024' },
@@ -19,15 +19,15 @@ app.use(express.static('./public', { fallthrough: true }));
 app.use(express.static('./node_modules'));
 
 app.use((req, res, next) => {
-	res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:8080');
+	res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:8000');
 	next();
 });
 
 let counter = 0;
 app.get('/api/post', (req, res) => {
-	console.log('Запрос пришел:');
+	// console.log('Запрос пришел:');
 	const data = posts[counter];
-	console.log('Отправили:', data);
+	// console.log('Отправили:', data);
 	counter++;
 	if (posts.length <= counter) {
 		counter = 0;
@@ -35,7 +35,14 @@ app.get('/api/post', (req, res) => {
 	res.json(data);
 });
 
+app.get('/public/img/', (req, res) => {
+	console.log('надо картинку');
+	res.setHeader('Content-Type', 'image/jpeg');
+	res.sendFile(path.join(__dirname, 'public'));
+});
+
 app.get('*', (req, res) => {
+	console.log('Запрос:', req.originalUrl);
 	res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
