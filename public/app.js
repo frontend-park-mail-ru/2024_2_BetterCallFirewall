@@ -159,19 +159,15 @@ export default class App {
 		fill();
 	}
 	#renderSignup() {
-		// const config = this.config.signupConfig;
-		// this.#renderMenu();
-		const signUp = new SignupForm(this.config.signupConfig.inputs,this.config.signupConfig.button ,this.root);
+		const config = this.config.signupConfig;
+		const signUp = new SignupForm(config.inputs, config.button, this.root);
 		signUp.render();
 		this.#structure.signUp = signUp;
-
-		// const signupForm = new SignupForm(config, this.root);
-		// signupForm.render();
 	}
 	#renderLogin() {
 		const config = this.config.loginConfig;
-
-		const loginForm = new LoginForm(config, this.root);
-		loginForm.render();
+		const login = new LoginForm(config.inputs, config.button, this.root);
+		login.render();
+		this.#structure.login = login;
 	}
 }

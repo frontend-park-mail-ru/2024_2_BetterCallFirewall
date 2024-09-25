@@ -21,11 +21,7 @@ export default class SignupForm {
 	get configInputsItems() {
 		return Object.entries(this.#configInputs);
 	}
-	get configButtonItems() {
-		return Object.entries(this.#configButton); //
-	}
 	render() {
-		// let button;
 		this.configInputsItems.forEach(([key, value]) => {
 			const input = new Input({key, ...value});
 			this.#inputs.push(input);

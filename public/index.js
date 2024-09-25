@@ -77,7 +77,10 @@ const loginConfig = {
 			text: 'Password',
 			name: 'password'
 		},
-	}
+	},
+	button: {
+		text: 'Sign In!',
+	},
 };
 
 const config = {
