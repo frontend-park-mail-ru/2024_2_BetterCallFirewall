@@ -10,11 +10,11 @@ templates['Input.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(con
 
   return "<div class=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"className") : depth0), depth0))
-    + "\">\n    <label for=\""
+    + "\">\r\n    <label for=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"name") : depth0), depth0))
     + "\">"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"text") : depth0), depth0))
-    + "</label>\n    <input type=\""
+    + "</label>\r\n    <input type=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"type") : depth0), depth0))
     + "\" id=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"name") : depth0), depth0))
@@ -22,6 +22,6 @@ templates['Input.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(con
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"name") : depth0), depth0))
     + "\" placeholder=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"text") : depth0), depth0))
-    + "\">\n</div>\n";
+    + "\">\r\n</div>\r\n";
 },"useData":true});
 })();

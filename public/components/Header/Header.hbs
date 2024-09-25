@@ -1,3 +1,10 @@
-<div class="{{this.className}}" data-section="{{this.key}}">
-    <span>{{this.text}}</span>
+<div class="header" data-section="{{this.key}}">
+    <div class="header-search">
+        <input type="text" class="header-search-input" placeholder="{{this.search.placeholder}}">
+        <img src="{{this.search.img}}" alt="поиск">
+    </div>
+    <div class="header-profile">
+        <img src="{{this.profile.logoutImg}}" alt="Выйти" class="header-profile-logout">
+        <img src="{{this.profile.avatar}}" alt="Avatar" class="header-profile-avatar">
+    </div>
 </div>

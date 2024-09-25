@@ -25,9 +25,9 @@ app.use((req, res, next) => {
 
 let counter = 0;
 app.get('/api/post', (req, res) => {
-	console.log('Запрос пришел:');
+	// console.log('Запрос пришел:');
 	const data = posts[counter];
-	console.log('Отправили:', data);
+	// console.log('Отправили:', data);
 	counter++;
 	if (posts.length <= counter) {
 		counter = 0;
@@ -35,7 +35,14 @@ app.get('/api/post', (req, res) => {
 	res.json(data);
 });
 
+app.get('/public/img/', (req, res) => {
+	console.log('надо картинку');
+	res.setHeader('Content-Type', 'image/jpeg');
+	res.sendFile(path.join(__dirname, 'public'));
+});
+
 app.get('*', (req, res) => {
+	console.log('Запрос:', req.originalUrl);
 	res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 

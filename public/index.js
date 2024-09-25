@@ -20,10 +20,20 @@ const homeConfig = {
 	main: {
 		className: 'main',
 		header: {
-			text: 'Здесь будет header',
+			search: {
+				placeholder: 'Search for friends, groups, pages',
+				img: 'img/search.svg',
+			},
+			profile: {
+				logoutImg: 'img/logout.svg',
+				avatar: 'img/avatar.png',
+			},
 		},
 		content: {
 			className: 'content',
+		},
+		aside: {
+			className: 'aside',
 		},
 	},
 };
@@ -50,7 +60,7 @@ const signupConfig = {
 		password: {
 			type: 'password',
 			text: 'Password',
-			name: 'password'
+			name: 'password',
 		},
 		passwordAgain: {
 			type: 'password',
@@ -60,7 +70,7 @@ const signupConfig = {
 	},
 	button: {
 		text: 'Sign Up!',
-	}
+	},
 };
 
 const loginConfig = {
@@ -75,7 +85,7 @@ const loginConfig = {
 		password: {
 			type: 'password',
 			text: 'Password',
-			name: 'password'
+			name: 'password',
 		},
 	},
 	button: {

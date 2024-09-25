@@ -9,7 +9,6 @@ export default class Header {
 	constructor(config, parent) {
 		this.#config = config;
 		this.#parent = parent;
-		this.#config.className = 'header';
 	}
 	get htmlElement() {
 		return this.#parent.querySelector(`div[dataset=${this.#config.key}]`);
