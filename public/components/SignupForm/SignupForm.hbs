@@ -1,3 +1,14 @@
-<form action="post" class="{{this.className}}">
-    <span>{{this.text}}</span>
-</form>
+<div class="cover">
+    <div class="signup">
+        <div class="title-sign"><a href="/feed"><h1>Vilka</h1></a></div>
+        <div class="name-sign"><h2>Sign Up</h2></div>
+        <div class="form-sign">
+            <form action="post" class="{{this.className}}">
+                {{#each inputs}}
+                    {{{this}}}
+                {{/each}}
+                {{{button}}}
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,3 +1,22 @@
 .menu-link {
-    margin: 10px;
+    margin-bottom: 10px;
+    background-color: #121212;
+    border-radius: 1rem;
+    padding: .5rem 1rem;
+}
+
+a.menu-link{
+    text-decoration: none;
+}
+
+.menu-item {
+    text-decoration: none;
+    color: white;
+}
+
+.menu-link:hover {
+    background-color: #1F1F1F;
+}
+.menu-link:hover .menu-item{
+    color: #1DC67F;
 }

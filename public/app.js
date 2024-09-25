@@ -37,22 +37,48 @@ export default class App {
 				this.#renderFeed();
 		}
 	}
-	goToPage(pageLink) {
-		this.clear();
+	goToPage(pageLink, deleteEverything = false) {
+		this.clear(deleteEverything);
 		this.render(pageLink);
 	}
-	clear() {
+	clear(deleteEverything) {
 		document.removeEventListener('scroll', this.handlers.scrollHandler);
 		Object.keys(this.#structure).forEach((key) => {
-			this.#structure[key].remove();
+			if (deleteEverything || key !== 'menu') {
+				this.#structure[key].remove();
+				delete this.#structure[key];
+			}
 		});
 	}
+	#renderMenu() {
+		const menu = new Menu(this.config.homeConfig.menu, this.root);
+		if (!this.#structure.menu) {
+			this.#structure.menu = menu;
+			menu.render();
+		}
+		// хэндлеры добавлять после рендера, иначе стираются eventListenerы (при использовании innerHTML +=)
+		menu.addHandler(
+			menu.htmlElement.querySelector('a[data-section="feed"]'),
+			'click',
+			(event) => {
+				event.preventDefault();
+				this.goToPage(PAGE_LINKS.feed);
+			},
+		);
+		menu.addHandler(
+			menu.htmlElement.querySelector('a[data-section="signup"]'),
+			'click',
+			(event) => {
+				event.preventDefault();
+				this.goToPage(PAGE_LINKS.signup, true);
+			},
+		);
+	}
+
 	#renderFeed() {
 		const config = this.config.homeConfig;
 
-		const menu = new Menu(config.menu, this.root);
-		this.#structure.menu = menu;
-		menu.render();
+		this.#renderMenu();
 
 		const main = new Container({ key: 'main', ...config.main }, this.root);
 		main.render();
@@ -83,24 +109,6 @@ export default class App {
 		this.#structure.main.aside = aside;
 
 		this.#fillContent();
-
-		// хэндлеры добавлять после рендера, иначе стираются eventListenerы (при использовании innerHTML +=)
-		menu.addHandler(
-			menu.htmlElement.querySelector('a[data-section="feed"]'),
-			'click',
-			(event) => {
-				event.preventDefault();
-				this.goToPage(PAGE_LINKS.feed);
-			},
-		);
-		menu.addHandler(
-			menu.htmlElement.querySelector('a[data-section="signup"]'),
-			'click',
-			(event) => {
-				event.preventDefault();
-				this.goToPage(PAGE_LINKS.signup);
-			},
-		);
 
 		this.handlers.scrollHandler = () => {
 			const scrollPosition = window.scrollY;
@@ -152,14 +160,14 @@ export default class App {
 	}
 	#renderSignup() {
 		const config = this.config.signupConfig;
-
-		const signupForm = new SignupForm(config, this.root);
-		signupForm.render();
+		const signUp = new SignupForm(config.inputs, config.button, this.root);
+		signUp.render();
+		this.#structure.signUp = signUp;
 	}
 	#renderLogin() {
 		const config = this.config.loginConfig;
-
-		const loginForm = new LoginForm(config, this.root);
-		loginForm.render();
+		const login = new LoginForm(config.inputs, config.button, this.root);
+		login.render();
+		this.#structure.login = login;
 	}
 }

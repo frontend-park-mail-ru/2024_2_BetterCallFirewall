@@ -1,0 +1,56 @@
+.cover {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 3rem;
+    padding-top: 3rem;
+    background-color: #121212;
+}
+
+.signup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    border-radius: 2%;
+    background-color: #1F1F1F;
+    padding: 1.1rem;
+}
+
+.title-sign {
+    margin-bottom: 1.2rem;
+}
+
+.title-sign a {
+    text-decoration: none;
+    color: #1DC67F;
+    padding: 0;
+}
+
+.title-sign h1 {
+    text-decoration: none;
+    color: #1DC67F;
+    margin: 0;
+}
+
+.name-sign {
+    margin-bottom: .5rem;
+}
+
+.name-sign h2 {
+    color: white;
+    margin: 0;
+    font-size: 2.4rem;
+}
+
+.form-sign {
+    width: 70%;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
