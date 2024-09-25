@@ -22,7 +22,11 @@ const homeConfig = {
 		header: {
 			search: {
 				placeholder: 'Search for friends, groups, pages',
-				img: 'http://127.0.0.1:8000/public/img/search.jpg',
+				img: 'img/search.svg',
+			},
+			profile: {
+				logoutImg: 'img/logout.svg',
+				avatar: 'img/avatar.png',
 			},
 		},
 		content: {
@@ -56,7 +60,7 @@ const signupConfig = {
 		password: {
 			type: 'password',
 			text: 'Password',
-			name: 'password'
+			name: 'password',
 		},
 		passwordAgain: {
 			type: 'password',
@@ -66,7 +70,7 @@ const signupConfig = {
 	},
 	button: {
 		text: 'Sign Up!',
-	}
+	},
 };
 
 const loginConfig = {
@@ -81,7 +85,7 @@ const loginConfig = {
 		password: {
 			type: 'password',
 			text: 'Password',
-			name: 'password'
+			name: 'password',
 		},
 	},
 	button: {

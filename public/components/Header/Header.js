@@ -15,10 +15,8 @@ export default class Header {
 	}
 	render() {
 		const template = Handlebars.templates['Header.hbs'];
-		console.log(this.#config);
 		const html = template({ ...this.#config });
 		if (this.#parent) {
-			// Из-за этого нельзя встроить картинку через шаблон
 			this.#parent.innerHTML += html;
 		}
 		return html;
