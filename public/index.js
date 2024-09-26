@@ -75,7 +75,7 @@ const signupConfig = {
 
 const loginConfig = {
 	className: 'login-form',
-	text: 'Это форма логина',
+	section: 'login',
 	inputs: {
 		email: {
 			type: 'email',
@@ -89,6 +89,7 @@ const loginConfig = {
 		},
 	},
 	button: {
+		section: 'submit',
 		text: 'Sign In!',
 	},
 };

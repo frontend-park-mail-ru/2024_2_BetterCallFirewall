@@ -26,6 +26,16 @@ export default new (class Ajax {
 			request,
 		});
 	}
+	sendForm(url, formData, callback) {
+		const request = new Request(url, {
+			method: 'POST',
+			body: new URLSearchParams(formData),
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+		});
+		this.#ajax({ request, callback });
+	}
 	#ajax(config) {
 		fetch(config.request)
 			.then((response) => response.json())

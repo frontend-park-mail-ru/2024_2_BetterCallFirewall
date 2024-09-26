@@ -21,13 +21,19 @@ export default class SignupForm {
 	get configInputsItems() {
 		return Object.entries(this.#configInputs);
 	}
+	get htmlElement() {
+		return this.#parent.querySelector('form');
+	}
 	render() {
 		this.configInputsItems.forEach(([key, value]) => {
-			const input = new Input({key, ...value});
+			const input = new Input({ key, ...value });
 			this.#inputs.push(input);
 		});
-		const button = new FormButton(this.#configButton.text);
-		
+		const button = new FormButton({
+			section: 'submit',
+			...this.#configButton,
+		});
+
 		const template = Handlebars.templates['SignupForm.hbs'];
 		const html = template({
 			inputs: this.#inputs.map((input) => input.render()),

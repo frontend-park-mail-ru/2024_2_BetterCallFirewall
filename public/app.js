@@ -5,6 +5,7 @@ import Menu from './components/Menu/Menu.js';
 import Post from './components/Post/Post.js';
 import SignupForm from './components/SignupForm/SignupForm.js';
 import Ajax from './modules/ajax.js';
+import User from './models/user.js';
 
 export const PAGE_LINKS = {
 	feed: '/feed',
@@ -13,7 +14,7 @@ export const PAGE_LINKS = {
 };
 
 export default class App {
-	state;
+	#state = {};
 	handlers = {};
 	#structure = {};
 	config;
@@ -21,6 +22,7 @@ export default class App {
 	constructor(config, root) {
 		this.config = config;
 		this.root = root;
+		this.#state.user = null;
 	}
 	render(pageLink) {
 		switch (pageLink) {
@@ -166,7 +168,7 @@ export default class App {
 	}
 	#renderLogin() {
 		const config = this.config.loginConfig;
-		const login = new LoginForm(config.inputs, config.button, this.root);
+		const login = new LoginForm(config, this.root);
 		login.render();
 		this.#structure.login = login;
 	}

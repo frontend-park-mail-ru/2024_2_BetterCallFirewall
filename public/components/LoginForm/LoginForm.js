@@ -7,6 +7,7 @@ export default class LoginForm {
 	#inputs = [];
 	#parent;
 	#className;
+	#handlers = {};
 	/**
 	 *
 	 * @param {Object} config
@@ -21,13 +22,12 @@ export default class LoginForm {
 	get configInputsItems() {
 		return Object.entries(this.#configInputs);
 	}
-	
 	render() {
 		this.configInputsItems.forEach(([key, value]) => {
-			const input = new Input({key, ...value});
+			const input = new Input({ key, ...value });
 			this.#inputs.push(input);
 		});
-		const button = new FormButton(this.#configButton.text);
+		const button = new FormButton({ ...this.#configButton });
 
 		const template = Handlebars.templates['LoginForm.hbs'];
 		const html = template({
@@ -41,5 +41,13 @@ export default class LoginForm {
 		});
 
 		return html;
+	}
+	addHandler(target, event, handler) {
+		target.addEventListener(event, handler);
+		this.#handlers[`${target.dataset['section']}-${event}`] = {
+			target,
+			event,
+			handler,
+		};
 	}
 }
