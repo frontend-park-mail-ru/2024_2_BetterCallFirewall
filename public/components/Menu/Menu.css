@@ -11,11 +11,16 @@
     top: 0;
     left: 0;
     height: 100vh;
+    align-items: end;
 }
 
 .menu-header {
     display: flex;
-    justify-content: center;
+    justify-content: end;
+    margin-right: 5rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    width: 100%
 }
 
 .menu-items {
@@ -23,6 +28,7 @@
     top: 0;
     display: flex;
     flex-direction: column;
+    width: 10rem;
     
     /* padding: 20px; */
 }
