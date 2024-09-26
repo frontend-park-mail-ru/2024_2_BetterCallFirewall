@@ -2,6 +2,7 @@ import Input from '../Input/Input.js';
 import FormButton from '../FormButton/FormButton.js';
 
 export default class LoginForm {
+	#config = {};
 	#configInputs;
 	#configButton;
 	#inputs = [];
@@ -13,14 +14,21 @@ export default class LoginForm {
 	 * @param {Object} config
 	 * @param {HTMLElement} parent
 	 */
-	constructor(configInputs, configButton, parent) {
-		this.#configInputs = configInputs;
-		this.#configButton = configButton;
+	constructor(config, parent) {
+		this.#config = config;
+		this.#configInputs = config.inputs;
+		this.#configButton = config.button;
 		this.#parent = parent;
 		this.#className = 'form';
 	}
 	get configInputsItems() {
 		return Object.entries(this.#configInputs);
+	}
+	get htmlElement() {
+		console.log(this.#config.section);
+		return this.#parent.querySelector(
+			`div[data-section=${this.#config.section}]`,
+		);
 	}
 	render() {
 		this.configInputsItems.forEach(([key, value]) => {

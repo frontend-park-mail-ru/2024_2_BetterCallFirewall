@@ -171,5 +171,6 @@ export default class App {
 		const login = new LoginForm(config, this.root);
 		login.render();
 		this.#structure.login = login;
+		console.log(login.htmlElement);
 	}
 }

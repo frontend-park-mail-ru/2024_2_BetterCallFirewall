@@ -8,7 +8,6 @@ export default class FormButton {
 
 	render() {
 		const template = Handlebars.templates['FormButton.hbs'];
-		console.log(this.#config);
 		const html = template({
 			...this.#config,
 			className: this.#className,
