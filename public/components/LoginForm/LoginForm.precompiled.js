@@ -5,7 +5,7 @@ templates['LoginForm.hbs'] = template({"1":function(container,depth0,helpers,par
 
   return "                    "
     + ((stack1 = container.lambda(depth0, depth0)) != null ? stack1 : "")
-    + "\r\n";
+    + "\n";
 },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : (container.nullContext || {}), lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {

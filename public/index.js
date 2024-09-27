@@ -1,4 +1,5 @@
 import App from './app.js';
+import {validateName, validateEmail, validateConfirmation, validatePassword } from './modules/validation.js';
 
 const root = document.getElementById('root');
 
@@ -46,26 +47,31 @@ const signupConfig = {
 			type: 'text',
 			text: 'First Name',
 			name: 'firstName',
+			validator: validateName,
 		},
 		secondName: {
 			type: 'text',
 			text: 'Second Name',
 			name: 'secondName',
+			validator: validateName,
 		},
 		email: {
-			type: 'email',
+			type: 'text',
 			text: 'Email',
 			name: 'email',
+			validator: validateEmail,
 		},
 		password: {
 			type: 'password',
 			text: 'Password',
 			name: 'password',
+			validator: validatePassword,
 		},
 		passwordAgain: {
 			type: 'password',
 			text: 'Password again',
 			name: 'passwordAgain',
+			validator: validateConfirmation,
 		},
 	},
 	button: {
@@ -78,14 +84,16 @@ const loginConfig = {
 	section: 'login',
 	inputs: {
 		email: {
-			type: 'email',
+			type: 'text',
 			text: 'Email',
 			name: 'email',
+			validator: validateEmail,
 		},
 		password: {
 			type: 'password',
 			text: 'Password',
 			name: 'password',
+			validator: validatePassword,
 		},
 	},
 	button: {

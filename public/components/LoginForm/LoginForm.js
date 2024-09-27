@@ -1,5 +1,7 @@
 import Input from '../Input/Input.js';
 import FormButton from '../FormButton/FormButton.js';
+import {validateForm} from '../../modules/validation.js';
+
 
 export default class LoginForm {
 	#config = {};
@@ -8,7 +10,11 @@ export default class LoginForm {
 	#inputs = [];
 	#parent;
 	#className;
+<<<<<<< HEAD
 	#button;
+=======
+	#id;
+>>>>>>> dev
 	/**
 	 *
 	 * @param {Object} config
@@ -20,6 +26,7 @@ export default class LoginForm {
 		this.#configButton = config.button;
 		this.#parent = parent;
 		this.#className = 'form';
+		this.#id = 'formLogin';
 	}
 	get configInputsItems() {
 		return Object.entries(this.#configInputs);
@@ -56,6 +63,7 @@ export default class LoginForm {
 			inputs: this.#inputs.map((input) => input.render()),
 			className: this.#className,
 			section: this.#config.section,
+			id: this.#id,
 			button: button.render(),
 		});
 		this.#parent.innerHTML += html;
@@ -64,6 +72,9 @@ export default class LoginForm {
 		this.#inputs.forEach((input) => {
 			input.parent = itemsParent;
 		});
+
+		const form = document.getElementById(this.#id);
+		validateForm(this.#configInputs, form);
 
 		return html;
 	}

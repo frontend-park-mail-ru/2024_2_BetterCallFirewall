@@ -1,6 +1,6 @@
 .input-block {
     width: 100%;
-    margin-bottom: 1rem;
+    margin-bottom: .7rem;
 }
 .input-block:last-of-type {
     margin-bottom: 2rem;
@@ -29,6 +29,8 @@
     color: white;
 }
 
-/* .input-block input::placeholder {
-
-} */
+.error {
+    color: red;
+    font-size: .9rem;
+    margin-top: .3rem;
+}

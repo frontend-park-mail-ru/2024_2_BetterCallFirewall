@@ -8,12 +8,12 @@ templates['Post.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(cont
         return undefined
     };
 
-  return "<div class=\"post\">\r\n    <div class=\"post-header\">\r\n        <img src=\"\" alt=\"\">\r\n        <div class=\"post-header-text\">\r\n            <span>"
+  return "<div class=\"post\">\n    <div class=\"post-header\">\n        <img src=\"\" alt=\"\">\n        <div class=\"post-header-text\">\n            <span>"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"title") : depth0), depth0))
-    + "</span>\r\n            <span>"
+    + "</span>\n            <span>"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"date") : depth0), depth0))
-    + "</span>\r\n        </div>\r\n    </div>\r\n    <div class=\"post-content\">\r\n        <span class=\"post-text\">"
+    + "</span>\n        </div>\n    </div>\n    <div class=\"post-content\">\n        <span class=\"post-text\">"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"text") : depth0), depth0))
-    + "</span>\r\n    </div>\r\n    <div class=\"post-footer\">\r\n\r\n    </div>\r\n</div>";
+    + "</span>\n    </div>\n    <div class=\"post-footer\">\n\n    </div>\n</div>";
 },"useData":true});
 })();

@@ -16,7 +16,7 @@ templates['Input.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(con
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"name") : depth0), depth0))
     + "\">"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"text") : depth0), depth0))
-    + "</label>\r\n    <input type=\""
+    + "</label>\n    <input type=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"type") : depth0), depth0))
     + "\" id=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"name") : depth0), depth0))
@@ -24,6 +24,6 @@ templates['Input.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(con
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"name") : depth0), depth0))
     + "\" placeholder=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"text") : depth0), depth0))
-    + "\">\r\n</div>\r\n";
+    + "\">\n    <span class=\"error\"></span>\n</div>\n";
 },"useData":true});
 })();
