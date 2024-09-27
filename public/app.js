@@ -100,6 +100,14 @@ export default class App {
 			},
 		);
 		menu.addHandler(
+			menu.htmlElement.querySelector('a[data-section="login"]'),
+			'click',
+			(event) => {
+				event.preventDefault();
+				this.goToPage(PAGE_LINKS.login, true);
+			},
+		);
+		menu.addHandler(
 			menu.htmlElement.querySelector('a[data-section="signup"]'),
 			'click',
 			(event) => {
@@ -144,6 +152,19 @@ export default class App {
 		aside.render();
 		this.#structure.main.aside = aside;
 
+		const logoutButton = header.htmlElement.querySelector(
+			'img.header-profile-logout',
+		);
+		const logoutButtonHandler = () => {
+			Ajax.post('/auth/logout', {}, (data, error) => {
+				if (error) {
+					console.log('logoutError:', error);
+				}
+				this.goToPage(PAGE_LINKS.login, true);
+			});
+		};
+		header.addHandler(logoutButton, 'click', logoutButtonHandler);
+
 		this.#fillContent();
 
 		this.handlers.scrollHandler = () => {
@@ -164,7 +185,7 @@ export default class App {
 		let config;
 		Ajax.get('/api/post', (data, error) => {
 			if (error) {
-				console.log('add post error');
+				console.log('add post error:', error);
 			} else if (data) {
 				config = data;
 				const post = new Post(
@@ -204,7 +225,6 @@ export default class App {
 						post.render();
 					})
 					.catch((error) => {
-						console.log('fill content error:', error);
 						if (error.message === 'Unauthorized') {
 							toLogin = true;
 						} else {
@@ -235,7 +255,11 @@ export default class App {
 	 */
 	#renderLogin() {
 		const config = this.config.loginConfig;
-		const login = new LoginForm(config, this.root, this.goToPage.bind(this));
+		const login = new LoginForm(
+			config,
+			this.root,
+			this.goToPage.bind(this),
+		);
 		login.render();
 		this.#structure.login = login;
 	}

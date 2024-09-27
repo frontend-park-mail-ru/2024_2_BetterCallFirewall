@@ -4,6 +4,7 @@
 export default class Header {
 	#config;
 	#parent;
+	#handlers = {};
 	/**
 	 * Instance of Header
 	 *
@@ -15,7 +16,9 @@ export default class Header {
 		this.#parent = parent;
 	}
 	get htmlElement() {
-		return this.#parent.querySelector(`div[dataset=${this.#config.key}]`);
+		return this.#parent.querySelector(
+			`div[data-section="${this.#config.key}"]`,
+		);
 	}
 	/**
 	 * Rendering header with handlebars
@@ -31,9 +34,27 @@ export default class Header {
 		return html;
 	}
 	/**
-	 * Removing element of header
+	 * add event handler on target
+	 *
+	 * @param {HTMLElement} target
+	 * @param {string} event
+	 * @param {(event) => void} handler
+	 */
+	addHandler(target, event, handler) {
+		this.#handlers[`${target.className}-${event}`] = {
+			target,
+			event,
+			handler,
+		};
+		target.addEventListener(event, handler);
+	}
+	/**
+	 * Removing elenment of header and event listeners
 	 */
 	remove() {
+		Object.entries(this.#handlers).forEach(([, obj]) => {
+			obj.target.removeEventListener(obj.event, obj.handler);
+		});
 		this.htmlElement.remove();
 	}
 }
