@@ -1,6 +1,7 @@
 import Input from '../Input/Input.js';
 import FormButton from '../FormButton/FormButton.js';
-
+import Ajax from '../../modules/ajax.js';
+import {validateForm} from '../../modules/validation.js';
 
 
 export default class LoginForm {
@@ -12,18 +13,21 @@ export default class LoginForm {
 	#className;
 	#button;
 	#id;
+	#goToPage;
+	#submitHandler;
 	/**
 	 *
 	 * @param {Object} config
 	 * @param {HTMLElement} parent
 	 */
-	constructor(config, parent) {
+	constructor(config, parent, goToPage) {
 		this.#config = config;
 		this.#configInputs = config.inputs;
 		this.#configButton = config.button;
 		this.#parent = parent;
 		this.#className = 'form';
 		this.#id = 'formLogin';
+		this.#goToPage = goToPage;
 	}
 	get configInputsItems() {
 		return Object.entries(this.#configInputs);
@@ -70,6 +74,26 @@ export default class LoginForm {
 		this.#inputs.forEach((input) => {
 			input.parent = itemsParent;
 		});
+
+		const form = document.getElementById(this.#id);
+		const submitHandler = (e) => {
+			e.preventDefault();
+			const data = validateForm(this.#configInputs, form);
+			if (data) {
+				Ajax.sendForm('/auth/login', data, (response, error) => {
+					console.log('response:', response);
+					console.log('error:', error);
+					if (response.ok) {
+						this.#goToPage('/feed', true);
+					} else {
+						console.log('status:', response.statusText);
+					}
+				});
+			}
+		};
+		form.addEventListener('submit', submitHandler);
+		this.#submitHandler = submitHandler;
+
 		return html;
 	}
 	remove() {
@@ -78,5 +102,7 @@ export default class LoginForm {
 		});
 		this.#button.remove();
 		this.#parent.removeChild(this.htmlElement);
+		const form = document.getElementById(this.#id);
+		form.removeEventListener('submit', this.#submitHandler);
 	}
 }

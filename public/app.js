@@ -184,28 +184,8 @@ export default class App {
 	}
 	#renderLogin() {
 		const config = this.config.loginConfig;
-		const login = new LoginForm(config, this.root);
+		const login = new LoginForm(config, this.root, this.goToPage.bind(this));
 		login.render();
 		this.#structure.login = login;
-
-		const formId = login.form;
-		const form = document.getElementById(formId);
-		const submitHandler = (e) => {
-			e.preventDefault();
-			const data = validateForm(config.inputs, form);
-			if (data) {
-				Ajax.sendForm('/auth/login', data, (response, error) => {
-					console.log('response:', response);
-					console.log('error:', error);
-					if (response.ok) {
-						this.goToPage(PAGE_LINKS.feed, true);
-					} else {
-						console.log('status:', response.statusText);
-					}
-				});
-			}
-		};
-
-		form.addEventListener('submit', submitHandler);
 	}
 }
