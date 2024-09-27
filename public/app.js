@@ -142,8 +142,12 @@ export default class App {
 		return Ajax.getPromise('/api/post');
 	}
 	#fillContent() {
+		let toLogin = false;
 		const fill = async () => {
 			while (window.innerHeight * 2 > document.body.offsetHeight) {
+				if (toLogin) {
+					return;
+				}
 				const promise = this.#addPostPromise();
 				await promise
 					.then((data) => {
@@ -155,10 +159,21 @@ export default class App {
 					})
 					.catch((error) => {
 						console.log('fill content error:', error);
+						if (error.message === 'Unauthorized') {
+							toLogin = true;
+						} else {
+							return new Promise((resolve) =>
+								setTimeout(resolve, 5000),
+							);
+						}
 					});
 			}
 		};
-		fill();
+		fill().then(() => {
+			if (toLogin) {
+				this.goToPage(PAGE_LINKS.login, true);
+			}
+		});
 	}
 	#renderSignup() {
 		const config = this.config.signupConfig;
@@ -171,6 +186,20 @@ export default class App {
 		const login = new LoginForm(config, this.root);
 		login.render();
 		this.#structure.login = login;
-		console.log(login.htmlElement);
+
+		const clickHandler = (event) => {
+			event.preventDefault();
+			Ajax.sendForm('/auth/login', login.formData, (response, error) => {
+				console.log('response:', response);
+				console.log('error:', error);
+				if (response.ok) {
+					this.goToPage(PAGE_LINKS.feed, true);
+				} else {
+					console.log('status:', response.statusText);
+				}
+			});
+		};
+		const submitButton = login.submitButton;
+		submitButton.addHandler('click', clickHandler);
 	}
 }

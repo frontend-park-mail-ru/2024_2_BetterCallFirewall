@@ -93,14 +93,30 @@ app.post('/auth/logout', (req, res) => {
 
 let counter = 0;
 app.get('/api/post', (req, res) => {
-	// console.log('Запрос пришел:');
-	const data = posts[counter];
-	// console.log('Отправили:', data);
-	counter++;
-	if (posts.length <= counter) {
-		counter = 0;
+	console.log('Запрос поста:');
+	console.log('Куки:', req.cookies);
+	const sessionId = req.cookies['sessionid'];
+	let isAuthorised = false;
+	users.forEach((user) => {
+		console.log('sessionId:', sessionId, typeof sessionId);
+		console.log('user.sessionId:', user.sessionId, typeof user.sessionId);
+		if (sessionId && sessionId == user.sessionId) {
+			isAuthorised = true;
+			console.log('user:', user);
+		}
+	});
+	if (isAuthorised) {
+		const data = posts[counter];
+		console.log('Отправили:', data);
+		counter++;
+		if (posts.length <= counter) {
+			counter = 0;
+		}
+		res.json(data);
+	} else {
+		res.status(401);
+		res.send();
 	}
-	res.json(data);
 });
 
 app.get('/public/img/', (req, res) => {

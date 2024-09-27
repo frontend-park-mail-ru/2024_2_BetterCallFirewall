@@ -2,6 +2,7 @@ export default new (class Ajax {
 	get(url, callback) {
 		const request = new Request(url, {
 			method: 'get',
+			credentials: 'same-origin',
 		});
 		this.#ajax({
 			request,
@@ -12,6 +13,7 @@ export default new (class Ajax {
 		const request = new Request(url, {
 			method: 'post',
 			body: data,
+			credentials: 'same-origin',
 		});
 		this.#ajax({
 			request,
@@ -21,6 +23,7 @@ export default new (class Ajax {
 	getPromise(url) {
 		const request = new Request(url, {
 			method: 'get',
+			credentials: 'same-origin',
 		});
 		return this.#ajaxPromise({
 			request,
@@ -33,8 +36,11 @@ export default new (class Ajax {
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
+			credentials: 'same-origin',
 		});
-		this.#ajax({ request, callback });
+		fetch(request)
+			.then((response) => callback(response))
+			.catch((error) => callback(null, error));
 	}
 	#ajax(config) {
 		fetch(config.request)
@@ -43,6 +49,12 @@ export default new (class Ajax {
 			.catch((error) => config.callback(null, error));
 	}
 	#ajaxPromise(config) {
-		return fetch(config.request).then((response) => response.json());
+		return fetch(config.request).then((response) => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error(response.statusText);
+			}
+		});
 	}
 })();
