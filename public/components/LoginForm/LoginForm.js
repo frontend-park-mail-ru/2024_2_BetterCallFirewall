@@ -97,12 +97,13 @@ export default class LoginForm {
 		return html;
 	}
 	remove() {
+		const form = document.getElementById(this.#id);
+		form.removeEventListener('submit', this.#submitHandler);
+
 		Object.keys(this.#inputs).forEach((key) => {
 			this.#inputs[key].remove();
 		});
 		this.#button.remove();
 		this.#parent.removeChild(this.htmlElement);
-		const form = document.getElementById(this.#id);
-		form.removeEventListener('submit', this.#submitHandler);
 	}
 }
