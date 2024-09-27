@@ -6,6 +6,7 @@ import Post from './components/Post/Post.js';
 import SignupForm from './components/SignupForm/SignupForm.js';
 import Ajax from './modules/ajax.js';
 import User from './models/user.js';
+import {validateForm} from './modules/validation.js';
 
 export const PAGE_LINKS = {
 	feed: '/feed',
@@ -187,19 +188,24 @@ export default class App {
 		login.render();
 		this.#structure.login = login;
 
-		const clickHandler = (event) => {
-			event.preventDefault();
-			Ajax.sendForm('/auth/login', login.formData, (response, error) => {
-				console.log('response:', response);
-				console.log('error:', error);
-				if (response.ok) {
-					this.goToPage(PAGE_LINKS.feed, true);
-				} else {
-					console.log('status:', response.statusText);
-				}
-			});
+		const formId = login.form;
+		const form = document.getElementById(formId);
+		const submitHandler = (e) => {
+			e.preventDefault();
+			const data = validateForm(config.inputs, form);
+			if (data) {
+				Ajax.sendForm('/auth/login', data, (response, error) => {
+					console.log('response:', response);
+					console.log('error:', error);
+					if (response.ok) {
+						this.goToPage(PAGE_LINKS.feed, true);
+					} else {
+						console.log('status:', response.statusText);
+					}
+				});
+			}
 		};
-		const submitButton = login.submitButton;
-		submitButton.addHandler('click', clickHandler);
+
+		form.addEventListener('submit', submitHandler);
 	}
 }

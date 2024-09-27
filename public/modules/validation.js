@@ -67,22 +67,19 @@ const configItems = (config) => {
 export const validateForm = (config, form) => {
     const data = {};
     let isValid = true;
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        errorsDelete(form.parentNode);
+    errorsDelete(form.parentNode);
 
-        const inputs = configItems(config);
-        inputs.forEach(([key, value]) => {
-            const input = form.querySelector(`#${value.name}`);
-            data[input.name] = input.value.trim();
+    const inputs = configItems(config);
+    inputs.forEach(([key, value]) => {
+        const input = form.querySelector(`#${value.name}`);
+        data[input.name] = input.value.trim();
 
-            const validator = value.validator;
-            const error = validator(input);
-            if (error) {
-                isValid = false;
-            }
-            printError(input.parentNode, error);
-        });
+        const validator = value.validator;
+        const error = validator(input);
+        if (error) {
+            isValid = false;
+        }
+        printError(input.parentNode, error);
     });
 
     if (!isValid) {
