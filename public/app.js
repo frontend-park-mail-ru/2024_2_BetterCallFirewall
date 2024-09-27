@@ -5,6 +5,7 @@ import Menu from './components/Menu/Menu.js';
 import Post from './components/Post/Post.js';
 import SignupForm from './components/SignupForm/SignupForm.js';
 import Ajax from './modules/ajax.js';
+import { validateForm } from './modules/validation.js';
 
 export const PAGE_LINKS = {
 	feed: '/feed',
@@ -196,9 +197,25 @@ export default class App {
 	}
 	#renderSignup() {
 		const config = this.config.signupConfig;
-		const signUp = new SignupForm(config.inputs, config.button, this.root);
+		const signUp = new SignupForm(config, this.root);
 		signUp.render();
 		this.#structure.signUp = signUp;
+
+		const signupForm = signUp.htmlElement.querySelector('form');
+		const submitHandler = (event) => {
+			event.preventDefault();
+			const data = validateForm(config.inputs, signupForm);
+			if (data) {
+				Ajax.sendForm('/auth/signup', data, (response, error) => {
+					if (response.ok) {
+						this.goToPage(PAGE_LINKS.feed, true);
+					} else {
+						console.log('status:', response.statusText);
+					}
+				});
+			}
+		};
+		signUp.addHandler(signupForm, 'submit', submitHandler);
 	}
 	#renderLogin() {
 		const config = this.config.loginConfig;

@@ -1,5 +1,10 @@
 import App from './app.js';
-import {validateName, validateEmail, validateConfirmation, validatePassword } from './modules/validation.js';
+import {
+	validateName,
+	validateEmail,
+	validateConfirmation,
+	validatePassword,
+} from './modules/validation.js';
 
 const root = document.getElementById('root');
 
@@ -41,7 +46,7 @@ const homeConfig = {
 
 const signupConfig = {
 	className: 'signup-form',
-	text: 'Это форма регистрации',
+	section: 'signup',
 	inputs: {
 		firstName: {
 			type: 'text',
