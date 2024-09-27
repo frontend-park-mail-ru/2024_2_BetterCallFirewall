@@ -1,6 +1,7 @@
 export default class Header {
 	#config;
 	#parent;
+	#handlers = {};
 	/**
 	 *
 	 * @param {Object} config
@@ -11,7 +12,9 @@ export default class Header {
 		this.#parent = parent;
 	}
 	get htmlElement() {
-		return this.#parent.querySelector(`div[dataset=${this.#config.key}]`);
+		return this.#parent.querySelector(
+			`div[data-section="${this.#config.key}"]`,
+		);
 	}
 	render() {
 		const template = Handlebars.templates['Header.hbs'];
@@ -21,7 +24,24 @@ export default class Header {
 		}
 		return html;
 	}
+	/**
+	 *
+	 * @param {HTMLElement} target
+	 * @param {string} event
+	 * @param {(event) => void} handler
+	 */
+	addHandler(target, event, handler) {
+		this.#handlers[`${target.className}-${event}`] = {
+			target,
+			event,
+			handler,
+		};
+		target.addEventListener(event, handler);
+	}
 	remove() {
+		Object.entries(this.#handlers).forEach(([, obj]) => {
+			obj.target.removeEventListener(obj.event, obj.handler);
+		});
 		this.htmlElement.remove();
 	}
 }

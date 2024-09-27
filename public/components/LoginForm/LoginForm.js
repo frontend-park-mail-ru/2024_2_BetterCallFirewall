@@ -1,8 +1,7 @@
 import Input from '../Input/Input.js';
 import FormButton from '../FormButton/FormButton.js';
 import Ajax from '../../modules/ajax.js';
-import {validateForm} from '../../modules/validation.js';
-
+import { validateForm } from '../../modules/validation.js';
 
 export default class LoginForm {
 	#config = {};
@@ -81,8 +80,6 @@ export default class LoginForm {
 			const data = validateForm(this.#configInputs, form);
 			if (data) {
 				Ajax.sendForm('/auth/login', data, (response, error) => {
-					console.log('response:', response);
-					console.log('error:', error);
 					if (response.ok) {
 						this.#goToPage('/feed', true);
 					} else {
