@@ -6,25 +6,42 @@ import Post from './components/Post/Post.js';
 import SignupForm from './components/SignupForm/SignupForm.js';
 import Ajax from './modules/ajax.js';
 import User from './models/user.js';
-import {validateForm} from './modules/validation.js';
 
+/**
+ * Links to pages
+ * @constant
+ */
 export const PAGE_LINKS = {
 	feed: '/feed',
 	login: '/login',
 	signup: '/signup',
 };
 
+/**
+ * Main class of application
+ */
 export default class App {
 	#state = {};
 	handlers = {};
 	#structure = {};
 	config;
 	root;
+	/**
+	 * Instance of application
+	 * 
+	 * @param {Object} config - config of application
+	 * @param {HTMLElement} root - root element
+	 */
 	constructor(config, root) {
 		this.config = config;
 		this.root = root;
 		this.#state.user = null;
 	}
+	/**
+	 * Routing pages
+	 * 
+	 * @param {string} pageLink
+	 */
 	render(pageLink) {
 		switch (pageLink) {
 			case PAGE_LINKS.signup:
@@ -40,10 +57,21 @@ export default class App {
 				this.#renderFeed();
 		}
 	}
+	/**
+	 * Routing to clearing previous components and rendering new
+	 * 
+	 * @param {string} pageLink
+	 * @param {boolean} deleteEverything - deleting all components
+	 */
 	goToPage(pageLink, deleteEverything = false) {
 		this.clear(deleteEverything);
 		this.render(pageLink);
 	}
+	/**
+	 * Clearing previous components
+	 * 
+	 * @param {boolean} deleteEverything - deleting all components
+	 */
 	clear(deleteEverything) {
 		document.removeEventListener('scroll', this.handlers.scrollHandler);
 		Object.keys(this.#structure).forEach((key) => {
@@ -53,6 +81,9 @@ export default class App {
 			}
 		});
 	}
+	/**
+	 * Rendering menu
+	 */
 	#renderMenu() {
 		const menu = new Menu(this.config.homeConfig.menu, this.root);
 		if (!this.#structure.menu) {
@@ -77,7 +108,9 @@ export default class App {
 			},
 		);
 	}
-
+	/**
+	 * Rendering feed
+	 */
 	#renderFeed() {
 		const config = this.config.homeConfig;
 
@@ -124,6 +157,9 @@ export default class App {
 		};
 		document.addEventListener('scroll', this.handlers.scrollHandler);
 	}
+	/**
+	 * Adding new posts while scrolling window
+	 */
 	#addPost() {
 		let config;
 		Ajax.get('/api/post', (data, error) => {
@@ -139,9 +175,18 @@ export default class App {
 			}
 		});
 	}
+	/**
+	 * Returns promise to add new post
+	 * 
+	 * @returns {Promise<Object>}
+	 */
 	#addPostPromise() {
 		return Ajax.getPromise('/api/post');
 	}
+	/**
+	 * 
+	 * Filling content while scrolling
+	 */
 	#fillContent() {
 		let toLogin = false;
 		const fill = async () => {
@@ -176,12 +221,18 @@ export default class App {
 			}
 		});
 	}
+	/**
+	 * Rendering signup page
+	 */
 	#renderSignup() {
 		const config = this.config.signupConfig;
 		const signUp = new SignupForm(config.inputs, config.button, this.root);
 		signUp.render();
 		this.#structure.signUp = signUp;
 	}
+	/**
+	 * Rendering login page
+	 */
 	#renderLogin() {
 		const config = this.config.loginConfig;
 		const login = new LoginForm(config, this.root, this.goToPage.bind(this));

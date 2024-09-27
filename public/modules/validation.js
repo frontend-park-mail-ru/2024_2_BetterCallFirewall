@@ -1,8 +1,19 @@
+/**
+ * Deleting content in elements with class '.error'
+ * 
+ * @param {HTMLElement} parentElem - parent element of element with class '.error'
+ */
 const errorsDelete = (parentElem) => {
     const errors = parentElem.querySelectorAll('.error');
     errors.forEach(error => error.textContent = '');
 };
 
+/**
+ * Validation of password confirmation
+ * 
+ * @param {HTMLElement} confirm - Confirmation of password
+ * @returns {string} - returns error
+ */
 export const validateConfirmation = (confirm) => {
     const confirmValue = confirm.value;
     if (!confirmValue) {
@@ -15,6 +26,12 @@ export const validateConfirmation = (confirm) => {
     return '';
 };
 
+/**
+ * Validation of password
+ * 
+ * @param {HTMLElement} password 
+ * @returns {string} - return error
+ */
 export const validatePassword = (password) => {
     const passwordValue = password.value;
     if (!passwordValue) {
@@ -26,6 +43,12 @@ export const validatePassword = (password) => {
     return '';
 };
 
+/**
+ * Validation of email
+ * 
+ * @param {HTMLElement} email 
+ * @returns {string} - return error
+ */
 export const validateEmail = (email) => {
     const emailRegex = /^[\w-.]+@([\w-]+\.)\w{2,4}$/;
     const emailValue = email.value.trim();
@@ -41,6 +64,12 @@ export const validateEmail = (email) => {
 
 };
 
+/**
+ * Validation of name
+ * 
+ * @param {HTMLElement} name 
+ * @returns {string} - return error
+ */
 export const validateName = (name) => {
     const nameValue = name.value.trim();
     if (!nameValue) {
@@ -54,16 +83,34 @@ export const validateName = (name) => {
     return '';
 };
 
+/**
+ * Printing error under input in page
+ * 
+ * @param {HTMLInputElement} parentElem 
+ * @param {*} error - value to print
+ */
 const printError = (parentElem, error) => {
     if (error) {
         parentElem.querySelector('.error').textContent = error;
     }
 };
 
+/**
+ * Config object to array key-value
+ * 
+ * @param {Object} config 
+ */
 const configItems = (config) => {
     return Object.entries(config);
 };
 
+/**
+ * Validation based on config
+ * 
+ * @param {Object} config 
+ * @param {HTMLElement} form 
+ * @returns {Object|null} - correct data
+ */
 export const validateForm = (config, form) => {
     const data = {};
     let isValid = true;
