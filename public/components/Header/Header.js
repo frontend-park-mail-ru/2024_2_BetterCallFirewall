@@ -1,8 +1,12 @@
+/**
+ * Class of header
+ */
 export default class Header {
 	#config;
 	#parent;
 	#handlers = {};
 	/**
+	 * Instance of Header
 	 *
 	 * @param {Object} config
 	 * @param {HTMLElement} parent
@@ -16,6 +20,11 @@ export default class Header {
 			`div[data-section="${this.#config.key}"]`,
 		);
 	}
+	/**
+	 * Rendering header with handlebars
+	 * 
+	 * @returns {string} - generated HTML element 
+	 */
 	render() {
 		const template = Handlebars.templates['Header.hbs'];
 		const html = template({ ...this.#config });
@@ -25,6 +34,7 @@ export default class Header {
 		return html;
 	}
 	/**
+	 * add event handler on target
 	 *
 	 * @param {HTMLElement} target
 	 * @param {string} event
@@ -38,6 +48,9 @@ export default class Header {
 		};
 		target.addEventListener(event, handler);
 	}
+	/**
+	 * Removing elenment of header and event listeners
+	 */
 	remove() {
 		Object.entries(this.#handlers).forEach(([, obj]) => {
 			obj.target.removeEventListener(obj.event, obj.handler);

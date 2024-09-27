@@ -15,9 +15,10 @@ export default class LoginForm {
 	#goToPage;
 	#submitHandler;
 	/**
+	 * constructor of instance LoginForm
 	 *
-	 * @param {Object} config
-	 * @param {HTMLElement} parent
+	 * @param {Object} config - configuration for the form
+	 * @param {HTMLElement} parent - the parent HTML element
 	 */
 	constructor(config, parent, goToPage) {
 		this.#config = config;
@@ -28,29 +29,32 @@ export default class LoginForm {
 		this.#id = 'formLogin';
 		this.#goToPage = goToPage;
 	}
+
+	/**
+	 * Get inputs from config
+	 * 
+	 * @returns {Array} - array of input 
+	 */
 	get configInputsItems() {
 		return Object.entries(this.#configInputs);
 	}
+
+	/**
+	 * Getting html element which contains the form
+	 * 
+	 * @returns {HTMLElement} - HTML element of form
+	 */
 	get htmlElement() {
 		return this.#parent.querySelector(
 			`div[data-section="${this.#config.section}"]`,
 		);
 	}
-	/**
-	 * @returns {FormButton}
-	 */
 
-	get form() {
-		return this.#id;
-	}
 	/**
-	 * @returns {FormData}
+	 * Render login form and submit event handler
+	 * 
+	 * @returns {string} - HTML string of form
 	 */
-	get formData() {
-		return new FormData(
-			this.#parent.querySelector(`form.${this.#className}`),
-		);
-	}
 	render() {
 		this.configInputsItems.forEach(([section, value]) => {
 			const input = new Input({ section, ...value });
@@ -93,6 +97,10 @@ export default class LoginForm {
 
 		return html;
 	}
+
+	/**
+	 * Removing the login form and event handlers
+	 */
 	remove() {
 		const form = document.getElementById(this.#id);
 		form.removeEventListener('submit', this.#submitHandler);
