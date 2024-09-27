@@ -67,6 +67,14 @@ export default class App {
 			},
 		);
 		menu.addHandler(
+			menu.htmlElement.querySelector('a[data-section="login"]'),
+			'click',
+			(event) => {
+				event.preventDefault();
+				this.goToPage(PAGE_LINKS.login, true);
+			},
+		);
+		menu.addHandler(
 			menu.htmlElement.querySelector('a[data-section="signup"]'),
 			'click',
 			(event) => {
