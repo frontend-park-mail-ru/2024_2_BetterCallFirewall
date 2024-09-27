@@ -10,8 +10,8 @@ templates['FormButton.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":functio
 
   return "<button type=\"submit\" class=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"className") : depth0), depth0))
-    + "\">\r\n    "
+    + "\">\n    "
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"text") : depth0), depth0))
-    + "\r\n</button>";
+    + "\n</button>";
 },"useData":true});
 })();

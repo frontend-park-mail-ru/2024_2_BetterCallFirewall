@@ -10,14 +10,14 @@ templates['Header.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(co
 
   return "<div class=\"header\" data-section=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"key") : depth0), depth0))
-    + "\">\r\n    <div class=\"header-search\">\r\n        <img src=\""
+    + "\">\n    <div class=\"header-search\">\n        <img src=\""
     + alias2(alias1(((stack1 = (depth0 != null ? lookupProperty(depth0,"search") : depth0)) != null ? lookupProperty(stack1,"img") : stack1), depth0))
-    + "\" alt=\"поиск\">\r\n        <input type=\"text\" class=\"header-search-input\" placeholder=\""
+    + "\" alt=\"поиск\">\n        <input type=\"text\" class=\"header-search-input\" placeholder=\""
     + alias2(alias1(((stack1 = (depth0 != null ? lookupProperty(depth0,"search") : depth0)) != null ? lookupProperty(stack1,"placeholder") : stack1), depth0))
-    + "\">\r\n    </div>\r\n    <div class=\"header-profile\">\r\n        <img src=\""
+    + "\">\n    </div>\n    <div class=\"header-profile\">\n        <img src=\""
     + alias2(alias1(((stack1 = (depth0 != null ? lookupProperty(depth0,"profile") : depth0)) != null ? lookupProperty(stack1,"logoutImg") : stack1), depth0))
-    + "\" alt=\"Выйти\" class=\"header-profile-logout\">\r\n        <img src=\""
+    + "\" alt=\"Выйти\" class=\"header-profile-logout\">\n        <img src=\""
     + alias2(alias1(((stack1 = (depth0 != null ? lookupProperty(depth0,"profile") : depth0)) != null ? lookupProperty(stack1,"avatar") : stack1), depth0))
-    + "\" alt=\"Avatar\" class=\"header-profile-avatar\">\r\n    </div>\r\n</div>";
+    + "\" alt=\"Avatar\" class=\"header-profile-avatar\">\n    </div>\n</div>";
 },"useData":true});
 })();
