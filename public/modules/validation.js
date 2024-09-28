@@ -30,7 +30,7 @@ export const validateConfirmation = (confirm) => {
  * Validation of password
  * 
  * @param {HTMLElement} password 
- * @returns {string} - return error
+ * @returns {String} - return error
  */
 export const validatePassword = (password) => {
 	const passwordValue = password.value;
@@ -47,7 +47,7 @@ export const validatePassword = (password) => {
  * Validation of email
  * 
  * @param {HTMLElement} email 
- * @returns {string} - return error
+ * @returns {String} - return error
  */
 export const validateEmail = (email) => {
 	const emailRegex = /^[\w-.]+@([\w-]+\.)\w{2,4}$/;
@@ -67,17 +67,17 @@ export const validateEmail = (email) => {
  * Validation of name
  * 
  * @param {HTMLElement} name 
- * @returns {string} - return error
+ * @returns {String} - return error
  */
 export const validateName = (name) => {
 	const nameValue = name.value.trim();
 	if (!nameValue) {
-		return `${name.text} не может быть пустым`;
+		return 'Поле не может быть пустым';
 	}
 	if (nameValue.length < 3) {
-		return `${name.text} должно быть не менее 3 символов.`;
+		return 'Поле должно содержать не менее 3 символов.';
 	} else if (nameValue.length > 20) {
-		return `${name.text} должно быть не более 20 символов.`;
+		return 'Поле должно содержать не более 20 символов.';
 	}
 	return '';
 };
@@ -86,9 +86,9 @@ export const validateName = (name) => {
  * Printing error under input in page
  * 
  * @param {HTMLInputElement} parentElem 
- * @param {*} error - value to print
+ * @param {String} error - value to print
  */
-const printError = (parentElem, error) => {
+export const printError = (parentElem, error) => {
 	if (error) {
 		parentElem.querySelector('.error').textContent = error;
 	}

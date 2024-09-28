@@ -36,11 +36,12 @@
 .header-profile {
     display: flex;
     align-items: center;
+    height: 1.5rem;
 }
 
 .header-profile-logout {
-    width: 1rem;
-    height: 1rem;
+    width: 1.2rem;
+    height: 1.2rem;
     margin-right: 2rem;
 }
 
@@ -49,3 +50,18 @@
     height: 3rem;
     border-radius: 1.5rem;
 }
+
+
+.header-profile-logout:hover path{
+    fill: #25AD74;
+    stroke: #25AD74;
+}
+.header-profile-logout:active path{
+    fill: white;
+    stroke: white;
+}
+/* 
+.header-profile-logout:active{
+    width: 1.3rem;
+    height: 1.3rem;
+} */
