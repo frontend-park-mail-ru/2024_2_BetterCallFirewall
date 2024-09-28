@@ -74,10 +74,9 @@ export default class LoginForm {
 			this.#inputs.push(input);
 		});
 		const button = new FormButton({ ...this.#configButton });
-		this.#items[button] = button;
+		this.#items.button = button;
 		const toSignupLink = new FormLink(this.#config.toSignupLink);
 		this.#items.toSignupLink = toSignupLink;
-		console.log(this.#items);
 
 		const template = Handlebars.templates['LoginForm.hbs'];
 		const html = template({

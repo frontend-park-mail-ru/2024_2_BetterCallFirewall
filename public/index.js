@@ -82,6 +82,11 @@ const signupConfig = {
 	button: {
 		text: 'Sign Up!',
 	},
+	toLoginLink: {
+		href: PAGE_LINKS.login,
+		text: 'Уже есть аккаунт? Войди!',
+		section: 'toLogin',
+	},
 };
 
 const loginConfig = {
@@ -108,7 +113,7 @@ const loginConfig = {
 	toSignupLink: {
 		href: PAGE_LINKS.signup,
 		text: 'Нет аккаунта? Зарегистрируйся!',
-		section: 'to-signup',
+		section: 'toSignup',
 	},
 };
 

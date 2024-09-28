@@ -266,6 +266,13 @@ export default class App {
 			}
 		};
 		signUp.addHandler(signupForm, 'submit', submitHandler);
+
+		const toLoginLink = signUp.items.toLoginLink;
+		const clickHandler = (event) => {
+			event.preventDefault();
+			this.goToPage(PAGE_LINKS.login, true);
+		};
+		toLoginLink.addHandler('click', clickHandler);
 	}
 	/**
 	 * Rendering login page

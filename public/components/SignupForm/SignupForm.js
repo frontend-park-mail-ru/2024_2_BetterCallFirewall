@@ -1,6 +1,7 @@
 import FormButton from '../FormButton/FormButton.js';
 import Input from '../Input/Input.js';
 import { validateForm } from '../../modules/validation.js';
+import FormLink from '../FormLink/FormLink.js';
 
 export default class SignupForm {
 	#config;
@@ -11,6 +12,7 @@ export default class SignupForm {
 	#className;
 	#id;
 	#handlers = {};
+	#items = {};
 	/**
 	 *
 	 * @param {Object} config
@@ -35,6 +37,10 @@ export default class SignupForm {
 		);
 	}
 
+	get items() {
+		return this.#items;
+	}
+
 	addHandler(target, event, handler) {
 		this.#handlers[`${target.className}-${event}`] = {
 			target,
@@ -45,14 +51,18 @@ export default class SignupForm {
 	}
 
 	render() {
-		this.configInputsItems.forEach(([key, value]) => {
-			const input = new Input({ key, ...value });
+		this.configInputsItems.forEach(([section, value]) => {
+			const input = new Input({ section, ...value });
+			this.#items[section] = input;
 			this.#inputs.push(input);
 		});
 		const button = new FormButton({
 			section: 'submit',
 			...this.#configButton,
 		});
+		this.#items.button = button;
+		const toLoginLink = new FormLink(this.#config.toLoginLink);
+		this.#items.toLoginLink = toLoginLink;
 
 		const template = Handlebars.templates['SignupForm.hbs'];
 		const html = template({
@@ -61,11 +71,13 @@ export default class SignupForm {
 			className: this.#className,
 			id: this.#id,
 			button: button.render(),
+			toLoginLink: toLoginLink.render(),
 		});
 		this.#parent.innerHTML += html;
 		this.#inputs.forEach((input) => {
 			input.parent = this.htmlElement;
 		});
+		toLoginLink.parent = this.htmlElement;
 
 		return html;
 	}
