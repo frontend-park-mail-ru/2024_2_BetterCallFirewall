@@ -91,7 +91,6 @@ app.post('/auth/logout', (req, res) => {
 	res.send();
 });
 
-let counter = 0;
 app.get('/api/post', (req, res) => {
 	console.log('Запрос поста:');
 	console.log('Куки:', req.cookies);
@@ -106,13 +105,10 @@ app.get('/api/post', (req, res) => {
 		}
 	});
 	if (isAuthorised) {
-		const data = posts[counter];
-		console.log('Отправили:', data);
-		counter++;
-		if (posts.length <= counter) {
-			counter = 0;
-		}
-		res.json(data);
+		const body = {};
+		body.data = posts;
+		console.log('Отправили:', body);
+		res.json(posts);
 	} else {
 		res.status(401);
 		res.send();

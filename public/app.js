@@ -6,7 +6,6 @@ import Post from './components/Post/Post.js';
 import SignupForm from './components/SignupForm/SignupForm.js';
 import Ajax from './modules/ajax.js';
 import { validateForm } from './modules/validation.js';
-import User from './models/user.js';
 
 /**
  * Links to pages
@@ -25,7 +24,7 @@ export default class App {
 	#state = {};
 	handlers = {};
 	#structure = {};
-	config;
+	#config;
 	root;
 	/**
 	 * Instance of application
@@ -34,7 +33,7 @@ export default class App {
 	 * @param {HTMLElement} root - root element
 	 */
 	constructor(config, root) {
-		this.config = config;
+		this.#config = config;
 		this.root = root;
 		this.#state.user = null;
 	}
@@ -86,7 +85,7 @@ export default class App {
 	 * Rendering menu
 	 */
 	#renderMenu() {
-		const menu = new Menu(this.config.homeConfig.menu, this.root);
+		const menu = new Menu(this.#config.homeConfig.menu, this.root);
 		if (!this.#structure.menu) {
 			this.#structure.menu = menu;
 			menu.render();
@@ -121,7 +120,7 @@ export default class App {
 	 * Rendering feed
 	 */
 	#renderFeed() {
-		const config = this.config.homeConfig;
+		const config = this.#config.homeConfig;
 
 		this.#renderMenu();
 
@@ -157,7 +156,7 @@ export default class App {
 			'img.header-profile-logout',
 		);
 		const logoutButtonHandler = () => {
-			Ajax.post('/auth/logout', {}, (data, error) => {
+			Ajax.post(this.#config.URL.logout, {}, (data, error) => {
 				if (error) {
 					console.log('logoutError:', error);
 				}
@@ -184,7 +183,7 @@ export default class App {
 	 */
 	#addPost() {
 		let config;
-		Ajax.get('/api/post', (data, error) => {
+		Ajax.get(this.#config.URL.post, (data, error) => {
 			if (error) {
 				console.log('add post error:', error);
 			} else if (data) {
@@ -203,50 +202,34 @@ export default class App {
 	 * @returns {Promise<Object>}
 	 */
 	#addPostPromise() {
-		return Ajax.getPromise('/api/post');
+		return Ajax.getPromise(this.#config.URL.post);
 	}
 	/**
 	 *
-	 * Filling content while scrolling
+	 * Filling content with posts
 	 */
 	#fillContent() {
-		let toLogin = false;
-		const fill = async () => {
-			while (window.innerHeight * 2 > document.body.offsetHeight) {
-				if (toLogin) {
-					return;
-				}
-				const promise = this.#addPostPromise();
-				await promise
-					.then((data) => {
-						const post = new Post(
-							data,
-							this.#structure.main.content.htmlElement,
-						);
-						post.render();
-					})
-					.catch((error) => {
-						if (error.message === 'Unauthorized') {
-							toLogin = true;
-						} else {
-							return new Promise((resolve) =>
-								setTimeout(resolve, 5000),
-							);
-						}
-					});
-			}
-		};
-		fill().then(() => {
-			if (toLogin) {
+		const promise = this.#addPostPromise();
+		promise
+			.then((body) => {
+				body.forEach((postData) => {
+					const post = new Post(
+						postData,
+						this.#structure.main.content.htmlElement,
+					);
+					post.render();
+				});
+			})
+			.catch((error) => {
+				console.log(error);
 				this.goToPage(PAGE_LINKS.login, true);
-			}
-		});
+			});
 	}
 	/**
 	 * Rendering signup page
 	 */
 	#renderSignup() {
-		const config = this.config.signupConfig;
+		const config = this.#config.signupConfig;
 		const signUp = new SignupForm(config, this.root);
 		signUp.render();
 		this.#structure.signUp = signUp;
@@ -256,13 +239,21 @@ export default class App {
 			event.preventDefault();
 			const data = validateForm(config.inputs, signupForm);
 			if (data) {
-				Ajax.sendForm('/auth/signup', data, (response, error) => {
-					if (response.ok) {
-						this.goToPage(PAGE_LINKS.feed, true);
-					} else {
-						console.log('status:', response.statusText);
-					}
-				});
+				Ajax.sendForm(
+					this.#config.URL.signup,
+					data,
+					(response, error) => {
+						if (error) {
+							console.log(error);
+							return;
+						}
+						if (response.ok) {
+							this.goToPage(PAGE_LINKS.feed, true);
+						} else {
+							console.log('status:', response.statusText);
+						}
+					},
+				);
 			}
 		};
 		signUp.addHandler(signupForm, 'submit', submitHandler);
@@ -278,7 +269,7 @@ export default class App {
 	 * Rendering login page
 	 */
 	#renderLogin() {
-		const config = this.config.loginConfig;
+		const config = this.#config.loginConfig;
 		const login = new LoginForm(config, this.root);
 		login.render();
 		this.#structure.login = login;
@@ -288,13 +279,21 @@ export default class App {
 			event.preventDefault();
 			const data = validateForm(config.inputs, loginForm);
 			if (data) {
-				Ajax.sendForm('/auth/login', data, (response, error) => {
-					if (response.ok) {
-						this.goToPage(PAGE_LINKS.feed, true);
-					} else {
-						console.log('status:', response.statusText);
-					}
-				});
+				Ajax.sendForm(
+					this.#config.URL.login,
+					data,
+					(response, error) => {
+						if (error) {
+							console.log(error);
+							return;
+						}
+						if (response.ok) {
+							this.goToPage(PAGE_LINKS.feed, true);
+						} else {
+							console.log('status:', response.statusText);
+						}
+					},
+				);
 			}
 		};
 		login.addHandler(loginForm, 'submit', submitHandler);

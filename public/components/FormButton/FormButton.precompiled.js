@@ -12,8 +12,8 @@ templates['FormButton.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":functio
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"className") : depth0), depth0))
     + "\" data-section=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"section") : depth0), depth0))
-    + "\">\n    "
+    + "\">\r\n    "
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"text") : depth0), depth0))
-    + "\n</button>";
+    + "\r\n</button>";
 },"useData":true});
 })();
