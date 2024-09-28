@@ -8,12 +8,12 @@ templates['Post.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(cont
         return undefined
     };
 
-  return "<div class=\"post\">\n    <div class=\"post-header\">\n        <img src=\"\" alt=\"\">\n        <div class=\"post-header-text\">\n            <span>"
+  return "<div class=\"post\">\n    <div class=\"post-header\">\n        <div class=\"post-header-text\">\n            <span class=\"title\">"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"title") : depth0), depth0))
-    + "</span>\n            <span>"
+    + "</span>\n            <span class=\"date\">"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"date") : depth0), depth0))
     + "</span>\n        </div>\n    </div>\n    <hr>\n    <div class=\"post-content\">\n        <span class=\"post-text\">"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"text") : depth0), depth0))
-    + "</span>\n    </div>\n    <hr>\n    <div class=\"post-footer\">\n\n    </div>\n</div>";
+    + "</span>\n    </div>\n    <div class=\"post-footer\">\n\n    </div>\n</div>";
 },"useData":true});
 })();

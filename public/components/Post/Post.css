@@ -9,8 +9,29 @@
 .post-header-text {
     display: flex;
     flex-direction: column;
+    padding: 1rem;
 }
 
-.post-footer {
-    min-height: 3rem;
+.post-header-text span {
+    margin-bottom: .3rem;
+}
+
+.post-header-text .date {
+    font-size: .8rem;
+}
+
+.post-header-text .title {
+    font-weight: bold;
+}
+
+.post-content {
+    padding: 1rem;
+}
+
+.post hr {
+    border: none;
+    border-top: 1px solid #E2E8F0;
+    opacity: 0.5;
+    padding: 0;
+    margin: 0;
 }

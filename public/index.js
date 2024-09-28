@@ -11,15 +11,15 @@ const root = document.getElementById('root');
 const homeConfig = {
 	menu: {
 		feed: {
-			text: 'feed',
+			text: 'Новости',
 			href: '/feed',
 		},
 		login: {
-			text: 'login',
+			text: 'Авторизация',
 			href: '/login',
 		},
 		signup: {
-			text: 'signup',
+			text: 'Регистрация',
 			href: '/signup',
 		},
 	},
@@ -50,13 +50,13 @@ const signupConfig = {
 	inputs: {
 		firstName: {
 			type: 'text',
-			text: 'First Name',
+			text: 'Имя',
 			name: 'firstName',
 			validator: validateName,
 		},
 		secondName: {
 			type: 'text',
-			text: 'Second Name',
+			text: 'Фамилия',
 			name: 'secondName',
 			validator: validateName,
 		},
@@ -68,23 +68,23 @@ const signupConfig = {
 		},
 		password: {
 			type: 'password',
-			text: 'Password',
+			text: 'Пароль',
 			name: 'password',
 			validator: validatePassword,
 		},
 		passwordAgain: {
 			type: 'password',
-			text: 'Password again',
+			text: 'Подтвердите пароль',
 			name: 'passwordAgain',
 			validator: validateConfirmation,
 		},
 	},
 	button: {
-		text: 'Sign Up!',
+		text: 'Зарегистрироваться !',
 	},
 	toLoginLink: {
 		href: PAGE_LINKS.login,
-		text: 'Уже есть аккаунт? Войди!',
+		text: 'Уже есть аккаунт? Войти!',
 		section: 'toLogin',
 	},
 };
@@ -101,18 +101,18 @@ const loginConfig = {
 		},
 		password: {
 			type: 'password',
-			text: 'Password',
+			text: 'Пароль',
 			name: 'password',
 			validator: validatePassword,
 		},
 	},
 	button: {
 		section: 'submit',
-		text: 'Sign In!',
+		text: 'Войти!',
 	},
 	toSignupLink: {
 		href: PAGE_LINKS.signup,
-		text: 'Нет аккаунта? Зарегистрируйся!',
+		text: 'Нет аккаунта? Зарегистрироваться!',
 		section: 'toSignup',
 	},
 };

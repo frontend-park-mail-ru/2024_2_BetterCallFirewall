@@ -16,7 +16,7 @@ templates['SignupForm.hbs'] = template({"1":function(container,depth0,helpers,pa
 
   return "<div class=\"cover\" data-section=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"section") : depth0), depth0))
-    + "\">\n    <div class=\"signup\">\n        <div class=\"title-sign\"><a href=\"/feed\"><h1>Vilka</h1></a></div>\n        <div class=\"name-sign\"><h2>Sign Up</h2></div>\n        <div class=\"form-sign\">\n            <form action=\"post\" class=\""
+    + "\">\n    <div class=\"signup\">\n        <div class=\"title-sign\"><a href=\"/feed\"><h1>Vilka</h1></a></div>\n        <div class=\"name-sign\"><h2>Регистрация</h2></div>\n        <div class=\"form-sign\">\n            <form action=\"post\" class=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"className") : depth0), depth0))
     + "\" id=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"id") : depth0), depth0))
