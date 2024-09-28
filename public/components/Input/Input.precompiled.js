@@ -10,6 +10,8 @@ templates['Input.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(con
 
   return "<div class=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"className") : depth0), depth0))
+    + "\" data-section=\""
+    + alias2(alias1((depth0 != null ? lookupProperty(depth0,"section") : depth0), depth0))
     + "\">\n    <label for=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"name") : depth0), depth0))
     + "\">"

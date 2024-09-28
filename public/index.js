@@ -1,5 +1,10 @@
-import App from './app.js';
-import {validateName, validateEmail, validateConfirmation, validatePassword } from './modules/validation.js';
+import App, { PAGE_LINKS } from './app.js';
+import {
+	validateName,
+	validateEmail,
+	validateConfirmation,
+	validatePassword,
+} from './modules/validation.js';
 
 const root = document.getElementById('root');
 
@@ -41,7 +46,7 @@ const homeConfig = {
 
 const signupConfig = {
 	className: 'signup-form',
-	text: 'Это форма регистрации',
+	section: 'signup',
 	inputs: {
 		firstName: {
 			type: 'text',
@@ -77,11 +82,16 @@ const signupConfig = {
 	button: {
 		text: 'Sign Up!',
 	},
+	toLoginLink: {
+		href: PAGE_LINKS.login,
+		text: 'Уже есть аккаунт? Войди!',
+		section: 'toLogin',
+	},
 };
 
 const loginConfig = {
 	className: 'login-form',
-	text: 'Это форма логина',
+	section: 'login',
 	inputs: {
 		email: {
 			type: 'text',
@@ -97,7 +107,13 @@ const loginConfig = {
 		},
 	},
 	button: {
+		section: 'submit',
 		text: 'Sign In!',
+	},
+	toSignupLink: {
+		href: PAGE_LINKS.signup,
+		text: 'Нет аккаунта? Зарегистрируйся!',
+		section: 'toSignup',
 	},
 };
 

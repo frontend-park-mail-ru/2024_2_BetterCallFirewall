@@ -1,5 +1,8 @@
 import MenuLink from '../MenuLink/MenuLink.js';
 
+/**
+ * Class to menu navigation
+ */
 export default class Menu {
 	#config;
 	#parent;
@@ -7,6 +10,7 @@ export default class Menu {
 	#links = [];
 	#handlers = {};
 	/**
+	 * Instance of Menu
 	 *
 	 * @param {Object} config
 	 * @param {HTMLElement} parent
@@ -19,9 +23,17 @@ export default class Menu {
 	get configItems() {
 		return Object.entries(this.#config);
 	}
+	/**
+	 * Getting html element
+	 */
 	get htmlElement() {
 		return this.#parent.querySelector(`div.${this.#className}`);
 	}
+	/**
+	 * Rendering menu and add to parent elem
+	 * 
+	 * @returns {string}
+	 */
 	render() {
 		this.configItems.forEach(([key, value]) => {
 			const link = new MenuLink({ key, ...value });
@@ -39,8 +51,9 @@ export default class Menu {
 		return html;
 	}
 	/**
+	 * Adding event handler to target
 	 *
-	 * @param {HTMLElement} target
+	 * @param {HTMLElement} target - main element to add handler
 	 * @param {string} event
 	 * @param {(Event) => {}} handler
 	 */
@@ -52,6 +65,9 @@ export default class Menu {
 			handler,
 		};
 	}
+	/**
+	 * Deleting all event handlers
+	 */
 	removeHandlers() {
 		Object.entries(this.#handlers).forEach(
 			([, { target, event, handler }]) => {
@@ -59,6 +75,9 @@ export default class Menu {
 			},
 		);
 	}
+	/**
+	 * Deleting Menu element and handlers
+	 */
 	remove() {
 		this.removeHandlers();
 		this.#links.forEach((link) => {
