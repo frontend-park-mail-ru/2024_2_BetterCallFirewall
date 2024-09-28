@@ -272,10 +272,7 @@ export default class App {
 	 */
 	#renderLogin() {
 		const config = this.config.loginConfig;
-		const login = new LoginForm(
-			config,
-			this.root,
-		);
+		const login = new LoginForm(config, this.root);
 		login.render();
 		this.#structure.login = login;
 
@@ -294,5 +291,12 @@ export default class App {
 			}
 		};
 		login.addHandler(loginForm, 'submit', submitHandler);
+
+		const toSignupLink = login.items.toSignupLink;
+		const clickHandler = (event) => {
+			event.preventDefault();
+			this.goToPage(PAGE_LINKS.signup, true);
+		};
+		toSignupLink.addHandler('click', clickHandler);
 	}
 }

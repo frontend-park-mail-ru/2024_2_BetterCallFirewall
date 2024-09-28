@@ -2,6 +2,7 @@ import Input from '../Input/Input.js';
 import FormButton from '../FormButton/FormButton.js';
 import Ajax from '../../modules/ajax.js';
 import { validateForm } from '../../modules/validation.js';
+import FormLink from '../FormLink/FormLink.js';
 
 export default class LoginForm {
 	#config = {};
@@ -10,7 +11,7 @@ export default class LoginForm {
 	#inputs = [];
 	#parent;
 	#className;
-	#button;
+	#items = {};
 	#id;
 	#handlers = {};
 	/**
@@ -30,8 +31,8 @@ export default class LoginForm {
 
 	/**
 	 * Get inputs from config
-	 * 
-	 * @returns {Array} - array of input 
+	 *
+	 * @returns {Array} - array of input
 	 */
 	get configInputsItems() {
 		return Object.entries(this.#configInputs);
@@ -39,13 +40,17 @@ export default class LoginForm {
 
 	/**
 	 * Getting html element which contains the form
-	 * 
+	 *
 	 * @returns {HTMLElement} - HTML element of form
 	 */
 	get htmlElement() {
 		return this.#parent.querySelector(
 			`div[data-section="${this.#config.section}"]`,
 		);
+	}
+
+	get items() {
+		return this.#items;
 	}
 
 	addHandler(target, event, handler) {
@@ -59,16 +64,20 @@ export default class LoginForm {
 
 	/**
 	 * Render login form and submit event handler
-	 * 
+	 *
 	 * @returns {string} - HTML string of form
 	 */
 	render() {
 		this.configInputsItems.forEach(([section, value]) => {
 			const input = new Input({ section, ...value });
+			this.#items[section] = input;
 			this.#inputs.push(input);
 		});
 		const button = new FormButton({ ...this.#configButton });
-		this.#button = button;
+		this.#items[button] = button;
+		const toSignupLink = new FormLink(this.#config.toSignupLink);
+		this.#items.toSignupLink = toSignupLink;
+		console.log(this.#items);
 
 		const template = Handlebars.templates['LoginForm.hbs'];
 		const html = template({
@@ -77,6 +86,7 @@ export default class LoginForm {
 			section: this.#config.section,
 			id: this.#id,
 			button: button.render(),
+			toSignupLink: toSignupLink.render(),
 		});
 		this.#parent.innerHTML += html;
 		const itemsParent = this.htmlElement.querySelector('form');
@@ -84,6 +94,7 @@ export default class LoginForm {
 		this.#inputs.forEach((input) => {
 			input.parent = itemsParent;
 		});
+		toSignupLink.parent = itemsParent;
 
 		return html;
 	}

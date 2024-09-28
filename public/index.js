@@ -1,4 +1,4 @@
-import App from './app.js';
+import App, { PAGE_LINKS } from './app.js';
 import {
 	validateName,
 	validateEmail,
@@ -104,6 +104,11 @@ const loginConfig = {
 	button: {
 		section: 'submit',
 		text: 'Sign In!',
+	},
+	toSignupLink: {
+		href: PAGE_LINKS.signup,
+		text: 'Нет аккаунта? Зарегистрируйся!',
+		section: 'to-signup',
 	},
 };
 
