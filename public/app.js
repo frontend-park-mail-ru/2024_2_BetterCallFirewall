@@ -154,7 +154,7 @@ export default class App {
 		this.#structure.main.aside = aside;
 
 		const logoutButton = header.htmlElement.querySelector(
-			'img.header-profile-logout',
+			'.header-profile-logout',
 		);
 		const logoutButtonHandler = () => {
 			Ajax.post('/auth/logout', {}, (data, error) => {

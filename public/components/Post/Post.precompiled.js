@@ -12,8 +12,8 @@ templates['Post.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(cont
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"title") : depth0), depth0))
     + "</span>\n            <span>"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"date") : depth0), depth0))
-    + "</span>\n        </div>\n    </div>\n    <div class=\"post-content\">\n        <span class=\"post-text\">"
+    + "</span>\n        </div>\n    </div>\n    <hr>\n    <div class=\"post-content\">\n        <span class=\"post-text\">"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"text") : depth0), depth0))
-    + "</span>\n    </div>\n    <div class=\"post-footer\">\n\n    </div>\n</div>";
+    + "</span>\n    </div>\n    <hr>\n    <div class=\"post-footer\">\n\n    </div>\n</div>";
 },"useData":true});
 })();

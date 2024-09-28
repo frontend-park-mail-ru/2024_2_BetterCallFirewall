@@ -10,3 +10,11 @@
     color: white;
     font-size: 1rem;
 }
+
+.form-button:hover {
+    background: #00c77b;
+}
+
+.form-button:active {
+    background: #25AD74;
+}
