@@ -9,15 +9,15 @@ import {
 const homeConfig = {
 	menu: {
 		feed: {
-			text: 'feed',
+			text: 'Лента',
 			href: '/feed',
 		},
 		login: {
-			text: 'login',
+			text: 'Войти в аккаунт',
 			href: '/login',
 		},
 		signup: {
-			text: 'signup',
+			text: 'Регистрация',
 			href: '/signup',
 		},
 	},
@@ -25,7 +25,7 @@ const homeConfig = {
 		className: 'main',
 		header: {
 			search: {
-				placeholder: 'Search for friends, groups, pages',
+				placeholder: 'Поиск',
 				img: 'img/search.svg',
 			},
 			profile: {
@@ -48,13 +48,13 @@ const signupConfig = {
 	inputs: {
 		firstName: {
 			type: 'text',
-			text: 'First Name',
+			text: 'Имя',
 			name: 'first_name',
 			validator: validateName,
 		},
 		secondName: {
 			type: 'text',
-			text: 'Second Name',
+			text: 'Фамилия',
 			name: 'second_name',
 			validator: validateName,
 		},
@@ -66,23 +66,23 @@ const signupConfig = {
 		},
 		password: {
 			type: 'password',
-			text: 'Password',
+			text: 'Пароль',
 			name: 'password',
 			validator: validatePassword,
 		},
 		passwordAgain: {
 			type: 'password',
-			text: 'Password again',
+			text: 'Повторите пароль',
 			name: 'password_again',
 			validator: validateConfirmation,
 		},
 	},
 	button: {
-		text: 'Sign Up!',
+		text: 'Зарегистрироваться!',
 	},
 	toLoginLink: {
 		href: PAGE_LINKS.login,
-		text: 'Уже есть аккаунт? Войди!',
+		text: 'Уже есть аккаунт? Войти!',
 		section: 'toLogin',
 	},
 };
@@ -99,14 +99,14 @@ const loginConfig = {
 		},
 		password: {
 			type: 'password',
-			text: 'Password',
+			text: 'Пароль',
 			name: 'password',
 			validator: validatePassword,
 		},
 	},
 	button: {
 		section: 'submit',
-		text: 'Sign In!',
+		text: 'Войти!',
 	},
 	toSignupLink: {
 		href: PAGE_LINKS.signup,
