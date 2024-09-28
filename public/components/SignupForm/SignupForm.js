@@ -67,9 +67,6 @@ export default class SignupForm {
 			input.parent = this.htmlElement;
 		});
 
-		const form = document.getElementById(this.#id);
-		validateForm(this.#configInputs, form);
-
 		return html;
 	}
 

@@ -12,22 +12,20 @@ export default class LoginForm {
 	#className;
 	#button;
 	#id;
-	#goToPage;
-	#submitHandler;
+	#handlers = {};
 	/**
 	 * constructor of instance LoginForm
 	 *
 	 * @param {Object} config - configuration for the form
 	 * @param {HTMLElement} parent - the parent HTML element
 	 */
-	constructor(config, parent, goToPage) {
+	constructor(config, parent) {
 		this.#config = config;
 		this.#configInputs = config.inputs;
 		this.#configButton = config.button;
 		this.#parent = parent;
 		this.#className = 'form';
 		this.#id = 'formLogin';
-		this.#goToPage = goToPage;
 	}
 
 	/**
@@ -48,6 +46,15 @@ export default class LoginForm {
 		return this.#parent.querySelector(
 			`div[data-section="${this.#config.section}"]`,
 		);
+	}
+
+	addHandler(target, event, handler) {
+		this.#handlers[`${target.className}-${event}`] = {
+			target,
+			event,
+			handler,
+		};
+		target.addEventListener(event, handler);
 	}
 
 	/**
@@ -78,23 +85,6 @@ export default class LoginForm {
 			input.parent = itemsParent;
 		});
 
-		const form = document.getElementById(this.#id);
-		const submitHandler = (e) => {
-			e.preventDefault();
-			const data = validateForm(this.#configInputs, form);
-			if (data) {
-				Ajax.sendForm('/auth/login', data, (response, error) => {
-					if (response.ok) {
-						this.#goToPage('/feed', true);
-					} else {
-						console.log('status:', response.statusText);
-					}
-				});
-			}
-		};
-		form.addEventListener('submit', submitHandler);
-		this.#submitHandler = submitHandler;
-
 		return html;
 	}
 
@@ -102,13 +92,9 @@ export default class LoginForm {
 	 * Removing the login form and event handlers
 	 */
 	remove() {
-		const form = document.getElementById(this.#id);
-		form.removeEventListener('submit', this.#submitHandler);
-
-		Object.keys(this.#inputs).forEach((key) => {
-			this.#inputs[key].remove();
+		Object.entries(this.#handlers).forEach(([, obj]) => {
+			obj.target.removeEventListener(obj.event, obj.handler);
 		});
-		this.#button.remove();
-		this.#parent.removeChild(this.htmlElement);
+		this.htmlElement.remove();
 	}
 }

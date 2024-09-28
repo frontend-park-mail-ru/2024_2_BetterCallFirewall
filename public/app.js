@@ -275,9 +275,24 @@ export default class App {
 		const login = new LoginForm(
 			config,
 			this.root,
-			this.goToPage.bind(this),
 		);
 		login.render();
 		this.#structure.login = login;
+
+		const loginForm = login.htmlElement.querySelector('form');
+		const submitHandler = (event) => {
+			event.preventDefault();
+			const data = validateForm(config.inputs, loginForm);
+			if (data) {
+				Ajax.sendForm('/auth/login', data, (response, error) => {
+					if (response.ok) {
+						this.goToPage(PAGE_LINKS.feed, true);
+					} else {
+						console.log('status:', response.statusText);
+					}
+				});
+			}
+		};
+		login.addHandler(loginForm, 'submit', submitHandler);
 	}
 }
