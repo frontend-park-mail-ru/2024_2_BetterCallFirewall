@@ -7,4 +7,3 @@ handlebars public/components/SignupForm/SignupForm.hbs -f public/components/Sign
 handlebars public/components/LoginForm/LoginForm.hbs -f public/components/LoginForm/LoginForm.precompiled.js
 handlebars public/components/Input/Input.hbs -f public/components/Input/Input.precompiled.js
 handlebars public/components/FormButton/FormButton.hbs -f public/components/FormButton/FormButton.precompiled.js
-handlebars public/components/FormLink/FormLink.hbs -f public/components/FormLink/FormLink.precompiled.js
