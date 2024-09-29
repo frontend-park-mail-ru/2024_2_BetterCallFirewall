@@ -167,16 +167,16 @@ export default class App {
 
 		this.#fillContent();
 
-		this.handlers.scrollHandler = () => {
-			const scrollPosition = window.scrollY;
-			const contentHeight = document.body.offsetHeight;
-			const windowHeight = window.innerHeight;
+		// this.handlers.scrollHandler = () => {
+		// 	const scrollPosition = window.scrollY;
+		// 	const contentHeight = document.body.offsetHeight;
+		// 	const windowHeight = window.innerHeight;
 
-			if (scrollPosition + windowHeight * 2 >= contentHeight) {
-				this.#addPost();
-			}
-		};
-		document.addEventListener('scroll', this.handlers.scrollHandler);
+		// 	if (scrollPosition + windowHeight * 2 >= contentHeight) {
+		// 		this.#addPost();
+		// 	}
+		// };
+		// document.addEventListener('scroll', this.handlers.scrollHandler);
 	}
 	/**
 	 * Adding new posts while scrolling window
@@ -212,7 +212,9 @@ export default class App {
 		const promise = this.#addPostPromise();
 		promise
 			.then((body) => {
+				console.log('body:', body);
 				const posts = body.data;
+				console.log('posts:', posts);
 				posts.forEach((postData) => {
 					const post = new Post(
 						postData,
