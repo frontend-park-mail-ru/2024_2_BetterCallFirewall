@@ -217,7 +217,11 @@ export default class App {
 				console.log('posts:', posts);
 				posts.forEach((postData) => {
 					const post = new Post(
-						postData,
+						{
+							title: postData.header,
+							text: postData.body,
+							date: postData.created_at,
+						},
 						this.#structure.main.content.htmlElement,
 					);
 					post.render();
