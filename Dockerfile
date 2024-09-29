@@ -10,4 +10,6 @@ COPY . .
 
 EXPOSE 8000
 
-CMD [ "./start.sh" ]
+RUN chmod +x start.sh
+
+CMD [ "bash", "start.sh" ]
