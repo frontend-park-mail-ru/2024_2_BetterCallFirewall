@@ -212,7 +212,9 @@ export default class App {
 		const promise = this.#addPostPromise();
 		promise
 			.then((body) => {
+				console.log('body:', body);
 				const data = JSON.parse(body);
+				console.log('data:', data);
 				const posts = data.data;
 				posts.forEach((postData) => {
 					const post = new Post(
