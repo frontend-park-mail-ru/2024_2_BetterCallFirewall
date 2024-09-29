@@ -1,13 +1,13 @@
 .form-button {
-    background: #25AD74;
+    background: var(--button-color);
     border: none;
     border-radius: 7rem;
-    padding: 1rem 10rem 1rem 10rem;
+    padding: .9rem 8rem;
     margin: 0;
     text-decoration: none;
     cursor: pointer;
     font: inherit;
-    color: white;
+    color: var(--main-text-color);
     font-size: 1rem;
 }
 
@@ -16,5 +16,9 @@
 }
 
 .form-button:active {
-    background: #25AD74;
+    background: var(--button-color);
+}
+
+.form-button:focus-visible {
+    outline: 1px solid white;
 }

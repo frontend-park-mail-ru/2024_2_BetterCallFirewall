@@ -1,6 +1,6 @@
 .form-link {
-    color: white;
-    text-decoration: none;
+    color: var(--main-text-color);
+    text-decoration: underline;
     margin-top: .7rem;
     font-size: .85rem;
 }
