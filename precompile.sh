@@ -1,3 +1,4 @@
+export NODE_ENV=production
 handlebars "./public/components/Menu/Menu.hbs" -f "./public/components/Menu/Menu.precompiled.js"
 handlebars "./public/components/MenuLink/MenuLink.hbs" -f "./public/components/MenuLink/MenuLink.precompiled.js"
 handlebars "public/components/Header/Header.hbs" -f "public/components/Header/Header.precompiled.js"
