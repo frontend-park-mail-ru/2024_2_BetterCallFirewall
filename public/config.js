@@ -1,7 +1,7 @@
 import { PAGE_LINKS } from './app.js';
 import Validator from './modules/validation.js';
 
-const DEBUG = true;
+const DEBUG = false;
 
 const homeConfig = {
 	menu: {

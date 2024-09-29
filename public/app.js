@@ -175,7 +175,6 @@ export default class App {
 					window.innerHeight * 2 + window.scrollY >
 						document.body.offsetHeight
 				) {
-					console.log('scroll');
 					active = true;
 					const promise = this.#addPostPromise();
 					await promise
