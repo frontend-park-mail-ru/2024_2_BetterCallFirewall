@@ -211,10 +211,10 @@ export default class App {
 	#fillContent() {
 		const promise = this.#addPostPromise();
 		promise
-			.then((response) => {
-				const body = response.json();
-				const data = body.data;
-				data.forEach((postData) => {
+			.then((body) => {
+				const data = JSON.parse(body);
+				const posts = data.data;
+				posts.forEach((postData) => {
 					const post = new Post(
 						postData,
 						this.#structure.main.content.htmlElement,
