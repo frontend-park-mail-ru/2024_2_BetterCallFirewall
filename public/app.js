@@ -99,22 +99,6 @@ export default class App {
 				this.goToPage(PAGE_LINKS.feed);
 			},
 		);
-		menu.addHandler(
-			menu.htmlElement.querySelector('a[data-section="login"]'),
-			'click',
-			(event) => {
-				event.preventDefault();
-				this.goToPage(PAGE_LINKS.login, true);
-			},
-		);
-		menu.addHandler(
-			menu.htmlElement.querySelector('a[data-section="signup"]'),
-			'click',
-			(event) => {
-				event.preventDefault();
-				this.goToPage(PAGE_LINKS.signup, true);
-			},
-		);
 	}
 	/**
 	 * Rendering feed

@@ -9,14 +9,6 @@ const homeConfig = {
 			text: 'Лента',
 			href: '/feed',
 		},
-		login: {
-			text: 'Войти в аккаунт',
-			href: '/login',
-		},
-		signup: {
-			text: 'Регистрация',
-			href: '/signup',
-		},
 	},
 	main: {
 		className: 'main',
