@@ -90,7 +90,6 @@ export default class App {
 			this.#structure.menu = menu;
 			menu.render();
 		}
-		// хэндлеры добавлять после рендера, иначе стираются eventListenerы (при использовании innerHTML +=)
 		menu.addHandler(
 			menu.htmlElement.querySelector('a[data-section="feed"]'),
 			'click',
@@ -98,6 +97,16 @@ export default class App {
 				event.preventDefault();
 				this.goToPage(PAGE_LINKS.feed);
 			},
+		);
+		menu.addHandler(
+			menu.htmlElement.querySelector(
+				`a[data-section=${this.#config.homeConfig.menu.title.section}]`,
+				'click',
+				(event) => {
+					event.preventDefault();
+					this.goToPage(PAGE_LINKS.feed);
+				},
+			),
 		);
 	}
 	/**

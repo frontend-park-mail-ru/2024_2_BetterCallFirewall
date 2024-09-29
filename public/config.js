@@ -5,9 +5,16 @@ const DEBUG = false;
 
 const homeConfig = {
 	menu: {
-		feed: {
-			text: 'Лента',
-			href: '/feed',
+		title: {
+			section: 'title',
+			text: 'Vilka',
+			href: PAGE_LINKS.feed,
+		},
+		links: {
+			feed: {
+				text: 'Лента',
+				href: PAGE_LINKS.feed,
+			},
 		},
 	},
 	main: {

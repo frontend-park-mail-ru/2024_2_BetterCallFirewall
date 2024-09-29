@@ -20,8 +20,8 @@ export default class Menu {
 		this.#parent = parent;
 		this.#className = 'menu';
 	}
-	get configItems() {
-		return Object.entries(this.#config);
+	get linksConfig() {
+		return Object.entries(this.#config.links);
 	}
 	/**
 	 * Getting html element
@@ -31,17 +31,18 @@ export default class Menu {
 	}
 	/**
 	 * Rendering menu and add to parent elem
-	 * 
+	 *
 	 * @returns {string}
 	 */
 	render() {
-		this.configItems.forEach(([key, value]) => {
+		this.linksConfig.forEach(([key, value]) => {
 			const link = new MenuLink({ key, ...value });
 			this.#links.push(link);
 		});
 		const template = Handlebars.templates['Menu.hbs'];
 		const html = template({
 			className: this.#className,
+			title: this.#config.title,
 			links: this.#links.map((link) => link.render()),
 		});
 		this.#parent.innerHTML += html;
