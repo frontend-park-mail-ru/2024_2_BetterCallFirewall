@@ -7,11 +7,55 @@ const ip = 'http://127.0.0.1';
 const port = 8000;
 
 const posts = [
-	{ title: 'Это заголовок поста', text: 'Это пост', date: '23.09.2024' },
 	{
-		title: 'Это заголовок другого поста',
-		text: 'А это другой пост',
-		date: '32.09.2024',
+		header: 'Это заголовок поста',
+		body: 'Это пост',
+		created_at: '23.09.2024',
+	},
+	{
+		header: 'Это заголовок другого поста',
+		body: 'А это другой пост',
+		created_at: '32.09.2024',
+	},
+	{
+		header: 'Это заголовок поста',
+		body: 'Это пост',
+		created_at: '23.09.2024',
+	},
+	{
+		header: 'Это заголовок другого поста',
+		body: 'А это другой пост',
+		created_at: '32.09.2024',
+	},
+	{
+		header: 'Это заголовок поста',
+		body: 'Это пост',
+		created_at: '23.09.2024',
+	},
+	{
+		header: 'Это заголовок другого поста',
+		body: 'А это другой пост',
+		created_at: '32.09.2024',
+	},
+	{
+		header: 'Это заголовок поста',
+		body: 'Это пост',
+		created_at: '23.09.2024',
+	},
+	{
+		header: 'Это заголовок другого поста',
+		body: 'А это другой пост',
+		created_at: '32.09.2024',
+	},
+	{
+		header: 'Это заголовок поста',
+		body: 'Это пост',
+		created_at: '23.09.2024',
+	},
+	{
+		header: 'Это заголовок другого поста',
+		body: 'А это другой пост',
+		created_at: '32.09.2024',
 	},
 ];
 
@@ -29,7 +73,7 @@ const users = [
 const app = express();
 
 app.use(cookieParser());
-app.use(express.json());
+app.use(express.json({ strict: false }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public', { fallthrough: true }));
 app.use(express.static('./node_modules'));
@@ -107,18 +151,12 @@ app.get('/api/post', (req, res) => {
 	if (isAuthorised) {
 		const body = {};
 		body.data = posts;
-		console.log('Отправили:', body);
-		res.json(posts);
+		console.log('Отправили:', JSON.stringify(body));
+		res.send(JSON.stringify(body));
 	} else {
 		res.status(401);
 		res.send();
 	}
-});
-
-app.get('/public/img/', (req, res) => {
-	console.log('надо картинку');
-	res.setHeader('Content-Type', 'image/jpeg');
-	res.sendFile(path.join(__dirname, 'public'));
 });
 
 app.get('*', (req, res) => {

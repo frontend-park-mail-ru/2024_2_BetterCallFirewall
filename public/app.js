@@ -22,7 +22,7 @@ export const PAGE_LINKS = {
  */
 export default class App {
 	#state = {};
-	handlers = {};
+	#handlers = {};
 	#structure = {};
 	#config;
 	root;
@@ -73,7 +73,7 @@ export default class App {
 	 * @param {boolean} deleteEverything - deleting all components
 	 */
 	clear(deleteEverything) {
-		document.removeEventListener('scroll', this.handlers.scrollHandler);
+		document.removeEventListener('scroll', this.#handlers.scrollHandler);
 		Object.keys(this.#structure).forEach((key) => {
 			if (deleteEverything || key !== 'menu') {
 				this.#structure[key].remove();
@@ -167,21 +167,50 @@ export default class App {
 
 		this.#fillContent();
 
-		// this.handlers.scrollHandler = () => {
-		// 	const scrollPosition = window.scrollY;
-		// 	const contentHeight = document.body.offsetHeight;
-		// 	const windowHeight = window.innerHeight;
-
-		// 	if (scrollPosition + windowHeight * 2 >= contentHeight) {
-		// 		this.#addPost();
-		// 	}
-		// };
-		// document.addEventListener('scroll', this.handlers.scrollHandler);
+		const createScrollHandler = () => {
+			let active = false;
+			return async () => {
+				if (
+					!active &&
+					window.innerHeight * 2 + window.scrollY >
+						document.body.offsetHeight
+				) {
+					console.log('scroll');
+					active = true;
+					const promise = this.#addPostPromise();
+					await promise
+						.then((body) => {
+							const postsData = body.data;
+							postsData.forEach(
+								({ header, body, created_at }) => {
+									const post = new Post(
+										{
+											title: header,
+											text: body,
+											date: created_at,
+										},
+										this.#structure.main.content.htmlElement,
+									);
+									post.render();
+								},
+							);
+						})
+						.catch(async (error) => {
+							console.log(error);
+							await new Promise((resolve) =>
+								setTimeout(resolve, 5000),
+							);
+						});
+					active = false;
+				}
+			};
+		};
+		content.addHandler(document, 'scroll', createScrollHandler());
 	}
 	/**
 	 * Adding new posts while scrolling window
 	 */
-	#addPost() {
+	#addPosts() {
 		let config;
 		Ajax.get(this.#config.URL.post, (data, error) => {
 			if (error) {
@@ -212,9 +241,7 @@ export default class App {
 		const promise = this.#addPostPromise();
 		promise
 			.then((body) => {
-				console.log('body:', body);
 				const posts = body.data;
-				console.log('posts:', posts);
 				posts.forEach((postData) => {
 					const post = new Post(
 						{

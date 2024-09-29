@@ -5,6 +5,7 @@ export default class Container {
 	#config;
 	#parent;
 	#children = {};
+	#handlers = {};
 	/**
 	 * Instance of Container
 	 *
@@ -22,7 +23,7 @@ export default class Container {
 	}
 	/**
 	 * Rendering Container with handlebars
-	 * 
+	 *
 	 * @returns {string} - generated HTML element
 	 */
 	render() {
@@ -36,9 +37,29 @@ export default class Container {
 	 * Removing Container and child elements
 	 */
 	remove() {
+		Object.entries(this.#handlers).forEach(
+			([, { target, event, handler }]) => {
+				target.removeEventListener(event, handler);
+			},
+		);
 		Object.keys(this.#children).forEach((key) => {
 			this.#children[key].remove();
 		});
 		this.#parent.removeChild(this.htmlElement);
+	}
+
+	/**
+	 *
+	 * @param {HTMLElement} target
+	 * @param {string} event
+	 * @param {function(Event)} handler
+	 */
+	addHandler(target, event, handler) {
+		target.addEventListener(event, handler);
+		this.#handlers[`${target.className}-${event}`] = {
+			target,
+			event,
+			handler,
+		};
 	}
 }

@@ -6,6 +6,8 @@ import {
 	validatePassword,
 } from './modules/validation.js';
 
+const DEBUG = true;
+
 const homeConfig = {
 	menu: {
 		feed: {
@@ -115,13 +117,20 @@ const loginConfig = {
 	},
 };
 
-const root = 'http://185.241.194.197:8080';
-const URL = {
-	signup: root + '/api/v1/auth/register',
-	login: root + '/api/v1/auth/login',
-	logout: root + '/api/v1/auth/logout',
-	post: root + '/api/v1/post',
-};
+const root = DEBUG ? 'http://127.0.0.1:8000' : 'http://185.241.194.197:8080';
+const URL = DEBUG
+	? {
+			signup: root + '/auth/signup',
+			login: root + '/auth/login',
+			logout: root + '/auth/logout',
+			post: root + '/api/post',
+		}
+	: {
+			signup: root + '/api/v1/auth/register',
+			login: root + '/api/v1/auth/login',
+			logout: root + '/api/v1/auth/logout',
+			post: root + '/api/v1/post',
+		};
 
 const config = {
 	URL,

@@ -60,7 +60,8 @@ export default new (class Ajax {
 			method: 'POST',
 			body: JSON.stringify(formData),
 			headers: {
-				'Content-Type': 'application/json:charset=UTF-8',
+				'Content-Type': 'application/json',
+				// 'Content-Type': 'application/json:charset=UTF-8',
 			},
 			credentials: 'include',
 		});
@@ -88,7 +89,6 @@ export default new (class Ajax {
 	#ajaxPromise(config) {
 		return fetch(config.request).then((response) => {
 			if (response.ok) {
-				console.log('response:', response);
 				return response.json();
 			} else {
 				throw new Error(response.statusText);
