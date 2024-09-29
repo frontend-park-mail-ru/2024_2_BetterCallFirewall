@@ -286,7 +286,7 @@ export default class App {
 		const loginForm = login.htmlElement.querySelector('form');
 		const submitHandler = (event) => {
 			event.preventDefault();
-			signUp.clearError();
+			login.clearError();
 			const validator = new Validator();
 			const data = validator.validateForm(config.inputs, loginForm);
 			if (data) {

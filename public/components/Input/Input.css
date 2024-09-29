@@ -3,7 +3,7 @@
     margin-bottom: .7rem;
 }
 .input-block:last-of-type {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .input-block label {
@@ -19,7 +19,7 @@
 .input-block input {
     background: none;
     box-shadow: none;
-    border: 1.5px var(--main-text-color) solid;
+    border: 1.3px var(--main-text-color) solid;
     border-radius: .25rem;
     padding-left: .5rem;
     outline: none;

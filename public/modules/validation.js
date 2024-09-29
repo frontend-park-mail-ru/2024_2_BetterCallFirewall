@@ -4,7 +4,7 @@ export default class Validator {
 	 * 
 	 * @param {HTMLElement} parentElem - parent element of element with class '.error'
 	 */
-	errorsDelete (parentElem) {
+	errorsDelete(parentElem) {
 		const errors = parentElem.querySelectorAll('.error');
 		errors.forEach((error) => (error.textContent = ''));
 	};
@@ -15,7 +15,7 @@ export default class Validator {
 	 * @param {HTMLElement} confirm - Confirmation of password
 	 * @returns {string} - returns error
 	 */
-	 static validateConfirmation (confirm) {
+	static validateConfirmation(confirm) {
 		const confirmValue = confirm.value;
 		if (!confirmValue) {
 			return 'Пароль не может быть пустым';
@@ -33,13 +33,24 @@ export default class Validator {
 	 * @param {HTMLElement} password 
 	 * @returns {String} - return error
 	 */
-	 static validatePassword (password) {
+	static validatePassword(password) {
 		const passwordValue = password.value;
+		const letters = /[a-zA-Z]/;
+		const digits = /0-9/;
 		if (!passwordValue) {
 			return 'Пароль не может быть пустым';
 		}
 		if (passwordValue.length < 6) {
-			return 'Слишком маленькая длина пароля';
+			return 'Пароль должен содержать как минимум 6 символов.';
+		}
+		if (passwordValue.length > 72) {
+			return 'Пароль должен содержать не более 72 символов';
+		}
+		if (!letters.test(password)) {
+			return 'Пароль должен содержать как минимум одну латинскую букву';
+		}
+		if (!digits.test(password)) {
+			return 'Пароль должен содержать как минимум одну цифру';
 		}
 		return '';
 	};
@@ -50,7 +61,7 @@ export default class Validator {
 	 * @param {HTMLElement} email 
 	 * @returns {String} - return error
 	 */
-	 static validateEmail (email) {
+	static validateEmail(email) {
 		const emailRegex = /^[\w-.]+@([\w-]+\.)\w{2,4}$/;
 		const emailValue = email.value.trim();
 		if (!emailValue) {
@@ -58,7 +69,7 @@ export default class Validator {
 		}
 
 		if (!emailRegex.test(emailValue)) {
-			return 'Не корректный email';
+			return 'Некорректный email';
 		}
 
 		return '';
@@ -70,7 +81,7 @@ export default class Validator {
 	 * @param {HTMLElement} name 
 	 * @returns {String} - return error
 	 */
-	 static validateName (name) {
+	static validateName(name) {
 		const nameValue = name.value.trim();
 		if (!nameValue) {
 			return 'Поле не может быть пустым';
@@ -89,7 +100,7 @@ export default class Validator {
 	 * @param {HTMLInputElement} parentElem 
 	 * @param {String} error - value to print
 	 */
-	 printError (parentElem, error) {
+	printError(parentElem, error) {
 		if (error) {
 			parentElem.querySelector('.error').textContent = error;
 		}
@@ -100,7 +111,7 @@ export default class Validator {
 	 * 
 	 * @param {Object} config 
 	 */
-	configItems (config) {
+	configItems(config) {
 		return Object.entries(config);
 	};
 
@@ -111,7 +122,7 @@ export default class Validator {
 	 * @param {HTMLElement} form 
 	 * @returns {Object|null} - correct data
 	 */
-	 validateForm (config, form) {
+	validateForm(config, form) {
 		const data = {};
 		let isValid = true;
 		this.errorsDelete(form.parentNode);
