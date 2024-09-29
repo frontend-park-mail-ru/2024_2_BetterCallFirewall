@@ -1,10 +1,5 @@
 import { PAGE_LINKS } from './app.js';
-import {
-	validateName,
-	validateEmail,
-	validateConfirmation,
-	validatePassword,
-} from './modules/validation.js';
+import Validator from './modules/validation.js';
 
 const homeConfig = {
 	menu: {
@@ -50,31 +45,31 @@ const signupConfig = {
 			type: 'text',
 			text: 'Имя',
 			name: 'first_name',
-			validator: validateName,
+			validator: Validator.validateName,
 		},
 		secondName: {
 			type: 'text',
 			text: 'Фамилия',
 			name: 'second_name',
-			validator: validateName,
+			validator: Validator.validateName,
 		},
 		email: {
 			type: 'text',
 			text: 'Email',
 			name: 'email',
-			validator: validateEmail,
+			validator: Validator.validateEmail,
 		},
 		password: {
 			type: 'password',
 			text: 'Пароль',
 			name: 'password',
-			validator: validatePassword,
+			validator: Validator.validatePassword,
 		},
 		passwordAgain: {
 			type: 'password',
 			text: 'Повторите пароль',
 			name: 'password_again',
-			validator: validateConfirmation,
+			validator: Validator.validateConfirmation,
 		},
 	},
 	button: {
@@ -95,13 +90,13 @@ const loginConfig = {
 			type: 'text',
 			text: 'Email',
 			name: 'email',
-			validator: validateEmail,
+			validator: Validator.validateEmail,
 		},
 		password: {
 			type: 'password',
 			text: 'Пароль',
 			name: 'password',
-			validator: validatePassword,
+			validator: Validator.validatePassword,
 		},
 	},
 	button: {

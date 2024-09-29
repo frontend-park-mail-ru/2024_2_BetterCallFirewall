@@ -244,6 +244,7 @@ export default class App {
 		const signupForm = signUp.htmlElement.querySelector('form');
 		const submitHandler = (event) => {
 			event.preventDefault();
+			signUp.clearError();
 			const validator = new Validator();
 			const data = validator.validateForm(config.inputs, signupForm);
 			if (data) {
@@ -285,6 +286,7 @@ export default class App {
 		const loginForm = login.htmlElement.querySelector('form');
 		const submitHandler = (event) => {
 			event.preventDefault();
+			signUp.clearError();
 			const validator = new Validator();
 			const data = validator.validateForm(config.inputs, loginForm);
 			if (data) {
