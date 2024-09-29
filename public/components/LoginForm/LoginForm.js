@@ -99,6 +99,24 @@ export default class LoginForm {
 	}
 
 	/**
+	 * Printing error above submit button
+	 * @param {string} error
+	 */
+	printError(error) {
+		if (error) {
+			this.htmlElement.querySelector('.error-message').textContent =
+				error;
+		}
+	}
+
+	/**
+	 * Clear error above submit button
+	 */
+	clearError() {
+		this.htmlElement.querySelector('.error-message').textContent = '';
+	}
+
+	/**
 	 * Removing the login form and event handlers
 	 */
 	remove() {

@@ -237,6 +237,7 @@ export default class App {
 		const signupForm = signUp.htmlElement.querySelector('form');
 		const submitHandler = (event) => {
 			event.preventDefault();
+			signUp.clearError();
 			const data = validateForm(config.inputs, signupForm);
 			if (data) {
 				Ajax.sendForm(
@@ -244,13 +245,13 @@ export default class App {
 					data,
 					(response, error) => {
 						if (error) {
-							console.log(error);
+							signUp.printError('Что-то пошло не так');
 							return;
 						}
 						if (response.ok) {
 							this.goToPage(PAGE_LINKS.feed, true);
 						} else {
-							console.log('status:', response.statusText);
+							signUp.printError('Что-то пошло не так');
 						}
 					},
 				);
@@ -277,6 +278,7 @@ export default class App {
 		const loginForm = login.htmlElement.querySelector('form');
 		const submitHandler = (event) => {
 			event.preventDefault();
+			login.clearError();
 			const data = validateForm(config.inputs, loginForm);
 			if (data) {
 				Ajax.sendForm(
@@ -284,13 +286,13 @@ export default class App {
 					data,
 					(response, error) => {
 						if (error) {
-							console.log(error);
+							login.printError('Что-то пошло не так');
 							return;
 						}
 						if (response.ok) {
 							this.goToPage(PAGE_LINKS.feed, true);
 						} else {
-							console.log('status:', response.statusText);
+							login.printError('Что-то пошло не так');
 						}
 					},
 				);

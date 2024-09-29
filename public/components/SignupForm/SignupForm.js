@@ -82,6 +82,24 @@ export default class SignupForm {
 		return html;
 	}
 
+	/**
+	 * Printing error above submit button
+	 * @param {string} error
+	 */
+	printError(error) {
+		if (error) {
+			this.htmlElement.querySelector('.error-message').textContent =
+				error;
+		}
+	}
+
+	/**
+	 * Clear error above submit button
+	 */
+	clearError() {
+		this.htmlElement.querySelector('.error-message').textContent = '';
+	}
+
 	remove() {
 		Object.entries(this.#handlers).forEach(([, obj]) => {
 			obj.target.removeEventListener(obj.event, obj.handler);

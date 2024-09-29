@@ -59,13 +59,9 @@ export default new (class Ajax {
 		const request = new Request(url, {
 			method: 'POST',
 			body: JSON.stringify(formData),
-			// body: new URLSearchParams(formData),
 			headers: {
 				'Content-Type': 'application/json:charset=UTF-8',
 			},
-			// headers: {
-			// 	'Content-Type': 'application/x-www-form-urlencoded',
-			// },
 			credentials: 'include',
 		});
 		fetch(request)
