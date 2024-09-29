@@ -1,6 +1,6 @@
 .menu-link {
     margin-bottom: 10px;
-    background-color: #121212;
+    background-color: var(--main-bg-color);
     border-radius: 1rem;
     padding: .5rem 1rem;
 }
@@ -11,12 +11,12 @@ a.menu-link{
 
 .menu-item {
     text-decoration: none;
-    color: white;
+    color: var(--main-text-color);
 }
 
 .menu-link:hover {
-    background-color: #1F1F1F;
+    background-color: var(--second-bg-color);
 }
 .menu-link:hover .menu-item{
-    color: #1DC67F;
+    color: var(--main-color);
 }

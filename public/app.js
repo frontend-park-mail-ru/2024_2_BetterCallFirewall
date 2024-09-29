@@ -5,7 +5,7 @@ import Menu from './components/Menu/Menu.js';
 import Post from './components/Post/Post.js';
 import SignupForm from './components/SignupForm/SignupForm.js';
 import Ajax from './modules/ajax.js';
-import { validateForm } from './modules/validation.js';
+import Validator from './modules/validation.js';
 
 /**
  * Links to pages
@@ -244,8 +244,8 @@ export default class App {
 		const signupForm = signUp.htmlElement.querySelector('form');
 		const submitHandler = (event) => {
 			event.preventDefault();
-			signUp.clearError();
-			const data = validateForm(config.inputs, signupForm);
+			const validator = new Validator();
+			const data = validator.validateForm(config.inputs, signupForm);
 			if (data) {
 				Ajax.sendForm(
 					this.#config.URL.signup,
@@ -285,8 +285,8 @@ export default class App {
 		const loginForm = login.htmlElement.querySelector('form');
 		const submitHandler = (event) => {
 			event.preventDefault();
-			login.clearError();
-			const data = validateForm(config.inputs, loginForm);
+			const validator = new Validator();
+			const data = validator.validateForm(config.inputs, loginForm);
 			if (data) {
 				Ajax.sendForm(
 					this.#config.URL.login,

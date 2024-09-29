@@ -7,13 +7,13 @@
     align-items: center;
     top: 0;
     padding: 2rem;
-    background-color: #121212;
+    background-color: var(--main-bg-color);
 }
 
 .header-search {
     display: flex;
     align-items: center;
-    background-color: #1F1F1F;
+    background-color: var(--second-bg-color);
     height: 1rem;
     padding: 0.5rem;
     border-radius: 1rem;
@@ -24,7 +24,7 @@
     background: transparent;
     border: none;
     outline: none;
-    color: white;
+    color: var(--main-text-color);
 }
 
 .header-search img {
@@ -53,12 +53,12 @@
 
 
 .header-profile-logout:hover path{
-    fill: #25AD74;
-    stroke: #25AD74;
+    fill: var(--main-color);
+    stroke: var(--main-color);
 }
 .header-profile-logout:active path{
-    fill: white;
-    stroke: white;
+    fill: var(--main-text-color);
+    stroke: var(--main-text-color);
 }
 /* 
 .header-profile-logout:active{

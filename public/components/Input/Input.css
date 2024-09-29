@@ -7,7 +7,7 @@
 }
 
 .input-block label {
-    color: white;
+    color: var(--main-text-color);
     margin-bottom: .25rem;
 }
 
@@ -19,14 +19,14 @@
 .input-block input {
     background: none;
     box-shadow: none;
-    border: 1.5px white solid;
+    border: 1.5px var(--main-text-color) solid;
     border-radius: .25rem;
     padding-left: .5rem;
     outline: none;
     margin: 0;           
     font: inherit;
     height: 2rem;
-    color: white;
+    color: var(--main-text-color);
 }
 
 .error {
