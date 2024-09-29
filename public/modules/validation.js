@@ -35,8 +35,6 @@ export default class Validator {
 	 */
 	static validatePassword(password) {
 		const passwordValue = password.value;
-		const letters = /[a-zA-Z]/;
-		const digits = /0-9/;
 		if (!passwordValue) {
 			return 'Пароль не может быть пустым';
 		}
@@ -45,12 +43,6 @@ export default class Validator {
 		}
 		if (passwordValue.length > 72) {
 			return 'Пароль должен содержать не более 72 символов';
-		}
-		if (!letters.test(password)) {
-			return 'Пароль должен содержать как минимум одну латинскую букву';
-		}
-		if (!digits.test(password)) {
-			return 'Пароль должен содержать как минимум одну цифру';
 		}
 		return '';
 	};
