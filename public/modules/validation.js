@@ -1,6 +1,6 @@
 /**
  * Deleting content in elements with class '.error'
- * 
+ *
  * @param {HTMLElement} parentElem - parent element of element with class '.error'
  */
 const errorsDelete = (parentElem) => {
@@ -10,7 +10,7 @@ const errorsDelete = (parentElem) => {
 
 /**
  * Validation of password confirmation
- * 
+ *
  * @param {HTMLElement} confirm - Confirmation of password
  * @returns {string} - returns error
  */
@@ -28,8 +28,8 @@ export const validateConfirmation = (confirm) => {
 
 /**
  * Validation of password
- * 
- * @param {HTMLElement} password 
+ *
+ * @param {HTMLElement} password
  * @returns {String} - return error
  */
 export const validatePassword = (password) => {
@@ -45,8 +45,8 @@ export const validatePassword = (password) => {
 
 /**
  * Validation of email
- * 
- * @param {HTMLElement} email 
+ *
+ * @param {HTMLElement} email
  * @returns {String} - return error
  */
 export const validateEmail = (email) => {
@@ -65,8 +65,8 @@ export const validateEmail = (email) => {
 
 /**
  * Validation of name
- * 
- * @param {HTMLElement} name 
+ *
+ * @param {HTMLElement} name
  * @returns {String} - return error
  */
 export const validateName = (name) => {
@@ -84,8 +84,8 @@ export const validateName = (name) => {
 
 /**
  * Printing error under input in page
- * 
- * @param {HTMLInputElement} parentElem 
+ *
+ * @param {HTMLInputElement} parentElem
  * @param {String} error - value to print
  */
 export const printError = (parentElem, error) => {
@@ -96,8 +96,8 @@ export const printError = (parentElem, error) => {
 
 /**
  * Config object to array key-value
- * 
- * @param {Object} config 
+ *
+ * @param {Object} config
  */
 const configItems = (config) => {
 	return Object.entries(config);
@@ -105,9 +105,9 @@ const configItems = (config) => {
 
 /**
  * Validation based on config
- * 
- * @param {Object} config 
- * @param {HTMLElement} form 
+ *
+ * @param {Object} config
+ * @param {HTMLElement} form
  * @returns {Object|null} - correct data
  */
 export const validateForm = (config, form) => {
@@ -116,7 +116,7 @@ export const validateForm = (config, form) => {
 	errorsDelete(form.parentNode);
 
 	const inputs = configItems(config);
-	inputs.forEach(([key, value]) => {
+	inputs.forEach(([, value]) => {
 		const input = form.querySelector(`#${value.name}`);
 		data[input.name] = input.value.trim();
 

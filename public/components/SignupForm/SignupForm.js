@@ -1,6 +1,5 @@
 import FormButton from '../FormButton/FormButton.js';
 import Input from '../Input/Input.js';
-import { validateForm } from '../../modules/validation.js';
 import FormLink from '../FormLink/FormLink.js';
 
 export default class SignupForm {
