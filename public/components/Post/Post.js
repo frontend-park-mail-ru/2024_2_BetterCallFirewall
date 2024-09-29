@@ -23,7 +23,7 @@ export default class Post {
 		const template = Handlebars.templates['Post.hbs'];
 		const html = template(this.#data);
 		if (this.#parent) {
-			this.#parent.textContent += html;
+			this.#parent.insertAdjacentHTML('beforeend', html);
 		}
 		return html;
 	}
