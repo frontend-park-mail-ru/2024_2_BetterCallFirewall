@@ -294,6 +294,13 @@ export default class App {
 			this.goToPage(PAGE_LINKS.login, true);
 		};
 		toLoginLink.addHandler('click', clickHandler);
+
+		const titleLink = signUp.htmlElement.querySelector('a.title-link');
+		const titleLinkClickHandler = (event) => {
+			event.preventDefault();
+			this.goToPage(PAGE_LINKS.feed, true);
+		};
+		login.addHandler(titleLink, 'click', titleLinkClickHandler);
 	}
 	/**
 	 * Rendering login page
