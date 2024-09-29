@@ -22,7 +22,6 @@ export const PAGE_LINKS = {
  */
 export default class App {
 	#state = {};
-	#handlers = {};
 	#structure = {};
 	#config;
 	root;
@@ -73,7 +72,6 @@ export default class App {
 	 * @param {boolean} deleteEverything - deleting all components
 	 */
 	clear(deleteEverything) {
-		document.removeEventListener('scroll', this.#handlers.scrollHandler);
 		Object.keys(this.#structure).forEach((key) => {
 			if (deleteEverything || key !== 'menu') {
 				this.#structure[key].remove();
@@ -85,11 +83,12 @@ export default class App {
 	 * Rendering menu
 	 */
 	#renderMenu() {
-		const menu = new Menu(this.#config.homeConfig.menu, this.root);
-		if (!this.#structure.menu) {
-			this.#structure.menu = menu;
-			menu.render();
+		if (this.#structure.menu) {
+			return;
 		}
+		const menu = new Menu(this.#config.homeConfig.menu, this.root);
+		this.#structure.menu = menu;
+		menu.render();
 		menu.addHandler(
 			menu.htmlElement.querySelector('a[data-section="feed"]'),
 			'click',
@@ -101,12 +100,12 @@ export default class App {
 		menu.addHandler(
 			menu.htmlElement.querySelector(
 				`a[data-section=${this.#config.homeConfig.menu.title.section}]`,
-				'click',
-				(event) => {
-					event.preventDefault();
-					this.goToPage(PAGE_LINKS.feed);
-				},
 			),
+			'click',
+			(event) => {
+				event.preventDefault();
+				this.goToPage(PAGE_LINKS.feed);
+			},
 		);
 	}
 	/**
@@ -125,6 +124,7 @@ export default class App {
 			{ key: 'header', ...config.main.header },
 			main.htmlElement,
 		);
+		main.addChild(header);
 		header.render();
 		this.#structure.main.header = header;
 
@@ -132,6 +132,7 @@ export default class App {
 			{ key: 'content', ...config.main.content },
 			main.htmlElement,
 		);
+		main.addChild(content);
 		content.render();
 		this.#structure.main.content = content;
 
@@ -142,6 +143,7 @@ export default class App {
 			},
 			main.htmlElement,
 		);
+		main.addChild(aside);
 		aside.render();
 		this.#structure.main.aside = aside;
 

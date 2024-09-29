@@ -21,6 +21,9 @@ export default class Container {
 			`div[data-section=${this.#config.key}]`,
 		);
 	}
+	get section() {
+		return this.#config.section;
+	}
 	/**
 	 * Rendering Container with handlebars
 	 *
@@ -37,11 +40,7 @@ export default class Container {
 	 * Removing Container and child elements
 	 */
 	remove() {
-		Object.entries(this.#handlers).forEach(
-			([, { target, event, handler }]) => {
-				target.removeEventListener(event, handler);
-			},
-		);
+		this.removeHandlers();
 		Object.keys(this.#children).forEach((key) => {
 			this.#children[key].remove();
 		});
@@ -61,5 +60,22 @@ export default class Container {
 			event,
 			handler,
 		};
+	}
+
+	removeHandlers() {
+		Object.entries(this.#handlers).forEach(
+			([key, { target, event, handler }]) => {
+				target.removeEventListener(event, handler);
+				delete this.#handlers[key];
+			},
+		);
+	}
+
+	/**
+	 * Append child to container
+	 * @param {Object} child
+	 */
+	addChild(child) {
+		this.#children[child.section] = child;
 	}
 }

@@ -1,7 +1,7 @@
 import { PAGE_LINKS } from './app.js';
 import Validator from './modules/validation.js';
 
-const DEBUG = false;
+const DEBUG = true;
 
 const homeConfig = {
 	menu: {
@@ -19,6 +19,7 @@ const homeConfig = {
 	},
 	main: {
 		className: 'main',
+		section: 'main',
 		header: {
 			search: {
 				placeholder: 'Поиск',
@@ -31,9 +32,11 @@ const homeConfig = {
 		},
 		content: {
 			className: 'content',
+			section: 'content',
 		},
 		aside: {
 			className: 'aside',
+			section: 'aside',
 		},
 	},
 };

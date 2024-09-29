@@ -140,6 +140,7 @@ app.get('/api/post', (req, res) => {
 	console.log('Куки:', req.cookies);
 	const sessionId = req.cookies['sessionid'];
 	let isAuthorised = false;
+	isAuthorised = true;
 	users.forEach((user) => {
 		console.log('sessionId:', sessionId, typeof sessionId);
 		console.log('user.sessionId:', user.sessionId, typeof user.sessionId);

@@ -71,8 +71,9 @@ export default class Menu {
 	 */
 	removeHandlers() {
 		Object.entries(this.#handlers).forEach(
-			([, { target, event, handler }]) => {
+			([key, { target, event, handler }]) => {
 				target.removeEventListener(event, handler);
+				delete this.#handlers[key];
 			},
 		);
 	}
