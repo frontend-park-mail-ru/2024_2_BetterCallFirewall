@@ -211,8 +211,9 @@ export default class App {
 	#fillContent() {
 		const promise = this.#addPostPromise();
 		promise
-			.then((body) => {
-				const data = JSON.parse(body);
+			.then((response) => {
+				const body = response.json();
+				const data = body.data;
 				data.forEach((postData) => {
 					const post = new Post(
 						postData,
