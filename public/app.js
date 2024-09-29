@@ -300,7 +300,7 @@ export default class App {
 			event.preventDefault();
 			this.goToPage(PAGE_LINKS.feed, true);
 		};
-		login.addHandler(titleLink, 'click', titleLinkClickHandler);
+		signUp.addHandler(titleLink, 'click', titleLinkClickHandler);
 	}
 	/**
 	 * Rendering login page
