@@ -1,5 +1,5 @@
 .form-link {
-    color: white;
+    color: var(--main-text-color);
     text-decoration: none;
     margin-top: .7rem;
     font-size: .85rem;
