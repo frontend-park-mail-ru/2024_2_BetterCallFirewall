@@ -274,6 +274,7 @@ export default class App {
 							this.goToPage(PAGE_LINKS.feed, true);
 						} else {
 							const data = response.json();
+							console.log(data.message);
 							if (data.message === 'user already exists') {
 								signUp.printError(
 									'Пользователь в таким email уже существует',
@@ -333,6 +334,7 @@ export default class App {
 							this.goToPage(PAGE_LINKS.feed, true);
 						} else {
 							const data = response.json();
+							console.log(data.message);
 							if (data.message === 'wrong email or password') {
 								login.printError('Неверная почта или пароль');
 							} else {
