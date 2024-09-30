@@ -1,4 +1,5 @@
 import Container from './components/Container/Container.js';
+import Content from './components/Content/Content.js';
 import Header from './components/Header/Header.js';
 import LoginForm from './components/LoginForm/LoginForm.js';
 import Menu from './components/Menu/Menu.js';
@@ -128,7 +129,7 @@ export default class App {
 		header.render();
 		this.#structure.main.header = header;
 
-		const content = new Container(
+		const content = new Content(
 			{ key: 'content', ...config.main.content },
 			main.htmlElement,
 		);
@@ -174,6 +175,7 @@ export default class App {
 					const promise = this.#addPostPromise();
 					await promise
 						.then((body) => {
+							content.removeMessage();
 							const postsData = body.data;
 							postsData.forEach(
 								({ header, body, created_at }) => {
@@ -191,6 +193,7 @@ export default class App {
 						})
 						.catch(async (error) => {
 							console.log(error);
+							content.printMessage(error);
 							await new Promise((resolve) =>
 								setTimeout(resolve, 5000),
 							);
@@ -201,24 +204,7 @@ export default class App {
 		};
 		content.addHandler(document, 'scroll', createScrollHandler());
 	}
-	/**
-	 * Adding new posts while scrolling window
-	 */
-	#addPosts() {
-		let config;
-		Ajax.get(this.#config.URL.post, (data, error) => {
-			if (error) {
-				console.log('add post error:', error);
-			} else if (data) {
-				config = data;
-				const post = new Post(
-					config,
-					this.#structure.main.content.htmlElement,
-				);
-				post.render();
-			}
-		});
-	}
+
 	/**
 	 * Returns promise to add new post
 	 *

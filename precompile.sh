@@ -9,3 +9,4 @@ handlebars "public/components/LoginForm/LoginForm.hbs" -f "public/components/Log
 handlebars "public/components/Input/Input.hbs" -f "public/components/Input/Input.precompiled.js"
 handlebars "public/components/FormButton/FormButton.hbs" -f "public/components/FormButton/FormButton.precompiled.js"
 handlebars "public/components/FormLink/FormLink.hbs" -f "public/components/FormLink/FormLink.precompiled.js"
+node_modules/.bin/handlebars "public/components/ContentMessage/ContentMessage.hbs" -f "public/components/ContentMessage/ContentMessage.precompiled.js"

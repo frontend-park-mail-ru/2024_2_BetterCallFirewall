@@ -18,4 +18,6 @@ node_modules/.bin/handlebars "public/components/FormButton/FormButton.hbs" -f "p
 
 node_modules/.bin/handlebars "public/components/FormLink/FormLink.hbs" -f "public/components/FormLink/FormLink.precompiled.js"
 
+node_modules/.bin/handlebars "public/components/ContentMessage/ContentMessage.hbs" -f "public/components/ContentMessage/ContentMessage.precompiled.js"
+
 npm start
