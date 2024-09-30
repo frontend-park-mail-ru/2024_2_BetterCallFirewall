@@ -1,0 +1,36 @@
+.input-block {
+    width: 100%;
+    margin-bottom: .7rem;
+}
+.input-block:last-of-type {
+    margin-bottom: 2rem;
+}
+
+.input-block label {
+    color: white;
+    margin-bottom: .25rem;
+}
+
+.input-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-block input {
+    background: none;
+    box-shadow: none;
+    border: 1.5px white solid;
+    border-radius: .25rem;
+    padding-left: .5rem;
+    outline: none;
+    margin: 0;           
+    font: inherit;
+    height: 2rem;
+    color: white;
+}
+
+.error {
+    color: red;
+    font-size: .9rem;
+    margin-top: .3rem;
+}
