@@ -6,6 +6,7 @@
 @import url(components/LoginForm/LoginForm.css);
 @import url(components/Post/Post.css);
 @import url(components/FormLink/FormLink.css);
+@import url(components/ContentMessage/ContentMessage.css);
 
 
 html {

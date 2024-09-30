@@ -8,6 +8,9 @@ export default class Content extends Container {
 	 * @param {string} message
 	 */
 	printMessage(message) {
+		if (this.#message) {
+			return;
+		}
 		const messageItem = new ContentMessage(
 			{ section: 'message', text: message },
 			this.htmlElement,
@@ -20,6 +23,8 @@ export default class Content extends Container {
 	 * Removes message
 	 */
 	removeMessage() {
-		this.#message.remove();
+		if (this.#message) {
+			this.#message.remove();
+		}
 	}
 }

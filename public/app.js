@@ -175,7 +175,6 @@ export default class App {
 					const promise = this.#addPostPromise();
 					await promise
 						.then((body) => {
-							console.log('body:', body);
 							content.removeMessage();
 							const postsData = body.data;
 							postsData.forEach(
@@ -192,9 +191,8 @@ export default class App {
 								},
 							);
 						})
-						.catch(async (error) => {
-							console.log(error);
-							content.printMessage(error);
+						.catch(async () => {
+							content.printMessage('Что-то пошло не так');
 							await new Promise((resolve) =>
 								setTimeout(resolve, 5000),
 							);
@@ -219,10 +217,11 @@ export default class App {
 	 * Filling content with posts
 	 */
 	#fillContent() {
+		const content = this.#structure.main.content;
 		const promise = this.#addPostPromise();
 		promise
 			.then((body) => {
-				console.log('body:', body);
+				content.removeMessage();
 				const posts = body.data;
 				posts.forEach((postData) => {
 					const post = new Post(
@@ -231,13 +230,13 @@ export default class App {
 							text: postData.body,
 							date: postData.created_at,
 						},
-						this.#structure.main.content.htmlElement,
+						content.htmlElement,
 					);
 					post.render();
 				});
 			})
-			.catch((error) => {
-				console.log(error);
+			.catch(() => {
+				content.printMessage('Что-то пошло не так');
 				this.goToPage(PAGE_LINKS.login, true);
 			});
 	}
