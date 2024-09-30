@@ -23,6 +23,7 @@ export default class ContentMessage {
 
 	/**
 	 * Renders message
+	 * @returns {string} - HTML element
 	 */
 	render() {
 		const template = Handlebars.templates['ContentMessage.hbs'];

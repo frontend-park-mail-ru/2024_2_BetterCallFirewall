@@ -90,6 +90,8 @@ export default class App {
 		const menu = new Menu(this.#config.homeConfig.menu, this.root);
 		this.#structure.menu = menu;
 		menu.render();
+
+		// Click on feed link handler
 		menu.addHandler(
 			menu.htmlElement.querySelector('a[data-section="feed"]'),
 			'click',
@@ -98,6 +100,7 @@ export default class App {
 				this.goToPage(PAGE_LINKS.feed);
 			},
 		);
+		// Click on title handler
 		menu.addHandler(
 			menu.htmlElement.querySelector(
 				`a[data-section=${this.#config.homeConfig.menu.title.section}]`,
@@ -151,6 +154,7 @@ export default class App {
 		const logoutButton = header.htmlElement.querySelector(
 			'.header-profile-logout',
 		);
+		// Logout click handler
 		const logoutButtonHandler = () => {
 			Ajax.post(this.#config.URL.logout, {}, (data, error) => {
 				if (!error) {
@@ -160,8 +164,10 @@ export default class App {
 		};
 		header.addHandler(logoutButton, 'click', logoutButtonHandler);
 
+		// Initial posts request
 		this.#fillContent();
 
+		// Posts request on scroll
 		const createScrollHandler = () => {
 			let active = false;
 			return async () => {
@@ -249,6 +255,7 @@ export default class App {
 		this.#structure.signUp = signUp;
 
 		const signupForm = signUp.htmlElement.querySelector('form');
+		// Submit signup form handler
 		const submitHandler = (event) => {
 			event.preventDefault();
 			signUp.clearError();
@@ -275,6 +282,7 @@ export default class App {
 		signUp.addHandler(signupForm, 'submit', submitHandler);
 
 		const toLoginLink = signUp.items.toLoginLink;
+		// Click on title handler
 		const clickHandler = (event) => {
 			event.preventDefault();
 			this.goToPage(PAGE_LINKS.login, true);
@@ -282,6 +290,7 @@ export default class App {
 		toLoginLink.addHandler('click', clickHandler);
 
 		const titleLink = signUp.htmlElement.querySelector('a.title-link');
+		// Click on to login link handler
 		const titleLinkClickHandler = (event) => {
 			event.preventDefault();
 			this.goToPage(PAGE_LINKS.feed, true);
@@ -298,6 +307,7 @@ export default class App {
 		this.#structure.login = login;
 
 		const loginForm = login.htmlElement.querySelector('form');
+		// Submit login form handler
 		const submitHandler = (event) => {
 			event.preventDefault();
 			login.clearError();
@@ -324,6 +334,7 @@ export default class App {
 		login.addHandler(loginForm, 'submit', submitHandler);
 
 		const toSignupLink = login.items.toSignupLink;
+		// Click on to signup link handler
 		const clickHandler = (event) => {
 			event.preventDefault();
 			this.goToPage(PAGE_LINKS.signup, true);
@@ -331,6 +342,7 @@ export default class App {
 		toSignupLink.addHandler('click', clickHandler);
 
 		const titleLink = login.htmlElement.querySelector('a.title-link');
+		// Click on title handler
 		const titleLinkClickHandler = (event) => {
 			event.preventDefault();
 			this.goToPage(PAGE_LINKS.feed, true);

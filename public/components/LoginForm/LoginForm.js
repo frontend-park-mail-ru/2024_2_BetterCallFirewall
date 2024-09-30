@@ -47,10 +47,19 @@ export default class LoginForm {
 		);
 	}
 
+	/**
+	 * Getting items of this element
+	 */
 	get items() {
 		return this.#items;
 	}
 
+	/**
+	 * Adding event handler
+	 * @param {HTMLElement} target
+	 * @param {string} event - some event
+	 * @param {Function} handler - function handler of event
+	 */
 	addHandler(target, event, handler) {
 		this.#handlers[`${target.className}-${event}`] = {
 			target,

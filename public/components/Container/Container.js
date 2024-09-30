@@ -16,14 +16,23 @@ export default class Container {
 		this.#config = config;
 		this.#parent = parent;
 	}
+
+	/**
+	 * @returns {HTMLElement}
+	 */
 	get htmlElement() {
 		return this.#parent.querySelector(
 			`div[data-section=${this.#config.key}]`,
 		);
 	}
+
+	/**
+	 * @returns {string}
+	 */
 	get section() {
 		return this.#config.section;
 	}
+
 	/**
 	 * Rendering Container with handlebars
 	 *
@@ -62,6 +71,9 @@ export default class Container {
 		};
 	}
 
+	/**
+	 * Removes all handlers
+	 */
 	removeHandlers() {
 		Object.entries(this.#handlers).forEach(
 			([key, { target, event, handler }]) => {

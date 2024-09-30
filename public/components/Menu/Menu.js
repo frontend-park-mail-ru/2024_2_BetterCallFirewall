@@ -20,6 +20,11 @@ export default class Menu {
 		this.#parent = parent;
 		this.#className = 'menu';
 	}
+
+	/**
+	 * Getting configs of links
+	 * @returns {ArrayLike<[string, Object]}
+	 */
 	get linksConfig() {
 		return Object.entries(this.#config.links);
 	}
