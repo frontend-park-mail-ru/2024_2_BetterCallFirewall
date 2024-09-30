@@ -273,7 +273,14 @@ export default class App {
 						if (response.ok) {
 							this.goToPage(PAGE_LINKS.feed, true);
 						} else {
-							signUp.printError('Что-то пошло не так');
+							const data = response.json();
+							if (data.message === 'user already exists') {
+								signUp.printError(
+									'Пользователь в таким email уже существует',
+								);
+							} else {
+								signUp.printError('Что-то пошло не так');
+							}
 						}
 					},
 				);
@@ -325,7 +332,12 @@ export default class App {
 						if (response.ok) {
 							this.goToPage(PAGE_LINKS.feed, true);
 						} else {
-							login.printError('Что-то пошло не так');
+							const data = response.json();
+							if (data.message === 'wrong email or password') {
+								login.printError('Неверная почта или пароль');
+							} else {
+								login.printError('Что-то пошло не так');
+							}
 						}
 					},
 				);
