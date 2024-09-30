@@ -1,5 +1,5 @@
 /**
- * Class of input 
+ * Class of input
  */
 export default class Input {
 	#config;
@@ -17,6 +17,10 @@ export default class Input {
 		this.#config.className = 'input-block';
 	}
 
+	/**
+	 * Setting parent to element
+	 * @param {HTMLElement} parent
+	 */
 	set parent(parent) {
 		this.#parent = parent;
 	}
@@ -32,7 +36,7 @@ export default class Input {
 
 	/**
 	 * Rendering input with handlebars
-	 * 
+	 *
 	 * @returns {string} - generated HTML element of input
 	 */
 	render() {

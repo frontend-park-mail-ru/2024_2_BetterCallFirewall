@@ -9,4 +9,5 @@ export default {
 		'semi': ['error', 'always'],
 		'no-unused-vars': 'warn',
 	},
+	ignores: ['**/*.precompiled.js', '**/server.js'],
 };

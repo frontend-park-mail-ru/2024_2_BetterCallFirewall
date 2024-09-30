@@ -1,14 +1,14 @@
 export default new (class Ajax {
 	/**
 	 * GET request and raise callback
-	 * 
-	 * @param {string} url 
-	 * @param {function} callback 
+	 *
+	 * @param {string} url
+	 * @param {function} callback
 	 */
 	get(url, callback) {
 		const request = new Request(url, {
 			method: 'get',
-			credentials: 'same-origin',
+			credentials: 'include',
 		});
 		this.#ajax({
 			request,
@@ -17,16 +17,16 @@ export default new (class Ajax {
 	}
 	/**
 	 * Post request with data and raising callback
-	 * 
-	 * @param {string} url 
+	 *
+	 * @param {string} url
 	 * @param {Object} data - sending data
-	 * @param {*} callback 
+	 * @param {*} callback
 	 */
 	post(url, data, callback) {
 		const request = new Request(url, {
 			method: 'post',
 			body: data,
-			credentials: 'same-origin',
+			credentials: 'include',
 		});
 		this.#ajax({
 			request,
@@ -35,14 +35,14 @@ export default new (class Ajax {
 	}
 	/**
 	 * Get request and promise with resolving by data
-	 * 
-	 * @param {string} url 
-	 * @returns {Promise<Object>} 
+	 *
+	 * @param {string} url
+	 * @returns {Promise<Object>}
 	 */
 	getPromise(url) {
 		const request = new Request(url, {
 			method: 'get',
-			credentials: 'same-origin',
+			credentials: 'include',
 		});
 		return this.#ajaxPromise({
 			request,
@@ -50,19 +50,19 @@ export default new (class Ajax {
 	}
 	/**
 	 * Sending data form data
-	 * 
-	 * @param {string} url 
-	 * @param {FormData} formData 
-	 * @param {function} callback 
+	 *
+	 * @param {string} url
+	 * @param {FormData} formData
+	 * @param {function} callback
 	 */
 	sendForm(url, formData, callback) {
 		const request = new Request(url, {
 			method: 'POST',
-			body: new URLSearchParams(formData),
+			body: JSON.stringify(formData),
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Type': 'application/json:charset=UTF-8',
 			},
-			credentials: 'same-origin',
+			credentials: 'include',
 		});
 		fetch(request)
 			.then((response) => callback(response))
@@ -70,8 +70,8 @@ export default new (class Ajax {
 	}
 	/**
 	 * AJAX request
-	 * 
-	 * @param {Object} config 
+	 *
+	 * @param {Object} config
 	 */
 	#ajax(config) {
 		fetch(config.request)
@@ -81,9 +81,9 @@ export default new (class Ajax {
 	}
 	/**
 	 * Execute AJAX request and returning Promise which resoles by response
-	 * 
-	 * @param {Object} config 
-	 * @returns {Promise<Object>} 
+	 *
+	 * @param {Object} config
+	 * @returns {Promise<Object>}
 	 */
 	#ajaxPromise(config) {
 		return fetch(config.request).then((response) => {

@@ -18,9 +18,14 @@ export default class FormButton {
 		this.#className = 'form-button';
 	}
 
+	/**
+	 * Setting parent to element
+	 * @param {HTMLElement} parent
+	 */
 	set parent(parent) {
 		this.#parent = parent;
 	}
+
 	/**
 	 * Getting html element
 	 */
@@ -32,7 +37,7 @@ export default class FormButton {
 
 	/**
 	 * Rendering form button with handlebars
-	 * 
+	 *
 	 * @returns {string} - generated HTML element
 	 */
 	render() {
@@ -46,7 +51,7 @@ export default class FormButton {
 
 	/**
 	 * Adding event handler
-	 * 
+	 *
 	 * @param {string} event - some event
 	 * @param {Function} handler - function handler of event
 	 */

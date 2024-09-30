@@ -1,7 +1,5 @@
 import Input from '../Input/Input.js';
 import FormButton from '../FormButton/FormButton.js';
-import Ajax from '../../modules/ajax.js';
-import { validateForm } from '../../modules/validation.js';
 import FormLink from '../FormLink/FormLink.js';
 
 export default class LoginForm {
@@ -49,10 +47,19 @@ export default class LoginForm {
 		);
 	}
 
+	/**
+	 * Getting items of this element
+	 */
 	get items() {
 		return this.#items;
 	}
 
+	/**
+	 * Adding event handler
+	 * @param {HTMLElement} target
+	 * @param {string} event - some event
+	 * @param {Function} handler - function handler of event
+	 */
 	addHandler(target, event, handler) {
 		this.#handlers[`${target.className}-${event}`] = {
 			target,
@@ -96,6 +103,24 @@ export default class LoginForm {
 		toSignupLink.parent = itemsParent;
 
 		return html;
+	}
+
+	/**
+	 * Printing error above submit button
+	 * @param {string} error
+	 */
+	printError(error) {
+		if (error) {
+			this.htmlElement.querySelector('.error-message').textContent =
+				error;
+		}
+	}
+
+	/**
+	 * Clear error above submit button
+	 */
+	clearError() {
+		this.htmlElement.querySelector('.error-message').textContent = '';
 	}
 
 	/**

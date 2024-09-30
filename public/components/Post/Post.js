@@ -16,14 +16,14 @@ export default class Post {
 	}
 	/**
 	 * Post rendering with handlebars
-	 * 
+	 *
 	 * @returns {string} - generated HTML code
 	 */
 	render() {
 		const template = Handlebars.templates['Post.hbs'];
 		const html = template(this.#data);
 		if (this.#parent) {
-			this.#parent.innerHTML += html;
+			this.#parent.insertAdjacentHTML('beforeend', html);
 		}
 		return html;
 	}

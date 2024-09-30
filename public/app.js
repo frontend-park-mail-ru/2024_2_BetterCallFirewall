@@ -1,12 +1,12 @@
 import Container from './components/Container/Container.js';
+import Content from './components/Content/Content.js';
 import Header from './components/Header/Header.js';
 import LoginForm from './components/LoginForm/LoginForm.js';
 import Menu from './components/Menu/Menu.js';
 import Post from './components/Post/Post.js';
 import SignupForm from './components/SignupForm/SignupForm.js';
 import Ajax from './modules/ajax.js';
-import { validateForm } from './modules/validation.js';
-import User from './models/user.js';
+import Validator from './modules/validation.js';
 
 /**
  * Links to pages
@@ -23,9 +23,8 @@ export const PAGE_LINKS = {
  */
 export default class App {
 	#state = {};
-	handlers = {};
 	#structure = {};
-	config;
+	#config;
 	root;
 	/**
 	 * Instance of application
@@ -34,7 +33,7 @@ export default class App {
 	 * @param {HTMLElement} root - root element
 	 */
 	constructor(config, root) {
-		this.config = config;
+		this.#config = config;
 		this.root = root;
 		this.#state.user = null;
 	}
@@ -74,7 +73,6 @@ export default class App {
 	 * @param {boolean} deleteEverything - deleting all components
 	 */
 	clear(deleteEverything) {
-		document.removeEventListener('scroll', this.handlers.scrollHandler);
 		Object.keys(this.#structure).forEach((key) => {
 			if (deleteEverything || key !== 'menu') {
 				this.#structure[key].remove();
@@ -86,12 +84,14 @@ export default class App {
 	 * Rendering menu
 	 */
 	#renderMenu() {
-		const menu = new Menu(this.config.homeConfig.menu, this.root);
-		if (!this.#structure.menu) {
-			this.#structure.menu = menu;
-			menu.render();
+		if (this.#structure.menu) {
+			return;
 		}
-		// хэндлеры добавлять после рендера, иначе стираются eventListenerы (при использовании innerHTML +=)
+		const menu = new Menu(this.#config.homeConfig.menu, this.root);
+		this.#structure.menu = menu;
+		menu.render();
+
+		// Click on feed link handler
 		menu.addHandler(
 			menu.htmlElement.querySelector('a[data-section="feed"]'),
 			'click',
@@ -100,20 +100,15 @@ export default class App {
 				this.goToPage(PAGE_LINKS.feed);
 			},
 		);
+		// Click on title handler
 		menu.addHandler(
-			menu.htmlElement.querySelector('a[data-section="login"]'),
+			menu.htmlElement.querySelector(
+				`a[data-section=${this.#config.homeConfig.menu.title.section}]`,
+			),
 			'click',
 			(event) => {
 				event.preventDefault();
-				this.goToPage(PAGE_LINKS.login, true);
-			},
-		);
-		menu.addHandler(
-			menu.htmlElement.querySelector('a[data-section="signup"]'),
-			'click',
-			(event) => {
-				event.preventDefault();
-				this.goToPage(PAGE_LINKS.signup, true);
+				this.goToPage(PAGE_LINKS.feed);
 			},
 		);
 	}
@@ -121,7 +116,7 @@ export default class App {
 	 * Rendering feed
 	 */
 	#renderFeed() {
-		const config = this.config.homeConfig;
+		const config = this.#config.homeConfig;
 
 		this.#renderMenu();
 
@@ -133,13 +128,15 @@ export default class App {
 			{ key: 'header', ...config.main.header },
 			main.htmlElement,
 		);
+		main.addChild(header);
 		header.render();
 		this.#structure.main.header = header;
 
-		const content = new Container(
+		const content = new Content(
 			{ key: 'content', ...config.main.content },
 			main.htmlElement,
 		);
+		main.addChild(content);
 		content.render();
 		this.#structure.main.content = content;
 
@@ -150,160 +147,218 @@ export default class App {
 			},
 			main.htmlElement,
 		);
+		main.addChild(aside);
 		aside.render();
 		this.#structure.main.aside = aside;
 
 		const logoutButton = header.htmlElement.querySelector(
-			'img.header-profile-logout',
+			'.header-profile-logout',
 		);
+		// Logout click handler
 		const logoutButtonHandler = () => {
-			Ajax.post('/auth/logout', {}, (data, error) => {
-				if (error) {
-					console.log('logoutError:', error);
+			Ajax.post(this.#config.URL.logout, {}, (data, error) => {
+				if (!error) {
+					this.goToPage(PAGE_LINKS.login, true);
 				}
-				this.goToPage(PAGE_LINKS.login, true);
 			});
 		};
 		header.addHandler(logoutButton, 'click', logoutButtonHandler);
 
+		// Initial posts request
 		this.#fillContent();
 
-		this.handlers.scrollHandler = () => {
-			const scrollPosition = window.scrollY;
-			const contentHeight = document.body.offsetHeight;
-			const windowHeight = window.innerHeight;
-
-			if (scrollPosition + windowHeight * 2 >= contentHeight) {
-				this.#addPost();
-			}
+		// Posts request on scroll
+		const createScrollHandler = () => {
+			let active = false;
+			return async () => {
+				if (
+					!active &&
+					window.innerHeight * 2 + window.scrollY >
+						document.body.offsetHeight
+				) {
+					active = true;
+					const promise = this.#addPostPromise();
+					await promise
+						.then((body) => {
+							content.removeMessage();
+							const postsData = body.data;
+							postsData.forEach(
+								({ header, body, created_at }) => {
+									const post = new Post(
+										{
+											title: header,
+											text: body,
+											date: created_at,
+										},
+										this.#structure.main.content.htmlElement,
+									);
+									post.render();
+								},
+							);
+						})
+						.catch(async () => {
+							content.printMessage('Что-то пошло не так');
+							await new Promise((resolve) =>
+								setTimeout(resolve, 5000),
+							);
+						});
+					active = false;
+				}
+			};
 		};
-		document.addEventListener('scroll', this.handlers.scrollHandler);
+		content.addHandler(document, 'scroll', createScrollHandler());
 	}
-	/**
-	 * Adding new posts while scrolling window
-	 */
-	#addPost() {
-		let config;
-		Ajax.get('/api/post', (data, error) => {
-			if (error) {
-				console.log('add post error:', error);
-			} else if (data) {
-				config = data;
-				const post = new Post(
-					config,
-					this.#structure.main.content.htmlElement,
-				);
-				post.render();
-			}
-		});
-	}
+
 	/**
 	 * Returns promise to add new post
 	 *
 	 * @returns {Promise<Object>}
 	 */
 	#addPostPromise() {
-		return Ajax.getPromise('/api/post');
+		return Ajax.getPromise(this.#config.URL.post);
 	}
 	/**
 	 *
-	 * Filling content while scrolling
+	 * Filling content with posts
 	 */
 	#fillContent() {
-		let toLogin = false;
-		const fill = async () => {
-			while (window.innerHeight * 2 > document.body.offsetHeight) {
-				if (toLogin) {
-					return;
-				}
-				const promise = this.#addPostPromise();
-				await promise
-					.then((data) => {
-						const post = new Post(
-							data,
-							this.#structure.main.content.htmlElement,
-						);
-						post.render();
-					})
-					.catch((error) => {
-						if (error.message === 'Unauthorized') {
-							toLogin = true;
-						} else {
-							return new Promise((resolve) =>
-								setTimeout(resolve, 5000),
-							);
-						}
-					});
-			}
-		};
-		fill().then(() => {
-			if (toLogin) {
+		const content = this.#structure.main.content;
+		const promise = this.#addPostPromise();
+		promise
+			.then((body) => {
+				content.removeMessage();
+				const posts = body.data;
+				posts.forEach((postData) => {
+					const post = new Post(
+						{
+							title: postData.header,
+							text: postData.body,
+							date: postData.created_at,
+						},
+						content.htmlElement,
+					);
+					post.render();
+				});
+			})
+			.catch(() => {
+				content.printMessage('Что-то пошло не так');
 				this.goToPage(PAGE_LINKS.login, true);
-			}
-		});
+			});
 	}
 	/**
 	 * Rendering signup page
 	 */
 	#renderSignup() {
-		const config = this.config.signupConfig;
+		const config = this.#config.signupConfig;
 		const signUp = new SignupForm(config, this.root);
 		signUp.render();
 		this.#structure.signUp = signUp;
 
 		const signupForm = signUp.htmlElement.querySelector('form');
+		// Submit signup form handler
 		const submitHandler = (event) => {
 			event.preventDefault();
-			const data = validateForm(config.inputs, signupForm);
+			signUp.clearError();
+			const validator = new Validator();
+			const data = validator.validateForm(config.inputs, signupForm);
 			if (data) {
-				Ajax.sendForm('/auth/signup', data, (response, error) => {
-					if (response.ok) {
-						this.goToPage(PAGE_LINKS.feed, true);
-					} else {
-						console.log('status:', response.statusText);
-					}
-				});
+				Ajax.sendForm(
+					this.#config.URL.signup,
+					data,
+					(response, error) => {
+						if (error) {
+							signUp.printError('Что-то пошло не так');
+							return;
+						}
+						if (response.ok) {
+							this.goToPage(PAGE_LINKS.feed, true);
+						} else {
+							const data = response.json();
+							if (data.message === 'user already exists') {
+								signUp.printError(
+									'Пользователь в таким email уже существует',
+								);
+							} else {
+								signUp.printError('Что-то пошло не так');
+							}
+						}
+					},
+				);
 			}
 		};
 		signUp.addHandler(signupForm, 'submit', submitHandler);
 
 		const toLoginLink = signUp.items.toLoginLink;
+		// Click on title handler
 		const clickHandler = (event) => {
 			event.preventDefault();
 			this.goToPage(PAGE_LINKS.login, true);
 		};
 		toLoginLink.addHandler('click', clickHandler);
+
+		const titleLink = signUp.htmlElement.querySelector('a.title-link');
+		// Click on to login link handler
+		const titleLinkClickHandler = (event) => {
+			event.preventDefault();
+			this.goToPage(PAGE_LINKS.feed, true);
+		};
+		signUp.addHandler(titleLink, 'click', titleLinkClickHandler);
 	}
 	/**
 	 * Rendering login page
 	 */
 	#renderLogin() {
-		const config = this.config.loginConfig;
+		const config = this.#config.loginConfig;
 		const login = new LoginForm(config, this.root);
 		login.render();
 		this.#structure.login = login;
 
 		const loginForm = login.htmlElement.querySelector('form');
+		// Submit login form handler
 		const submitHandler = (event) => {
 			event.preventDefault();
-			const data = validateForm(config.inputs, loginForm);
+			login.clearError();
+			const validator = new Validator();
+			const data = validator.validateForm(config.inputs, loginForm);
 			if (data) {
-				Ajax.sendForm('/auth/login', data, (response, error) => {
-					if (response.ok) {
-						this.goToPage(PAGE_LINKS.feed, true);
-					} else {
-						console.log('status:', response.statusText);
-					}
-				});
+				Ajax.sendForm(
+					this.#config.URL.login,
+					data,
+					(response, error) => {
+						if (error) {
+							login.printError('Что-то пошло не так');
+							return;
+						}
+						if (response.ok) {
+							this.goToPage(PAGE_LINKS.feed, true);
+						} else {
+							const data = response.json();
+							if (data.message === 'wrong email or password') {
+								login.printError('Неверная почта или пароль');
+							} else {
+								login.printError('Что-то пошло не так');
+							}
+						}
+					},
+				);
 			}
 		};
 		login.addHandler(loginForm, 'submit', submitHandler);
 
 		const toSignupLink = login.items.toSignupLink;
+		// Click on to signup link handler
 		const clickHandler = (event) => {
 			event.preventDefault();
 			this.goToPage(PAGE_LINKS.signup, true);
 		};
 		toSignupLink.addHandler('click', clickHandler);
+
+		const titleLink = login.htmlElement.querySelector('a.title-link');
+		// Click on title handler
+		const titleLinkClickHandler = (event) => {
+			event.preventDefault();
+			this.goToPage(PAGE_LINKS.feed, true);
+		};
+		login.addHandler(titleLink, 'click', titleLinkClickHandler);
 	}
 }
