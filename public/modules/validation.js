@@ -1,17 +1,17 @@
 export default class Validator {
 	/**
 	 * Deleting content in elements with class '.error'
-	 * 
+	 *
 	 * @param {HTMLElement} parentElem - parent element of element with class '.error'
 	 */
 	errorsDelete(parentElem) {
 		const errors = parentElem.querySelectorAll('.error');
 		errors.forEach((error) => (error.textContent = ''));
-	};
+	}
 
 	/**
 	 * Validation of password confirmation
-	 * 
+	 *
 	 * @param {HTMLElement} confirm - Confirmation of password
 	 * @returns {string} - returns error
 	 */
@@ -25,12 +25,12 @@ export default class Validator {
 			return 'Пароли не совпадают';
 		}
 		return '';
-	};
+	}
 
 	/**
 	 * Validation of password
-	 * 
-	 * @param {HTMLElement} password 
+	 *
+	 * @param {HTMLElement} password
 	 * @returns {String} - return error
 	 */
 	static validatePassword(password) {
@@ -45,12 +45,12 @@ export default class Validator {
 			return 'Пароль должен содержать не более 72 символов';
 		}
 		return '';
-	};
+	}
 
 	/**
 	 * Validation of email
-	 * 
-	 * @param {HTMLElement} email 
+	 *
+	 * @param {HTMLElement} email
 	 * @returns {String} - return error
 	 */
 	static validateEmail(email) {
@@ -65,12 +65,12 @@ export default class Validator {
 		}
 
 		return '';
-	};
+	}
 
 	/**
 	 * Validation of name
-	 * 
-	 * @param {HTMLElement} name 
+	 *
+	 * @param {HTMLElement} name
 	 * @returns {String} - return error
 	 */
 	static validateName(name) {
@@ -84,34 +84,34 @@ export default class Validator {
 			return 'Поле должно содержать не более 20 символов.';
 		}
 		return '';
-	};
+	}
 
 	/**
 	 * Printing error under input in page
-	 * 
-	 * @param {HTMLInputElement} parentElem 
+	 *
+	 * @param {HTMLInputElement} parentElem
 	 * @param {String} error - value to print
 	 */
 	printError(parentElem, error) {
 		if (error) {
 			parentElem.querySelector('.error').textContent = error;
 		}
-	};
+	}
 
 	/**
 	 * Config object to array key-value
-	 * 
-	 * @param {Object} config 
+	 *
+	 * @param {Object} config
 	 */
 	configItems(config) {
 		return Object.entries(config);
-	};
+	}
 
 	/**
 	 * Validation based on config
-	 * 
-	 * @param {Object} config 
-	 * @param {HTMLElement} form 
+	 *
+	 * @param {Object} config
+	 * @param {HTMLElement} form
 	 * @returns {Object|null} - correct data
 	 */
 	validateForm(config, form) {
@@ -120,7 +120,7 @@ export default class Validator {
 		this.errorsDelete(form.parentNode);
 
 		const inputs = this.configItems(config);
-		inputs.forEach(([key, value]) => {
+		inputs.forEach(([, value]) => {
 			const input = form.querySelector(`#${value.name}`);
 			data[input.name] = input.value.trim();
 
@@ -136,6 +136,5 @@ export default class Validator {
 			return null;
 		}
 		return data;
-	};
-
+	}
 }

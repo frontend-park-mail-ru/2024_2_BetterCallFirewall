@@ -153,10 +153,9 @@ export default class App {
 		);
 		const logoutButtonHandler = () => {
 			Ajax.post(this.#config.URL.logout, {}, (data, error) => {
-				if (error) {
-					console.log('logoutError:', error);
+				if (!error) {
+					this.goToPage(PAGE_LINKS.login, true);
 				}
-				this.goToPage(PAGE_LINKS.login, true);
 			});
 		};
 		header.addHandler(logoutButton, 'click', logoutButtonHandler);
