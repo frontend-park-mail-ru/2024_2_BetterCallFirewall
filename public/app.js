@@ -175,6 +175,7 @@ export default class App {
 					const promise = this.#addPostPromise();
 					await promise
 						.then((body) => {
+							console.log('body:', body);
 							content.removeMessage();
 							const postsData = body.data;
 							postsData.forEach(
@@ -221,6 +222,7 @@ export default class App {
 		const promise = this.#addPostPromise();
 		promise
 			.then((body) => {
+				console.log('body:', body);
 				const posts = body.data;
 				posts.forEach((postData) => {
 					const post = new Post(
