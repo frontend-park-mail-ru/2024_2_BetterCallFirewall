@@ -4,7 +4,7 @@
   "scripts": {
     "prestart": "npm run compile:templates",
     "start": "node ./server/server.js",
-    "compile:templates": "./precompile.sh"
+    "compile:templates": "find public/ -name '*.hbs' | xargs handlebars -f public/precompiled.js"
   },
   "dependencies": {
     "body-parser": "^1.20.3",
