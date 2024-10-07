@@ -4,6 +4,7 @@ import Header from './components/Header/Header.js';
 import LoginForm from './components/LoginForm/LoginForm.js';
 import Menu from './components/Menu/Menu.js';
 import Post from './components/Post/Post.js';
+import Root from './components/Root/Root.js';
 import SignupForm from './components/SignupForm/SignupForm.js';
 import Ajax from './modules/ajax.js';
 import Validator from './modules/validation.js';
@@ -32,9 +33,9 @@ export default class App {
 	 * @param {Object} config - config of application
 	 * @param {HTMLElement} root - root element
 	 */
-	constructor(config, root) {
+	constructor(config) {
 		this.#config = config;
-		this.root = root;
+		this.root = new Root();
 		this.#state.user = null;
 	}
 	/**
@@ -93,7 +94,7 @@ export default class App {
 
 		// Click on feed link handler
 		menu.addHandler(
-			menu.htmlElement.querySelector('a[data-section="feed"]'),
+			menu.htmlElement.querySelector('a[data-key="feed"]'),
 			'click',
 			(event) => {
 				event.preventDefault();
@@ -103,7 +104,7 @@ export default class App {
 		// Click on title handler
 		menu.addHandler(
 			menu.htmlElement.querySelector(
-				`a[data-section=${this.#config.homeConfig.menu.title.section}]`,
+				`a[data-key=${this.#config.homeConfig.menu.title.key}]`,
 			),
 			'click',
 			(event) => {
@@ -120,33 +121,21 @@ export default class App {
 
 		this.#renderMenu();
 
-		const main = new Container({ key: 'main', ...config.main }, this.root);
+		const main = new Container(config.main, this.root);
 		main.render();
 		this.#structure.main = main;
 
-		const header = new Header(
-			{ key: 'header', ...config.main.header },
-			main.htmlElement,
-		);
+		const header = new Header(config.main.header, main);
 		main.addChild(header);
 		header.render();
 		this.#structure.main.header = header;
 
-		const content = new Content(
-			{ key: 'content', ...config.main.content },
-			main.htmlElement,
-		);
+		const content = new Content(config.main.content, main);
 		main.addChild(content);
 		content.render();
 		this.#structure.main.content = content;
 
-		const aside = new Container(
-			{
-				key: 'aside',
-				...config.main.aside,
-			},
-			main.htmlElement,
-		);
+		const aside = new Container(config.main.aside, main);
 		main.addChild(aside);
 		aside.render();
 		this.#structure.main.aside = aside;
@@ -294,7 +283,7 @@ export default class App {
 			event.preventDefault();
 			this.goToPage(PAGE_LINKS.login, true);
 		};
-		toLoginLink.addHandler('click', clickHandler);
+		toLoginLink.addHandler(toLoginLink.htmlElement, 'click', clickHandler);
 
 		const titleLink = signUp.htmlElement.querySelector('a.title-link');
 		// Click on to login link handler
@@ -351,7 +340,11 @@ export default class App {
 			event.preventDefault();
 			this.goToPage(PAGE_LINKS.signup, true);
 		};
-		toSignupLink.addHandler('click', clickHandler);
+		toSignupLink.addHandler(
+			toSignupLink.htmlElement,
+			'click',
+			clickHandler,
+		);
 
 		const titleLink = login.htmlElement.querySelector('a.title-link');
 		// Click on title handler

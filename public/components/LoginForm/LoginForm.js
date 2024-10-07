@@ -1,17 +1,15 @@
 import Input from '../Input/Input.js';
 import FormButton from '../FormButton/FormButton.js';
 import FormLink from '../FormLink/FormLink.js';
+import BaseComponent from '../BaseComponent.js';
 
-export default class LoginForm {
-	#config = {};
+export default class LoginForm extends BaseComponent {
 	#configInputs;
 	#configButton;
 	#inputs = [];
-	#parent;
 	#className;
 	#items = {};
 	#id;
-	#handlers = {};
 	/**
 	 * constructor of instance LoginForm
 	 *
@@ -19,10 +17,9 @@ export default class LoginForm {
 	 * @param {HTMLElement} parent - the parent HTML element
 	 */
 	constructor(config, parent) {
-		this.#config = config;
+		super(config, parent);
 		this.#configInputs = config.inputs;
 		this.#configButton = config.button;
-		this.#parent = parent;
 		this.#className = 'form';
 		this.#id = 'formLogin';
 	}
@@ -37,36 +34,10 @@ export default class LoginForm {
 	}
 
 	/**
-	 * Getting html element which contains the form
-	 *
-	 * @returns {HTMLElement} - HTML element of form
-	 */
-	get htmlElement() {
-		return this.#parent.querySelector(
-			`div[data-section="${this.#config.section}"]`,
-		);
-	}
-
-	/**
 	 * Getting items of this element
 	 */
 	get items() {
 		return this.#items;
-	}
-
-	/**
-	 * Adding event handler
-	 * @param {HTMLElement} target
-	 * @param {string} event - some event
-	 * @param {Function} handler - function handler of event
-	 */
-	addHandler(target, event, handler) {
-		this.#handlers[`${target.className}-${event}`] = {
-			target,
-			event,
-			handler,
-		};
-		target.addEventListener(event, handler);
 	}
 
 	/**
@@ -75,32 +46,31 @@ export default class LoginForm {
 	 * @returns {string} - HTML string of form
 	 */
 	render() {
-		this.configInputsItems.forEach(([section, value]) => {
-			const input = new Input({ section, ...value });
-			this.#items[section] = input;
+		this.configInputsItems.forEach(([key, value]) => {
+			const input = new Input({ key, ...value });
+			this.#items[key] = input;
 			this.#inputs.push(input);
 		});
 		const button = new FormButton({ ...this.#configButton });
 		this.#items.button = button;
-		const toSignupLink = new FormLink(this.#config.toSignupLink);
+		const toSignupLink = new FormLink(this.config.toSignupLink);
 		this.#items.toSignupLink = toSignupLink;
 
 		const template = Handlebars.templates['LoginForm.hbs'];
 		const html = template({
 			inputs: this.#inputs.map((input) => input.render()),
 			className: this.#className,
-			section: this.#config.section,
+			key: this.config.key,
 			id: this.#id,
 			button: button.render(),
 			toSignupLink: toSignupLink.render(),
 		});
-		this.#parent.innerHTML += html;
-		const itemsParent = this.htmlElement.querySelector('form');
-		button.parent = itemsParent;
+		this.parent.htmlElement.innerHTML += html;
+		button.appendToComponent(this);
 		this.#inputs.forEach((input) => {
-			input.parent = itemsParent;
+			input.appendToComponent(this);
 		});
-		toSignupLink.parent = itemsParent;
+		toSignupLink.appendToComponent(this);
 
 		return html;
 	}
@@ -121,15 +91,5 @@ export default class LoginForm {
 	 */
 	clearError() {
 		this.htmlElement.querySelector('.error-message').textContent = '';
-	}
-
-	/**
-	 * Removing the login form and event handlers
-	 */
-	remove() {
-		Object.entries(this.#handlers).forEach(([, obj]) => {
-			obj.target.removeEventListener(obj.event, obj.handler);
-		});
-		this.htmlElement.remove();
 	}
 }
