@@ -56,7 +56,10 @@ export default class BaseComponent {
 			const html = this.#parent.htmlElement.querySelector(
 				`[data-key="${this.key}"]`,
 			);
-			return html;
+			if (html) {
+				return html;
+			}
+			throw new Error('Component not found');
 		}
 		throw new Error('Component has no parent');
 	}
