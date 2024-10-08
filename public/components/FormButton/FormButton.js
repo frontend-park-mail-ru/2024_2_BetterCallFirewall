@@ -1,11 +1,10 @@
+import BaseComponent from '../BaseComponent.js';
+
 /**
  * Class for form button
  */
-export default class FormButton {
-	#config;
+export default class FormButton extends BaseComponent {
 	#className;
-	#handlers = {};
-	#parent;
 	/**
 	 * Instance of FormButton
 	 *
@@ -13,26 +12,8 @@ export default class FormButton {
 	 * @param {HTMLElement} parent
 	 */
 	constructor(config, parent) {
-		this.#config = config;
-		this.#parent = parent;
+		super(config, parent);
 		this.#className = 'form-button';
-	}
-
-	/**
-	 * Setting parent to element
-	 * @param {HTMLElement} parent
-	 */
-	set parent(parent) {
-		this.#parent = parent;
-	}
-
-	/**
-	 * Getting html element
-	 */
-	get htmlElement() {
-		return this.#parent.querySelector(
-			`button[data-section="${this.#config.section}"`,
-		);
 	}
 
 	/**
@@ -43,32 +24,9 @@ export default class FormButton {
 	render() {
 		const template = Handlebars.templates['FormButton.hbs'];
 		const html = template({
-			...this.#config,
+			...this.config,
 			className: this.#className,
 		});
 		return html;
-	}
-
-	/**
-	 * Adding event handler
-	 *
-	 * @param {string} event - some event
-	 * @param {Function} handler - function handler of event
-	 */
-	addHandler(event, handler) {
-		this.htmlElement.addEventListener(event, handler);
-		this.#handlers[`${event}`] = {
-			event,
-			handler,
-		};
-	}
-
-	/**
-	 * Removing all handlers from button
-	 */
-	remove() {
-		Object.entries(this.#handlers).forEach(([, obj]) => {
-			this.htmlElement.removeEventListener(`${obj.event}`, obj.handler);
-		});
 	}
 }

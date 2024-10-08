@@ -1,24 +1,19 @@
+import BaseComponent from '../BaseComponent.js';
 import MenuLink from '../MenuLink/MenuLink.js';
 
 /**
  * Class to menu navigation
  */
-export default class Menu {
-	#config;
-	#parent;
-	#className;
+export default class Menu extends BaseComponent {
 	#links = [];
-	#handlers = {};
+
 	/**
-	 * Instance of Menu
-	 *
+	 * Создает новый компонент меню
 	 * @param {Object} config
-	 * @param {HTMLElement} parent
+	 * @param {BaseComponent} parent
 	 */
 	constructor(config, parent) {
-		this.#config = config;
-		this.#parent = parent;
-		this.#className = 'menu';
+		super(config, parent);
 	}
 
 	/**
@@ -26,14 +21,9 @@ export default class Menu {
 	 * @returns {ArrayLike<[string, Object]}
 	 */
 	get linksConfig() {
-		return Object.entries(this.#config.links);
+		return Object.entries(this.config.links);
 	}
-	/**
-	 * Getting html element
-	 */
-	get htmlElement() {
-		return this.#parent.querySelector(`div.${this.#className}`);
-	}
+
 	/**
 	 * Rendering menu and add to parent elem
 	 *
@@ -46,50 +36,14 @@ export default class Menu {
 		});
 		const template = Handlebars.templates['Menu.hbs'];
 		const html = template({
-			className: this.#className,
-			title: this.#config.title,
+			...this.config,
+			title: this.config.title,
 			links: this.#links.map((link) => link.render()),
 		});
-		this.#parent.innerHTML += html;
+		this.parent.htmlElement.innerHTML += html;
 		this.#links.forEach((link) => {
 			link.parent = this.htmlElement;
 		});
 		return html;
-	}
-	/**
-	 * Adding event handler to target
-	 *
-	 * @param {HTMLElement} target - main element to add handler
-	 * @param {string} event
-	 * @param {(Event) => {}} handler
-	 */
-	addHandler(target, event, handler) {
-		target.addEventListener(event, handler);
-		this.#handlers[`${target.dataset['section']}-${event}`] = {
-			target,
-			event,
-			handler,
-		};
-	}
-	/**
-	 * Deleting all event handlers
-	 */
-	removeHandlers() {
-		Object.entries(this.#handlers).forEach(
-			([key, { target, event, handler }]) => {
-				target.removeEventListener(event, handler);
-				delete this.#handlers[key];
-			},
-		);
-	}
-	/**
-	 * Deleting Menu element and handlers
-	 */
-	remove() {
-		this.removeHandlers();
-		this.#links.forEach((link) => {
-			link.remove();
-		});
-		this.htmlElement.remove();
 	}
 }

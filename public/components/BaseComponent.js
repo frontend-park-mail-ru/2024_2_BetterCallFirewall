@@ -15,9 +15,12 @@ export default class BaseComponent {
 	 * @param {ComponentConfig} config
 	 * @param {BaseComponent} parent
 	 */
-	constructor(config, parent = null) {
+	constructor(config = null, parent = null) {
 		this.#config = config;
-		this.#parent = parent;
+		if (parent) {
+			this.#parent = parent;
+			this.appendToComponent(parent);
+		}
 	}
 
 	/**
@@ -29,12 +32,31 @@ export default class BaseComponent {
 	}
 
 	/**
+	 * Возвращает конфигурационный объект компонента
+	 * @returns {Object}
+	 */
+	get config() {
+		return this.#config;
+	}
+
+	/**
+	 * Возвращает родителя компонента
+	 * @returns {BaseComponent}
+	 */
+	get parent() {
+		return this.#parent;
+	}
+
+	/**
 	 * Возвращает компонент в виде html-элемента
 	 * @returns {HTMLElement}
 	 */
-	get html() {
+	get htmlElement() {
 		if (this.#parent) {
-			return this.#parent.html.querySelector(`data-key="${this.key}"`);
+			const html = this.#parent.htmlElement.querySelector(
+				`[data-key="${this.key}"]`,
+			);
+			return html;
 		}
 		throw new Error('Component has no parent');
 	}
@@ -49,7 +71,7 @@ export default class BaseComponent {
 	}
 
 	/**
-	 * Добавляет компонент к html-элементу parent
+	 * Добавляет компонент к html-элементу parent. Применять для root, либо вручную добавлять этот компонент в качестве ребенка
 	 * @param {HTMLElement} parent
 	 */
 	appendToHTML(parent) {
@@ -72,13 +94,21 @@ export default class BaseComponent {
 	 */
 	addHandler(target, event, handler) {
 		target.addEventListener(event, handler);
-		this.#handlers[
-			`${target.className}-${target.dataset['key']}-${event}`
-		] = {
-			target,
-			event,
-			handler,
-		};
+		if (target.dataset && target.dataset['key']) {
+			this.#handlers[
+				`${target.className}-${target.dataset['key']}-${event}`
+			] = {
+				target,
+				event,
+				handler,
+			};
+		} else {
+			this.#handlers[`${target.className}-${event}`] = {
+				target,
+				event,
+				handler,
+			};
+		}
 	}
 
 	/**
@@ -91,5 +121,19 @@ export default class BaseComponent {
 				delete this.#handlers[key];
 			},
 		);
+	}
+
+	/**
+	 * Удаляет компонент и всех его потомков
+	 */
+	remove() {
+		this.removeHandlers();
+		Object.entries(this.#children).forEach(([, child]) => {
+			child.remove();
+		});
+		this.htmlElement.outerHTML = '';
+		if (this.parent) {
+			delete this.parent.#children[this.key];
+		}
 	}
 }

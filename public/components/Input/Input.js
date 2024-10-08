@@ -1,10 +1,9 @@
+import BaseComponent from '../BaseComponent.js';
+
 /**
  * Class of input
  */
-export default class Input {
-	#config;
-	#parent;
-
+export default class Input extends BaseComponent {
 	/**
 	 * Instance of Input
 	 *
@@ -12,26 +11,8 @@ export default class Input {
 	 * @param {HTMLElement} parent
 	 */
 	constructor(config, parent) {
-		this.#config = config;
-		this.#parent = parent;
-		this.#config.className = 'input-block';
-	}
-
-	/**
-	 * Setting parent to element
-	 * @param {HTMLElement} parent
-	 */
-	set parent(parent) {
-		this.#parent = parent;
-	}
-
-	/**
-	 * Getting html element
-	 */
-	get htmlElement() {
-		return this.#parent.querySelector(
-			`div[data-section="${this.#config.section}"]`,
-		);
+		super(config, parent);
+		this.config.className = 'input-block';
 	}
 
 	/**
@@ -41,14 +22,7 @@ export default class Input {
 	 */
 	render() {
 		const template = Handlebars.templates['Input.hbs'];
-		const html = template(this.#config);
+		const html = template(this.config);
 		return html;
-	}
-
-	/**
-	 * Removing input from parent element
-	 */
-	remove() {
-		this.#parent.removeChild(this.htmlElement);
 	}
 }

@@ -3,6 +3,16 @@ import ContentMessage from '../ContentMessage/ContentMessage.js';
 
 export default class Content extends Container {
 	#message;
+
+	/**
+	 * Создает новый компонент Content
+	 * @param {Object} config
+	 * @param {BaseComponent} parent
+	 */
+	constructor(config, parent) {
+		super(config, parent);
+	}
+
 	/**
 	 * Prints message at the end of content
 	 * @param {string} message

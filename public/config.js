@@ -5,22 +5,27 @@ const DEBUG = false;
 
 const homeConfig = {
 	menu: {
+		key: 'menu',
 		title: {
+			key: 'title',
 			section: 'title',
 			text: 'Vilka',
 			href: PAGE_LINKS.feed,
 		},
 		links: {
 			feed: {
+				key: 'feed',
 				text: 'Лента',
 				href: PAGE_LINKS.feed,
 			},
 		},
 	},
 	main: {
+		key: 'main',
 		className: 'main',
 		section: 'main',
 		header: {
+			key: 'header',
 			search: {
 				placeholder: 'Поиск',
 				img: 'img/search.svg',
@@ -31,10 +36,12 @@ const homeConfig = {
 			},
 		},
 		content: {
+			key: 'content',
 			className: 'content',
 			section: 'content',
 		},
 		aside: {
+			key: 'aside',
 			className: 'aside',
 			section: 'aside',
 		},
@@ -42,6 +49,7 @@ const homeConfig = {
 };
 
 const signupConfig = {
+	key: 'signupForm',
 	className: 'signup-form',
 	section: 'signup',
 	inputs: {
@@ -77,9 +85,11 @@ const signupConfig = {
 		},
 	},
 	button: {
+		key: 'submitButton',
 		text: 'Зарегистрироваться!',
 	},
 	toLoginLink: {
+		key: 'toLogin',
 		href: PAGE_LINKS.login,
 		text: 'Уже есть аккаунт? Войти!',
 		section: 'toLogin',
@@ -87,6 +97,7 @@ const signupConfig = {
 };
 
 const loginConfig = {
+	key: 'loginForm',
 	className: 'login-form',
 	section: 'login',
 	inputs: {
@@ -104,10 +115,12 @@ const loginConfig = {
 		},
 	},
 	button: {
+		key: 'submitButton',
 		section: 'submit',
 		text: 'Войти!',
 	},
 	toSignupLink: {
+		key: 'toSignupLink',
 		href: PAGE_LINKS.signup,
 		text: 'Нет аккаунта? Зарегистрируйся!',
 		section: 'toSignup',
