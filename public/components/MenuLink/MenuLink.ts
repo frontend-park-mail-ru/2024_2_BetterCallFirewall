@@ -10,7 +10,7 @@ export default class MenuLink {
 	 * @param {Object} config
 	 * @param {HTMLElement} parent - parent element
 	 */
-	constructor(config, parent) {
+	constructor(config: any, parent: HTMLElement) {
 		this.#config = config;
 		this.#parent = parent;
 		this.#config['className'] = 'menu-link';
@@ -20,7 +20,7 @@ export default class MenuLink {
 	 * Setting parent to element
 	 * @param {HTMLElement} parent
 	 */
-	set parent(parent) {
+	set parent(parent: HTMLElement) {
 		this.#parent = parent;
 	}
 

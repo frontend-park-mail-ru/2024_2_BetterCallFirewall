@@ -1,5 +1,5 @@
-import BaseComponent from '../BaseComponent.ts';
-import MenuLink from '../MenuLink/MenuLink.ts';
+import BaseComponent from '../BaseComponent';
+import MenuLink from '../MenuLink/MenuLink';
 
 /**
  * Class to menu navigation
@@ -12,7 +12,7 @@ export default class Menu extends BaseComponent {
 	 * @param {Object} config
 	 * @param {BaseComponent} parent
 	 */
-	constructor(config, parent) {
+	constructor(config: any, parent: HTMLElement) {
 		super(config, parent);
 	}
 
@@ -31,7 +31,7 @@ export default class Menu extends BaseComponent {
 	 */
 	render() {
 		this.linksConfig.forEach(([key, value]) => {
-			const link = new MenuLink({ key, ...value });
+			const link = new MenuLink({ key, ...value }, this.htmlElement);
 			this.#links.push(link);
 		});
 		const template = Handlebars.templates['Menu.hbs'];

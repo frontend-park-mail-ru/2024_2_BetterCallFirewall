@@ -13,7 +13,7 @@ export default class LoginPage extends BasePage {
 
 		const loginForm = login.htmlElement.querySelector('form');
 		// Submit login form handler
-		const submitHandler = (event) => {
+		const submitHandler = (event: Event) => {
 			event.preventDefault();
 			login.clearError();
 			const validator = new Validator();
@@ -22,7 +22,7 @@ export default class LoginPage extends BasePage {
 				Ajax.sendForm(
 					this.app.config.URL.login,
 					data,
-					(response, error) => {
+					(response: Response, error: any) => {
 						if (error) {
 							login.printError('Что-то пошло не так');
 							return;
@@ -45,7 +45,7 @@ export default class LoginPage extends BasePage {
 
 		const toSignupLink = login.items.toSignupLink;
 		// Click on to signup link handler
-		const clickHandler = (event) => {
+		const clickHandler = (event: Event) => {
 			event.preventDefault();
 			this.app.goToPage(PAGE_LINKS.signup, true);
 		};
@@ -57,7 +57,7 @@ export default class LoginPage extends BasePage {
 
 		const titleLink = login.htmlElement.querySelector('a.title-link');
 		// Click on title handler
-		const titleLinkClickHandler = (event) => {
+		const titleLinkClickHandler = (event: Event) => {
 			event.preventDefault();
 			this.app.goToPage(PAGE_LINKS.feed, true);
 		};

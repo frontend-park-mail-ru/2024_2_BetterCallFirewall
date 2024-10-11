@@ -6,7 +6,7 @@ export default class FormLink extends BaseComponent {
 	 * @param {Object} config
 	 * @param {HTMLElement} parent
 	 */
-	constructor(config, parent) {
+	constructor(config: any, parent: HTMLElement) {
 		super(config, parent);
 	}
 

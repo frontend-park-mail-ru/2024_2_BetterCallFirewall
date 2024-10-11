@@ -18,7 +18,7 @@ export default class SignupForm extends BaseComponent {
 	 * @param {Object} config
 	 * @param {HTMLElement} parent
 	 */
-	constructor(config, parent) {
+	constructor(config: any, parent: HTMLElement) {
 		super(config, parent);
 		const configInputs = config.inputs;
 		const configButton = config.button;
@@ -58,7 +58,7 @@ export default class SignupForm extends BaseComponent {
 		const button = new FormButton({
 			key: 'submit',
 			...this.#configButton,
-		}, this);
+		}, this.htmlElement);
 		this.#items.button = button;
 		const toLoginLink = new FormLink(this.config.toLoginLink, this.htmlElement);
 		this.#items.toLoginLink = toLoginLink;
@@ -85,7 +85,7 @@ export default class SignupForm extends BaseComponent {
 	 * Printing error above submit button
 	 * @param {string} error
 	 */
-	printError(error) {
+	printError(error: string) {
 		if (error) {
 			this.htmlElement.querySelector('.error-message').textContent =
 				error;

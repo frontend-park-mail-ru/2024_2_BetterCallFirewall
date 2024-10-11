@@ -10,7 +10,7 @@ export default class Container extends BaseComponent {
 	 * @param {Object} config
 	 * @param {BaseComponent} parent
 	 */
-	constructor(config, parent) {
+	constructor(config: any, parent: HTMLElement) {
 		super(config, parent);
 	}
 

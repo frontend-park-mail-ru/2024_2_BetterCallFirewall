@@ -9,7 +9,7 @@ export default class Content extends Container {
 	 * @param {Object} config
 	 * @param {BaseComponent} parent
 	 */
-	constructor(config, parent) {
+	constructor(config: any, parent: HTMLElement) {
 		super(config, parent);
 	}
 

@@ -58,7 +58,7 @@ export default class HomePage extends BasePage {
 		) as HTMLElement;
 		// Logout click handler
 		const logoutButtonHandler = () => {
-			Ajax.post(this.app.config.URL.logout, {}, (data, error) => {
+			Ajax.post(this.app.config.URL.logout, {}, (data: Response, error: any) => {
 				if (!error) {
 					this.app.goToPage(PAGE_LINKS.login, true);
 				}

@@ -10,7 +10,7 @@ export default class Post {
 	 * @param {Object} data - post data
 	 * @param {HTMLElement} parent - parent element
 	 */
-	constructor(data, parent) {
+	constructor(data: any, parent: HTMLElement) {
 		this.#data = data;
 		this.#parent = parent;
 	}

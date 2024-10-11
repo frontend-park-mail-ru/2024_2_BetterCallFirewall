@@ -18,7 +18,7 @@ export default class LoginForm extends BaseComponent {
 	 * @param {Object} config - configuration for the form
 	 * @param {HTMLElement} parent - the parent HTML element
 	 */
-	constructor(config, parent) {
+	constructor(config: any, parent: HTMLElement) {
 		super(config, parent);
 		this.#configInputs = config.inputs;
 		this.#configButton = config.button;
@@ -81,7 +81,7 @@ export default class LoginForm extends BaseComponent {
 	 * Printing error above submit button
 	 * @param {string} error
 	 */
-	printError(error) {
+	printError(error: string) {
 		if (error) {
 			this.htmlElement.querySelector('.error-message').textContent =
 				error;

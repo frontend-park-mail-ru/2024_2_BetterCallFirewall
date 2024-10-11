@@ -10,7 +10,7 @@ export default class Header extends BaseComponent {
 	 * @param {Object} config
 	 * @param {HTMLElement} parent
 	 */
-	constructor(config, parent) {
+	constructor(config: any, parent: HTMLElement) {
 		super(config, parent);
 	}
 
