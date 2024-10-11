@@ -4,8 +4,8 @@ import {
     homePageTypes,
     LoginPage,
     SignupPage,
-} from './pages/index.ts';
-import { ConfigInterface } from './config.ts'
+} from './pages/index';
+import { ConfigInterface } from './config'
 
 /**
  * Links to pages

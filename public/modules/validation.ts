@@ -1,4 +1,4 @@
-import { Input } from '../config.ts'
+import { Input } from '../config'
 export default class Validator {
 	/**
 	 * Deleting content in elements with class '.error'

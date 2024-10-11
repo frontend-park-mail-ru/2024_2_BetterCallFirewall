@@ -1,5 +1,5 @@
-import Container from '../Container/Container.ts';
-import ContentMessage from '../ContentMessage/ContentMessage.ts';
+import Container from '../Container/Container';
+import ContentMessage from '../ContentMessage/ContentMessage';
 
 export default class Content extends Container {
 	#message;

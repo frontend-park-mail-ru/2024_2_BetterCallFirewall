@@ -1,9 +1,9 @@
-import Input from '../Input/Input.js';
-import FormButton from '../FormButton/FormButton.js';
-import FormLink from '../FormLink/FormLink.js';
-import BaseComponent from '../BaseComponent.js';
+import Input from '../Input/Input';
+import FormButton from '../FormButton/FormButton';
+import FormLink from '../FormLink/FormLink';
+import BaseComponent from '../BaseComponent';
 
-import { Input as InputConfig } from '../../config.ts';
+import { Input as InputConfig } from '../../config';
 
 export default class LoginForm extends BaseComponent {
 	#configInputs: { [key: string]: InputConfig };

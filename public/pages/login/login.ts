@@ -1,8 +1,8 @@
-import BasePage from '../basePage.ts';
-import Ajax from '../../modules/ajax.ts';
-import Validator from '../../modules/validation.ts';
-import { LoginForm } from '../../components/index.ts';
-import { PAGE_LINKS } from '../../app.ts';
+import BasePage from '../basePage';
+import Ajax from '../../modules/ajax';
+import Validator from '../../modules/validation';
+import { LoginForm } from '../../components/index';
+import { PAGE_LINKS } from '../../app';
 
 export default class LoginPage extends BasePage {
 	render() {

@@ -1,10 +1,10 @@
-import Container from './Container/Container.ts';
-import Content from './Content/Content.ts';
-import Header from './Header/Header.ts';
-import Menu from './Menu/Menu.ts';
-import Post from './Post/Post.ts';
-import LoginForm from './LoginForm/LoginForm.ts';
-import Root from './Root/Root.ts';
-import SignupForm from './SignupForm/SignupForm.ts';
+import Container from './Container/Container';
+import Content from './Content/Content';
+import Header from './Header/Header';
+import Menu from './Menu/Menu';
+import Post from './Post/Post';
+import LoginForm from './LoginForm/LoginForm';
+import Root from './Root/Root';
+import SignupForm from './SignupForm/SignupForm';
 
 export { Container, Content, Header, Menu, Post, LoginForm, Root, SignupForm };

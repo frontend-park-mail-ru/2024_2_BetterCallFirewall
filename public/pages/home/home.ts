@@ -1,14 +1,14 @@
-import { PAGE_LINKS } from '../../app.ts';
+import { PAGE_LINKS } from '../../app';
 import {
 	Container,
 	Content,
 	Header,
 	Menu,
 	Post,
-} from '../../components/index.ts';
-import Ajax from '../../modules/ajax.ts';
-import BasePage from '../basePage.ts';
-import { MainConfig } from '../../config.ts'
+} from '../../components/index';
+import Ajax from '../../modules/ajax';
+import BasePage from '../basePage';
+import { MainConfig } from '../../config'
 
 export const homePageTypes = {
 	feed: 'feed',

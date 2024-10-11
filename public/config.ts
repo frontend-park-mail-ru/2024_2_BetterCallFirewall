@@ -1,5 +1,5 @@
-import { PAGE_LINKS } from './app.ts';
-import Validator from './modules/validation.ts';
+import { PAGE_LINKS } from './app';
+import Validator from './modules/validation';
 
 const DEBUG: boolean = false;
 

@@ -1,4 +1,4 @@
-import BaseComponent from '../BaseComponent.ts';
+import BaseComponent from '../BaseComponent';
 
 export default class FormLink extends BaseComponent {
 	/**
