@@ -1,8 +1,8 @@
-import BasePage from '../basePage.js';
-import Ajax from '../../modules/ajax.js';
-import Validator from '../../modules/validation.js';
-import { LoginForm } from '../../components/index.js';
-import { PAGE_LINKS } from '../../app.js';
+import BasePage from '../basePage.ts';
+import Ajax from '../../modules/ajax.ts';
+import Validator from '../../modules/validation.ts';
+import { LoginForm } from '../../components/index.ts';
+import { PAGE_LINKS } from '../../app.ts';
 
 export default class LoginPage extends BasePage {
 	render() {
@@ -17,7 +17,7 @@ export default class LoginPage extends BasePage {
 			event.preventDefault();
 			login.clearError();
 			const validator = new Validator();
-			const data = validator.validateForm(config.inputs, loginForm);
+			const data = validator.validateForm(config.inputs, loginForm as HTMLFormElement);
 			if (data) {
 				Ajax.sendForm(
 					this.app.config.URL.login,
@@ -28,7 +28,7 @@ export default class LoginPage extends BasePage {
 							return;
 						}
 						if (response.ok) {
-							this.goToPage(PAGE_LINKS.feed, true);
+							this.app.goToPage(PAGE_LINKS.feed, true); //????
 						} else {
 							const data = response.json();
 							if (data.message === 'wrong email or password') {
@@ -41,7 +41,7 @@ export default class LoginPage extends BasePage {
 				);
 			}
 		};
-		login.addHandler(loginForm, 'submit', submitHandler);
+		login.addHandler(loginForm as HTMLElement, 'submit', submitHandler);
 
 		const toSignupLink = login.items.toSignupLink;
 		// Click on to signup link handler
@@ -61,6 +61,6 @@ export default class LoginPage extends BasePage {
 			event.preventDefault();
 			this.app.goToPage(PAGE_LINKS.feed, true);
 		};
-		login.addHandler(titleLink, 'click', titleLinkClickHandler);
+		login.addHandler(titleLink as HTMLElement, 'click', titleLinkClickHandler);
 	}
 }

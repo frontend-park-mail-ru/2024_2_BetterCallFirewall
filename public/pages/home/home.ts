@@ -1,13 +1,14 @@
-import { PAGE_LINKS } from '../../app.js';
+import { PAGE_LINKS } from '../../app.ts';
 import {
 	Container,
 	Content,
 	Header,
 	Menu,
 	Post,
-} from '../../components/index.js';
-import Ajax from '../../modules/ajax.js';
-import BasePage from '../basePage.js';
+} from '../../components/index.ts';
+import Ajax from '../../modules/ajax.ts';
+import BasePage from '../basePage.ts';
+import { MainConfig } from '../../config.ts'
 
 export const homePageTypes = {
 	feed: 'feed',
@@ -18,7 +19,7 @@ export default class HomePage extends BasePage {
 	 *
 	 * @param {string} pageType
 	 */
-	render(pageType) {
+	render(pageType: string): void {
 		switch (pageType) {
 			case homePageTypes.feed:
 				this.#renderFeed();
@@ -28,8 +29,8 @@ export default class HomePage extends BasePage {
 		}
 	}
 
-	#renderFeed() {
-		const mainConfig = this.app.config.homeConfig.main;
+	#renderFeed(): void {
+		const mainConfig: MainConfig = this.app.config.homeConfig.main;
 
 		this.#renderMenu();
 
@@ -52,9 +53,9 @@ export default class HomePage extends BasePage {
 		aside.render();
 		this.structure.main.aside = aside;
 
-		const logoutButton = header.htmlElement.querySelector(
+		const logoutButton: HTMLElement = header.htmlElement.querySelector(
 			'.header-profile-logout',
-		);
+		) as HTMLElement;
 		// Logout click handler
 		const logoutButtonHandler = () => {
 			Ajax.post(this.app.config.URL.logout, {}, (data, error) => {
@@ -107,7 +108,7 @@ export default class HomePage extends BasePage {
 				}
 			};
 		};
-		content.addHandler(document, 'scroll', createScrollHandler());
+		content.addHandler(document.body, 'scroll', createScrollHandler());
 	}
 
 	/**
@@ -125,7 +126,7 @@ export default class HomePage extends BasePage {
 
 		// Click on feed link handler
 		menu.addHandler(
-			menu.htmlElement.querySelector('a[data-key="feed"]'),
+			menu.htmlElement.querySelector('a[data-key="feed"]') as HTMLElement,
 			'click',
 			(event) => {
 				event.preventDefault();
@@ -136,7 +137,7 @@ export default class HomePage extends BasePage {
 		menu.addHandler(
 			menu.htmlElement.querySelector(
 				`a[data-key=${menuConfig.title.key}]`,
-			),
+			) as HTMLElement,
 			'click',
 			(event) => {
 				event.preventDefault();
@@ -179,7 +180,7 @@ export default class HomePage extends BasePage {
 	 *
 	 * @returns {Promise<Object>}
 	 */
-	#addPostPromise() {
+	#addPostPromise(): Promise<any> {
 		return Ajax.getPromise(this.app.config.URL.post);
 	}
 }

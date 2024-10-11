@@ -1,5 +1,5 @@
-import BaseComponent from '../BaseComponent.js';
-import MenuLink from '../MenuLink/MenuLink.js';
+import BaseComponent from '../BaseComponent.ts';
+import MenuLink from '../MenuLink/MenuLink.ts';
 
 /**
  * Class to menu navigation

@@ -1,26 +1,28 @@
+import { Input } from '../config.ts'
 export default class Validator {
 	/**
 	 * Deleting content in elements with class '.error'
 	 *
-	 * @param {HTMLElement} parentElem - parent element of element with class '.error'
+	 * @param {HTMLInputElement} parentElem - parent element of element with class '.error'
 	 */
-	errorsDelete(parentElem) {
-		const errors = parentElem.querySelectorAll('.error');
+	errorsDelete(parentElem: HTMLElement): void {
+		const errors: NodeListOf<HTMLElement> = parentElem.querySelectorAll('.error');
 		errors.forEach((error) => (error.textContent = ''));
 	}
 
 	/**
 	 * Validation of password confirmation
 	 *
-	 * @param {HTMLElement} confirm - Confirmation of password
+	 * @param {HTMLInputElement} confirm - Confirmation of password
 	 * @returns {string} - returns error
 	 */
-	static validateConfirmation(confirm) {
+	static validateConfirmation(confirm: HTMLInputElement): string {
 		const confirmValue = confirm.value;
 		if (!confirmValue) {
 			return 'Пароль не может быть пустым';
 		}
-		const password = document.getElementById('password').value;
+        const passwordInput: HTMLInputElement = document.getElementById('password') as HTMLInputElement;
+		const password: string = passwordInput?.value;
 		if (confirmValue !== password) {
 			return 'Пароли не совпадают';
 		}
@@ -33,8 +35,8 @@ export default class Validator {
 	 * @param {HTMLElement} password
 	 * @returns {String} - return error
 	 */
-	static validatePassword(password) {
-		const passwordValue = password.value;
+	static validatePassword(password: HTMLInputElement): string {
+		const passwordValue: string = password.value;
 		if (!passwordValue) {
 			return 'Пароль не может быть пустым';
 		}
@@ -53,9 +55,9 @@ export default class Validator {
 	 * @param {HTMLElement} email
 	 * @returns {String} - return error
 	 */
-	static validateEmail(email) {
-		const emailRegex = /^[\w-.]+@([\w-]+\.)\w{2,4}$/;
-		const emailValue = email.value.trim();
+	static validateEmail(email: HTMLInputElement): string {
+		const emailRegex: RegExp = /^[\w-.]+@([\w-]+\.)\w{2,4}$/;
+		const emailValue: string = email.value.trim();
 		if (!emailValue) {
 			return 'Email не может быть пустым';
 		}
@@ -73,8 +75,8 @@ export default class Validator {
 	 * @param {HTMLElement} name
 	 * @returns {String} - return error
 	 */
-	static validateName(name) {
-		const nameValue = name.value.trim();
+	static validateName(name: HTMLInputElement): string {
+		const nameValue: string = name.value.trim();
 		if (!nameValue) {
 			return 'Поле не может быть пустым';
 		}
@@ -92,9 +94,10 @@ export default class Validator {
 	 * @param {HTMLInputElement} parentElem
 	 * @param {String} error - value to print
 	 */
-	printError(parentElem, error) {
+	printError(parentElem: HTMLInputElement, error: string): void {
 		if (error) {
-			parentElem.querySelector('.error').textContent = error;
+            const errorElem: HTMLElement = parentElem.querySelector('.error') as HTMLElement;
+			errorElem.textContent = error;
 		}
 	}
 
@@ -103,7 +106,7 @@ export default class Validator {
 	 *
 	 * @param {Object} config
 	 */
-	configItems(config) {
+	configItems(config: Record<string, Input>): Array<[string, any]> {
 		return Object.entries(config);
 	}
 
@@ -114,22 +117,22 @@ export default class Validator {
 	 * @param {HTMLElement} form
 	 * @returns {Object|null} - correct data
 	 */
-	validateForm(config, form) {
+	validateForm(config: Record<string, Input>, form: HTMLElement): any {
 		const data = {};
-		let isValid = true;
-		this.errorsDelete(form.parentNode);
+		let isValid: boolean = true;
+		this.errorsDelete(form.parentNode as HTMLElement);
 
 		const inputs = this.configItems(config);
 		inputs.forEach(([, value]) => {
-			const input = form.querySelector(`#${value.name}`);
+			const input: HTMLInputElement = form.querySelector(`#${value.name}`) as HTMLInputElement;
 			data[input.name] = input.value.trim();
 
-			const validator = value.validator;
-			const error = validator(input);
+			const validator: (name: HTMLElement) => string = value.validator;
+			const error: string = validator(input);
 			if (error) {
 				isValid = false;
 			}
-			this.printError(input.parentNode, error);
+			this.printError(input.parentNode as HTMLInputElement, error);
 		});
 
 		if (!isValid) {

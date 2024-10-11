@@ -1,31 +1,15 @@
 export default new (class Ajax {
 	/**
-	 * GET request and raise callback
-	 *
-	 * @param {string} url
-	 * @param {function} callback
-	 */
-	get(url, callback) {
-		const request = new Request(url, {
-			method: 'get',
-			credentials: 'include',
-		});
-		this.#ajax({
-			request,
-			callback,
-		});
-	}
-	/**
 	 * Post request with data and raising callback
 	 *
 	 * @param {string} url
 	 * @param {Object} data - sending data
 	 * @param {*} callback
 	 */
-	post(url, data, callback) {
+	post(url: string, data: any, callback: any) {
 		const request = new Request(url, {
 			method: 'post',
-			body: data,
+			body: JSON.stringify(data),
 			credentials: 'include',
 		});
 		this.#ajax({
@@ -37,9 +21,9 @@ export default new (class Ajax {
 	 * Get request and promise with resolving by data
 	 *
 	 * @param {string} url
-	 * @returns {Promise<Object>}
+	 * @returns {Promise<any>}
 	 */
-	getPromise(url) {
+	getPromise(url: string): Promise<any> {
 		const request = new Request(url, {
 			method: 'get',
 			credentials: 'include',
@@ -55,7 +39,7 @@ export default new (class Ajax {
 	 * @param {FormData} formData
 	 * @param {function} callback
 	 */
-	sendForm(url, formData, callback) {
+	sendForm(url: string, formData: FormData, callback: any) {
 		const request = new Request(url, {
 			method: 'POST',
 			body: JSON.stringify(formData),
@@ -73,7 +57,7 @@ export default new (class Ajax {
 	 *
 	 * @param {Object} config
 	 */
-	#ajax(config) {
+	#ajax(config: any) {
 		fetch(config.request)
 			.then((response) => response.json())
 			.then((data) => config.callback(data, null))
@@ -85,13 +69,12 @@ export default new (class Ajax {
 	 * @param {Object} config
 	 * @returns {Promise<Object>}
 	 */
-	#ajaxPromise(config) {
-		return fetch(config.request).then((response) => {
-			if (response.ok) {
-				return response.json();
-			} else {
-				throw new Error(response.statusText);
-			}
-		});
+	async #ajaxPromise(config: any): Promise<any> {
+		const response = await fetch(config.request);
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error(response.statusText);
+        }
 	}
 })();

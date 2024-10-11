@@ -17,7 +17,7 @@ export default class SignupPage extends BasePage {
 			event.preventDefault();
 			signUp.clearError();
 			const validator = new Validator();
-			const data = validator.validateForm(config.inputs, signupForm);
+			const data = validator.validateForm(config.inputs, signupForm as HTMLFormElement);
 			if (data) {
 				Ajax.sendForm(
 					this.app.config.URL.signup,
@@ -43,7 +43,7 @@ export default class SignupPage extends BasePage {
 				);
 			}
 		};
-		signUp.addHandler(signupForm, 'submit', submitHandler);
+		signUp.addHandler(signupForm as HTMLElement, 'submit', submitHandler);
 
 		const toLoginLink = signUp.items.toLoginLink;
 		// Click on title handler
@@ -59,6 +59,6 @@ export default class SignupPage extends BasePage {
 			event.preventDefault();
 			this.app.goToPage(PAGE_LINKS.feed, true);
 		};
-		signUp.addHandler(titleLink, 'click', titleLinkClickHandler);
+		signUp.addHandler(titleLink as HTMLElement, 'click', titleLinkClickHandler);
 	}
 }

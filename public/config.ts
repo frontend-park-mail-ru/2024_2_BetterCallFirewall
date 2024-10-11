@@ -1,9 +1,56 @@
-import { PAGE_LINKS } from './app.js';
-import Validator from './modules/validation.js';
+import { PAGE_LINKS } from './app.ts';
+import Validator from './modules/validation.ts';
 
-const DEBUG = false;
+const DEBUG: boolean = false;
 
-const homeConfig = {
+interface HomeConfig {
+    menu : {
+        key: string,
+        title: {
+            key: string,
+            section: string,
+            text: string,
+            href: string,
+        },
+        links: {
+            feed: {
+                key: string,
+                text: string,
+                href: string,
+            },
+        },
+    },
+    main: MainConfig,
+};
+
+export interface MainConfig {
+	key: string,
+	className: string,
+	section: string,
+	header: {
+		key: string,
+		search: {
+			placeholder: string,
+			img: string,
+		},
+		profile: {
+			logoutImg: string,
+			avatar: string,
+		},
+	},
+	content: {
+		key: string,
+		className: string,
+		section: string,
+	},
+	aside: {
+		key: string,
+		className: string,
+		section: string,
+	},
+}
+
+const homeConfig: HomeConfig = {
 	menu: {
 		key: 'menu',
 		title: {
@@ -48,7 +95,40 @@ const homeConfig = {
 	},
 };
 
-const signupConfig = {
+export interface Input {
+    type: string,
+    text: string,
+    name: string,
+    validator: (name: HTMLInputElement) => string,
+};
+
+interface FormConfig {
+    key: string,
+    className: string,
+    section: string,
+    inputs: {
+        [key: string]: Input,
+    },
+    button: {
+        key: string,
+        section: string,
+        text: string,
+    },
+    toLoginLink?: {
+        key: string,
+        href: string,
+        text: string,
+        section: string,
+    },
+    toSignupLink?: {
+        key: string,
+        href: string,
+        text: string,
+        section: string,
+    },
+};
+
+const signupConfig: FormConfig = {
 	key: 'signupForm',
 	className: 'signup-form',
 	section: 'signup',
@@ -86,6 +166,7 @@ const signupConfig = {
 	},
 	button: {
 		key: 'submitButton',
+        section: 'submit',
 		text: 'Зарегистрироваться!',
 	},
 	toLoginLink: {
@@ -96,7 +177,7 @@ const signupConfig = {
 	},
 };
 
-const loginConfig = {
+const loginConfig: FormConfig = {
 	key: 'loginForm',
 	className: 'login-form',
 	section: 'login',
@@ -127,8 +208,15 @@ const loginConfig = {
 	},
 };
 
-const root = DEBUG ? 'http://127.0.0.1:8000' : 'http://185.241.194.197:8080';
-const URL = DEBUG
+const root: string = DEBUG ? 'http://127.0.0.1:8000' : 'http://185.241.194.197:8080';
+
+interface URLInterface {
+    signup: string,
+    login: string,
+    logout: string,
+    post: string,
+};
+const URL: URLInterface = DEBUG
 	? {
 			signup: root + '/auth/signup',
 			login: root + '/auth/login',
@@ -142,7 +230,14 @@ const URL = DEBUG
 			post: root + '/api/v1/post',
 		};
 
-const config = {
+
+export interface ConfigInterface {
+    URL: URLInterface,
+    homeConfig: HomeConfig,
+    signupConfig: FormConfig,
+    loginConfig: FormConfig,
+};
+const config: ConfigInterface = {
 	URL,
 	homeConfig,
 	signupConfig,

@@ -1,29 +1,28 @@
 // eslint-disable-next-line
-import App from '../app.js';
 
 export default class BasePage {
-	#app;
-	#structure = {};
+	#app: any;
+	#structure: Record<string, any> = {};
 
 	/**
 	 *
 	 * @param {App} app
 	 */
-	constructor(app) {
+	constructor(app: any) {
 		this.#app = app;
 	}
 
 	/**
 	 * @returns {App}
 	 */
-	get app() {
+	get app(): any {
 		return this.#app;
 	}
 
 	/**
 	 * @returns {Object}
 	 */
-	get structure() {
+	get structure(): Record<string, any> {
 		return this.#structure;
 	}
 }

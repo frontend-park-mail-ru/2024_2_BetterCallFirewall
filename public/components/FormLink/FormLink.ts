@@ -1,11 +1,7 @@
-import BaseComponent from '../BaseComponent.js';
+import BaseComponent from '../BaseComponent.ts';
 
-/**
- * Class of header
- */
-export default class Header extends BaseComponent {
+export default class FormLink extends BaseComponent {
 	/**
-	 * Instance of Header
 	 *
 	 * @param {Object} config
 	 * @param {HTMLElement} parent
@@ -15,15 +11,15 @@ export default class Header extends BaseComponent {
 	}
 
 	/**
-	 * Rendering header with handlebars
+	 * Rendering form button with handlebars
 	 *
 	 * @returns {string} - generated HTML element
 	 */
 	render() {
-		const template = Handlebars.templates['Header.hbs'];
+		const template = Handlebars.templates['FormLink.hbs'];
 		const html = template(this.config);
 		if (this.parent) {
-			this.parent.htmlElement.innerHTML += html;
+			this.parent.insertAdjacentHTML('beforeend', html);
 		}
 		return html;
 	}
