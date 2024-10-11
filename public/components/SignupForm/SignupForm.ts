@@ -2,6 +2,7 @@ import FormButton from '../FormButton/FormButton';
 import Input from '../Input/Input';
 import FormLink from '../FormLink/FormLink';
 import BaseComponent from '../BaseComponent';
+import Handlebars from 'handlebars';
 
 import { Input as InputConfig } from '../../config';
 
