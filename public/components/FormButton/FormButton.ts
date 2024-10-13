@@ -13,14 +13,20 @@ export interface IFormButton extends IBaseComponent {}
  * Class for form button
  */
 export class FormButton extends BaseComponent implements IFormButton {
+	protected override config: IFormButtonConfig | null;
+
 	/**
 	 * Instance of FormButton
 	 *
 	 * @param {IFormButtonConfig} config
 	 * @param {IBaseComponent} parent
 	 */
-	constructor(config: IFormButtonConfig, parent: IBaseComponent) {
+	constructor(
+		config: IFormButtonConfig,
+		parent: IBaseComponent | null = null,
+	) {
 		super(config, parent);
+		this.config = config;
 	}
 
 	/**

@@ -96,7 +96,7 @@ app.post('/auth/login', (req, res) => {
 	} else {
 		res.status(401);
 	}
-	res.send();
+	res.send('{}');
 });
 
 app.post('/auth/signup', (req, res) => {
@@ -111,7 +111,7 @@ app.post('/auth/signup', (req, res) => {
 	};
 	users.push(user);
 	res.cookie('sessionid', user.sessionId, { maxAge: 86400000 });
-	res.send();
+	res.send('{}');
 });
 
 app.post('/auth/logout', (req, res) => {
@@ -122,7 +122,7 @@ app.post('/auth/logout', (req, res) => {
 		}
 	});
 	res.cookie('sessoinid', 0, { maxAge: -1 });
-	res.send();
+	res.send('{}');
 });
 
 app.get('/api/post', (req, res) => {
@@ -140,8 +140,12 @@ app.get('/api/post', (req, res) => {
 		res.send(JSON.stringify(body));
 	} else {
 		res.status(401);
-		res.send();
+		res.send('{}');
 	}
+});
+
+app.get('/dist/bundle.js', (req, res) => {
+	res.sendFile(path.join(__dirname, '../dist', 'bundle.js'));
 });
 
 app.get('*', (req, res) => {

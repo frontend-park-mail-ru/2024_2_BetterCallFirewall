@@ -73,13 +73,13 @@ export class LoginForm extends BaseComponent implements ILoginForm {
 			throw new Error('component has no config');
 		}
 		this.configInputsItems.forEach(([key, config]) => {
-			const input = new Input(config, this);
+			const input = new Input(config);
 			this._items[key] = input;
 			this.inputs.push(input);
 		});
-		const button = new FormButton(this.configButton, this);
+		const button = new FormButton(this.configButton);
 		this._items.button = button;
-		const toSignupLink = new FormLink(this.config.toSignupLink, this);
+		const toSignupLink = new FormLink(this.config.toSignupLink);
 		this._items.toSignupLink = toSignupLink;
 
 		const template = Handlebars.templates['LoginForm.hbs'];
@@ -90,12 +90,9 @@ export class LoginForm extends BaseComponent implements ILoginForm {
 			toSignupLink: toSignupLink.render(),
 		});
 		this.parent?.htmlElement.insertAdjacentHTML('beforeend', html);
+		this.inputs.forEach((input) => input.appendToComponent(this));
 		button.appendToComponent(this);
-		this.inputs.forEach((input) => {
-			this.addChild(input);
-		});
-		this.addChild(toSignupLink);
-
+		toSignupLink.appendToComponent(this);
 		return html;
 	}
 

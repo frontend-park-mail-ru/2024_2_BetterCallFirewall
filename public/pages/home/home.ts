@@ -1,14 +1,35 @@
-import { PAGE_LINKS } from '../../app';
-import { Container, Content, Header, Menu, Post } from '../../components/index';
+import { IMainConfig, PAGE_LINKS } from '../../app';
+import {
+	Container,
+	Content,
+	Header,
+	IContent,
+	Menu,
+	Post,
+} from '../../components/index';
 import Ajax from '../../modules/ajax';
-import BasePage from '../basePage';
-import { MainConfig } from '../../config';
+import BasePage, { IBasePage } from '../basePage';
+
+type PostData = {
+	header: string;
+	body: string;
+	created_at: string;
+};
+
+type PostResponse = {
+	data: PostData[];
+};
 
 export const homePageTypes = {
 	feed: 'feed',
 };
 
+export interface IHomePage extends IBasePage {
+	clearContent(): void;
+}
+
 export default class HomePage extends BasePage {
+	counter = 0; // Это временный костыль, пока с бэкенда не будет приходить id
 	/**
 	 *
 	 * @param {string} pageType
@@ -23,41 +44,56 @@ export default class HomePage extends BasePage {
 		}
 	}
 
+	clear(): void {
+		this.components.menu.remove();
+		this.components.main.remove();
+		this._components = {};
+	}
+
+	clearContent(): void {
+		this.components.content.remove();
+		delete this.components.content;
+	}
+
 	#renderFeed(): void {
-		const mainConfig: MainConfig = this.app.config.homeConfig.main;
+		const mainConfig: IMainConfig = this.app.config.homeConfig.main;
 
 		this.#renderMenu();
 
 		const main = new Container(mainConfig, this.app.root);
 		main.render();
-		this.structure.main = main;
+		this.components.main = main;
 
 		const header = new Header(mainConfig.header, main);
 		// Скорее всего потомок и так добавляется (надо уточнить)
 		// main.addChild(header);
 		header.render();
-		this.structure.main.header = header;
+		this.components.header = header;
 
 		const content = new Content(mainConfig.content, main);
 		// main.addChild(content);
 		content.render();
-		this.structure.main.content = content;
+		this.components.content = content;
 
 		const aside = new Container(mainConfig.aside, main);
 		// main.addChild(aside);
 		aside.render();
-		this.structure.main.aside = aside;
+		this.components.aside = aside;
 
 		const logoutButton: HTMLElement = header.htmlElement.querySelector(
 			'.header-profile-logout',
 		) as HTMLElement;
 		// Logout click handler
 		const logoutButtonHandler = () => {
-			Ajax.post(this.app.config.URL.logout, {}, (data: Response, error: any) => {
-				if (!error) {
-					this.app.goToPage(PAGE_LINKS.login, true);
-				}
-			});
+			Ajax.post(
+				this.app.config.URL.logout,
+				{},
+				(data: object | null, error: object | null) => {
+					if (!error) {
+						this.app.goToPage(PAGE_LINKS.login, true);
+					}
+				},
+			);
 		};
 		header.addHandler(logoutButton, 'click', logoutButtonHandler);
 
@@ -83,11 +119,12 @@ export default class HomePage extends BasePage {
 								({ header, body, created_at }) => {
 									const post = new Post(
 										{
+											key: (this.counter++).toString(), // Это пока что костыль
 											title: header,
 											text: body,
 											date: created_at,
 										},
-										this.structure.main.content.htmlElement,
+										this.components.content,
 									);
 									post.render();
 								},
@@ -110,13 +147,13 @@ export default class HomePage extends BasePage {
 	 * Rendering menu
 	 */
 	#renderMenu() {
-		if (this.structure.menu) {
+		if (this.components.menu) {
 			return;
 		}
 		const menuConfig = this.app.config.homeConfig.menu;
 
 		const menu = new Menu(menuConfig, this.app.root);
-		this.structure.menu = menu;
+		this.components.menu = menu;
 		menu.render();
 
 		// Click on feed link handler
@@ -125,7 +162,7 @@ export default class HomePage extends BasePage {
 			'click',
 			(event) => {
 				event.preventDefault();
-				this.app.goToPage(PAGE_LINKS.feed);
+				this.app.goToPage(PAGE_LINKS.feed, true); // true потом убрать
 			},
 		);
 		// Click on title handler
@@ -136,7 +173,7 @@ export default class HomePage extends BasePage {
 			'click',
 			(event) => {
 				event.preventDefault();
-				this.app.goToPage(PAGE_LINKS.feed);
+				this.app.goToPage(PAGE_LINKS.feed, true); // true потом убрать
 			},
 		);
 	}
@@ -146,7 +183,7 @@ export default class HomePage extends BasePage {
 	 * Filling content with posts
 	 */
 	#fillContent() {
-		const content = this.structure.main.content;
+		const content = this.components.content as IContent;
 		const promise = this.#addPostPromise();
 		promise
 			.then((body) => {
@@ -155,16 +192,18 @@ export default class HomePage extends BasePage {
 				posts.forEach((postData) => {
 					const post = new Post(
 						{
+							key: (this.counter++).toString(), // Это временный костыль
 							title: postData.header,
 							text: postData.body,
 							date: postData.created_at,
 						},
-						content.htmlElement,
+						content,
 					);
 					post.render();
 				});
 			})
-			.catch(() => {
+			.catch((error) => {
+				console.log('ошибка при загрузке постов:', error);
 				content.printMessage('Что-то пошло не так');
 				this.app.goToPage(PAGE_LINKS.login, true);
 			});
@@ -175,7 +214,7 @@ export default class HomePage extends BasePage {
 	 *
 	 * @returns {Promise<Object>}
 	 */
-	#addPostPromise(): Promise<any> {
+	#addPostPromise(): Promise<PostResponse> {
 		return Ajax.getPromise(this.app.config.URL.post);
 	}
 }

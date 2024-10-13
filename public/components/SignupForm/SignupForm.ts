@@ -27,7 +27,7 @@ export interface ISignupForm extends IBaseComponent {
 	get items(): Items;
 }
 
-export default class SignupForm extends BaseComponent {
+export class SignupForm extends BaseComponent {
 	protected override config: ISignupFormConfig | null;
 	private configInputs: ConfigInputs;
 	private configButton;
@@ -74,13 +74,13 @@ export default class SignupForm extends BaseComponent {
 			throw new Error('component has no config');
 		}
 		this.configInputsItems.forEach(([key, config]) => {
-			const input = new Input(config, this);
+			const input = new Input(config);
 			this._items[key] = input;
 			this.inputs.push(input);
 		});
-		const button = new FormButton(this.configButton, this);
+		const button = new FormButton(this.configButton);
 		this._items.button = button;
-		const toLoginLink = new FormLink(this.config.toLoginLink, this);
+		const toLoginLink = new FormLink(this.config.toLoginLink);
 		this._items.toLoginLink = toLoginLink;
 
 		const template = Handlebars.templates['SignupForm.hbs'];
@@ -91,11 +91,9 @@ export default class SignupForm extends BaseComponent {
 			toLoginLink: toLoginLink.render(),
 		});
 		this.parent?.htmlElement.insertAdjacentHTML('beforeend', html);
-		this.inputs.forEach((input) => {
-			this.addChild(input);
-		});
-		this.addChild(toLoginLink);
-
+		this.inputs.forEach((input) => input.appendToComponent(this));
+		button.appendToComponent(this);
+		toLoginLink.appendToComponent(this);
 		return html;
 	}
 

@@ -11,13 +11,16 @@ export interface IFormLinkConfig extends IBaseComponentConfig {
 export interface IFormLink extends IBaseComponent {}
 
 export class FormLink extends BaseComponent implements IFormLink {
+	protected override config: IFormLinkConfig | null;
+
 	/**
 	 *
 	 * @param {IFormLinkConfig} config
 	 * @param {IBaseComponent} parent
 	 */
-	constructor(config: IFormLinkConfig, parent: IBaseComponent) {
+	constructor(config: IFormLinkConfig, parent: IBaseComponent | null = null) {
 		super(config, parent);
+		this.config = config;
 	}
 
 	/**

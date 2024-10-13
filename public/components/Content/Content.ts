@@ -1,11 +1,11 @@
-import { IBaseComponent } from '../BaseComponent.ts';
+import { IBaseComponent } from '../BaseComponent';
 import {
 	Container,
 	IContainer,
 	IContainerConfig,
 	ContentMessage,
 	IContentMessage,
-} from '../index.ts';
+} from '../index';
 
 export interface IContentConfig extends IContainerConfig {}
 

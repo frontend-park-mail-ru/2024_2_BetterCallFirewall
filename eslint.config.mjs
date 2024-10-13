@@ -33,4 +33,11 @@ export default tseslint.config(
 			'@typescript-eslint/no-require-imports': 'off',
 		},
 	},
+	{
+		files: ['webpack.config.js'],
+		rules: {
+			'no-undef': 'off',
+			'@typescript-eslint/no-require-imports': 'off',
+		},
+	},
 );

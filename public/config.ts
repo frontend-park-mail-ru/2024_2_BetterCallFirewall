@@ -1,61 +1,14 @@
-import { PAGE_LINKS } from './app';
+import { IAppConfig, IHomeConfig, PAGE_LINKS, URLInterface } from './app';
+import { ILoginFormConfig, ISignupFormConfig } from './components';
 import Validator from './modules/validation';
 
 const DEBUG: boolean = false;
 
-interface HomeConfig {
-	menu: {
-		key: string;
-		title: {
-			key: string;
-			section: string;
-			text: string;
-			href: string;
-		};
-		links: {
-			feed: {
-				key: string;
-				text: string;
-				href: string;
-			};
-		};
-	};
-	main: MainConfig;
-}
-
-export interface MainConfig {
-	key: string;
-	className: string;
-	section: string;
-	header: {
-		key: string;
-		search: {
-			placeholder: string;
-			img: string;
-		};
-		profile: {
-			logoutImg: string;
-			avatar: string;
-		};
-	};
-	content: {
-		key: string;
-		className: string;
-		section: string;
-	};
-	aside: {
-		key: string;
-		className: string;
-		section: string;
-	};
-}
-
-const homeConfig: HomeConfig = {
+const homeConfig: IHomeConfig = {
 	menu: {
 		key: 'menu',
 		title: {
 			key: 'title',
-			section: 'title',
 			text: 'Vilka',
 			href: PAGE_LINKS.feed,
 		},
@@ -73,84 +26,54 @@ const homeConfig: HomeConfig = {
 		section: 'main',
 		header: {
 			key: 'header',
-			search: {
-				placeholder: 'Поиск',
-				img: 'img/search.svg',
-			},
 			profile: {
-				logoutImg: 'img/logout.svg',
 				avatar: 'img/avatar.png',
 			},
 		},
 		content: {
 			key: 'content',
 			className: 'content',
-			section: 'content',
 		},
 		aside: {
 			key: 'aside',
 			className: 'aside',
-			section: 'aside',
 		},
 	},
 };
 
-interface FormConfig {
-	key: string;
-	className: string;
-	section: string;
-	inputs: {
-		[key: string]: Input;
-	};
-	button: {
-		key: string;
-		section: string;
-		text: string;
-	};
-	toLoginLink?: {
-		key: string;
-		href: string;
-		text: string;
-		section: string;
-	};
-	toSignupLink?: {
-		key: string;
-		href: string;
-		text: string;
-		section: string;
-	};
-}
-
-const signupConfig: FormConfig = {
+const signupConfig: ISignupFormConfig = {
 	key: 'signupForm',
-	className: 'signup-form',
-	section: 'signup',
 	inputs: {
 		firstName: {
+			key: 'firstName',
 			type: 'text',
 			text: 'Имя',
 			name: 'first_name',
 			validator: Validator.validateName,
 		},
 		secondName: {
+			key: 'secondName',
 			type: 'text',
 			text: 'Фамилия',
 			name: 'second_name',
 			validator: Validator.validateName,
 		},
 		email: {
+			key: 'email',
 			type: 'text',
 			text: 'Email',
 			name: 'email',
 			validator: Validator.validateEmail,
 		},
 		password: {
+			key: 'password',
 			type: 'password',
 			text: 'Пароль',
 			name: 'password',
 			validator: Validator.validatePassword,
 		},
 		passwordAgain: {
+			key: 'passwordAgain',
 			type: 'password',
 			text: 'Повторите пароль',
 			name: 'password_again',
@@ -159,29 +82,27 @@ const signupConfig: FormConfig = {
 	},
 	button: {
 		key: 'submitButton',
-		section: 'submit',
 		text: 'Зарегистрироваться!',
 	},
 	toLoginLink: {
 		key: 'toLogin',
 		href: PAGE_LINKS.login,
 		text: 'Уже есть аккаунт? Войти!',
-		section: 'toLogin',
 	},
 };
 
-const loginConfig: FormConfig = {
+const loginConfig: ILoginFormConfig = {
 	key: 'loginForm',
-	className: 'login-form',
-	section: 'login',
 	inputs: {
 		email: {
+			key: 'email',
 			type: 'text',
 			text: 'Email',
 			name: 'email',
 			validator: Validator.validateEmail,
 		},
 		password: {
+			key: 'password',
 			type: 'password',
 			text: 'Пароль',
 			name: 'password',
@@ -190,14 +111,12 @@ const loginConfig: FormConfig = {
 	},
 	button: {
 		key: 'submitButton',
-		section: 'submit',
 		text: 'Войти!',
 	},
 	toSignupLink: {
 		key: 'toSignupLink',
 		href: PAGE_LINKS.signup,
 		text: 'Нет аккаунта? Зарегистрируйся!',
-		section: 'toSignup',
 	},
 };
 
@@ -205,12 +124,6 @@ const root: string = DEBUG
 	? 'http://127.0.0.1:8000'
 	: 'http://185.241.194.197:8080';
 
-interface URLInterface {
-	signup: string;
-	login: string;
-	logout: string;
-	post: string;
-}
 const URL: URLInterface = DEBUG
 	? {
 			signup: root + '/auth/signup',
@@ -225,13 +138,7 @@ const URL: URLInterface = DEBUG
 			post: root + '/api/v1/post',
 		};
 
-export interface ConfigInterface {
-	URL: URLInterface;
-	homeConfig: HomeConfig;
-	signupConfig: FormConfig;
-	loginConfig: FormConfig;
-}
-const config: ConfigInterface = {
+const config: IAppConfig = {
 	URL,
 	homeConfig,
 	signupConfig,

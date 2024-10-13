@@ -8,6 +8,10 @@ type AjaxConfig = {
 	callback: Callback;
 } & AjaxPromiseConfig;
 
+export type FormResponse = {
+	message: string;
+};
+
 export default new (class Ajax {
 	/**
 	 * Post request with data and raising callback
@@ -48,12 +52,12 @@ export default new (class Ajax {
 	 * Sending data form data
 	 *
 	 * @param {string} url
-	 * @param {FormData} formData
+	 * @param {Record<string, string>} formData
 	 * @param {function} callback
 	 */
 	sendForm(
 		url: string,
-		formData: FormData,
+		formData: Record<string, string>,
 		callback: (response: Response | null, error?: Error) => void,
 	) {
 		const request = new Request(url, {

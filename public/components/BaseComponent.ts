@@ -16,6 +16,11 @@ export interface IBaseComponent {
 	appendToComponent(parent: IBaseComponent): void;
 	addChild(child: IBaseComponent): void;
 	removeHandlers(): void;
+	addHandler(
+		target: HTMLElement,
+		event: string,
+		handler: (event: Event) => void,
+	): void;
 	remove(): void;
 }
 
@@ -51,22 +56,6 @@ export default abstract class BaseComponent implements IBaseComponent {
 		}
 		return this.config.key;
 	}
-
-	// /**
-	//  * Возвращает конфигурационный объект компонента
-	//  * @returns {Object}
-	//  */
-	// get config(): any {
-	// 	return this.#config;
-	// }
-
-	// /**
-	//  * Возвращает родителя компонента
-	//  * @returns {BaseComponent}
-	//  */
-	// get parent(): any {
-	// 	return this.#parent;
-	// }
 
 	/**
 	 * Возвращает компонент в виде html-элемента

@@ -1,4 +1,4 @@
-import BaseComponent, { IBaseComponent } from '../BaseComponent.js';
+import BaseComponent, { IBaseComponent } from '../BaseComponent';
 
 export interface IRoot extends IBaseComponent {}
 

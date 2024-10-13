@@ -1,5 +1,5 @@
 import BasePage from '../basePage';
-import Ajax from '../../modules/ajax';
+import Ajax, { FormResponse } from '../../modules/ajax';
 import Validator from '../../modules/validation';
 import { LoginForm } from '../../components/index';
 import { PAGE_LINKS } from '../../app';
@@ -9,7 +9,7 @@ export default class LoginPage extends BasePage {
 		const config = this.app.config.loginConfig;
 		const login = new LoginForm(config, this.app.root);
 		login.render();
-		this.structure.login = login;
+		this.components.login = login;
 
 		const loginForm = login.htmlElement.querySelector('form');
 		// Submit login form handler
@@ -17,25 +17,36 @@ export default class LoginPage extends BasePage {
 			event.preventDefault();
 			login.clearError();
 			const validator = new Validator();
-			const data = validator.validateForm(config.inputs, loginForm as HTMLFormElement);
+			const data = validator.validateForm(
+				config.inputs,
+				loginForm as HTMLFormElement,
+			);
 			if (data) {
 				Ajax.sendForm(
 					this.app.config.URL.login,
 					data,
-					(response: Response, error: any) => {
+					(response: Response | null, error?: Error) => {
 						if (error) {
 							login.printError('Что-то пошло не так');
 							return;
 						}
-						if (response.ok) {
+						if (response?.ok) {
 							this.app.goToPage(PAGE_LINKS.feed, true); //????
 						} else {
-							const data = response.json();
-							if (data.message === 'wrong email or password') {
-								login.printError('Неверная почта или пароль');
-							} else {
-								login.printError('Что-то пошло не так');
-							}
+							const printMessage = async () => {
+								const data =
+									await (response?.json() as Promise<FormResponse>);
+								if (
+									data.message === 'wrong email or password'
+								) {
+									login.printError(
+										'Неверная почта или пароль',
+									);
+								} else {
+									login.printError('Что-то пошло не так');
+								}
+							};
+							printMessage();
 						}
 					},
 				);
@@ -61,6 +72,15 @@ export default class LoginPage extends BasePage {
 			event.preventDefault();
 			this.app.goToPage(PAGE_LINKS.feed, true);
 		};
-		login.addHandler(titleLink as HTMLElement, 'click', titleLinkClickHandler);
+		login.addHandler(
+			titleLink as HTMLElement,
+			'click',
+			titleLinkClickHandler,
+		);
+	}
+
+	clear(): void {
+		this.components.login.remove();
+		this._components = {};
 	}
 }

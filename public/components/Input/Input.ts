@@ -16,14 +16,17 @@ export interface IInput extends IBaseComponent {}
  * Class of input
  */
 export class Input extends BaseComponent implements IInput {
+	protected override config: IInputConfig | null;
+
 	/**
 	 * Instance of Input
 	 *
 	 * @param {IInputConfig} config
 	 * @param {IBaseComponent} parent
 	 */
-	constructor(config: IInputConfig, parent: IBaseComponent) {
+	constructor(config: IInputConfig, parent: IBaseComponent | null = null) {
 		super(config, parent);
+		this.config = config;
 	}
 
 	/**

@@ -1,11 +1,13 @@
 import BaseComponent, {
 	IBaseComponent,
 	IBaseComponentConfig,
-} from '../BaseComponent.ts';
-import { MenuLink, IMenuLink, IMenuLinkConfig } from '../MenuLink/MenuLink.ts';
+} from '../BaseComponent';
+import { MenuLink, IMenuLink, IMenuLinkConfig } from '../MenuLink/MenuLink';
 
 type TitleConfig = {
 	key: string;
+	text: string;
+	href: string;
 };
 type LinksConfig = [string, IMenuLinkConfig][];
 type Links = IMenuLink[];
@@ -67,7 +69,7 @@ export class Menu extends BaseComponent implements IMenu {
 		if (this.parent) {
 			this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
 			this.links.forEach((link) => {
-				this.addChild(link);
+				link.appendToComponent(this);
 			});
 		}
 		return html;
