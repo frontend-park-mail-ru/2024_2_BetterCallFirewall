@@ -4,50 +4,50 @@ import Validator from './modules/validation';
 const DEBUG: boolean = false;
 
 interface HomeConfig {
-    menu : {
-        key: string,
-        title: {
-            key: string,
-            section: string,
-            text: string,
-            href: string,
-        },
-        links: {
-            feed: {
-                key: string,
-                text: string,
-                href: string,
-            },
-        },
-    },
-    main: MainConfig,
-};
+	menu: {
+		key: string;
+		title: {
+			key: string;
+			section: string;
+			text: string;
+			href: string;
+		};
+		links: {
+			feed: {
+				key: string;
+				text: string;
+				href: string;
+			};
+		};
+	};
+	main: MainConfig;
+}
 
 export interface MainConfig {
-	key: string,
-	className: string,
-	section: string,
+	key: string;
+	className: string;
+	section: string;
 	header: {
-		key: string,
+		key: string;
 		search: {
-			placeholder: string,
-			img: string,
-		},
+			placeholder: string;
+			img: string;
+		};
 		profile: {
-			logoutImg: string,
-			avatar: string,
-		},
-	},
+			logoutImg: string;
+			avatar: string;
+		};
+	};
 	content: {
-		key: string,
-		className: string,
-		section: string,
-	},
+		key: string;
+		className: string;
+		section: string;
+	};
 	aside: {
-		key: string,
-		className: string,
-		section: string,
-	},
+		key: string;
+		className: string;
+		section: string;
+	};
 }
 
 const homeConfig: HomeConfig = {
@@ -95,38 +95,31 @@ const homeConfig: HomeConfig = {
 	},
 };
 
-export interface Input {
-    type: string,
-    text: string,
-    name: string,
-    validator: (name: HTMLInputElement) => string,
-};
-
 interface FormConfig {
-    key: string,
-    className: string,
-    section: string,
-    inputs: {
-        [key: string]: Input,
-    },
-    button: {
-        key: string,
-        section: string,
-        text: string,
-    },
-    toLoginLink?: {
-        key: string,
-        href: string,
-        text: string,
-        section: string,
-    },
-    toSignupLink?: {
-        key: string,
-        href: string,
-        text: string,
-        section: string,
-    },
-};
+	key: string;
+	className: string;
+	section: string;
+	inputs: {
+		[key: string]: Input;
+	};
+	button: {
+		key: string;
+		section: string;
+		text: string;
+	};
+	toLoginLink?: {
+		key: string;
+		href: string;
+		text: string;
+		section: string;
+	};
+	toSignupLink?: {
+		key: string;
+		href: string;
+		text: string;
+		section: string;
+	};
+}
 
 const signupConfig: FormConfig = {
 	key: 'signupForm',
@@ -166,7 +159,7 @@ const signupConfig: FormConfig = {
 	},
 	button: {
 		key: 'submitButton',
-        section: 'submit',
+		section: 'submit',
 		text: 'Зарегистрироваться!',
 	},
 	toLoginLink: {
@@ -208,14 +201,16 @@ const loginConfig: FormConfig = {
 	},
 };
 
-const root: string = DEBUG ? 'http://127.0.0.1:8000' : 'http://185.241.194.197:8080';
+const root: string = DEBUG
+	? 'http://127.0.0.1:8000'
+	: 'http://185.241.194.197:8080';
 
 interface URLInterface {
-    signup: string,
-    login: string,
-    logout: string,
-    post: string,
-};
+	signup: string;
+	login: string;
+	logout: string;
+	post: string;
+}
 const URL: URLInterface = DEBUG
 	? {
 			signup: root + '/auth/signup',
@@ -230,13 +225,12 @@ const URL: URLInterface = DEBUG
 			post: root + '/api/v1/post',
 		};
 
-
 export interface ConfigInterface {
-    URL: URLInterface,
-    homeConfig: HomeConfig,
-    signupConfig: FormConfig,
-    loginConfig: FormConfig,
-};
+	URL: URLInterface;
+	homeConfig: HomeConfig;
+	signupConfig: FormConfig;
+	loginConfig: FormConfig;
+}
 const config: ConfigInterface = {
 	URL,
 	homeConfig,

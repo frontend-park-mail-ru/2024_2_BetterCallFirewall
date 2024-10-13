@@ -1,14 +1,8 @@
 import { PAGE_LINKS } from '../../app';
-import {
-	Container,
-	Content,
-	Header,
-	Menu,
-	Post,
-} from '../../components/index';
+import { Container, Content, Header, Menu, Post } from '../../components/index';
 import Ajax from '../../modules/ajax';
 import BasePage from '../basePage';
-import { MainConfig } from '../../config'
+import { MainConfig } from '../../config';
 
 export const homePageTypes = {
 	feed: 'feed',
@@ -39,17 +33,18 @@ export default class HomePage extends BasePage {
 		this.structure.main = main;
 
 		const header = new Header(mainConfig.header, main);
-		main.addChild(header);
+		// Скорее всего потомок и так добавляется (надо уточнить)
+		// main.addChild(header);
 		header.render();
 		this.structure.main.header = header;
 
 		const content = new Content(mainConfig.content, main);
-		main.addChild(content);
+		// main.addChild(content);
 		content.render();
 		this.structure.main.content = content;
 
 		const aside = new Container(mainConfig.aside, main);
-		main.addChild(aside);
+		// main.addChild(aside);
 		aside.render();
 		this.structure.main.aside = aside;
 

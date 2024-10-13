@@ -1,41 +1,29 @@
-export default class ContentMessage {
-	#config;
-	#parent;
+import BaseComponent, { IBaseComponent, TConfig } from '../BaseComponent';
+
+export interface IContentMessageConfig extends TConfig {
+	text: string;
+}
+
+export interface IContentMessage extends IBaseComponent {}
+
+export class ContentMessage extends BaseComponent implements IContentMessage {
 	/**
 	 * Creates instance of ContentMessage
-	 * @param {Object} config
-	 * @param {HTMLElement} parent
+	 * @param {IContentMessageConfig} config
+	 * @param {IBaseComponent} parent
 	 */
-	constructor(config, parent) {
-		this.#config = config;
-		this.#parent = parent;
-	}
-
-	/**
-	 * Returns html element of message
-	 * @returns {HTMLElement}
-	 */
-	get htmlElement() {
-		return this.#parent.querySelector(
-			`div[data-section="${this.#config.section}"]`,
-		);
+	constructor(config: IContentMessageConfig, parent: IBaseComponent) {
+		super(config, parent);
 	}
 
 	/**
 	 * Renders message
 	 * @returns {string} - HTML element
 	 */
-	render() {
+	render(): string {
 		const template = Handlebars.templates['ContentMessage.hbs'];
-		const html = template(this.#config);
-		this.#parent.insertAdjacentHTML('beforeend', html);
+		const html = template(this.config);
+		this.parent?.htmlElement.insertAdjacentHTML('beforeend', html);
 		return html;
-	}
-
-	/**
-	 * Removes message
-	 */
-	remove() {
-		this.#parent.removeChild(this.htmlElement);
 	}
 }

@@ -1,18 +1,29 @@
-import BaseComponent from '../BaseComponent';
+import BaseComponent, {
+	IBaseComponent,
+	IBaseComponentConfig,
+} from '../BaseComponent';
+
+export interface IInputConfig extends IBaseComponentConfig {
+	name: string;
+	text: string;
+	type: string;
+	validator: (name: HTMLInputElement) => string;
+}
+
+export interface IInput extends IBaseComponent {}
 
 /**
  * Class of input
  */
-export default class Input extends BaseComponent {
+export class Input extends BaseComponent implements IInput {
 	/**
 	 * Instance of Input
 	 *
-	 * @param {Object} config
-	 * @param {HTMLElement} parent
+	 * @param {IInputConfig} config
+	 * @param {IBaseComponent} parent
 	 */
-	constructor(config, parent) {
+	constructor(config: IInputConfig, parent: IBaseComponent) {
 		super(config, parent);
-		this.config.className = 'input-block';
 	}
 
 	/**
@@ -20,7 +31,7 @@ export default class Input extends BaseComponent {
 	 *
 	 * @returns {string} - generated HTML element of input
 	 */
-	render() {
+	render(): string {
 		const template = Handlebars.templates['Input.hbs'];
 		const html = template(this.config);
 		return html;

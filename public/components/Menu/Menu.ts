@@ -1,26 +1,47 @@
-import BaseComponent from '../BaseComponent.ts';
-import MenuLink from '../MenuLink/MenuLink.ts';
+import BaseComponent, {
+	IBaseComponent,
+	IBaseComponentConfig,
+} from '../BaseComponent.ts';
+import { MenuLink, IMenuLink, IMenuLinkConfig } from '../MenuLink/MenuLink.ts';
+
+type TitleConfig = {
+	key: string;
+};
+type LinksConfig = [string, IMenuLinkConfig][];
+type Links = IMenuLink[];
+
+export interface IMenuConfig extends IBaseComponentConfig {
+	title: TitleConfig;
+	links: Record<string, IMenuLinkConfig>;
+}
+
+export interface IMenu extends IBaseComponent {}
 
 /**
  * Class to menu navigation
  */
-export default class Menu extends BaseComponent {
-	#links = [];
+export class Menu extends BaseComponent implements IMenu {
+	protected override config: IMenuConfig | null;
+	private links: Links = [];
 
 	/**
 	 * Создает новый компонент меню
-	 * @param {Object} config
-	 * @param {BaseComponent} parent
+	 * @param {IMenuConfig} config
+	 * @param {IBaseComponent} parent
 	 */
-	constructor(config, parent) {
+	constructor(config: IMenuConfig, parent: IBaseComponent) {
 		super(config, parent);
+		this.config = config;
 	}
 
 	/**
 	 * Getting configs of links
-	 * @returns {ArrayLike<[string, Object]}
+	 * @returns {ArrayLike<[string, Object]>}
 	 */
-	get linksConfig() {
+	get linksConfig(): LinksConfig {
+		if (!this.config) {
+			throw new Error('component has no config');
+		}
 		return Object.entries(this.config.links);
 	}
 
@@ -29,21 +50,26 @@ export default class Menu extends BaseComponent {
 	 *
 	 * @returns {string}
 	 */
-	render() {
-		this.linksConfig.forEach(([key, value]) => {
-			const link = new MenuLink({ key, ...value });
-			this.#links.push(link);
+	render(): string {
+		if (!this.config) {
+			throw new Error('conponent has no config');
+		}
+		this.linksConfig.forEach(([, value]) => {
+			const link = new MenuLink(value);
+			this.links.push(link);
 		});
 		const template = Handlebars.templates['Menu.hbs'];
 		const html = template({
 			...this.config,
 			title: this.config.title,
-			links: this.#links.map((link) => link.render()),
+			links: this.links.map((link) => link.render()),
 		});
-		this.parent.htmlElement.innerHTML += html;
-		this.#links.forEach((link) => {
-			link.parent = this.htmlElement;
-		});
+		if (this.parent) {
+			this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
+			this.links.forEach((link) => {
+				this.addChild(link);
+			});
+		}
 		return html;
 	}
 }

@@ -1,19 +1,23 @@
-import BaseComponent from '../BaseComponent';
+import BaseComponent, { IBaseComponent, TConfig } from '../BaseComponent';
+
+export interface IFormButtonConfig extends TConfig {
+	text: string;
+}
+
+export interface IFormButton extends IBaseComponent {}
 
 /**
  * Class for form button
  */
-export default class FormButton extends BaseComponent {
-	#className;
+export class FormButton extends BaseComponent implements IFormButton {
 	/**
 	 * Instance of FormButton
 	 *
-	 * @param {Object} config
-	 * @param {HTMLElement} parent
+	 * @param {IFormButtonConfig} config
+	 * @param {IBaseComponent} parent
 	 */
-	constructor(config, parent) {
+	constructor(config: IFormButtonConfig, parent: IBaseComponent) {
 		super(config, parent);
-		this.#className = 'form-button';
 	}
 
 	/**
@@ -21,12 +25,9 @@ export default class FormButton extends BaseComponent {
 	 *
 	 * @returns {string} - generated HTML element
 	 */
-	render() {
+	render(): string {
 		const template = Handlebars.templates['FormButton.hbs'];
-		const html = template({
-			...this.config,
-			className: this.#className,
-		});
+		const html = template(this.config);
 		return html;
 	}
 }

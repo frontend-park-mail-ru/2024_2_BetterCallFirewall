@@ -1,47 +1,67 @@
-import FormButton from '../FormButton/FormButton';
-import Input from '../Input/Input';
-import FormLink from '../FormLink/FormLink';
-import BaseComponent from '../BaseComponent';
-import Handlebars from 'handlebars';
+import 'handlebars';
+import BaseComponent, {
+	IBaseComponent,
+	IBaseComponentConfig,
+} from '../BaseComponent';
+import {
+	FormButton,
+	FormLink,
+	IFormButtonConfig,
+	IFormLinkConfig,
+	IInputConfig,
+	Input,
+} from '../index';
 
-import { Input as InputConfig } from '../../config';
+type ConfigInputs = Record<string, IInputConfig>;
+type ConfigInputsItems = [string, IInputConfig][];
+type Items = { [key: string]: IBaseComponent };
+
+export interface ISignupFormConfig extends IBaseComponentConfig {
+	inputs: Record<string, IInputConfig>;
+	button: IFormButtonConfig;
+	toLoginLink: IFormLinkConfig;
+}
+
+export interface ISignupForm extends IBaseComponent {
+	get configInputsItems(): ConfigInputsItems;
+	get items(): Items;
+}
 
 export default class SignupForm extends BaseComponent {
-	#configInputs: { [key: string]: InputConfig };
-	#configButton;
-	#inputs: Input[] = [];
-	#className;
-	#id;
-	#items: { [key: string]: any } = {};
+	protected override config: ISignupFormConfig | null;
+	private configInputs: ConfigInputs;
+	private configButton;
+	private inputs: Input[] = [];
+	private _items: Items = {};
+
 	/**
+	 * constructor of instance SignupForm
 	 *
-	 * @param {Object} config
-	 * @param {HTMLElement} parent
+	 * @param {ISignupFormConfig} config - configuration for the form
+	 * @param {IBaseComponent} parent - the parent component
 	 */
-	constructor(config, parent) {
+	constructor(config: ISignupFormConfig, parent: IBaseComponent) {
 		super(config, parent);
-		const configInputs = config.inputs;
-		const configButton = config.button;
-		this.#configInputs = configInputs;
-		this.#configButton = configButton;
-		this.#className = 'form';
-		this.#id = 'formSignUp';
+		this.config = config;
+		this.configInputs = config.inputs;
+		this.configButton = config.button;
 	}
 
 	/**
 	 * Get inputs from config
 	 *
-	 * @returns {Array} - array of input
+	 * @returns {ConfigInputsItems} - array of input
 	 */
-	get configInputsItems() {
-		return Object.entries(this.#configInputs);
+	get configInputsItems(): ConfigInputsItems {
+		return Object.entries(this.configInputs);
 	}
 
 	/**
 	 * Getting items of this element
+	 * @returns {Items}
 	 */
-	get items() {
-		return this.#items;
+	get items(): Items {
+		return this._items;
 	}
 
 	/**
@@ -49,34 +69,32 @@ export default class SignupForm extends BaseComponent {
 	 *
 	 * @returns {string} - HTML string of form
 	 */
-	render() {
-		this.configInputsItems.forEach(([key, value]) => {
-			const input = new Input({ key, ...value }, this.htmlElement);
-			this.#items[key] = input;
-			this.#inputs.push(input);
+	render(): string {
+		if (!this.config) {
+			throw new Error('component has no config');
+		}
+		this.configInputsItems.forEach(([key, config]) => {
+			const input = new Input(config, this);
+			this._items[key] = input;
+			this.inputs.push(input);
 		});
-		const button = new FormButton({
-			key: 'submit',
-			...this.#configButton,
-		}, this);
-		this.#items.button = button;
-		const toLoginLink = new FormLink(this.config.toLoginLink, this.htmlElement);
-		this.#items.toLoginLink = toLoginLink;
+		const button = new FormButton(this.configButton, this);
+		this._items.button = button;
+		const toLoginLink = new FormLink(this.config.toLoginLink, this);
+		this._items.toLoginLink = toLoginLink;
 
 		const template = Handlebars.templates['SignupForm.hbs'];
 		const html = template({
-			...this.config,
-			inputs: this.#inputs.map((input) => input.render()),
-			className: this.#className,
-			id: this.#id,
+			key: this.config.key,
+			inputs: this.inputs.map((input) => input.render()),
 			button: button.render(),
 			toLoginLink: toLoginLink.render(),
 		});
-		this.parent.htmlElement.innerHTML += html;
-		this.#inputs.forEach((input) => {
-			input.appendToComponent(this);
+		this.parent?.htmlElement.insertAdjacentHTML('beforeend', html);
+		this.inputs.forEach((input) => {
+			this.addChild(input);
 		});
-		toLoginLink.appendToComponent(this);
+		this.addChild(toLoginLink);
 
 		return html;
 	}
@@ -85,10 +103,14 @@ export default class SignupForm extends BaseComponent {
 	 * Printing error above submit button
 	 * @param {string} error
 	 */
-	printError(error) {
+	printError(error: string) {
 		if (error) {
-			this.htmlElement.querySelector('.error-message').textContent =
-				error;
+			const messageElement =
+				this.htmlElement.querySelector('.error-message');
+			if (!messageElement) {
+				throw new Error('message element not found');
+			}
+			messageElement.textContent = error;
 		}
 	}
 
@@ -96,6 +118,10 @@ export default class SignupForm extends BaseComponent {
 	 * Clear error above submit button
 	 */
 	clearError() {
-		this.htmlElement.querySelector('.error-message').textContent = '';
+		const messageElement = this.htmlElement.querySelector('.error-message');
+		if (!messageElement) {
+			throw new Error('message element not found');
+		}
+		messageElement.textContent = '';
 	}
 }

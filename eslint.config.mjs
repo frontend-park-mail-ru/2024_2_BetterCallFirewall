@@ -22,7 +22,7 @@ export default tseslint.config(
 			semi: 'error',
 			'no-debugger': 'warn',
 			quotes: ['warn', 'single'],
-			'no-unused-vars': 'warn',
+			'@typescript-eslint/no-empty-object-type': 'off',
 		},
 	},
 	{

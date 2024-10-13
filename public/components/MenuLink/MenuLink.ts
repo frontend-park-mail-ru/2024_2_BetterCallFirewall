@@ -1,56 +1,40 @@
+import BaseComponent, {
+	IBaseComponent,
+	IBaseComponentConfig,
+} from '../BaseComponent';
+
+export interface IMenuLinkConfig extends IBaseComponentConfig {
+	text: string;
+	href: string;
+}
+
+export interface IMenuLink extends IBaseComponent {}
+
 /**
  * Class of menu link
  */
-export default class MenuLink {
-	#parent;
-	#config;
+export class MenuLink extends BaseComponent implements IMenuLink {
+	protected override config: IMenuLinkConfig | null;
 	/**
 	 * Instance of MenuLink
 	 *
-	 * @param {Object} config
-	 * @param {HTMLElement} parent - parent element
+	 * @param {IMenuLinkConfig} config
+	 * @param {IBaseComponent} parent - parent element
 	 */
-	constructor(config, parent) {
-		this.#config = config;
-		this.#parent = parent;
-		this.#config['className'] = 'menu-link';
+	constructor(config: IMenuLinkConfig, parent: IBaseComponent | null = null) {
+		super(config, parent);
+		this.config = config;
 	}
 
-	/**
-	 * Setting parent to element
-	 * @param {HTMLElement} parent
-	 */
-	set parent(parent) {
-		this.#parent = parent;
-	}
-
-	/**
-	 * Getting html element which contains the form
-	 *
-	 * @returns {HTMLElement} - HTML element of form
-	 */
-	get htmlElement() {
-		return this.#parent.querySelector(
-			`a[data-section="${this.#config.key}"]`,
-		);
-	}
 	/**
 	 * Rendering menu link with handlebars
 	 *
 	 * @returns {string} - generated HTML code
 	 */
-	render() {
+	render(): string {
 		const template = Handlebars.templates['MenuLink.hbs'];
-		const html = template(this.#config);
-		if (this.#parent) {
-			this.#parent.innerHTML += html;
-		}
+		const html = template(this.config);
+		this.parent?.htmlElement.insertAdjacentHTML('beforeend', html);
 		return html;
-	}
-	/**
-	 * Removing MenuLink element
-	 */
-	remove() {
-		this.htmlElement.remove();
 	}
 }

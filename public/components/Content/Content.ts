@@ -1,40 +1,55 @@
-import Container from '../Container/Container';
-import ContentMessage from '../ContentMessage/ContentMessage';
+import { IBaseComponent } from '../BaseComponent.ts';
+import {
+	Container,
+	IContainer,
+	IContainerConfig,
+	ContentMessage,
+	IContentMessage,
+} from '../index.ts';
 
-export default class Content extends Container {
-	#message;
+export interface IContentConfig extends IContainerConfig {}
+
+export interface IContent extends IContainer {
+	printMessage(message: string): void;
+	removeMessage(): void;
+}
+
+export class Content extends Container implements IContent {
+	private message: IContentMessage | null;
 
 	/**
 	 * Создает новый компонент Content
-	 * @param {Object} config
-	 * @param {BaseComponent} parent
+	 * @param {IContentConfig} config
+	 * @param {IBaseComponent} parent
 	 */
-	constructor(config, parent) {
+	constructor(config: IContentConfig, parent: IBaseComponent) {
 		super(config, parent);
+		this.message = null;
 	}
 
 	/**
 	 * Prints message at the end of content
 	 * @param {string} message
 	 */
-	printMessage(message) {
-		if (this.#message) {
+	printMessage(message: string) {
+		if (this.message) {
 			return;
 		}
 		const messageItem = new ContentMessage(
-			{ section: 'message', text: message },
-			this.htmlElement,
+			{ key: 'message', text: message },
+			this,
 		);
 		messageItem.render();
-		this.#message = messageItem;
+		this.message = messageItem;
 	}
 
 	/**
 	 * Removes message
 	 */
 	removeMessage() {
-		if (this.#message) {
-			this.#message.remove();
+		if (this.message) {
+			this.message.remove();
+			this.message = null;
 		}
 	}
 }

@@ -1,16 +1,26 @@
-import BaseComponent from '../BaseComponent';
+import BaseComponent, { IBaseComponent, TConfig } from '../BaseComponent';
+
+type Profile = {
+	avatar: string;
+};
+
+export interface IHeaderConfig extends TConfig {
+	profile: Profile;
+}
+
+export interface IHeader extends IBaseComponent {}
 
 /**
  * Class of header
  */
-export default class Header extends BaseComponent {
+export class Header extends BaseComponent implements IHeader {
 	/**
 	 * Instance of Header
 	 *
-	 * @param {Object} config
-	 * @param {HTMLElement} parent
+	 * @param {IHeaderConfig} config
+	 * @param {IBaseComponent} parent
 	 */
-	constructor(config, parent) {
+	constructor(config: IHeaderConfig, parent: IBaseComponent) {
 		super(config, parent);
 	}
 
@@ -19,7 +29,7 @@ export default class Header extends BaseComponent {
 	 *
 	 * @returns {string} - generated HTML element
 	 */
-	render() {
+	render(): string {
 		const template = Handlebars.templates['Header.hbs'];
 		const html = template(this.config);
 		if (this.parent) {

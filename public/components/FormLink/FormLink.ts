@@ -1,12 +1,19 @@
-import BaseComponent from '../BaseComponent';
+import BaseComponent, { IBaseComponent, TConfig } from '../BaseComponent';
 
-export default class FormLink extends BaseComponent {
+export interface IFormLinkConfig extends TConfig {
+	text: string;
+	href: string;
+}
+
+export interface IFormLink extends IBaseComponent {}
+
+export class FormLink extends BaseComponent implements IFormLink {
 	/**
 	 *
-	 * @param {Object} config
-	 * @param {HTMLElement} parent
+	 * @param {IFormLinkConfig} config
+	 * @param {IBaseComponent} parent
 	 */
-	constructor(config, parent) {
+	constructor(config: IFormLinkConfig, parent: IBaseComponent) {
 		super(config, parent);
 	}
 
@@ -15,11 +22,11 @@ export default class FormLink extends BaseComponent {
 	 *
 	 * @returns {string} - generated HTML element
 	 */
-	render() {
+	render(): string {
 		const template = Handlebars.templates['FormLink.hbs'];
 		const html = template(this.config);
 		if (this.parent) {
-			this.parent.insertAdjacentHTML('beforeend', html);
+			this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
 		}
 		return html;
 	}

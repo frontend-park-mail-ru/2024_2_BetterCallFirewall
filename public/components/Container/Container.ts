@@ -1,16 +1,22 @@
-import BaseComponent from '../BaseComponent';
+import BaseComponent, { IBaseComponent, TConfig } from '../BaseComponent';
+
+export interface IContainerConfig extends TConfig {
+	className: string;
+}
+
+export interface IContainer extends IBaseComponent {}
 
 /**
  * class of Container
  */
-export default class Container extends BaseComponent {
+export class Container extends BaseComponent implements IContainer {
 	/**
 	 * Instance of Container
 	 *
-	 * @param {Object} config
-	 * @param {BaseComponent} parent
+	 * @param {IContainerConfig} config
+	 * @param {IBaseComponent} parent
 	 */
-	constructor(config, parent) {
+	constructor(config: IContainerConfig, parent: IBaseComponent) {
 		super(config, parent);
 	}
 
@@ -19,10 +25,12 @@ export default class Container extends BaseComponent {
 	 *
 	 * @returns {string} - generated HTML element
 	 */
-	render() {
+	render(): string {
 		const template = Handlebars.templates['Container.hbs'];
 		const html = template(this.config);
-		this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
+		if (this.parent) {
+			this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
+		}
 		return html;
 	}
 }

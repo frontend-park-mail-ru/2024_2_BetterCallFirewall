@@ -1,24 +1,42 @@
-/**
- * Описание конфига компонентов
- * @typedef ComponentConfig
- * @property {string} key - Уникальный в рамках родителя этого компонента ключ
- */
+type Children = Record<string, IBaseComponent>;
+type Handlers = Record<
+	string,
+	{ target: HTMLElement; event: string; handler: EventListener }
+>;
 
-export default class BaseComponent {
-	#config: any = {};
-	#parent: any;
-	#children: Record<string, BaseComponent> = {};
-	#handlers: Record<string, { target: HTMLElement; event: string; handler: EventListener }> = {};
+export interface IBaseComponentConfig {
+	key: string;
+}
+
+export interface IBaseComponent {
+	get key(): string;
+	get htmlElement(): HTMLElement;
+	get children(): Children;
+	render(): string;
+	appendToComponent(parent: IBaseComponent): void;
+	addChild(child: IBaseComponent): void;
+	removeHandlers(): void;
+	remove(): void;
+}
+
+export default abstract class BaseComponent implements IBaseComponent {
+	protected config: IBaseComponentConfig | null;
+	protected parent: IBaseComponent | null;
+	protected _children: Children = {};
+	private handlers: Handlers = {};
 
 	/**
 	 * Создает новый компонент
-	 * @param {ComponentConfig} config
-	 * @param {BaseComponent} parent
+	 * @param {IBaseComponentConfig} config
+	 * @param {IBaseComponent} parent
 	 */
-	constructor(config: any = null, parent: any = null) {
-		this.#config = config;
+	constructor(
+		config: IBaseComponentConfig | null = null,
+		parent: IBaseComponent | null = null,
+	) {
+		this.config = config;
+		this.parent = parent;
 		if (parent) {
-			this.#parent = parent;
 			this.appendToComponent(parent);
 		}
 	}
@@ -28,34 +46,37 @@ export default class BaseComponent {
 	 * @returns {string}
 	 */
 	get key(): string {
-		return this.#config.key;
+		if (!this.config) {
+			throw new Error('component has no key');
+		}
+		return this.config.key;
 	}
 
-	/**
-	 * Возвращает конфигурационный объект компонента
-	 * @returns {Object}
-	 */
-	get config(): any {
-		return this.#config;
-	}
+	// /**
+	//  * Возвращает конфигурационный объект компонента
+	//  * @returns {Object}
+	//  */
+	// get config(): any {
+	// 	return this.#config;
+	// }
 
-	/**
-	 * Возвращает родителя компонента
-	 * @returns {BaseComponent}
-	 */
-	get parent(): any {
-		return this.#parent;
-	}
+	// /**
+	//  * Возвращает родителя компонента
+	//  * @returns {BaseComponent}
+	//  */
+	// get parent(): any {
+	// 	return this.#parent;
+	// }
 
 	/**
 	 * Возвращает компонент в виде html-элемента
 	 * @returns {HTMLElement}
 	 */
-	get htmlElement(): any {
-		if (this.#parent) {
-			const html = this.#parent.htmlElement.querySelector(
+	get htmlElement(): HTMLElement {
+		if (this.parent) {
+			const html = this.parent.htmlElement.querySelector(
 				`[data-key="${this.key}"]`,
-			);
+			) as HTMLElement;
 			if (html) {
 				return html;
 			}
@@ -65,28 +86,30 @@ export default class BaseComponent {
 	}
 
 	/**
-	 * Добавляет родителя-компонент этому компоненту
-	 * @param {BaseComponent} parent
+	 * Возвращает потомков этого компонента
+	 * @returns {Children}
 	 */
-	appendToComponent(parent: BaseComponent) {
-		this.#parent = parent;
+	get children(): Children {
+		return this._children;
+	}
+
+	/**
+	 * Добавляет родителя-компонент этому компоненту
+	 * @param {IBaseComponent} parent
+	 */
+	appendToComponent(parent: IBaseComponent) {
+		this.parent = parent;
 		parent.addChild(this);
 	}
 
 	/**
-	 * Добавляет компонент к html-элементу parent. Применять для root, либо вручную добавлять этот компонент в качестве ребенка
-	 * @param {HTMLElement} parent
+	 * Добавляет потомка-компонент этому компоненту
+	 *
+	 * При этом потомок не будет знать о родительском компоненте
+	 * @param {IBaseComponent} child
 	 */
-	appendToHTML(parent: any) {
-		parent.textContent += parent;
-	}
-
-	/**
-	 * Добавляет ребенка-компонент этому компоненту
-	 * @param {BaseComponent} child
-	 */
-	addChild(child: BaseComponent) {
-		this.#children[child.key] = child;
+	addChild(child: IBaseComponent) {
+		this._children[child.key] = child;
 	}
 
 	/**
@@ -95,10 +118,14 @@ export default class BaseComponent {
 	 * @param {string} event
 	 * @param {function(Event): void} handler
 	 */
-	addHandler(target: HTMLElement, event: string, handler: (arg0: Event) => void) {
+	addHandler(
+		target: HTMLElement,
+		event: string,
+		handler: (event: Event) => void,
+	) {
 		target.addEventListener(event, handler);
 		if (target.dataset && target.dataset['key']) {
-			this.#handlers[
+			this.handlers[
 				`${target.className}-${target.dataset['key']}-${event}`
 			] = {
 				target,
@@ -106,7 +133,7 @@ export default class BaseComponent {
 				handler,
 			};
 		} else {
-			this.#handlers[`${target.className}-${event}`] = {
+			this.handlers[`${target.className}-${event}`] = {
 				target,
 				event,
 				handler,
@@ -118,10 +145,10 @@ export default class BaseComponent {
 	 * Удаляет все обработчики, записанные в этом компоненте
 	 */
 	removeHandlers() {
-		Object.entries(this.#handlers).forEach(
+		Object.entries(this.handlers).forEach(
 			([key, { target, event, handler }]) => {
 				target.removeEventListener(event, handler);
-				delete this.#handlers[key];
+				delete this.handlers[key];
 			},
 		);
 	}
@@ -131,12 +158,14 @@ export default class BaseComponent {
 	 */
 	remove() {
 		this.removeHandlers();
-		Object.entries(this.#children).forEach(([, child]) => {
+		Object.entries(this._children).forEach(([, child]) => {
 			child.remove();
 		});
 		this.htmlElement.outerHTML = '';
 		if (this.parent) {
-			delete this.parent.#children[this.key];
+			delete this.parent.children[this.key];
 		}
 	}
+
+	abstract render(): string;
 }
