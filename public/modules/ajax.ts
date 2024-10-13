@@ -1,3 +1,13 @@
+type AjaxPromiseConfig = {
+	request: Request;
+};
+
+type Callback = (data: object | null, error: Error | null) => void;
+
+type AjaxConfig = {
+	callback: Callback;
+} & AjaxPromiseConfig;
+
 export default new (class Ajax {
 	/**
 	 * Post request with data and raising callback
@@ -6,7 +16,7 @@ export default new (class Ajax {
 	 * @param {Object} data - sending data
 	 * @param {*} callback
 	 */
-	post(url: string, data: any, callback: any) {
+	post(url: string, data: object, callback: Callback) {
 		const request = new Request(url, {
 			method: 'post',
 			body: JSON.stringify(data),
@@ -17,13 +27,14 @@ export default new (class Ajax {
 			callback,
 		});
 	}
+
 	/**
 	 * Get request and promise with resolving by data
 	 *
 	 * @param {string} url
-	 * @returns {Promise<any>}
+	 * @returns {Promise<T>}
 	 */
-	getPromise(url: string): Promise<any> {
+	getPromise<T>(url: string): Promise<T> {
 		const request = new Request(url, {
 			method: 'get',
 			credentials: 'include',
@@ -32,6 +43,7 @@ export default new (class Ajax {
 			request,
 		});
 	}
+
 	/**
 	 * Sending data form data
 	 *
@@ -39,7 +51,11 @@ export default new (class Ajax {
 	 * @param {FormData} formData
 	 * @param {function} callback
 	 */
-	sendForm(url: string, formData: FormData, callback: any) {
+	sendForm(
+		url: string,
+		formData: FormData,
+		callback: (response: Response | null, error?: Error) => void,
+	) {
 		const request = new Request(url, {
 			method: 'POST',
 			body: JSON.stringify(formData),
@@ -55,9 +71,9 @@ export default new (class Ajax {
 	/**
 	 * AJAX request
 	 *
-	 * @param {Object} config
+	 * @param {AjaxConfig} config
 	 */
-	#ajax(config: any) {
+	#ajax(config: AjaxConfig) {
 		fetch(config.request)
 			.then((response) => response.json())
 			.then((data) => config.callback(data, null))
@@ -66,15 +82,15 @@ export default new (class Ajax {
 	/**
 	 * Execute AJAX request and returning Promise which resoles by response
 	 *
-	 * @param {Object} config
-	 * @returns {Promise<Object>}
+	 * @param {AjaxPromiseConfig} config
+	 * @returns {Promise<T>}
 	 */
-	async #ajaxPromise(config: any): Promise<any> {
+	async #ajaxPromise<T>(config: AjaxPromiseConfig): Promise<T> {
 		const response = await fetch(config.request);
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error(response.statusText);
-        }
+		if (response.ok) {
+			return response.json();
+		} else {
+			throw new Error(response.statusText);
+		}
 	}
 })();
