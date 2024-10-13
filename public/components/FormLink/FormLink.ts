@@ -1,6 +1,9 @@
-import BaseComponent, { IBaseComponent, TConfig } from '../BaseComponent';
+import BaseComponent, {
+	IBaseComponent,
+	IBaseComponentConfig,
+} from '../BaseComponent';
 
-export interface IFormLinkConfig extends TConfig {
+export interface IFormLinkConfig extends IBaseComponentConfig {
 	text: string;
 	href: string;
 }

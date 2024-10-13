@@ -1,6 +1,9 @@
-import BaseComponent, { IBaseComponent, TConfig } from '../BaseComponent';
+import BaseComponent, {
+	IBaseComponent,
+	IBaseComponentConfig,
+} from '../BaseComponent';
 
-export interface IContainerConfig extends TConfig {
+export interface IContainerConfig extends IBaseComponentConfig {
 	className: string;
 }
 

@@ -1,6 +1,9 @@
-import BaseComponent, { IBaseComponent, TConfig } from '../BaseComponent';
+import BaseComponent, {
+	IBaseComponent,
+	IBaseComponentConfig,
+} from '../BaseComponent';
 
-export interface IFormButtonConfig extends TConfig {
+export interface IFormButtonConfig extends IBaseComponentConfig {
 	text: string;
 }
 

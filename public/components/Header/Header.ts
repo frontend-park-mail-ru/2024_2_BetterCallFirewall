@@ -1,10 +1,13 @@
-import BaseComponent, { IBaseComponent, TConfig } from '../BaseComponent';
+import BaseComponent, {
+	IBaseComponent,
+	IBaseComponentConfig,
+} from '../BaseComponent';
 
 type Profile = {
 	avatar: string;
 };
 
-export interface IHeaderConfig extends TConfig {
+export interface IHeaderConfig extends IBaseComponentConfig {
 	profile: Profile;
 }
 
