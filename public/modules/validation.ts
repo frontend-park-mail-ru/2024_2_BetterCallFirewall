@@ -1,4 +1,4 @@
-import { Input } from '../config'
+import { IInputConfig } from '../components/index';
 export default class Validator {
 	/**
 	 * Deleting content in elements with class '.error'
@@ -6,7 +6,8 @@ export default class Validator {
 	 * @param {HTMLInputElement} parentElem - parent element of element with class '.error'
 	 */
 	errorsDelete(parentElem: HTMLElement): void {
-		const errors: NodeListOf<HTMLElement> = parentElem.querySelectorAll('.error');
+		const errors: NodeListOf<HTMLElement> =
+			parentElem.querySelectorAll('.error');
 		errors.forEach((error) => (error.textContent = ''));
 	}
 
@@ -21,7 +22,9 @@ export default class Validator {
 		if (!confirmValue) {
 			return 'Пароль не может быть пустым';
 		}
-        const passwordInput: HTMLInputElement = document.getElementById('password') as HTMLInputElement;
+		const passwordInput: HTMLInputElement = document.getElementById(
+			'password',
+		) as HTMLInputElement;
 		const password: string = passwordInput?.value;
 		if (confirmValue !== password) {
 			return 'Пароли не совпадают';
@@ -96,7 +99,9 @@ export default class Validator {
 	 */
 	printError(parentElem: HTMLInputElement, error: string): void {
 		if (error) {
-            const errorElem: HTMLElement = parentElem.querySelector('.error') as HTMLElement;
+			const errorElem: HTMLElement = parentElem.querySelector(
+				'.error',
+			) as HTMLElement;
 			errorElem.textContent = error;
 		}
 	}
@@ -106,7 +111,9 @@ export default class Validator {
 	 *
 	 * @param {Object} config
 	 */
-	configItems(config: Record<string, Input>): Array<[string, any]> {
+	configItems(
+		config: Record<string, IInputConfig>,
+	): Array<[string, IInputConfig]> {
 		return Object.entries(config);
 	}
 
@@ -117,17 +124,23 @@ export default class Validator {
 	 * @param {HTMLElement} form
 	 * @returns {Object|null} - correct data
 	 */
-	validateForm(config: Record<string, Input>, form: HTMLElement): any {
-		const data = {};
+	validateForm(
+		config: Record<string, IInputConfig>,
+		form: HTMLElement,
+	): Record<string, string> | null {
+		const data: Record<string, string> = {};
 		let isValid: boolean = true;
 		this.errorsDelete(form.parentNode as HTMLElement);
 
 		const inputs = this.configItems(config);
 		inputs.forEach(([, value]) => {
-			const input: HTMLInputElement = form.querySelector(`#${value.name}`) as HTMLInputElement;
+			const input: HTMLInputElement = form.querySelector(
+				`#${value.name}`,
+			) as HTMLInputElement;
 			data[input.name] = input.value.trim();
 
-			const validator: (name: HTMLElement) => string = value.validator;
+			const validator: (name: HTMLInputElement) => string =
+				value.validator;
 			const error: string = validator(input);
 			if (error) {
 				isValid = false;
