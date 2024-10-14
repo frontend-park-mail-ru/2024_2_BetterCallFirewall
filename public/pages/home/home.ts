@@ -140,7 +140,7 @@ export default class HomePage extends BasePage {
 				}
 			};
 		};
-		content.addHandler(document.body, 'scroll', createScrollHandler());
+		content.addHandler(document, 'scroll', createScrollHandler());
 	}
 
 	/**
@@ -202,8 +202,7 @@ export default class HomePage extends BasePage {
 					post.render();
 				});
 			})
-			.catch((error) => {
-				console.log('ошибка при загрузке постов:', error);
+			.catch(() => {
 				content.printMessage('Что-то пошло не так');
 				this.app.goToPage(PAGE_LINKS.login, true);
 			});

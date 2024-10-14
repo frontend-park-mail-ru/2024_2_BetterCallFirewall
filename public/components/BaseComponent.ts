@@ -1,7 +1,7 @@
 type Children = Record<string, IBaseComponent>;
 type Handlers = Record<
 	string,
-	{ target: HTMLElement; event: string; handler: EventListener }
+	{ target: HTMLElement | Document; event: string; handler: EventListener }
 >;
 
 export interface IBaseComponentConfig {
@@ -108,11 +108,24 @@ export default abstract class BaseComponent implements IBaseComponent {
 	 * @param {function(Event): void} handler
 	 */
 	addHandler(
-		target: HTMLElement,
+		target: HTMLElement | Document,
 		event: string,
-		handler: (event: Event) => void,
+		handler:
+			| ((event: Event) => void)
+			| ((event: Event) => Promise<void>)
+			| (() => void)
+			| (() => Promise<void>),
 	) {
 		target.addEventListener(event, handler);
+		if (target === document) {
+			this.handlers[`document-${event}`] = {
+				target,
+				event,
+				handler,
+			};
+			return;
+		}
+		target = target as HTMLElement;
 		if (target.dataset && target.dataset['key']) {
 			this.handlers[
 				`${target.className}-${target.dataset['key']}-${event}`
