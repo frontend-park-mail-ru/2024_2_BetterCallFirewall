@@ -1,3 +1,4 @@
+dist/
 node_modules/
 app/
-*.precompiled.js
+public/precompiled.js

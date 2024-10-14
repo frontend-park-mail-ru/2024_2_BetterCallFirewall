@@ -140,8 +140,12 @@ app.get('/api/post', (req, res) => {
 		res.send(JSON.stringify(body));
 	} else {
 		res.status(401);
-		res.send();
+		res.send('{}');
 	}
+});
+
+app.get('/dist/bundle.js', (req, res) => {
+	res.sendFile(path.join(__dirname, '../dist', 'bundle.js'));
 });
 
 app.get('*', (req, res) => {

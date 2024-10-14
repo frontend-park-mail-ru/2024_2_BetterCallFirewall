@@ -1,14 +1,14 @@
-import { PAGE_LINKS } from './app.js';
-import Validator from './modules/validation.js';
+import { IAppConfig, IHomeConfig, PAGE_LINKS, URLInterface } from './app';
+import { ILoginFormConfig, ISignupFormConfig } from './components';
+import Validator from './modules/validation';
 
-const DEBUG = false;
+const DEBUG: boolean = false;
 
-const homeConfig = {
+const homeConfig: IHomeConfig = {
 	menu: {
 		key: 'menu',
 		title: {
 			key: 'title',
-			section: 'title',
 			text: 'Vilka',
 			href: PAGE_LINKS.feed,
 		},
@@ -26,58 +26,54 @@ const homeConfig = {
 		section: 'main',
 		header: {
 			key: 'header',
-			search: {
-				placeholder: 'Поиск',
-				img: 'img/search.svg',
-			},
 			profile: {
-				logoutImg: 'img/logout.svg',
 				avatar: 'img/avatar.png',
 			},
 		},
 		content: {
 			key: 'content',
 			className: 'content',
-			section: 'content',
 		},
 		aside: {
 			key: 'aside',
 			className: 'aside',
-			section: 'aside',
 		},
 	},
 };
 
-const signupConfig = {
+const signupConfig: ISignupFormConfig = {
 	key: 'signupForm',
-	className: 'signup-form',
-	section: 'signup',
 	inputs: {
 		firstName: {
+			key: 'firstName',
 			type: 'text',
 			text: 'Имя',
 			name: 'first_name',
 			validator: Validator.validateName,
 		},
 		secondName: {
+			key: 'secondName',
 			type: 'text',
 			text: 'Фамилия',
 			name: 'second_name',
 			validator: Validator.validateName,
 		},
 		email: {
+			key: 'email',
 			type: 'text',
 			text: 'Email',
 			name: 'email',
 			validator: Validator.validateEmail,
 		},
 		password: {
+			key: 'password',
 			type: 'password',
 			text: 'Пароль',
 			name: 'password',
 			validator: Validator.validatePassword,
 		},
 		passwordAgain: {
+			key: 'passwordAgain',
 			type: 'password',
 			text: 'Повторите пароль',
 			name: 'password_again',
@@ -92,22 +88,21 @@ const signupConfig = {
 		key: 'toLogin',
 		href: PAGE_LINKS.login,
 		text: 'Уже есть аккаунт? Войти!',
-		section: 'toLogin',
 	},
 };
 
-const loginConfig = {
+const loginConfig: ILoginFormConfig = {
 	key: 'loginForm',
-	className: 'login-form',
-	section: 'login',
 	inputs: {
 		email: {
+			key: 'email',
 			type: 'text',
 			text: 'Email',
 			name: 'email',
 			validator: Validator.validateEmail,
 		},
 		password: {
+			key: 'password',
 			type: 'password',
 			text: 'Пароль',
 			name: 'password',
@@ -116,19 +111,20 @@ const loginConfig = {
 	},
 	button: {
 		key: 'submitButton',
-		section: 'submit',
 		text: 'Войти!',
 	},
 	toSignupLink: {
 		key: 'toSignupLink',
 		href: PAGE_LINKS.signup,
 		text: 'Нет аккаунта? Зарегистрируйся!',
-		section: 'toSignup',
 	},
 };
 
-const root = DEBUG ? 'http://127.0.0.1:8000' : 'http://185.241.194.197:8080';
-const URL = DEBUG
+const root: string = DEBUG
+	? 'http://127.0.0.1:8000'
+	: 'http://185.241.194.197:8080';
+
+const URL: URLInterface = DEBUG
 	? {
 			signup: root + '/auth/signup',
 			login: root + '/auth/login',
@@ -142,7 +138,7 @@ const URL = DEBUG
 			post: root + '/api/v1/post',
 		};
 
-const config = {
+const config: IAppConfig = {
 	URL,
 	homeConfig,
 	signupConfig,
