@@ -1,12 +1,18 @@
+import {
+	HOME_ACTION_TYPES,
+	MenuLinkClickAction,
+} from '../../actions/actionHome';
 import { IHomeConfig } from '../../app';
 import {
 	IContainerConfig,
 	IContentConfig,
 	IHeaderConfig,
 	IMenuConfig,
+	Menu,
 	Root,
 } from '../../components';
-import { BaseView, ViewData } from '../view';
+import dispatcher from '../../dispatcher/dispatcher';
+import { BaseView, Components, ViewData } from '../view';
 
 export interface MainConfig {
 	key: string;
@@ -24,6 +30,7 @@ export interface HomeConfig {
 
 export class ViewHome extends BaseView {
 	private _config: HomeConfig;
+	private _components: Components = {};
 
 	constructor(config: HomeConfig, root: Root) {
 		super(root);
@@ -46,5 +53,21 @@ export class ViewHome extends BaseView {
 		this.renderMenu();
 	}
 
-	private renderMenu() {}
+	private renderMenu() {
+		const config = this._config.menu;
+
+		const menu = new Menu(config, this._root);
+		this._components.menu = menu;
+		menu.render();
+
+		const feedLink = menu.children[config.links.feed.key];
+		menu.addHandler(feedLink.htmlElement, 'click', (event) => {
+			event.preventDefault();
+			dispatcher.getAction(
+				new MenuLinkClickAction(HOME_ACTION_TYPES.menuLinkClick, {
+					href: config.links.feed.href,
+				}),
+			);
+		});
+	}
 }

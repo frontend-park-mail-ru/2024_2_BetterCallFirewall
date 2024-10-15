@@ -1,8 +1,10 @@
 import { Action } from '../actions/action';
 import { Root } from '../components';
+import { IBaseComponent } from '../components/BaseComponent';
 import dispatcher from '../dispatcher/dispatcher';
 
 export type ViewData = object;
+export type Components = Record<string, IBaseComponent>;
 
 export interface View {
 	sendAction(action: Action): void;
