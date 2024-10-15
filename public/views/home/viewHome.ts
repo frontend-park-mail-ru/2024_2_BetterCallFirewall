@@ -54,11 +54,12 @@ export class ViewHome extends BaseView {
 	}
 
 	private renderMenu() {
+		console.log('render');
 		const config = this._config.menu;
 
 		const menu = new Menu(config, this._root);
 		this._components.menu = menu;
-		menu.render();
+		console.log(menu.render());
 
 		const feedLink = menu.children[config.links.feed.key];
 		menu.addHandler(feedLink.htmlElement, 'click', (event) => {
