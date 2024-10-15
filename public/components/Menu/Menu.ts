@@ -66,7 +66,6 @@ export class Menu extends BaseComponent implements IMenu {
 			title: this.config.title,
 			links: this.links.map((link) => link.render()),
 		});
-		console.log('menu:', this);
 		if (this.parent) {
 			this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
 			this.links.forEach((link) => {

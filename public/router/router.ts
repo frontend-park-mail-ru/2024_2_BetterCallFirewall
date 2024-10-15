@@ -16,12 +16,13 @@ export class Router {
 	}
 
 	goToPage(path: string) {
-		console.log('path:', path);
 		for (const route of this._config) {
-			console.log('route:', route);
 			if (path === route.path) {
-				console.log('correct path');
+				if (this._activeView) {
+					this._activeView.active = false;
+				}
 				this._activeView = route.view;
+				this._activeView.active = true;
 				break;
 			}
 		}

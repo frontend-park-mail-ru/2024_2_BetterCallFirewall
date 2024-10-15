@@ -13,9 +13,19 @@ export interface View {
 
 export abstract class BaseView implements View {
 	protected _root: Root;
+	private _isActive: boolean;
 
 	constructor(root: Root) {
 		this._root = root;
+		this._isActive = false;
+	}
+
+	get active() {
+		return this._isActive;
+	}
+
+	set active(value: boolean) {
+		this._isActive = value;
 	}
 
 	sendAction(action: Action): void {

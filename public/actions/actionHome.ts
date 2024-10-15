@@ -1,6 +1,6 @@
 import { Action, ActionType } from './action';
 
-export const HOME_ACTION_TYPES = {
+export const ACTION_HOME_TYPES = {
 	menuLinkClick: 'menuLinkClick',
 };
 

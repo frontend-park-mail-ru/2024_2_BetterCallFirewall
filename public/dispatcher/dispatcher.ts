@@ -3,7 +3,7 @@ import { Store } from '../stores/store';
 
 export type SubscribedStores = Record<ActionType, Store[]>;
 
-class Dispatcher {
+export class Dispatcher {
 	private subscribed: SubscribedStores = {};
 
 	getAction(action: Action) {
@@ -18,6 +18,10 @@ class Dispatcher {
 	}
 
 	addListener(store: Store, actionType: ActionType) {
+		const subscribedStores = this.subscribed[actionType];
+		if (!subscribedStores) {
+			this.subscribed[actionType] = [];
+		}
 		this.subscribed[actionType].push(store);
 	}
 }

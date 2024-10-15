@@ -3,3 +3,4 @@ import config from './config';
 
 const app: App = new App(config);
 app.router.goToPage(window.location.pathname);
+app.init();

@@ -1,5 +1,5 @@
 import {
-	HOME_ACTION_TYPES,
+	ACTION_HOME_TYPES,
 	MenuLinkClickAction,
 } from '../../actions/actionHome';
 import { IHomeConfig } from '../../app';
@@ -38,6 +38,10 @@ export class ViewHome extends BaseView {
 		this._root = new Root();
 	}
 
+	get config() {
+		return this._config;
+	}
+
 	update(data: ViewData) {
 		this._config = data as IHomeConfig;
 		this.clear();
@@ -49,23 +53,23 @@ export class ViewHome extends BaseView {
 			this._root.children[key].remove();
 		});
 	}
+
 	render(): void {
 		this.renderMenu();
 	}
 
 	private renderMenu() {
-		console.log('render');
 		const config = this._config.menu;
 
 		const menu = new Menu(config, this._root);
+		menu.render();
 		this._components.menu = menu;
-		console.log(menu.render());
 
 		const feedLink = menu.children[config.links.feed.key];
 		menu.addHandler(feedLink.htmlElement, 'click', (event) => {
 			event.preventDefault();
 			dispatcher.getAction(
-				new MenuLinkClickAction(HOME_ACTION_TYPES.menuLinkClick, {
+				new MenuLinkClickAction(ACTION_HOME_TYPES.menuLinkClick, {
 					href: config.links.feed.href,
 				}),
 			);

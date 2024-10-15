@@ -10,6 +10,8 @@ import {
 import { Router, RouterConfig } from './router/router';
 import { PAGE_LINKS } from './config';
 import { ViewHome } from './views/home/viewHome';
+import { StoreHome } from './stores/storeHome';
+import { ACTION_HOME_TYPES } from './actions/actionHome';
 
 export const PAGES = {
 	home: 'home',
@@ -52,6 +54,7 @@ export default class App {
 	private _router: Router;
 	private _config: IAppConfig;
 	private _root: Root;
+	private _storeHome: StoreHome;
 
 	/**
 	 * Instance of application
@@ -71,13 +74,12 @@ export default class App {
 		];
 		this._router = new Router(routerConfig);
 
-		if (this._router.activeView) {
-			console.log('exist');
-			this._router.activeView?.render();
-		} else {
-			console.log('does not exist');
-		}
-		console.log(this);
+		this._storeHome = new StoreHome(homeView);
+		this._storeHome.subscribe(ACTION_HOME_TYPES.menuLinkClick);
+	}
+
+	init() {
+		this._router.activeView?.render();
 	}
 
 	get router() {
