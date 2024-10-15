@@ -65,18 +65,14 @@ export default class HomePage extends BasePage {
 		this.components.main = main;
 
 		const header = new Header(mainConfig.header, main);
-		// Скорее всего потомок и так добавляется (надо уточнить)
-		// main.addChild(header);
 		header.render();
 		this.components.header = header;
 
 		const content = new Content(mainConfig.content, main);
-		// main.addChild(content);
 		content.render();
 		this.components.content = content;
 
 		const aside = new Container(mainConfig.aside, main);
-		// main.addChild(aside);
 		aside.render();
 		this.components.aside = aside;
 
