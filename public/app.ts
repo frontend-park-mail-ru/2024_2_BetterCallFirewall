@@ -12,6 +12,8 @@ import { PAGE_LINKS } from './config';
 import { ViewHome } from './views/home/viewHome';
 import { StoreHome } from './stores/storeHome';
 import { ACTION_HOME_TYPES } from './actions/actionHome';
+import { ViewLogin } from './views/login/viewLogin';
+import { ViewSignup } from './views/sigup/viewSignup';
 
 export const PAGES = {
 	home: 'home',
@@ -66,10 +68,20 @@ export default class App {
 		this._root = new Root();
 
 		const homeView = new ViewHome(this._config.homeConfig, this._root);
+		const loginView = new ViewLogin(this._config.loginConfig, this._root);
+		const signupView = new ViewSignup(this._config.signupConfig, this._root);
 		const routerConfig: RouterConfig = [
 			{
 				path: PAGE_LINKS.feed,
 				view: homeView,
+			},
+			{
+				path: PAGE_LINKS.login,
+				view: loginView,
+			},
+			{
+				path: PAGE_LINKS.signup,
+				view: signupView,
 			},
 		];
 		this._router = new Router(routerConfig);

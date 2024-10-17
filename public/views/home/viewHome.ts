@@ -4,6 +4,7 @@ import {
 } from '../../actions/actionHome';
 import { IHomeConfig } from '../../app';
 import {
+	Header,
 	IContainerConfig,
 	IContentConfig,
 	IHeaderConfig,
@@ -55,6 +56,7 @@ export class ViewHome extends BaseView {
 	}
 
 	render(): void {
+		this.renderHeader();
 		this.renderMenu();
 	}
 
@@ -74,5 +76,16 @@ export class ViewHome extends BaseView {
 				}),
 			);
 		});
+	}
+
+	// private renderFeed() {
+	// 	const mainConfig: IMainConfig = this._config.main;
+	// 	const main = new Container(mainConfig, this._root);
+	// }
+
+	private renderHeader() {
+		const headerConfig = this._config.main.header;
+		const header = new Header(headerConfig, this._root);
+		header.render();
 	}
 }
