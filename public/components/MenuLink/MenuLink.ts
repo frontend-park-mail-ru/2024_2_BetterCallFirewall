@@ -14,7 +14,7 @@ export interface IMenuLink extends IBaseComponent {}
  * Class of menu link
  */
 export class MenuLink extends BaseComponent implements IMenuLink {
-	protected override config: IMenuLinkConfig | null;
+	protected override _config: IMenuLinkConfig | null;
 	/**
 	 * Instance of MenuLink
 	 *
@@ -23,7 +23,7 @@ export class MenuLink extends BaseComponent implements IMenuLink {
 	 */
 	constructor(config: IMenuLinkConfig, parent: IBaseComponent | null = null) {
 		super(config, parent);
-		this.config = config;
+		this._config = config;
 	}
 
 	/**
@@ -33,7 +33,7 @@ export class MenuLink extends BaseComponent implements IMenuLink {
 	 */
 	render(): string {
 		const template = Handlebars.templates['MenuLink.hbs'];
-		const html = template(this.config);
+		const html = template(this._config);
 		this.parent?.htmlElement.insertAdjacentHTML('beforeend', html);
 		return html;
 	}

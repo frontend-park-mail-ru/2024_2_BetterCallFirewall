@@ -30,7 +30,7 @@ export class Container extends BaseComponent implements IContainer {
 	 */
 	render(): string {
 		const template = Handlebars.templates['Container.hbs'];
-		const html = template(this.config);
+		const html = template(this._config);
 		if (this.parent) {
 			this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
 		}

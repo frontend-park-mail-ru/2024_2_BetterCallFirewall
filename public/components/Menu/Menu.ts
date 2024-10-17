@@ -23,7 +23,7 @@ export interface IMenu extends IBaseComponent {}
  * Class to menu navigation
  */
 export class Menu extends BaseComponent implements IMenu {
-	protected override config: IMenuConfig | null;
+	protected override _config: IMenuConfig | null;
 	private links: Links = [];
 
 	/**
@@ -33,7 +33,7 @@ export class Menu extends BaseComponent implements IMenu {
 	 */
 	constructor(config: IMenuConfig, parent: IBaseComponent) {
 		super(config, parent);
-		this.config = config;
+		this._config = config;
 	}
 
 	/**
@@ -41,10 +41,10 @@ export class Menu extends BaseComponent implements IMenu {
 	 * @returns {ArrayLike<[string, Object]>}
 	 */
 	get linksConfig(): LinksConfig {
-		if (!this.config) {
+		if (!this._config) {
 			throw new Error('component has no config');
 		}
-		return Object.entries(this.config.links);
+		return Object.entries(this._config.links);
 	}
 
 	/**
@@ -53,7 +53,7 @@ export class Menu extends BaseComponent implements IMenu {
 	 * @returns {string}
 	 */
 	render(): string {
-		if (!this.config) {
+		if (!this._config) {
 			throw new Error('conponent has no config');
 		}
 		this.linksConfig.forEach(([, value]) => {
@@ -62,8 +62,8 @@ export class Menu extends BaseComponent implements IMenu {
 		});
 		const template = Handlebars.templates['Menu.hbs'];
 		const html = template({
-			...this.config,
-			title: this.config.title,
+			...this._config,
+			title: this._config.title,
 			links: this.links.map((link) => link.render()),
 		});
 		if (this.parent) {
@@ -73,5 +73,10 @@ export class Menu extends BaseComponent implements IMenu {
 			});
 		}
 		return html;
+	}
+
+	remove(): void {
+		super.remove();
+		this.links = [];
 	}
 }

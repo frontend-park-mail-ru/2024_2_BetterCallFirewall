@@ -11,7 +11,7 @@ export interface IFormLinkConfig extends IBaseComponentConfig {
 export interface IFormLink extends IBaseComponent {}
 
 export class FormLink extends BaseComponent implements IFormLink {
-	protected override config: IFormLinkConfig | null;
+	protected override _config: IFormLinkConfig | null;
 
 	/**
 	 *
@@ -20,7 +20,7 @@ export class FormLink extends BaseComponent implements IFormLink {
 	 */
 	constructor(config: IFormLinkConfig, parent: IBaseComponent | null = null) {
 		super(config, parent);
-		this.config = config;
+		this._config = config;
 	}
 
 	/**
@@ -30,7 +30,7 @@ export class FormLink extends BaseComponent implements IFormLink {
 	 */
 	render(): string {
 		const template = Handlebars.templates['FormLink.hbs'];
-		const html = template(this.config);
+		const html = template(this._config);
 		if (this.parent) {
 			this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
 		}

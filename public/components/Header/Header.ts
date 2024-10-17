@@ -34,7 +34,7 @@ export class Header extends BaseComponent implements IHeader {
 	 */
 	render(): string {
 		const template = Handlebars.templates['Header.hbs'];
-		const html = template(this.config);
+		const html = template(this._config);
 		if (this.parent) {
 			this.parent.htmlElement.innerHTML += html;
 		}

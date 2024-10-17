@@ -10,10 +10,10 @@ import {
 import { Router, RouterConfig } from './router/router';
 import { PAGE_LINKS } from './config';
 import { ViewHome } from './views/home/viewHome';
-import { StoreHome } from './stores/storeHome';
-import { ACTION_HOME_TYPES } from './actions/actionHome';
 import { ViewLogin } from './views/login/viewLogin';
 import { ViewSignup } from './views/sigup/viewSignup';
+import { StoreMenu } from './stores/storeMenu';
+import { ACTION_MENU_TYPES } from './actions/actionMenu';
 
 export const PAGES = {
 	home: 'home',
@@ -56,7 +56,7 @@ export default class App {
 	private _router: Router;
 	private _config: IAppConfig;
 	private _root: Root;
-	private _storeHome: StoreHome;
+	private _storeMenu: StoreMenu;
 
 	/**
 	 * Instance of application
@@ -69,7 +69,10 @@ export default class App {
 
 		const homeView = new ViewHome(this._config.homeConfig, this._root);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
-		const signupView = new ViewSignup(this._config.signupConfig, this._root);
+		const signupView = new ViewSignup(
+			this._config.signupConfig,
+			this._root,
+		);
 		const routerConfig: RouterConfig = [
 			{
 				path: PAGE_LINKS.feed,
@@ -86,8 +89,10 @@ export default class App {
 		];
 		this._router = new Router(routerConfig);
 
-		this._storeHome = new StoreHome(homeView);
-		this._storeHome.subscribe(ACTION_HOME_TYPES.menuLinkClick);
+		this._storeMenu = new StoreMenu(this._config.homeConfig.menu);
+		this._storeMenu.subscribe(ACTION_MENU_TYPES.menuLinkClick);
+
+		homeView.register(this._storeMenu);
 	}
 
 	init() {

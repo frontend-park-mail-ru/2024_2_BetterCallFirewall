@@ -12,6 +12,8 @@ export interface IBaseComponent {
 	get key(): string;
 	get htmlElement(): HTMLElement;
 	get children(): Children;
+	get config(): IBaseComponentConfig;
+	set config(config: IBaseComponentConfig);
 	render(): string;
 	appendToComponent(parent: IBaseComponent): void;
 	addChild(child: IBaseComponent): void;
@@ -25,7 +27,7 @@ export interface IBaseComponent {
 }
 
 export default abstract class BaseComponent implements IBaseComponent {
-	protected config: IBaseComponentConfig | null;
+	protected _config: IBaseComponentConfig | null;
 	protected parent: IBaseComponent | null;
 	protected _children: Children = {};
 	private handlers: Handlers = {};
@@ -39,7 +41,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 		config: IBaseComponentConfig | null = null,
 		parent: IBaseComponent | null = null,
 	) {
-		this.config = config;
+		this._config = config;
 		this.parent = parent;
 		if (parent) {
 			this.appendToComponent(parent);
@@ -51,10 +53,10 @@ export default abstract class BaseComponent implements IBaseComponent {
 	 * @returns {string}
 	 */
 	get key(): string {
-		if (!this.config) {
+		if (!this._config) {
 			throw new Error('component has no key');
 		}
-		return this.config.key;
+		return this._config.key;
 	}
 
 	/**
@@ -80,6 +82,17 @@ export default abstract class BaseComponent implements IBaseComponent {
 	 */
 	get children(): Children {
 		return this._children;
+	}
+
+	get config(): IBaseComponentConfig {
+		if (this._config) {
+			return this.config;
+		}
+		throw new Error('component has no config');
+	}
+
+	set config(config: IBaseComponentConfig) {
+		this._config = config;
 	}
 
 	/**

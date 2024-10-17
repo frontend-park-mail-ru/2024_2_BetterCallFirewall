@@ -1,9 +1,10 @@
 import {
-	ACTION_HOME_TYPES,
+	ACTION_MENU_TYPES,
 	MenuLinkClickAction,
-} from '../../actions/actionHome';
+} from '../../actions/actionMenu';
 import { IHomeConfig } from '../../app';
 import {
+	Container,
 	Header,
 	IContainerConfig,
 	IContentConfig,
@@ -12,8 +13,9 @@ import {
 	Menu,
 	Root,
 } from '../../components';
+import { IBaseComponent } from '../../components/BaseComponent';
 import dispatcher from '../../dispatcher/dispatcher';
-import { BaseView, Components, ViewData } from '../view';
+import { BaseView, Components, View, ViewData, ViewMenu } from '../view';
 
 export interface MainConfig {
 	key: string;
@@ -29,7 +31,7 @@ export interface HomeConfig {
 	main: MainConfig;
 }
 
-export class ViewHome extends BaseView {
+export class ViewHome extends BaseView implements View, ViewMenu {
 	private _config: HomeConfig;
 	private _components: Components = {};
 
@@ -56,8 +58,17 @@ export class ViewHome extends BaseView {
 	}
 
 	render(): void {
-		this.renderHeader();
 		this.renderMenu();
+		this.renderMain();
+	}
+
+	updateMenu(data: IMenuConfig): void {
+		console.log('updateMenu');
+		this._config.menu = data;
+		const menu = this._components.menu;
+		menu.remove();
+		menu.config = data;
+		menu.render();
 	}
 
 	private renderMenu() {
@@ -71,21 +82,22 @@ export class ViewHome extends BaseView {
 		menu.addHandler(feedLink.htmlElement, 'click', (event) => {
 			event.preventDefault();
 			dispatcher.getAction(
-				new MenuLinkClickAction(ACTION_HOME_TYPES.menuLinkClick, {
+				new MenuLinkClickAction(ACTION_MENU_TYPES.menuLinkClick, {
 					href: config.links.feed.href,
 				}),
 			);
 		});
 	}
 
-	// private renderFeed() {
-	// 	const mainConfig: IMainConfig = this._config.main;
-	// 	const main = new Container(mainConfig, this._root);
-	// }
+	private renderMain() {
+		const main = new Container(this._config.main, this._root);
+		main.render();
+		this.renderHeader(main);
+	}
 
-	private renderHeader() {
+	private renderHeader(parent: IBaseComponent) {
 		const headerConfig = this._config.main.header;
-		const header = new Header(headerConfig, this._root);
+		const header = new Header(headerConfig, parent);
 		header.render();
 	}
 }

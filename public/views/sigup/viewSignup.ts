@@ -1,22 +1,21 @@
-import { ISignupFormConfig, SignupForm, Root } from "../../components";
-import { BaseView, Components, ViewData } from "../view";
-
+import { ISignupFormConfig, SignupForm, Root } from '../../components';
+import { BaseView, Components, ViewData } from '../view';
 
 export class ViewSignup extends BaseView {
-    private _config: ISignupFormConfig;
-    private _components: Components = {};
+	private _config: ISignupFormConfig;
+	private _components: Components = {};
 
-    constructor(config: ISignupFormConfig, root: Root) {
-        super(root);
-        this._config = config;
-        this._root = new Root();
-    }
+	constructor(config: ISignupFormConfig, root: Root) {
+		super(root);
+		this._config = config;
+		this._root = new Root();
+	}
 
-    get config() {
+	get config() {
 		return this._config;
 	}
 
-    update(data: ViewData) {
+	update(data: ViewData) {
 		this._config = data as ISignupFormConfig;
 		this.clear();
 		this.render();
@@ -28,10 +27,10 @@ export class ViewSignup extends BaseView {
 		});
 	}
 
-    render() {
-        const config = this._config;
+	render() {
+		const config = this._config;
 		const login = new SignupForm(config, this._root);
-        login.render();
+		login.render();
 		this._components.login = login;
-    }
+	}
 }

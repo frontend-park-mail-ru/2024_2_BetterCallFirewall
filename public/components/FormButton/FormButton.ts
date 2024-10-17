@@ -13,7 +13,7 @@ export interface IFormButton extends IBaseComponent {}
  * Class for form button
  */
 export class FormButton extends BaseComponent implements IFormButton {
-	protected override config: IFormButtonConfig | null;
+	protected override _config: IFormButtonConfig | null;
 
 	/**
 	 * Instance of FormButton
@@ -26,7 +26,7 @@ export class FormButton extends BaseComponent implements IFormButton {
 		parent: IBaseComponent | null = null,
 	) {
 		super(config, parent);
-		this.config = config;
+		this._config = config;
 	}
 
 	/**
@@ -36,7 +36,7 @@ export class FormButton extends BaseComponent implements IFormButton {
 	 */
 	render(): string {
 		const template = Handlebars.templates['FormButton.hbs'];
-		const html = template(this.config);
+		const html = template(this._config);
 		return html;
 	}
 }

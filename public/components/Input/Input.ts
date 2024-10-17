@@ -16,7 +16,7 @@ export interface IInput extends IBaseComponent {}
  * Class of input
  */
 export class Input extends BaseComponent implements IInput {
-	protected override config: IInputConfig | null;
+	protected override _config: IInputConfig | null;
 
 	/**
 	 * Instance of Input
@@ -26,7 +26,7 @@ export class Input extends BaseComponent implements IInput {
 	 */
 	constructor(config: IInputConfig, parent: IBaseComponent | null = null) {
 		super(config, parent);
-		this.config = config;
+		this._config = config;
 	}
 
 	/**
@@ -36,7 +36,7 @@ export class Input extends BaseComponent implements IInput {
 	 */
 	render(): string {
 		const template = Handlebars.templates['Input.hbs'];
-		const html = template(this.config);
+		const html = template(this._config);
 		return html;
 	}
 }

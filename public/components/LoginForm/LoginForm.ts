@@ -28,7 +28,7 @@ export interface ILoginForm extends IBaseComponent {
 }
 
 export class LoginForm extends BaseComponent implements ILoginForm {
-	protected override config: ILoginFormConfig | null;
+	protected override _config: ILoginFormConfig | null;
 	private configInputs: ConfigInputs;
 	private configButton;
 	private inputs: Input[] = [];
@@ -41,7 +41,7 @@ export class LoginForm extends BaseComponent implements ILoginForm {
 	 */
 	constructor(config: ILoginFormConfig, parent: IBaseComponent) {
 		super(config, parent);
-		this.config = config;
+		this._config = config;
 		this.configInputs = config.inputs;
 		this.configButton = config.button;
 	}
@@ -69,7 +69,7 @@ export class LoginForm extends BaseComponent implements ILoginForm {
 	 * @returns {string} - HTML string of form
 	 */
 	render(): string {
-		if (!this.config) {
+		if (!this._config) {
 			throw new Error('component has no config');
 		}
 		this.configInputsItems.forEach(([key, config]) => {
@@ -79,12 +79,12 @@ export class LoginForm extends BaseComponent implements ILoginForm {
 		});
 		const button = new FormButton(this.configButton);
 		this._items.button = button;
-		const toSignupLink = new FormLink(this.config.toSignupLink);
+		const toSignupLink = new FormLink(this._config.toSignupLink);
 		this._items.toSignupLink = toSignupLink;
 
 		const template = Handlebars.templates['LoginForm.hbs'];
 		const html = template({
-			key: this.config.key,
+			key: this._config.key,
 			inputs: this.inputs.map((input) => input.render()),
 			button: button.render(),
 			toSignupLink: toSignupLink.render(),
