@@ -36,4 +36,8 @@ export class Container extends BaseComponent implements IContainer {
 		}
 		return html;
 	}
+
+	update(data: IContainerConfig): void {
+		this._config = data;
+	}
 }

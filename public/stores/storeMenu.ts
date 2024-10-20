@@ -1,26 +1,23 @@
 import { Action } from '../actions/action';
-import { ACTION_MENU_TYPES } from '../actions/actionMenu';
 import { IMenuConfig } from '../components';
-import { ViewMenu } from '../views/view';
-import { BasicStore, Store } from './store';
+import { reducerMenu } from '../reducers/reducerMenu';
+import { ViewMenu } from '../views/home/viewHome';
+import { BaseStore, Store } from './store';
 
-export class StoreMenu extends BasicStore implements Store {
-	private _data: IMenuConfig;
+export class StoreMenu extends BaseStore implements Store {
+	private _state: IMenuConfig;
 	protected _registeredViews: ViewMenu[] = [];
 
 	constructor(data: IMenuConfig) {
 		super();
-		this._data = data;
+		this._state = data;
 	}
 
 	handleAction(action: Action): void {
 		this._registeredViews.forEach((view) => {
 			if (view.active) {
-				switch (action.type) {
-					case ACTION_MENU_TYPES.menuLinkClick:
-						break;
-				}
-				view.updateMenu(this._data);
+				this._state = reducerMenu(this._state, action);
+				view.updateMenu(this._state);
 			}
 		});
 	}

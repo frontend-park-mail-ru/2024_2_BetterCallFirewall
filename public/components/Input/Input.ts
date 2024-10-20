@@ -39,4 +39,8 @@ export class Input extends BaseComponent implements IInput {
 		const html = template(this._config);
 		return html;
 	}
+
+	update(data: IInputConfig): void {
+		this._config = data;
+	}
 }

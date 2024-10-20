@@ -9,7 +9,7 @@ export interface Store {
 	removeView(view: View): void;
 }
 
-export abstract class BasicStore implements Store {
+export abstract class BaseStore implements Store {
 	protected _registeredViews: View[] = [];
 
 	subscribe(actionType: ActionType): void {

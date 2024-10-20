@@ -41,4 +41,8 @@ export class Post extends BaseComponent implements IPost {
 		}
 		return html;
 	}
+
+	update(data: IPostConfig): void {
+		this._config = data;
+	}
 }

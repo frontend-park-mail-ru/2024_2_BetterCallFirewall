@@ -23,6 +23,7 @@ export interface IBaseComponent {
 		event: string,
 		handler: (event: Event) => void,
 	): void;
+	update(data: IBaseComponentConfig): void;
 	remove(): void;
 }
 
@@ -30,6 +31,8 @@ export default abstract class BaseComponent implements IBaseComponent {
 	protected _config: IBaseComponentConfig | null;
 	protected parent: IBaseComponent | null;
 	protected _children: Children = {};
+	protected _htmlElement?: HTMLElement;
+	protected _templateContext: object = {};
 	private handlers: Handlers = {};
 
 	/**
@@ -64,16 +67,20 @@ export default abstract class BaseComponent implements IBaseComponent {
 	 * @returns {HTMLElement}
 	 */
 	get htmlElement(): HTMLElement {
-		if (this.parent) {
-			const html = this.parent.htmlElement.querySelector(
-				`[data-key="${this.key}"]`,
-			) as HTMLElement;
-			if (html) {
-				return html;
-			}
-			throw new Error('Component not found');
+		// if (this.parent) {
+		// 	const html = this.parent.htmlElement.querySelector(
+		// 		`[data-key="${this.key}"]`,
+		// 	) as HTMLElement;
+		// 	if (html) {
+		// 		return html;
+		// 	}
+		// 	throw new Error('Component not found');
+		// }
+		// throw new Error('Component has no parent');
+		if (this._htmlElement) {
+			return this._htmlElement;
 		}
-		throw new Error('Component has no parent');
+		throw new Error('component has no html element');
 	}
 
 	/**
@@ -182,5 +189,21 @@ export default abstract class BaseComponent implements IBaseComponent {
 		}
 	}
 
+	protected _render(templateFile: string): string {
+		const template = Handlebars.templates[templateFile];
+		const html = template(this._templateContext);
+		const wrapper = document.createElement('div');
+		wrapper.innerHTML = html;
+		const element = wrapper.firstElementChild as HTMLElement;
+		if (element) {
+			this._htmlElement = element;
+		} else {
+			throw new Error('html element has not created');
+		}
+		return html;
+	}
+
 	abstract render(): string;
+	abstract update(data: IBaseComponentConfig): void;
+	protected _prerender(): void {}
 }

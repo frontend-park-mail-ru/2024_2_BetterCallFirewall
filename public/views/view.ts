@@ -1,9 +1,8 @@
 import { Action } from '../actions/action';
-import { IMenuConfig, Root } from '../components';
+import { Root } from '../components';
 import { IBaseComponent } from '../components/BaseComponent';
 import dispatcher from '../dispatcher/dispatcher';
 import { Store } from '../stores/store';
-import { ViewHome } from './home/viewHome';
 
 export type ViewData = object;
 export type Components = Record<string, IBaseComponent>;
@@ -16,10 +15,6 @@ export interface View {
 	register(store: Store): void;
 	unregister(store: Store): void;
 	unregisterAllStores(): void;
-}
-
-export interface ViewMenu extends ViewHome {
-	updateMenu(data: IMenuConfig): void;
 }
 
 export abstract class BaseView implements View {

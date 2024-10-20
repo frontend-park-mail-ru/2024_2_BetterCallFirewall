@@ -29,4 +29,8 @@ export class ContentMessage extends BaseComponent implements IContentMessage {
 		this.parent?.htmlElement.insertAdjacentHTML('beforeend', html);
 		return html;
 	}
+
+	update(data: IContentMessageConfig): void {
+		this._config = data;
+	}
 }

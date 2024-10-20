@@ -40,4 +40,18 @@ export class Header extends BaseComponent implements IHeader {
 		}
 		return html;
 	}
+
+	get logoutButtonHTML(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'.header-profile-logout',
+		) as HTMLElement;
+		if (html) {
+			return html;
+		}
+		throw new Error('logout button not found');
+	}
+
+	update(data: IHeaderConfig): void {
+		this._config = data;
+	}
 }

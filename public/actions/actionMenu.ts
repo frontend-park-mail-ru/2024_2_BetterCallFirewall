@@ -4,14 +4,14 @@ export const ACTION_MENU_TYPES = {
 	menuLinkClick: 'menuLinkClick',
 };
 
-interface MenuLinkClickActionData {
+export interface ActionMenuLinkClickData {
 	href: string;
 }
 
-export class MenuLinkClickAction implements Action {
+export class ActionMenuLinkClick implements Action {
 	type: ActionType;
-	data: MenuLinkClickActionData;
-	constructor(type: ActionType, data: MenuLinkClickActionData) {
+	data: ActionMenuLinkClickData;
+	constructor(type: ActionType, data: ActionMenuLinkClickData) {
 		this.type = type;
 		this.data = data;
 	}

@@ -39,4 +39,8 @@ export class FormButton extends BaseComponent implements IFormButton {
 		const html = template(this._config);
 		return html;
 	}
+
+	update(data: IFormButtonConfig): void {
+		this._config = data;
+	}
 }

@@ -37,4 +37,8 @@ export class MenuLink extends BaseComponent implements IMenuLink {
 		this.parent?.htmlElement.insertAdjacentHTML('beforeend', html);
 		return html;
 	}
+
+	update(data: IMenuLinkConfig): void {
+		this._config = data;
+	}
 }

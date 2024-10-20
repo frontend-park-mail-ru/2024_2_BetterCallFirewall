@@ -1,10 +1,12 @@
 import { Action, ActionType } from '../actions/action';
+import { Router } from '../router/router';
 import { Store } from '../stores/store';
 
 export type SubscribedStores = Record<ActionType, Store[]>;
 
 export class Dispatcher {
 	private subscribed: SubscribedStores = {};
+	private _router?: Router;
 
 	getAction(action: Action) {
 		this.dispatch(action);
@@ -23,6 +25,10 @@ export class Dispatcher {
 			this.subscribed[actionType] = [];
 		}
 		this.subscribed[actionType].push(store);
+	}
+
+	addRouter(router: Router) {
+		this._router = router;
 	}
 }
 

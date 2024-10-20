@@ -36,4 +36,8 @@ export class FormLink extends BaseComponent implements IFormLink {
 		}
 		return html;
 	}
+
+	update(data: IFormLinkConfig): void {
+		this._config = data;
+	}
 }

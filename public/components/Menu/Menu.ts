@@ -53,30 +53,48 @@ export class Menu extends BaseComponent implements IMenu {
 	 * @returns {string}
 	 */
 	render(): string {
-		if (!this._config) {
-			throw new Error('conponent has no config');
-		}
-		this.linksConfig.forEach(([, value]) => {
-			const link = new MenuLink(value);
-			this.links.push(link);
-		});
-		const template = Handlebars.templates['Menu.hbs'];
-		const html = template({
-			...this._config,
-			title: this._config.title,
-			links: this.links.map((link) => link.render()),
-		});
-		if (this.parent) {
-			this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
-			this.links.forEach((link) => {
-				link.appendToComponent(this);
-			});
-		}
-		return html;
+		// const template = Handlebars.templates['Menu.hbs'];
+		// const html = template(this._templateContext);
+
+		// const wrapper = document.createElement('div');
+		// wrapper.innerHTML = html;
+		// const element = wrapper.firstElementChild;
+		// if (element) {
+		// 	this._htmlElement = element as HTMLElement;
+		// }
+		// this.links.forEach((link) => {
+		// 	link.appendToComponent(this);
+		// });
+
+		// if (this.parent) {
+		// 	this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
+		// }
+		// return html;
+		this._prerender();
+		return this._render('Menu.hbs');
 	}
 
 	remove(): void {
 		super.remove();
 		this.links = [];
+	}
+
+	update(data: IMenuConfig) {
+		this._config = data;
+	}
+
+	protected _prerender(): void {
+		if (!this._config) {
+			throw new Error('component has no config');
+		}
+		this.linksConfig.forEach(([, value]) => {
+			const link = new MenuLink(value);
+			this.links.push(link);
+		});
+		this._templateContext = {
+			...this._config,
+			title: this._config.title,
+			links: this.links.map((link) => link.render()),
+		};
 	}
 }

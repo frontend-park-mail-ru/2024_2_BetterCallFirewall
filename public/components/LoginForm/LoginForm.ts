@@ -121,4 +121,8 @@ export class LoginForm extends BaseComponent implements ILoginForm {
 		}
 		messageElement.textContent = '';
 	}
+
+	update(data: ILoginFormConfig): void {
+		this._config = data;
+	}
 }

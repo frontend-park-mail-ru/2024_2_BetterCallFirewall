@@ -1,6 +1,7 @@
+import { ActionHeaderLogoutClick } from '../../actions/actionHeader';
 import {
 	ACTION_MENU_TYPES,
-	MenuLinkClickAction,
+	ActionMenuLinkClick,
 } from '../../actions/actionMenu';
 import { IHomeConfig } from '../../app';
 import {
@@ -15,7 +16,7 @@ import {
 } from '../../components';
 import { IBaseComponent } from '../../components/BaseComponent';
 import dispatcher from '../../dispatcher/dispatcher';
-import { BaseView, Components, View, ViewData, ViewMenu } from '../view';
+import { BaseView, Components, View, ViewData } from '../view';
 
 export interface MainConfig {
 	key: string;
@@ -31,9 +32,27 @@ export interface HomeConfig {
 	main: MainConfig;
 }
 
-export class ViewHome extends BaseView implements View, ViewMenu {
+export type ComponentsHome = {
+	menu?: Menu;
+	header?: Header;
+} & Components;
+
+// export interface ComponentsHome extends Components {
+// 	menu: Menu;
+// 	header: Header;
+// }
+
+export interface ViewMenu extends ViewHome {
+	updateMenu(data: IMenuConfig): void;
+}
+
+export interface ViewHeader extends ViewHome {
+	updateHeader(data: IHeaderConfig): void;
+}
+
+export class ViewHome extends BaseView implements View, ViewMenu, ViewHeader {
 	private _config: HomeConfig;
-	private _components: Components = {};
+	private _components: ComponentsHome = {};
 
 	constructor(config: HomeConfig, root: Root) {
 		super(root);
@@ -63,12 +82,9 @@ export class ViewHome extends BaseView implements View, ViewMenu {
 	}
 
 	updateMenu(data: IMenuConfig): void {
-		console.log('updateMenu');
 		this._config.menu = data;
-		const menu = this._components.menu;
-		menu.remove();
-		menu.config = data;
-		menu.render();
+		const menu = this._components.menu as Menu;
+		menu.update(data);
 	}
 
 	private renderMenu() {
@@ -82,7 +98,7 @@ export class ViewHome extends BaseView implements View, ViewMenu {
 		menu.addHandler(feedLink.htmlElement, 'click', (event) => {
 			event.preventDefault();
 			dispatcher.getAction(
-				new MenuLinkClickAction(ACTION_MENU_TYPES.menuLinkClick, {
+				new ActionMenuLinkClick(ACTION_MENU_TYPES.menuLinkClick, {
 					href: config.links.feed.href,
 				}),
 			);
@@ -99,5 +115,16 @@ export class ViewHome extends BaseView implements View, ViewMenu {
 		const headerConfig = this._config.main.header;
 		const header = new Header(headerConfig, parent);
 		header.render();
+		this._components.header = header;
+
+		header.addHandler(header.logoutButtonHTML, 'click', (event: Event) => {
+			event.preventDefault();
+			dispatcher.getAction(new ActionHeaderLogoutClick());
+		});
+	}
+
+	updateHeader(data: IHeaderConfig): void {
+		const header = this._components.header;
+		header?.update(data);
 	}
 }
