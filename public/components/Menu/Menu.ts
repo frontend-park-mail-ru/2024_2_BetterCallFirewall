@@ -52,34 +52,23 @@ export class Menu extends BaseComponent implements IMenu {
 	 *
 	 * @returns {string}
 	 */
-	render(): string {
-		// const template = Handlebars.templates['Menu.hbs'];
-		// const html = template(this._templateContext);
-
-		// const wrapper = document.createElement('div');
-		// wrapper.innerHTML = html;
-		// const element = wrapper.firstElementChild;
-		// if (element) {
-		// 	this._htmlElement = element as HTMLElement;
-		// }
-		// this.links.forEach((link) => {
-		// 	link.appendToComponent(this);
-		// });
-
-		// if (this.parent) {
-		// 	this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
-		// }
-		// return html;
+	render(show: boolean = true): string {
 		this._prerender();
-		const html = this._render('Menu.hbs');
-		const linksHtml = this._htmlElement?.querySelectorAll('.menu-link');
-		if (linksHtml) {
-			this.links.forEach((link, i) => {
-				link.htmlElement = linksHtml[i] as HTMLElement;
+		this._render('Menu.hbs', show);
+
+		const menuItems = this._htmlElement?.querySelector(
+			'.menu-items',
+		) as HTMLElement;
+		if (menuItems) {
+			this.links.forEach((link) => {
+				link.render(false);
+				link.appendToHTML(menuItems);
 			});
+		} else {
+			throw new Error('menu has no .menu-items');
 		}
-		// this.links.forEach((link) => link.render(false));
-		return html;
+
+		return this.htmlElement.outerHTML;
 	}
 
 	remove(): void {
@@ -87,8 +76,23 @@ export class Menu extends BaseComponent implements IMenu {
 		this.links = [];
 	}
 
+	removeInner(): void {
+		super.removeInner();
+		this.links = [];	
+	}
+
 	update(data: IMenuConfig) {
+		const handlers = {...this._handlers};
+		this.removeInner();
+
 		this._config = data;
+
+		this.htmlElement.outerHTML = this.render(false);
+		Object.entries(handlers).forEach(([, {target, event, handler}]) => {
+			const targetHTML = target as HTMLElement;
+			const newTarget = this.htmlElement.querySelector(targetHTML.outerHTML);
+			newTarget?.addEventListener(event, handler);
+		});
 	}
 
 	protected _prerender(): void {
@@ -100,11 +104,6 @@ export class Menu extends BaseComponent implements IMenu {
 		this._templateContext = {
 			...this._config,
 			title: this._config?.title,
-			links: this.links.map((link) => link.render(false)),
 		};
-
-		// this.links.forEach((link) => {
-		// 	link.appendToComponent(this);
-		// });
 	}
 }

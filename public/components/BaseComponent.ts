@@ -17,6 +17,7 @@ export interface IBaseComponent {
 	set config(config: IBaseComponentConfig);
 	render(show: boolean): string;
 	appendToComponent(parent: IBaseComponent): void;
+	appendToHTML(parent: HTMLElement): void;
 	addChild(child: IBaseComponent): void;
 	removeHandlers(): void;
 	addHandler(
@@ -26,6 +27,7 @@ export interface IBaseComponent {
 	): void;
 	update(data: IBaseComponentConfig): void;
 	remove(): void;
+	removeInner(): void;
 }
 
 export default abstract class BaseComponent implements IBaseComponent {
@@ -34,7 +36,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 	protected _children: Children = {};
 	protected _htmlElement?: HTMLElement;
 	protected _templateContext: object = {};
-	private handlers: Handlers = {};
+	protected _handlers: Handlers = {};
 
 	/**
 	 * Создает новый компонент
@@ -107,6 +109,11 @@ export default abstract class BaseComponent implements IBaseComponent {
 		this._config = config;
 	}
 
+	appendToHTML(parent: HTMLElement) {
+		console.log(this);
+		parent.appendChild(this.htmlElement);
+	}
+
 	/**
 	 * Добавляет родителя-компонент этому компоненту
 	 * @param {IBaseComponent} parent
@@ -143,7 +150,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 	) {
 		target.addEventListener(event, handler);
 		if (target === document) {
-			this.handlers[`document-${event}`] = {
+			this._handlers[`document-${event}`] = {
 				target,
 				event,
 				handler,
@@ -152,7 +159,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 		}
 		target = target as HTMLElement;
 		if (target.dataset && target.dataset['key']) {
-			this.handlers[
+			this._handlers[
 				`${target.className}-${target.dataset['key']}-${event}`
 			] = {
 				target,
@@ -160,7 +167,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 				handler,
 			};
 		} else {
-			this.handlers[`${target.className}-${event}`] = {
+			this._handlers[`${target.className}-${event}`] = {
 				target,
 				event,
 				handler,
@@ -172,10 +179,10 @@ export default abstract class BaseComponent implements IBaseComponent {
 	 * Удаляет все обработчики, записанные в этом компоненте
 	 */
 	removeHandlers() {
-		Object.entries(this.handlers).forEach(
+		Object.entries(this._handlers).forEach(
 			([key, { target, event, handler }]) => {
 				target.removeEventListener(event, handler);
-				delete this.handlers[key];
+				delete this._handlers[key];
 			},
 		);
 	}
@@ -192,6 +199,14 @@ export default abstract class BaseComponent implements IBaseComponent {
 		if (this._parent) {
 			delete this._parent.children[this.key];
 		}
+	}
+
+	removeInner() {
+		this.removeHandlers();
+		Object.entries(this._children).forEach(([, child]) => {
+			child.remove();
+		});
+		this.htmlElement.innerHTML = '';
 	}
 
 	protected _render(templateFile: string, show: boolean = true): string {
