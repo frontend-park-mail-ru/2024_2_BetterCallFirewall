@@ -71,7 +71,15 @@ export class Menu extends BaseComponent implements IMenu {
 		// }
 		// return html;
 		this._prerender();
-		return this._render('Menu.hbs');
+		const html = this._render('Menu.hbs');
+		const linksHtml = this._htmlElement?.querySelectorAll('.menu-link');
+		if (linksHtml) {
+			this.links.forEach((link, i) => {
+				link.htmlElement = linksHtml[i] as HTMLElement;
+			});
+		}
+		// this.links.forEach((link) => link.render(false));
+		return html;
 	}
 
 	remove(): void {
@@ -86,17 +94,17 @@ export class Menu extends BaseComponent implements IMenu {
 	protected _prerender(): void {
 		super._prerender();
 		this.linksConfig.forEach(([, value]) => {
-			const link = new MenuLink(value);
+			const link = new MenuLink(value, this);
 			this.links.push(link);
 		});
 		this._templateContext = {
 			...this._config,
 			title: this._config?.title,
-			links: this.links.map((link) => link.render()),
+			links: this.links.map((link) => link.render(false)),
 		};
 
-		this.links.forEach((link) => {
-			link.appendToComponent(this);
-		});
+		// this.links.forEach((link) => {
+		// 	link.appendToComponent(this);
+		// });
 	}
 }

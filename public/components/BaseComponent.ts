@@ -11,10 +11,11 @@ export interface IBaseComponentConfig {
 export interface IBaseComponent {
 	get key(): string;
 	get htmlElement(): HTMLElement;
+	set htmlElement(html: HTMLElement);
 	get children(): Children;
 	get config(): IBaseComponentConfig;
 	set config(config: IBaseComponentConfig);
-	render(): string;
+	render(show: boolean): string;
 	appendToComponent(parent: IBaseComponent): void;
 	addChild(child: IBaseComponent): void;
 	removeHandlers(): void;
@@ -78,12 +79,13 @@ export default abstract class BaseComponent implements IBaseComponent {
 		// }
 		// throw new Error('Component has no parent');
 		if (this._htmlElement) {
-			this._htmlElement.addEventListener('click', () => {
-				alert('htmlElement');
-			});
 			return this._htmlElement;
 		}
 		throw new Error('component has no html element');
+	}
+
+	set htmlElement(html: HTMLElement) {
+		this._htmlElement = html;
 	}
 
 	/**
@@ -192,7 +194,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 		}
 	}
 
-	protected _render(templateFile: string): string {
+	protected _render(templateFile: string, show: boolean = true): string {
 		const template = Handlebars.templates[templateFile];
 		const html = template(this._templateContext);
 		const wrapper = document.createElement('div');
@@ -200,7 +202,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 		const element = wrapper.firstElementChild as HTMLElement;
 		if (element) {
 			this._htmlElement = element;
-			if (this._parent) {
+			if (show && this._parent) {
 				this._parent.htmlElement.appendChild(element);
 			}
 		} else {
@@ -209,7 +211,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 		return html;
 	}
 
-	abstract render(): string;
+	abstract render(show: boolean): string;
 	abstract update(data: IBaseComponentConfig): void;
 	protected _prerender(): void {
 		if (!this._config) {

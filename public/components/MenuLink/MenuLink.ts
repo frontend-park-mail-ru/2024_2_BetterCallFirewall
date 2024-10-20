@@ -31,9 +31,9 @@ export class MenuLink extends BaseComponent implements IMenuLink {
 	 *
 	 * @returns {string} - generated HTML code
 	 */
-	render(): string {
+	render(show: boolean = true): string {
 		this._prerender();
-		return this._render('MenuLink.hbs');
+		return this._render('MenuLink.hbs', show);
 
 		// const template = Handlebars.templates['MenuLink.hbs'];
 		// const html = template(this._config);
