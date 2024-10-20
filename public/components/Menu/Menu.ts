@@ -84,17 +84,19 @@ export class Menu extends BaseComponent implements IMenu {
 	}
 
 	protected _prerender(): void {
-		if (!this._config) {
-			throw new Error('component has no config');
-		}
+		super._prerender();
 		this.linksConfig.forEach(([, value]) => {
 			const link = new MenuLink(value);
 			this.links.push(link);
 		});
 		this._templateContext = {
 			...this._config,
-			title: this._config.title,
+			title: this._config?.title,
 			links: this.links.map((link) => link.render()),
 		};
+
+		this.links.forEach((link) => {
+			link.appendToComponent(this);
+		});
 	}
 }

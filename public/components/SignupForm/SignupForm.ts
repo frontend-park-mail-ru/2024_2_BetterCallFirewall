@@ -90,7 +90,7 @@ export class SignupForm extends BaseComponent {
 			button: button.render(),
 			toLoginLink: toLoginLink.render(),
 		});
-		this.parent?.htmlElement.insertAdjacentHTML('beforeend', html);
+		this._parent?.htmlElement.insertAdjacentHTML('beforeend', html);
 		this.inputs.forEach((input) => input.appendToComponent(this));
 		button.appendToComponent(this);
 		toLoginLink.appendToComponent(this);

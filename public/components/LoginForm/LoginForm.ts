@@ -89,7 +89,7 @@ export class LoginForm extends BaseComponent implements ILoginForm {
 			button: button.render(),
 			toSignupLink: toSignupLink.render(),
 		});
-		this.parent?.htmlElement.insertAdjacentHTML('beforeend', html);
+		this._parent?.htmlElement.insertAdjacentHTML('beforeend', html);
 		this.inputs.forEach((input) => input.appendToComponent(this));
 		button.appendToComponent(this);
 		toSignupLink.appendToComponent(this);

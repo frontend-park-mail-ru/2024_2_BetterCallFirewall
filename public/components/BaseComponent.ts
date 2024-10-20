@@ -29,7 +29,7 @@ export interface IBaseComponent {
 
 export default abstract class BaseComponent implements IBaseComponent {
 	protected _config: IBaseComponentConfig | null;
-	protected parent: IBaseComponent | null;
+	protected _parent: IBaseComponent | null;
 	protected _children: Children = {};
 	protected _htmlElement?: HTMLElement;
 	protected _templateContext: object = {};
@@ -45,7 +45,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 		parent: IBaseComponent | null = null,
 	) {
 		this._config = config;
-		this.parent = parent;
+		this._parent = parent;
 		if (parent) {
 			this.appendToComponent(parent);
 		}
@@ -78,6 +78,9 @@ export default abstract class BaseComponent implements IBaseComponent {
 		// }
 		// throw new Error('Component has no parent');
 		if (this._htmlElement) {
+			this._htmlElement.addEventListener('click', () => {
+				alert('htmlElement');
+			});
 			return this._htmlElement;
 		}
 		throw new Error('component has no html element');
@@ -107,7 +110,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 	 * @param {IBaseComponent} parent
 	 */
 	appendToComponent(parent: IBaseComponent) {
-		this.parent = parent;
+		this._parent = parent;
 		parent.addChild(this);
 	}
 
@@ -184,8 +187,8 @@ export default abstract class BaseComponent implements IBaseComponent {
 			child.remove();
 		});
 		this.htmlElement.outerHTML = '';
-		if (this.parent) {
-			delete this.parent.children[this.key];
+		if (this._parent) {
+			delete this._parent.children[this.key];
 		}
 	}
 
@@ -197,6 +200,9 @@ export default abstract class BaseComponent implements IBaseComponent {
 		const element = wrapper.firstElementChild as HTMLElement;
 		if (element) {
 			this._htmlElement = element;
+			if (this._parent) {
+				this._parent.htmlElement.appendChild(element);
+			}
 		} else {
 			throw new Error('html element has not created');
 		}
@@ -205,5 +211,9 @@ export default abstract class BaseComponent implements IBaseComponent {
 
 	abstract render(): string;
 	abstract update(data: IBaseComponentConfig): void;
-	protected _prerender(): void {}
+	protected _prerender(): void {
+		if (!this._config) {
+			throw new Error('component has no config');
+		}
+	}
 }

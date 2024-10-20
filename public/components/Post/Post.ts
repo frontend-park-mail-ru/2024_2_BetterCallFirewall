@@ -36,8 +36,8 @@ export class Post extends BaseComponent implements IPost {
 	render(): string {
 		const template = Handlebars.templates['Post.hbs'];
 		const html = template(this._config);
-		if (this.parent) {
-			this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
+		if (this._parent) {
+			this._parent.htmlElement.insertAdjacentHTML('beforeend', html);
 		}
 		return html;
 	}

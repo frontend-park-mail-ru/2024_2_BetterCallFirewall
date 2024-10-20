@@ -29,15 +29,23 @@ export class Container extends BaseComponent implements IContainer {
 	 * @returns {string} - generated HTML element
 	 */
 	render(): string {
-		const template = Handlebars.templates['Container.hbs'];
-		const html = template(this._config);
-		if (this.parent) {
-			this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
-		}
-		return html;
+		this._prerender();
+		return this._render('Container.hbs');
+
+		// const template = Handlebars.templates['Container.hbs'];
+		// const html = template(this._config);
+		// if (this._parent) {
+		// 	this._parent.htmlElement.insertAdjacentHTML('beforeend', html);
+		// }
+		// return html;
 	}
 
 	update(data: IContainerConfig): void {
 		this._config = data;
+	}
+
+	protected _prerender(): void {
+		super._prerender();
+		this._templateContext = { ...this._config };
 	}
 }

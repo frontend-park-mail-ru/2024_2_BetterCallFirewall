@@ -31,8 +31,8 @@ export class FormLink extends BaseComponent implements IFormLink {
 	render(): string {
 		const template = Handlebars.templates['FormLink.hbs'];
 		const html = template(this._config);
-		if (this.parent) {
-			this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
+		if (this._parent) {
+			this._parent.htmlElement.insertAdjacentHTML('beforeend', html);
 		}
 		return html;
 	}

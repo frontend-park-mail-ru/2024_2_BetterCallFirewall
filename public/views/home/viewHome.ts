@@ -95,6 +95,10 @@ export class ViewHome extends BaseView implements View, ViewMenu, ViewHeader {
 		this._components.menu = menu;
 
 		const feedLink = menu.children[config.links.feed.key];
+		console.log(feedLink);
+		feedLink.htmlElement.addEventListener('click', (event) => {
+			alert('feedlink');
+		});
 		menu.addHandler(feedLink.htmlElement, 'click', (event) => {
 			event.preventDefault();
 			dispatcher.getAction(
@@ -103,6 +107,8 @@ export class ViewHome extends BaseView implements View, ViewMenu, ViewHeader {
 				}),
 			);
 		});
+
+		console.log(menu);
 	}
 
 	private renderMain() {

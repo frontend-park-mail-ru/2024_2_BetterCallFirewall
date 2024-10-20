@@ -33,12 +33,15 @@ export class Header extends BaseComponent implements IHeader {
 	 * @returns {string} - generated HTML element
 	 */
 	render(): string {
-		const template = Handlebars.templates['Header.hbs'];
-		const html = template(this._config);
-		if (this.parent) {
-			this.parent.htmlElement.innerHTML += html;
-		}
-		return html;
+		this._prerender();
+		return this._render('Header.hbs');
+
+		// const template = Handlebars.templates['Header.hbs'];
+		// const html = template(this._config);
+		// if (this.parent) {
+		// 	this.parent.htmlElement.innerHTML += html;
+		// }
+		// return html;
 	}
 
 	get logoutButtonHTML(): HTMLElement {
@@ -53,5 +56,10 @@ export class Header extends BaseComponent implements IHeader {
 
 	update(data: IHeaderConfig): void {
 		this._config = data;
+	}
+
+	protected _prerender(): void {
+		super._prerender();
+		this._templateContext = { ...this._config };
 	}
 }
