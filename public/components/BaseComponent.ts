@@ -198,6 +198,15 @@ export default abstract class BaseComponent implements IBaseComponent {
 		});
 	}
 
+	update(data: IBaseComponentConfig): void {
+		const oldHtmlElement = this.htmlElement;
+		this.removeForUpdate();
+		this._config = data;
+		this.render(false);
+		oldHtmlElement.replaceWith(this.htmlElement);
+	};
+
+
 	show(parent: HTMLElement) {
 		parent.appendChild(this.htmlElement);
 	}
@@ -220,7 +229,6 @@ export default abstract class BaseComponent implements IBaseComponent {
 	}
 
 	abstract render(show: boolean): string;
-	abstract update(data: IBaseComponentConfig): void;
 	protected _prerender(): void {
 		if (!this._config) {
 			throw new Error('component has no config');

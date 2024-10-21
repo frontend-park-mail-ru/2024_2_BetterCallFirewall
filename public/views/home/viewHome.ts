@@ -45,14 +45,25 @@ export interface ViewHeader extends ViewHome {
 	updateHeader(data: IHeaderConfig): void;
 }
 
-export class ViewHome extends BaseView implements View, ViewMenu, ViewHeader {
-	private _config: HomeConfig;
-	private _components: ComponentsHome = {};
+// export interface IViewHome {
+// 	get config(): HomeConfig;
+// 	updateMenu(): IMenuConfig;
+// 	updateHeader(data: IHeaderConfig): void;
+// 	_renderMenu(): void;
+// 	_addMenuHandlers(): void;
+// 	_renderMain(): void;
+// 	_renderHeader(parent: IBaseComponent): void;
+// 	_addHeaderHandlers(): void;
+// }
+
+export abstract class ViewHome extends BaseView implements View, ViewMenu, ViewHeader {
+	protected _config: HomeConfig;
+	protected _components: ComponentsHome = {};
 
 	constructor(config: HomeConfig, root: Root) {
 		super(root);
 		this._config = config;
-		this._root = new Root();
+		this._root = root;
 	}
 
 	get config() {
@@ -75,6 +86,8 @@ export class ViewHome extends BaseView implements View, ViewMenu, ViewHeader {
 		this._renderMenu();
 		this._renderMain();
 	}
+
+	protected abstract _renderContent(parent: IBaseComponent): void;
 
 	updateMenu(data: IMenuConfig): void {
 		this._config.menu = data;
@@ -119,6 +132,7 @@ export class ViewHome extends BaseView implements View, ViewMenu, ViewHeader {
 		const main = new Container(this._config.main, this._root);
 		main.render();
 		this._renderHeader(main);
+		this._renderContent(main);
 	}
 
 	private _renderHeader(parent: IBaseComponent) {
@@ -126,6 +140,7 @@ export class ViewHome extends BaseView implements View, ViewMenu, ViewHeader {
 		const header = new Header(headerConfig, parent);
 		header.render();
 		this._components.header = header;
+		this._addHeaderHandlers();
 	}
 
 	private _addHeaderHandlers() {

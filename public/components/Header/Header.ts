@@ -35,13 +35,6 @@ export class Header extends BaseComponent implements IHeader {
 	render(): string {
 		this._prerender();
 		return this._render('Header.hbs');
-
-		// const template = Handlebars.templates['Header.hbs'];
-		// const html = template(this._config);
-		// if (this.parent) {
-		// 	this.parent.htmlElement.innerHTML += html;
-		// }
-		// return html;
 	}
 
 	get logoutButtonHTML(): HTMLElement {
@@ -52,10 +45,6 @@ export class Header extends BaseComponent implements IHeader {
 			return html;
 		}
 		throw new Error('logout button not found');
-	}
-
-	update(data: IHeaderConfig): void {
-		this._config = data;
 	}
 
 	protected _prerender(): void {

@@ -92,14 +92,6 @@ export class Menu extends BaseComponent implements IMenu {
 		this.links = [];
 	}
 
-	update(data: IMenuConfig) {
-		const oldHtmlElement = this.htmlElement;
-		this.removeForUpdate();
-		this._config = data;
-		this.render(false);
-		oldHtmlElement.replaceWith(this.htmlElement);
-	}
-
 	protected _prerender(): void {
 		super._prerender();
 		this.linksConfig.forEach(([, value]) => {

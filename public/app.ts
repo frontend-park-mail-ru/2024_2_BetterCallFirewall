@@ -9,11 +9,12 @@ import {
 } from './components/index';
 import { Router, RouterConfig } from './router/router';
 import { PAGE_LINKS } from './config';
-import { ViewHome } from './views/home/viewHome';
+// import { ViewHome } from './views/home/viewHome';
 import { ViewLogin } from './views/login/viewLogin';
 import { ViewSignup } from './views/sigup/viewSignup';
 import { StoreMenu } from './stores/storeMenu';
 import { ACTION_MENU_TYPES } from './actions/actionMenu';
+import { ViewFeed } from './views/feed/viewFeed';
 
 export const PAGES = {
 	home: 'home',
@@ -67,7 +68,8 @@ export default class App {
 		this._config = config;
 		this._root = new Root();
 
-		const homeView = new ViewHome(this._config.homeConfig, this._root);
+		// const homeView = new ViewHome(this._config.homeConfig, this._root);
+		const feedView = new ViewFeed(this._config.homeConfig, this._root);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
 		const signupView = new ViewSignup(
 			this._config.signupConfig,
@@ -76,7 +78,7 @@ export default class App {
 		const routerConfig: RouterConfig = [
 			{
 				path: PAGE_LINKS.feed,
-				view: homeView,
+				view: feedView,
 			},
 			{
 				path: PAGE_LINKS.login,
@@ -92,7 +94,7 @@ export default class App {
 		this._storeMenu = new StoreMenu(this._config.homeConfig.menu);
 		this._storeMenu.subscribe(ACTION_MENU_TYPES.menuLinkClick);
 
-		homeView.register(this._storeMenu);
+		feedView.register(this._storeMenu);
 	}
 
 	init() {
