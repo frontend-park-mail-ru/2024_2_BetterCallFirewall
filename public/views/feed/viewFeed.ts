@@ -11,9 +11,6 @@ export class ViewFeed extends ViewHome {
 		super(config, root);
 	}
 
-    _updateContent() {
-        
-    }
 
 	protected _renderContent(parent: IBaseComponent): void {
 		const feedConfig = this._config.main.content;
@@ -27,6 +24,7 @@ export class ViewFeed extends ViewHome {
 			const post = new Post(
 				{
 					key: (counter++).toString(),
+                    id: 1,
 					title: 'Header',
 					text: 'Text',
 					date: '01.01.2024',

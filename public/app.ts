@@ -71,10 +71,7 @@ export default class App {
 
 		// const homeView = new ViewHome(this._config.homeConfig, this._root);
 		const feedView = new ViewFeed(this._config.homeConfig, this._root);
-		const profileView = new ViewProfile(
-			this._config.homeConfig,
-			this._root,
-		);
+		const profileView = new ViewProfile(this._config.homeConfig, this._root);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
 		const signupView = new ViewSignup(
 			this._config.signupConfig,
@@ -86,16 +83,16 @@ export default class App {
 				view: feedView,
 			},
 			{
-				path: PAGE_LINKS.profile,
-				view: profileView,
-			},
-			{
 				path: PAGE_LINKS.login,
 				view: loginView,
 			},
 			{
 				path: PAGE_LINKS.signup,
 				view: signupView,
+			},
+			{
+				path: PAGE_LINKS.profile,
+				view: profileView,
 			},
 		];
 		this._router = new Router(routerConfig);

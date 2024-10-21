@@ -144,6 +144,45 @@ app.get('/api/post', (req, res) => {
 	}
 });
 
+const profiles = {
+    asaprocky: {
+        key: 'profile',
+        firstName: 'ASAP',
+        secondName: 'Rocky',
+        description: 'Rapper, influencer',
+        friendsCount: 99,
+        groupsCount: 3,
+		img: '../img/avatar.png',
+    },
+    johndoe: {
+        key: 'profile',
+        firstName: 'John',
+        secondName: 'Doe',
+        description: 'A mysterious individual',
+        friendsCount: 10,
+        groupsCount: 1,
+    }
+};
+
+app.get('/api/profiles/:user', (req, res) => {
+    const user = req.params.user.toLowerCase();
+    
+    const profile = profiles[user];
+
+    if (profile) {
+        res.json(profile);
+    } else {
+        res.status(404).json({
+            key: 'profile',
+            firstName: 'Неизвестно',
+            secondName: '',
+            description: '',
+            friendsCount: 0,
+            groupsCount: 0,
+        });
+    }
+});
+
 app.get('/dist/bundle.js', (req, res) => {
 	res.sendFile(path.join(__dirname, '../dist', 'bundle.js'));
 });
@@ -155,3 +194,5 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
 	console.log(`Server is listening on port ${port}`);
 });
+
+

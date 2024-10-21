@@ -1,3 +1,5 @@
+import { IBaseComponentConfig } from "../components/BaseComponent";
+
 type AjaxPromiseConfig = {
 	request: Request;
 };
@@ -11,6 +13,14 @@ type AjaxConfig = {
 export type FormResponse = {
 	message: string;
 };
+
+export interface IProfileConfig extends IBaseComponentConfig {
+    firstName: string;
+    secondName: string;
+    description: string;
+    friendsCount: number;
+    groupsCount: number;
+}
 
 export default new (class Ajax {
 	/**
@@ -46,6 +56,27 @@ export default new (class Ajax {
 		return this.#ajaxPromise({
 			request,
 		});
+	}
+
+	async getProfileData(user: string): Promise<IProfileConfig> {
+		try {
+			const response = await fetch(`/api/profiles/${user}`);
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			const data: IProfileConfig = await response.json();
+			return data;
+		} catch (error) {
+			console.error('Ошибка при получении данных профиля:', error);
+			return {
+				key: 'profile',
+				firstName: 'Неизвестно',
+				secondName: '',
+				description: '',
+				friendsCount: 0,
+				groupsCount: 0,
+			};
+		}
 	}
 
 	/**

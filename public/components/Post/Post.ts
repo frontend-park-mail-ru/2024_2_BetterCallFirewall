@@ -4,6 +4,7 @@ import BaseComponent, {
 } from '../BaseComponent';
 
 export interface IPostConfig extends IBaseComponentConfig {
+	id: number;
 	title: string;
 	text: string;
 	date: string;
@@ -43,6 +44,6 @@ export class Post extends BaseComponent implements IPost {
 	}
 
 	update(data: IPostConfig): void {
-		this._config = data;
+		this._config = { ...this._config, ...data };
 	}
 }

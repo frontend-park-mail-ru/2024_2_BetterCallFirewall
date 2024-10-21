@@ -6,14 +6,15 @@ import { IPost } from '../Post/Post';
 
 type Posts = IPost[];
 
-// export interface IProfileConfig extends IBaseComponentConfig {
-//     firstName: string;
-//  secondName: string;
-//  description: string;
-//  friendsCount: number;
-//  groupsCount: number;
-// }
-export interface IProfileConfig extends IBaseComponentConfig {}
+export interface IProfileConfig extends IBaseComponentConfig {
+    firstName?: string;
+    secondName?: string;
+    description?: string;
+    friendsCount?: number;
+    groupsCount?: number;
+    img?: string;
+}
+// export interface IProfileConfig extends IBaseComponentConfig {}
 
 export class Profile extends BaseComponent {
 	protected override _config: IProfileConfig | null;
@@ -66,15 +67,8 @@ export class Profile extends BaseComponent {
 
 	protected _prerender(): void {
 		super._prerender();
-        // контекст хардкод
-		this._templateContext = {
+        this._templateContext = {
 			...this._config,
-			firstName: 'ASAP',
-			secondName: 'Rocky',
-			desscription: 'Rapper, influencer',
-			friends: 99,
-			groups: 3,
-            img: '../img/avatar.png',
 		};
 	}
 }

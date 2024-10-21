@@ -1,3 +1,4 @@
+import { ViewProfile } from '../views/profile/profileView';
 import { BaseView } from '../views/view';
 
 type Route = {
@@ -15,14 +16,27 @@ export class Router {
 		this._config = config;
 	}
 
-	goToPage(path: string) {
+	async goToPage(path: string) {
 		for (const route of this._config) {
-			if (path === route.path) {
+			const regex = new RegExp(
+				`^${route.path.replace(/:[^\s/]+/, '([\\w-]+)')}$`
+			);
+			const match = path.match(regex);
+
+			if (match) {
 				if (this._activeView) {
 					this._activeView.active = false;
 				}
+
 				this._activeView = route.view;
 				this._activeView.active = true;
+
+				const profileView = this._activeView;
+				if (profileView instanceof ViewProfile) {
+					const user = match[1];
+					profileView.setUser(user); // tmp
+				}
+
 				break;
 			}
 		}
