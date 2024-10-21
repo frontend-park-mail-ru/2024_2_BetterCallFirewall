@@ -122,8 +122,4 @@ export class SignupForm extends BaseComponent {
 		}
 		messageElement.textContent = '';
 	}
-
-	update(data: ISignupFormConfig): void {
-		this._config = data;
-	}
 }

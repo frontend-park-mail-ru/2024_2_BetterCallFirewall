@@ -28,16 +28,13 @@ export class FormLink extends BaseComponent implements IFormLink {
 	 *
 	 * @returns {string} - generated HTML element
 	 */
-	render(): string {
-		const template = Handlebars.templates['FormLink.hbs'];
-		const html = template(this._config);
-		if (this._parent) {
-			this._parent.htmlElement.insertAdjacentHTML('beforeend', html);
-		}
-		return html;
+	render(show: boolean = true): string {
+		this._prerender();
+		return this._render('FormLink.hbs', show);
 	}
 
-	update(data: IFormLinkConfig): void {
-		this._config = data;
+	protected _prerender(): void {
+		super._prerender();
+		this._templateContext = this.config;
 	}
 }
