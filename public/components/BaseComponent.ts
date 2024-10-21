@@ -27,7 +27,8 @@ export interface IBaseComponent {
 	): void;
 	update(data: IBaseComponentConfig): void;
 	remove(): void;
-	removeInner(): void;
+	removeForUpdate(): void;
+	show(parent: HTMLElement): void;
 }
 
 export default abstract class BaseComponent implements IBaseComponent {
@@ -70,16 +71,6 @@ export default abstract class BaseComponent implements IBaseComponent {
 	 * @returns {HTMLElement}
 	 */
 	get htmlElement(): HTMLElement {
-		// if (this.parent) {
-		// 	const html = this.parent.htmlElement.querySelector(
-		// 		`[data-key="${this.key}"]`,
-		// 	) as HTMLElement;
-		// 	if (html) {
-		// 		return html;
-		// 	}
-		// 	throw new Error('Component not found');
-		// }
-		// throw new Error('Component has no parent');
 		if (this._htmlElement) {
 			return this._htmlElement;
 		}
@@ -110,7 +101,6 @@ export default abstract class BaseComponent implements IBaseComponent {
 	}
 
 	appendToHTML(parent: HTMLElement) {
-		console.log(this);
 		parent.appendChild(this.htmlElement);
 	}
 
@@ -201,12 +191,15 @@ export default abstract class BaseComponent implements IBaseComponent {
 		}
 	}
 
-	removeInner() {
+	removeForUpdate() {
 		this.removeHandlers();
 		Object.entries(this._children).forEach(([, child]) => {
 			child.remove();
 		});
-		this.htmlElement.innerHTML = '';
+	}
+
+	show(parent: HTMLElement) {
+		parent.appendChild(this.htmlElement);
 	}
 
 	protected _render(templateFile: string, show: boolean = true): string {

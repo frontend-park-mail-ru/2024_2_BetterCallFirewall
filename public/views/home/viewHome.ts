@@ -37,11 +37,6 @@ export type ComponentsHome = {
 	header?: Header;
 } & Components;
 
-// export interface ComponentsHome extends Components {
-// 	menu: Menu;
-// 	header: Header;
-// }
-
 export interface ViewMenu extends ViewHome {
 	updateMenu(data: IMenuConfig): void;
 }
@@ -77,23 +72,38 @@ export class ViewHome extends BaseView implements View, ViewMenu, ViewHeader {
 	}
 
 	render(): void {
-		this.renderMenu();
-		this.renderMain();
+		this._renderMenu();
+		this._renderMain();
 	}
 
 	updateMenu(data: IMenuConfig): void {
 		this._config.menu = data;
 		const menu = this._components.menu as Menu;
 		menu.update(data);
+		this._addMenuHandlers();
 	}
 
-	private renderMenu() {
+	updateHeader(data: IHeaderConfig): void {
+		const header = this._components.header;
+		header?.update(data);
+		this._addHeaderHandlers();
+	}
+
+	private _renderMenu() {
 		const config = this._config.menu;
 
 		const menu = new Menu(config, this._root);
 		menu.render();
 		this._components.menu = menu;
+		this._addMenuHandlers();
+	}
 
+	private _addMenuHandlers() {
+		const menu = this._components.menu;
+		if (!menu) {
+			throw new Error('menu not found');
+		}
+		const config = menu.config;
 		const feedLink = menu.children[config.links.feed.key];
 		menu.addHandler(feedLink.htmlElement, 'click', (event) => {
 			event.preventDefault();
@@ -105,26 +115,27 @@ export class ViewHome extends BaseView implements View, ViewMenu, ViewHeader {
 		});
 	}
 
-	private renderMain() {
+	private _renderMain() {
 		const main = new Container(this._config.main, this._root);
 		main.render();
-		this.renderHeader(main);
+		this._renderHeader(main);
 	}
 
-	private renderHeader(parent: IBaseComponent) {
+	private _renderHeader(parent: IBaseComponent) {
 		const headerConfig = this._config.main.header;
 		const header = new Header(headerConfig, parent);
 		header.render();
 		this._components.header = header;
+	}
 
+	private _addHeaderHandlers() {
+		const header = this._components.header;
+		if (!header) {
+			throw new Error('header not found');
+		}
 		header.addHandler(header.logoutButtonHTML, 'click', (event: Event) => {
 			event.preventDefault();
 			dispatcher.getAction(new ActionHeaderLogoutClick());
 		});
-	}
-
-	updateHeader(data: IHeaderConfig): void {
-		const header = this._components.header;
-		header?.update(data);
 	}
 }

@@ -47,6 +47,17 @@ export class Menu extends BaseComponent implements IMenu {
 		return Object.entries(this._config.links);
 	}
 
+	get config(): IMenuConfig {
+		if (this._config) {
+			return this._config;
+		}
+		throw new Error('config not found');
+	}
+
+	set config(config: IMenuConfig) {
+		this._config = config;
+	}
+
 	/**
 	 * Rendering menu and add to parent elem
 	 *
@@ -76,23 +87,17 @@ export class Menu extends BaseComponent implements IMenu {
 		this.links = [];
 	}
 
-	removeInner(): void {
-		super.removeInner();
-		this.links = [];	
+	removeForUpdate(): void {
+		super.removeForUpdate();
+		this.links = [];
 	}
 
 	update(data: IMenuConfig) {
-		const handlers = {...this._handlers};
-		this.removeInner();
-
+		const oldHtmlElement = this.htmlElement;
+		this.removeForUpdate();
 		this._config = data;
-
-		this.htmlElement.outerHTML = this.render(false);
-		Object.entries(handlers).forEach(([, {target, event, handler}]) => {
-			const targetHTML = target as HTMLElement;
-			const newTarget = this.htmlElement.querySelector(targetHTML.outerHTML);
-			newTarget?.addEventListener(event, handler);
-		});
+		this.render(false);
+		oldHtmlElement.replaceWith(this.htmlElement);
 	}
 
 	protected _prerender(): void {
