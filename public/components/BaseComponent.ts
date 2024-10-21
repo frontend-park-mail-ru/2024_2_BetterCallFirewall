@@ -1,3 +1,5 @@
+import 'handlebars';
+
 type Children = Record<string, IBaseComponent>;
 type Handlers = Record<
 	string,
