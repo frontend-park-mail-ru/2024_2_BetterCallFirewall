@@ -8,6 +8,7 @@ export const PAGE_LINKS = {
 	feed: '/feed',
 	login: '/login',
 	signup: '/signup',
+	profile: '/profile', // ????
 };
 
 const homeConfig: IHomeConfig = {

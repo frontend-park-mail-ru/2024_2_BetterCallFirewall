@@ -56,7 +56,10 @@ export interface ViewHeader extends ViewHome {
 // 	_addHeaderHandlers(): void;
 // }
 
-export abstract class ViewHome extends BaseView implements View, ViewMenu, ViewHeader {
+export abstract class ViewHome
+	extends BaseView
+	implements View, ViewMenu, ViewHeader
+{
 	protected _config: HomeConfig;
 	protected _components: ComponentsHome = {};
 
@@ -90,6 +93,7 @@ export abstract class ViewHome extends BaseView implements View, ViewMenu, ViewH
 	protected abstract _renderContent(parent: IBaseComponent): void;
 
 	updateMenu(data: IMenuConfig): void {
+		console.log('update');
 		this._config.menu = data;
 		const menu = this._components.menu as Menu;
 		menu.update(data);

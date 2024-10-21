@@ -15,6 +15,7 @@ import { ViewSignup } from './views/sigup/viewSignup';
 import { StoreMenu } from './stores/storeMenu';
 import { ACTION_MENU_TYPES } from './actions/actionMenu';
 import { ViewFeed } from './views/feed/viewFeed';
+import { ViewProfile } from './views/profile/profileView';
 
 export const PAGES = {
 	home: 'home',
@@ -70,6 +71,10 @@ export default class App {
 
 		// const homeView = new ViewHome(this._config.homeConfig, this._root);
 		const feedView = new ViewFeed(this._config.homeConfig, this._root);
+		const profileView = new ViewProfile(
+			this._config.homeConfig,
+			this._root,
+		);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
 		const signupView = new ViewSignup(
 			this._config.signupConfig,
@@ -79,6 +84,10 @@ export default class App {
 			{
 				path: PAGE_LINKS.feed,
 				view: feedView,
+			},
+			{
+				path: PAGE_LINKS.profile,
+				view: profileView,
 			},
 			{
 				path: PAGE_LINKS.login,
@@ -95,6 +104,7 @@ export default class App {
 		this._storeMenu.subscribe(ACTION_MENU_TYPES.menuLinkClick);
 
 		feedView.register(this._storeMenu);
+		profileView.register(this._storeMenu); // ????
 	}
 
 	init() {
