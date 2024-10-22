@@ -16,6 +16,8 @@ import { StoreMenu } from './stores/storeMenu';
 import { ACTION_MENU_TYPES } from './actions/actionMenu';
 import { ViewFeed } from './views/feed/viewFeed';
 import { ViewProfile } from './views/profile/profileView';
+import { StoreProfile } from './stores/storeProfile';
+import { ACTION_PROFILE_TYPES } from './actions/actionProfile';
 
 export const PAGES = {
 	home: 'home',
@@ -59,6 +61,7 @@ export default class App {
 	private _config: IAppConfig;
 	private _root: Root;
 	private _storeMenu: StoreMenu;
+	private _storeProfile: StoreProfile;
 
 	/**
 	 * Instance of application
@@ -99,9 +102,20 @@ export default class App {
 
 		this._storeMenu = new StoreMenu(this._config.homeConfig.menu);
 		this._storeMenu.subscribe(ACTION_MENU_TYPES.menuLinkClick);
+		
+		this._storeProfile = new StoreProfile({
+			key: 'profile',
+			firstName: '',
+            secondName: '',
+            description: '',
+            friendsCount: 0,
+            groupsCount: 0,
+            img: '',
+		});
+		this._storeProfile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
 
 		feedView.register(this._storeMenu);
-		profileView.register(this._storeMenu); // ????
+		profileView.register(this._storeProfile); // ????
 	}
 
 	init() {

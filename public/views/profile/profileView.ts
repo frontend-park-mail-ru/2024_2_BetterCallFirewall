@@ -1,8 +1,17 @@
+import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
 import { Root } from '../../components';
 import { IBaseComponent } from '../../components/BaseComponent';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
+import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import { HomeConfig, ViewHome } from '../home/viewHome';
+
+export const updateProfileAction = (data: IProfileConfig) => {
+    dispatcher.getAction({
+        type: ACTION_PROFILE_TYPES.updateProfile,
+        data,
+    });
+};
 
 export class ViewProfile extends ViewHome {
 	constructor(config: HomeConfig, root: Root) {
@@ -11,7 +20,8 @@ export class ViewProfile extends ViewHome {
 
     async setUser(user: string) {
         const profileData = await ajax.getProfileData(user); // temporary
-		this.updateProfile(profileData);
+		// this.updateProfile(profileData);
+		updateProfileAction(profileData);
     }
 
 	updateProfile(data: IProfileConfig): void {
