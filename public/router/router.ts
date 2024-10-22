@@ -31,12 +31,10 @@ export class Router {
 				this._activeView = route.view;
 				this._activeView.active = true;
 
-				const profileView = this._activeView;
-				if (profileView instanceof ViewProfile) {
+				if (this._activeView instanceof ViewProfile) {
 					const user = match[1];
-					profileView.setUser(user); // tmp
+					this._activeView.setUser(user); // tmp
 				}
-
 				break;
 			}
 		}

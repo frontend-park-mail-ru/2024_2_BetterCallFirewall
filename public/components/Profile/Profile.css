@@ -1,0 +1,9 @@
+
+.profile__header {
+    padding-left: 1rem;
+}
+
+.profile__name {
+    display: flex;
+    flex-direction: row;
+}
