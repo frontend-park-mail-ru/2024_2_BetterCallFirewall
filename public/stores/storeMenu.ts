@@ -8,9 +8,9 @@ export class StoreMenu extends BaseStore implements Store {
 	private _state: IMenuConfig;
 	protected _registeredViews: ViewMenu[] = [];
 
-	constructor(data: IMenuConfig) {
+	constructor() {
 		super();
-		this._state = data;
+		this._state = reducerMenu();
 	}
 
 	handleAction(action: Action): void {

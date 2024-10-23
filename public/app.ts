@@ -8,13 +8,15 @@ import {
 	Root,
 } from './components/index';
 import { Router, RouterConfig } from './router/router';
-import { PAGE_LINKS } from './config';
-// import { ViewHome } from './views/home/viewHome';
+import config, { PAGE_LINKS } from './config';
 import { ViewLogin } from './views/login/viewLogin';
-import { ViewSignup } from './views/sigup/viewSignup';
+import { ViewSignup } from './views/signup/viewSignup';
 import { StoreMenu } from './stores/storeMenu';
 import { ACTION_MENU_TYPES } from './actions/actionMenu';
 import { ViewFeed } from './views/feed/viewFeed';
+import { StoreHeader } from './stores/storeHeader';
+import { ACTION_HEADER_TYPES } from './actions/actionHeader';
+import { StoreLogin } from './stores/storeLogin';
 
 export const PAGES = {
 	home: 'home',
@@ -53,11 +55,14 @@ export interface IAppConfig {
 /**
  * Main class of application
  */
-export default class App {
+class App {
 	private _router: Router;
 	private _config: IAppConfig;
 	private _root: Root;
+
 	private _storeMenu: StoreMenu;
+	private _storeHeader: StoreHeader;
+	private _storeLogin: StoreLogin;
 
 	/**
 	 * Instance of application
@@ -68,7 +73,6 @@ export default class App {
 		this._config = config;
 		this._root = new Root();
 
-		// const homeView = new ViewHome(this._config.homeConfig, this._root);
 		const feedView = new ViewFeed(this._config.homeConfig, this._root);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
 		const signupView = new ViewSignup(
@@ -91,10 +95,19 @@ export default class App {
 		];
 		this._router = new Router(routerConfig);
 
-		this._storeMenu = new StoreMenu(this._config.homeConfig.menu);
+		this._storeMenu = new StoreMenu();
 		this._storeMenu.subscribe(ACTION_MENU_TYPES.menuLinkClick);
 
+		this._storeHeader = new StoreHeader();
+		this._storeHeader.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
+
+		this._storeLogin = new StoreLogin();
+		this._storeLogin.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
+
 		feedView.register(this._storeMenu);
+		feedView.register(this._storeHeader);
+
+		loginView.register(this._storeLogin);
 	}
 
 	init() {
@@ -104,72 +117,6 @@ export default class App {
 	get router() {
 		return this._router;
 	}
-
-	// /**
-	//  * Возвращает конфигурационный объект приложения
-	//  * @returns {IAppConfig}
-	//  */
-	// get config(): IAppConfig {
-	// 	return this._config;
-	// }
-
-	// /**
-	//  * @returns {Root}
-	//  */
-	// get root(): Root {
-	// 	return this._root;
-	// }
-
-	// /**
-	//  * Routing pages
-	//  *
-	//  * @param {string} pageLink
-	//  */
-	// render(pageLink: string) {
-	// 	let pageType: string = '';
-	// 	switch (pageLink) {
-	// 		case PAGE_LINKS.signup:
-	// 			history.pushState({}, '', PAGE_LINKS.signup);
-	// 			this.state.currentPage = this.pages.signup;
-	// 			break;
-	// 		case PAGE_LINKS.login:
-	// 			history.pushState({}, '', PAGE_LINKS.login);
-	// 			this.state.currentPage = this.pages.login;
-	// 			break;
-	// 		default:
-	// 			history.pushState({}, '', PAGE_LINKS.feed);
-	// 			this.state.currentPage = this.pages.home;
-	// 			pageType = homePageTypes.feed;
-	// 	}
-	// 	this.state.currentPage?.render(pageType);
-	// }
-
-	// /**
-	//  * Routing to clearing previous components and rendering new
-	//  *
-	//  * @param {string} pageLink
-	//  * @param {boolean} deleteEverything
-	//  */
-	// goToPage(pageLink: string, deleteEverything: boolean = false) {
-	// 	this.clear(deleteEverything);
-	// 	this.render(pageLink);
-	// }
-
-	// /**
-	//  * Clearing previous components
-	//  *
-	//  * @param {boolean} deleteEverything
-	//  */
-	// clear(deleteEverything: boolean) {
-	// 	if (this.state.currentPage === this.pages.home) {
-	// 		const page = this.state.currentPage as IHomePage;
-	// 		if (deleteEverything) {
-	// 			page.clear();
-	// 		} else {
-	// 			page.clearContent();
-	// 		}
-	// 		return;
-	// 	}
-	// 	this.state.currentPage?.clear();
-	// }
 }
+
+export default new App(config);

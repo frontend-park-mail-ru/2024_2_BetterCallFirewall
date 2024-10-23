@@ -8,7 +8,7 @@ export class ViewSignup extends BaseView {
 	constructor(config: ISignupFormConfig, root: Root) {
 		super(root);
 		this._config = config;
-		this._root = new Root();
+		// this._root = new Root();
 	}
 
 	get config() {
@@ -21,13 +21,9 @@ export class ViewSignup extends BaseView {
 		this.render();
 	}
 
-	clear(): void {
-		Object.keys(this._root.children).forEach((key) => {
-			this._root.children[key].remove();
-		});
-	}
-
 	render() {
+		this.clear();
+
 		const config = this._config;
 		const login = new SignupForm(config, this._root);
 		login.render();

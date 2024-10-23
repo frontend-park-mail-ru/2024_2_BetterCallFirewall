@@ -2,8 +2,9 @@ import { Action } from '../actions/action';
 import { ACTION_MENU_TYPES } from '../actions/actionMenu';
 import { IMenuConfig } from '../components/Menu/Menu';
 import config from '../config';
+import deepClone from '../modules/deepClone';
 
-const initialState: IMenuConfig = structuredClone(config.homeConfig.menu);
+const initialState: IMenuConfig = deepClone(config.homeConfig.menu);
 
 export const reducerMenu = (state?: IMenuConfig, action?: Action) => {
 	if (!state) {

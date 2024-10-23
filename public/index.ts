@@ -1,6 +1,4 @@
-import App from './app';
-import config from './config';
+import app from './app';
 
-const app: App = new App(config);
 app.router.goToPage(window.location.pathname);
 app.init();

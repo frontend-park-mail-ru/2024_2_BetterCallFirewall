@@ -23,6 +23,8 @@ export class Router {
 				}
 				this._activeView = route.view;
 				this._activeView.active = true;
+
+				history.pushState({}, '', path);
 				break;
 			}
 		}
