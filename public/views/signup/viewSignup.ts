@@ -59,7 +59,7 @@ const loginFormSubmit = (loginForm: SignupForm, inputs: Record<string, IInputCon
 		ajax.sendForm(
 			config.URL.signup,
 			data,
-			(response, error) => {
+			async (response, error) => {
 				if (error) {
 					loginForm.printError('Что-то пошло не так');
 					return;
@@ -68,12 +68,12 @@ const loginFormSubmit = (loginForm: SignupForm, inputs: Record<string, IInputCon
 					app.router.goToPage(PAGE_LINKS.feed);
 					dispatcher.getAction(new ActionSignupClickSuccess());
 				} else if (response) {
-					// const data = response.json();
-					// if (data.message === 'wrong email or password') {
-					// 	loginForm.printError('Неверная почта или пароль');
-					// } else {
-					// 	loginForm.printError('Что-то пошло не так');
-					// }
+					const data = await response.json();
+					if (data.message === 'wrong email or password') {
+						loginForm.printError('Неверная почта или пароль');
+					} else {
+						loginForm.printError('Что-то пошло не так');
+					}
 				}
 			},
 		);

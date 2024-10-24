@@ -61,21 +61,24 @@ const loginFormSubmit = (
 	const validator = new Validator();
 	const data = validator.validateForm(inputs, loginForm.form);
 	if (data) {
-		ajax.sendForm(config.URL.login, data, (response, error) => {
+		ajax.sendForm(config.URL.login, 
+			data, 
+			async (response, error) => {
 			if (error) {
 				loginForm.printError('Что-то пошло не так');
 				return;
 			}
 			if (response && response.ok) {
+				console.log('ok');
 				app.router.goToPage(PAGE_LINKS.feed);
 				dispatcher.getAction(new ActionLoginClickSuccess());
 			} else if (response) {
-				// const data = response.json();
-				// if (data.message === 'wrong email or password') {
-				// 	loginForm.printError('Неверная почта или пароль');
-				// } else {
-				// 	loginForm.printError('Что-то пошло не так');
-				// }
+				const data = await response.json();
+				if (data.message === 'wrong email or password') {
+					loginForm.printError('Неверная почта или пароль');
+				} else {
+					loginForm.printError('Что-то пошло не так');
+				}
 			}
 		});
 	}
