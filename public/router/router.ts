@@ -25,6 +25,7 @@ export class Router {
 				this._activeView.active = true;
 
 				history.pushState({}, '', path);
+				this._activeView.render(); // ??
 				break;
 			}
 		}

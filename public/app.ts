@@ -17,6 +17,7 @@ import { ViewFeed } from './views/feed/viewFeed';
 import { StoreHeader } from './stores/storeHeader';
 import { ACTION_HEADER_TYPES } from './actions/actionHeader';
 import { StoreLogin } from './stores/storeLogin';
+import { ACTION_USER_TYPES } from './actions/actionUser';
 
 export const PAGES = {
 	home: 'home',
@@ -104,6 +105,7 @@ class App {
 		this._storeLogin = new StoreLogin();
 		this._storeLogin.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
 
+		this._storeLogin.subscribe(ACTION_USER_TYPES.loginClickSuccess);
 		feedView.register(this._storeMenu);
 		feedView.register(this._storeHeader);
 

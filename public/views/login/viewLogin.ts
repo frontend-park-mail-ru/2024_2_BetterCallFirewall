@@ -1,4 +1,16 @@
-import { ILoginFormConfig, LoginForm, Root } from '../../components';
+import { ActionLoginClickSuccess } from '../../actions/actionUser';
+import app from '../../app';
+import {
+	IInputConfig,
+	ILoginFormConfig,
+	LoginForm,
+	Root,
+} from '../../components';
+import config, { PAGE_LINKS } from '../../config';
+import dispatcher from '../../dispatcher/dispatcher';
+// import dispatcher from '../../dispatcher/dispatcher';
+import ajax from '../../modules/ajax';
+import Validator from '../../modules/validation';
 import { BaseView, Components, ViewData } from '../view';
 
 export class ViewLogin extends BaseView {
@@ -27,5 +39,44 @@ export class ViewLogin extends BaseView {
 		const login = new LoginForm(config, this._root);
 		login.render();
 		this._components.login = login;
+		this._addLoginHandlers();
+	}
+
+	private _addLoginHandlers() {
+		const loginForm = this._components.login as LoginForm;
+		if (!loginForm) {
+			throw new Error('login form not found');
+		}
+		loginForm.addHandler(loginForm.form, 'submit', (event: Event) => {
+			event.preventDefault();
+			loginFormSubmit(loginForm, this._config.inputs);
+		});
 	}
 }
+
+const loginFormSubmit = (
+	loginForm: LoginForm,
+	inputs: Record<string, IInputConfig>,
+) => {
+	const validator = new Validator();
+	const data = validator.validateForm(inputs, loginForm.form);
+	if (data) {
+		ajax.sendForm(config.URL.login, data, (response, error) => {
+			if (error) {
+				loginForm.printError('Что-то пошло не так');
+				return;
+			}
+			if (response && response.ok) {
+				app.router.goToPage(PAGE_LINKS.feed);
+				dispatcher.getAction(new ActionLoginClickSuccess());
+			} else if (response) {
+				// const data = response.json();
+				// if (data.message === 'wrong email or password') {
+				// 	loginForm.printError('Неверная почта или пароль');
+				// } else {
+				// 	loginForm.printError('Что-то пошло не так');
+				// }
+			}
+		});
+	}
+};
