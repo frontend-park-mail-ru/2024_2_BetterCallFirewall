@@ -18,6 +18,7 @@ import { StoreHeader } from './stores/storeHeader';
 import { ACTION_HEADER_TYPES } from './actions/actionHeader';
 import { StoreLogin } from './stores/storeLogin';
 import { ACTION_USER_TYPES } from './actions/actionUser';
+import { StoreSignup } from './stores/storeSignup';
 
 export const PAGES = {
 	home: 'home',
@@ -64,6 +65,7 @@ class App {
 	private _storeMenu: StoreMenu;
 	private _storeHeader: StoreHeader;
 	private _storeLogin: StoreLogin;
+	private _storeSignup: StoreSignup;
 
 	/**
 	 * Instance of application
@@ -104,14 +106,20 @@ class App {
 
 		this._storeLogin = new StoreLogin();
 		this._storeLogin.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
-
 		this._storeLogin.subscribe(ACTION_USER_TYPES.loginClickSuccess);
-		this._storeLogin.subscribe(ACTION_USER_TYPES.loginError);
+		this._storeLogin.subscribe(ACTION_USER_TYPES.formError);
+
+		this._storeSignup = new StoreSignup();
+		this._storeSignup.subscribe(ACTION_USER_TYPES.formError);
+		this._storeSignup.subscribe(ACTION_USER_TYPES.signupClickSuccess);
+
+		// this._storeLogin.subscribe(ACTION_USER_TYPES.formError); //
 		
 		feedView.register(this._storeMenu);
 		feedView.register(this._storeHeader);
 
 		loginView.register(this._storeLogin);
+		signupView.register(this._storeSignup);
 	}
 
 	init() {

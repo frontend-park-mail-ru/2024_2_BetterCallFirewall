@@ -14,6 +14,7 @@ export class StoreLogin extends BaseStore implements Store {
 	}
 
 	handleAction(action: Action): void {
+		console.log('action: ',action);
 		this._registeredViews.forEach((view) => {
 			if (view.active) {
 				this._state = reducerLogin(this._state, action);

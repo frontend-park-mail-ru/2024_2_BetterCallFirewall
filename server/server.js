@@ -86,8 +86,6 @@ app.use((req, res, next) => {
 app.post('/auth/login', (req, res) => {
 	const body = req.body;
 	let sessionId;
-	console.log(body.email);
-	console.log(body.password);
 	users.forEach((user) => {
 		if (body.email === user.email && body.password === user.password) {
 			user.sessionId = user.id;
@@ -95,7 +93,6 @@ app.post('/auth/login', (req, res) => {
 		}
 	});
 	if (sessionId) {
-		console.log('session');
 		res.status(200);
 		res.cookie('sessionid', sessionId, { maxAge: '3600000' });
 	} else {
@@ -115,7 +112,6 @@ app.post('/auth/signup', (req, res) => {
 		lastName: body.lastName,
 	};
 	users.push(user);
-	console.log(users);
 	res.cookie('sessionid', user.sessionId, { maxAge: 86400000 });
 	res.send('{}');
 });

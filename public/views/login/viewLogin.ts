@@ -1,6 +1,6 @@
 import {
 	ActionLoginClickSuccess,
-	ActionLoginError,
+	ActionFormError,
 } from '../../actions/actionUser';
 import app from '../../app';
 import {
@@ -67,7 +67,7 @@ const loginFormSubmit = (
 		ajax.sendForm(config.URL.login, data, async (response, error) => {
 			if (error) {
 				dispatcher.getAction(
-					new ActionLoginError('Что-то пошло не так'),
+					new ActionFormError('Что-то пошло не так'),
 				);
 				return;
 			}
@@ -78,14 +78,14 @@ const loginFormSubmit = (
 				const data = await response.json();
 				if (data.message === 'wrong email or password') {
 					dispatcher.getAction(
-						new ActionLoginError('Неверная почта или пароль'),
+						new ActionFormError('Неверная почта или пароль'),
 					);
 
 				} else {
 					dispatcher.getAction(
-						new ActionLoginError('Что-то пошло не так'),
+						new ActionFormError('Что-то пошло не так'),
 					);
-				}
+ 				}
 			}
 		});
 	}

@@ -1,13 +1,12 @@
 import { Action } from '../actions/action';
-import { ACTION_HEADER_TYPES } from '../actions/actionHeader';
 import { ACTION_USER_TYPES, IFormErrorData } from '../actions/actionUser';
-import { ILoginFormConfig } from '../components';
+import { ISignupFormConfig } from '../components';
 import config from '../config';
 import deepClone from '../modules/deepClone';
 
-const inititalState = deepClone(config.loginConfig);
+const inititalState = deepClone(config.signupConfig);
 
-export const reducerLogin = (state?: ILoginFormConfig, action?: Action) => {
+export const reducerSignup = (state?: ISignupFormConfig, action?: Action) => {
 	if (!state) {
 		return inititalState;
 	}
@@ -20,8 +19,8 @@ export const reducerLogin = (state?: ILoginFormConfig, action?: Action) => {
 					error: (action.data as IFormErrorData)?.formError,
 				};
 				break;
-			case ACTION_HEADER_TYPES.logoutClickSuccess:
-				break;
+            case ACTION_USER_TYPES.signupClickSuccess:
+                break;
 			default:
 				break;
 		}
