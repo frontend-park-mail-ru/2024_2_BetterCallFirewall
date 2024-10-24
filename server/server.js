@@ -77,13 +77,17 @@ app.use(express.static('./public', { fallthrough: true }));
 app.use(express.static('./node_modules'));
 
 app.use((req, res, next) => {
-	res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:8000');
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 	next();
 });
+
 
 app.post('/auth/login', (req, res) => {
 	const body = req.body;
 	let sessionId;
+	console.log(body.email);
+	console.log(body.password);
 	users.forEach((user) => {
 		if (body.email === user.email && body.password === user.password) {
 			user.sessionId = user.id;
@@ -91,6 +95,7 @@ app.post('/auth/login', (req, res) => {
 		}
 	});
 	if (sessionId) {
+		console.log('session');
 		res.status(200);
 		res.cookie('sessionid', sessionId, { maxAge: '3600000' });
 	} else {
@@ -110,6 +115,7 @@ app.post('/auth/signup', (req, res) => {
 		lastName: body.lastName,
 	};
 	users.push(user);
+	console.log(users);
 	res.cookie('sessionid', user.sessionId, { maxAge: 86400000 });
 	res.send('{}');
 });
@@ -121,7 +127,7 @@ app.post('/auth/logout', (req, res) => {
 			user.sessionId = null;
 		}
 	});
-	res.cookie('sessoinid', 0, { maxAge: -1 });
+	res.cookie('sessionid', 0, { maxAge: -1 });
 	res.send('{}');
 });
 
