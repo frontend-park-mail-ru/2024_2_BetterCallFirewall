@@ -79,11 +79,14 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	protected abstract _renderContent(parent: IBaseComponent): void;
+	protected abstract _updateContent(parent: IBaseComponent): void;
 
 	updateMenu(data: IMenuConfig): void {
 		this._config.menu = data;
 		const menu = this._components.menu as Menu;
 		menu.update(data);
+		const main = this._components.main;
+		this._updateContent(main);
 		this._addMenuHandlers();
 	}
 
@@ -122,6 +125,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	private _renderMain() {
 		const main = new Container(this._config.main, this._root);
 		main.render();
+		this._components.main = main;
 		this._renderHeader(main);
 		this._renderContent(main);
 	}

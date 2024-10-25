@@ -6,9 +6,23 @@ import { HomeConfig, ViewHome } from '../home/viewHome';
 // 	className: string;
 // }
 
+
 export class ViewFeed extends ViewHome {
 	constructor(config: HomeConfig, root: Root) {
 		super(config, root);
+	}
+
+	protected _updateContent(parent: IBaseComponent) {
+		console.log('content');
+		this._clearContent();
+		this._renderContent(parent);
+	}
+
+	private _clearContent() {
+		if (this._components.content) {
+			const content = this._components.content;
+			content.remove();
+		}
 	}
 
 	protected _renderContent(parent: IBaseComponent): void {
@@ -29,6 +43,7 @@ export class ViewFeed extends ViewHome {
 				},
 				this._components.content,
 			);
+			feed.addChild(post);
 			post.render();
 		}
 	}
