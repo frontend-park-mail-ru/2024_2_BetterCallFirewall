@@ -3,8 +3,9 @@
         <img src="{{this.avatar}}" alt="Avatar" class="friend__avatar avatar">
     </div>
     <div class="friend__info item__info">
-        <span>{{this.name}}</span>
+        <a class="link" href=""><span>{{this.name}}</span></a>
         <span>{{this.description}}</span>
+        <a class="friend__link" href=""><span>write a message</span></a>
     </div>
     <div class="friend__state item__state">
         {{#if this.isFriend}}

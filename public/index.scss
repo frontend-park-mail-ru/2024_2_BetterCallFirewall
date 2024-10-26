@@ -46,6 +46,7 @@ body {
 
 .link {
     text-decoration: none;
+    color: var(--main-text-color);
     &:hover {
         color: var(--main-color);
     }
@@ -88,9 +89,9 @@ hr {
     justify-content: space-between;
     align-items: center;
     border: .5px solid rgba(255, 255, 255, 0.5);
-    border-radius: 1rem;
-    width: 65%;
-    height: 5.5rem;
+    border-radius: 1.5rem;
+    width: 70%;
+    height: 6rem;
     padding: .5rem 1rem;
     box-sizing: border-box;
     &__img {
