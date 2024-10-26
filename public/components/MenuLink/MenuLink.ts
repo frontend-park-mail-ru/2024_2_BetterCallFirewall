@@ -6,6 +6,7 @@ import BaseComponent, {
 export interface IMenuLinkConfig extends IBaseComponentConfig {
 	text: string;
 	href: string;
+	icon: string;
 }
 
 export interface IMenuLink extends IBaseComponent {}

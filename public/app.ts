@@ -151,6 +151,8 @@ class App {
 		loginView.register(this._storeLogin);
 
 		signupView.register(this._storeSignup);
+
+		friendView.register(this._storeMenu);
 	}
 
 	init() {

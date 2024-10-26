@@ -36,7 +36,7 @@ export class ViewFriends extends ViewHome {
 			const friend = new Friend(
 				{
 					key: 'friend',
-					avatar: '',
+					avatar: '../../img/avatar.png',
 					name: 'Asap Rocky',
 					description: 'Canadian singer, songwriter and actor.',
 					isFriend: true,

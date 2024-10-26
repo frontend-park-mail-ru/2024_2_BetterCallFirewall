@@ -84,8 +84,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		this._config.menu = data;
 		const menu = this._components.menu as Menu;
 		menu.update(data);
-		const main = this._components.main;
-		this._updateContent(main);
 		this._addMenuHandlers();
 	}
 
