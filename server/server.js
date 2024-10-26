@@ -77,9 +77,11 @@ app.use(express.static('./public', { fallthrough: true }));
 app.use(express.static('./node_modules'));
 
 app.use((req, res, next) => {
-	res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:8000');
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 	next();
 });
+
 
 app.post('/auth/login', (req, res) => {
 	const body = req.body;
@@ -121,7 +123,7 @@ app.post('/auth/logout', (req, res) => {
 			user.sessionId = null;
 		}
 	});
-	res.cookie('sessoinid', 0, { maxAge: -1 });
+	res.cookie('sessionid', 0, { maxAge: -1 });
 	res.send('{}');
 });
 

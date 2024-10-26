@@ -1,124 +1,51 @@
-import 'handlebars';
-import BaseComponent, {
-	IBaseComponent,
-	IBaseComponentConfig,
-} from '../BaseComponent';
-import {
-	FormButton,
-	FormLink,
-	IFormButtonConfig,
-	IFormLinkConfig,
-	IInputConfig,
-	Input,
-} from '../index';
+import { IBaseComponent } from '../BaseComponent';
+import { BaseForm, IBaseForm, IBaseFormConfig } from '../BaseForm/BaseForm';
+import { FormLink, IFormLinkConfig } from '../FormLink/FormLink';
 
-type ConfigInputs = Record<string, IInputConfig>;
-type ConfigInputsItems = [string, IInputConfig][];
-type Items = { [key: string]: IBaseComponent };
-
-export interface ILoginFormConfig extends IBaseComponentConfig {
-	inputs: Record<string, IInputConfig>;
-	button: IFormButtonConfig;
+export interface ILoginFormConfig extends IBaseFormConfig {
 	toSignupLink: IFormLinkConfig;
 }
 
-export interface ILoginForm extends IBaseComponent {
-	get configInputsItems(): ConfigInputsItems;
-	get items(): Items;
-}
+export interface ILoginForm extends IBaseForm {}
 
-export class LoginForm extends BaseComponent implements ILoginForm {
-	protected override config: ILoginFormConfig | null;
-	private configInputs: ConfigInputs;
-	private configButton;
-	private inputs: Input[] = [];
-	private _items: Items = {};
-	/**
-	 * constructor of instance LoginForm
-	 *
-	 * @param {ILoginFormConfig} config - configuration for the form
-	 * @param {IBaseComponent} parent - the parent HTML element
-	 */
+export class LoginForm extends BaseForm implements ILoginForm {
+	protected override _config: ILoginFormConfig;
+
 	constructor(config: ILoginFormConfig, parent: IBaseComponent) {
 		super(config, parent);
-		this.config = config;
-		this.configInputs = config.inputs;
-		this.configButton = config.button;
+		this._config = config;
 	}
 
-	/**
-	 * Get inputs from config
-	 *
-	 * @returns {ConfigInputsItems} - array of input
-	 */
-	get configInputsItems(): ConfigInputsItems {
-		return Object.entries(this.configInputs);
-	}
-
-	/**
-	 * Getting items of this element
-	 * @returns {Items}
-	 */
-	get items(): Items {
-		return this._items;
-	}
-
-	/**
-	 * Render login form and submit event handler
-	 *
-	 * @returns {string} - HTML string of form
-	 */
-	render(): string {
-		if (!this.config) {
-			throw new Error('component has no config');
+	get form(): HTMLElement {
+		const html = this.htmlElement.querySelector('.form') as HTMLElement;
+		if (html) {
+			return html;
 		}
-		this.configInputsItems.forEach(([key, config]) => {
-			const input = new Input(config);
-			this._items[key] = input;
-			this.inputs.push(input);
-		});
-		const button = new FormButton(this.configButton);
-		this._items.button = button;
-		const toSignupLink = new FormLink(this.config.toSignupLink);
+		throw new Error('form not found');
+	}
+
+	protected _prerender(): void {
+		super._prerender();
+		const toSignupLink = new FormLink(this._config?.toSignupLink, this);
 		this._items.toSignupLink = toSignupLink;
-
-		const template = Handlebars.templates['LoginForm.hbs'];
-		const html = template({
-			key: this.config.key,
-			inputs: this.inputs.map((input) => input.render()),
-			button: button.render(),
-			toSignupLink: toSignupLink.render(),
-		});
-		this.parent?.htmlElement.insertAdjacentHTML('beforeend', html);
-		this.inputs.forEach((input) => input.appendToComponent(this));
-		button.appendToComponent(this);
-		toSignupLink.appendToComponent(this);
-		return html;
+		this._templateContext = {
+			...this._templateContext,
+			toSignupLink: toSignupLink.render(false),
+		};
 	}
 
-	/**
-	 * Printing error above submit button
-	 * @param {string} error
-	 */
-	printError(error: string) {
-		if (error) {
-			const messageElement =
-				this.htmlElement.querySelector('.error-message');
-			if (!messageElement) {
-				throw new Error('message element not found');
-			}
-			messageElement.textContent = error;
-		}
-	}
+	render(): string {
+		this._prerender();
+		this._render('LoginForm.hbs');
 
-	/**
-	 * Clear error above submit button
-	 */
-	clearError() {
-		const messageElement = this.htmlElement.querySelector('.error-message');
-		if (!messageElement) {
-			throw new Error('message element not found');
+		const toSignupLinkHTML = this.htmlElement.querySelector(
+			`[data-key=${this._config.toSignupLink.key}]`,
+		);
+		if (!toSignupLinkHTML) {
+			throw new Error('toSignupLinkHTML not found');
 		}
-		messageElement.textContent = '';
+		this.items.toSignupLink.htmlElement = toSignupLinkHTML as HTMLElement;
+
+		return this.htmlElement.outerHTML;
 	}
 }

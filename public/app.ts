@@ -7,19 +7,24 @@ import {
 	ISignupFormConfig,
 	Root,
 } from './components/index';
-import { HomePage, homePageTypes, LoginPage, SignupPage } from './pages/index';
-import { IBasePage } from './pages/basePage';
-import { IHomePage } from './pages/home/home';
-
-/**
- * Links to pages
- * @constant
- */
-export const PAGE_LINKS = {
-	feed: '/feed',
-	login: '/login',
-	signup: '/signup',
-};
+import { Router, RouterConfig } from './router/router';
+import config, { PAGE_LINKS } from './config';
+import { ViewLogin } from './views/login/viewLogin';
+import { ViewSignup } from './views/signup/viewSignup';
+import { StoreMenu } from './stores/storeMenu';
+import { ACTION_MENU_TYPES } from './actions/actionMenu';
+import { ViewFeed } from './views/feed/viewFeed';
+import { StoreHeader } from './stores/storeHeader';
+import { ACTION_HEADER_TYPES } from './actions/actionHeader';
+import { StoreLogin } from './stores/storeLogin';
+import { ACTION_USER_TYPES } from './actions/actionUser';
+import { StoreApp } from './stores/storeApp';
+import { ACTION_LOGIN_TYPES } from './actions/actionLogin';
+import { ACTION_APP_TYPES, ActionAppInit } from './actions/actionApp';
+import dispatcher from './dispatcher/dispatcher';
+import { StoreSignup } from './stores/storeSignup';
+import { StoreFeed } from './stores/storeFeed';
+import { ACTION_SIGNUP_TYPES } from './actions/actionSignup';
 
 export const PAGES = {
 	home: 'home',
@@ -58,19 +63,17 @@ export interface IAppConfig {
 /**
  * Main class of application
  */
-export default class App {
-	private state: {
-		currentPage: IBasePage | null;
-	} = {
-		currentPage: null,
-	};
-	private pages: {
-		home: HomePage;
-		login: LoginPage;
-		signup: SignupPage;
-	};
+class App {
+	private _router: Router;
 	private _config: IAppConfig;
 	private _root: Root;
+
+	private _storeApp: StoreApp;
+	private _storeMenu: StoreMenu;
+	private _storeHeader: StoreHeader;
+	private _storeLogin: StoreLogin;
+	private _storeSignup: StoreSignup;
+	private _storeFeed: StoreFeed;
 
 	/**
 	 * Instance of application
@@ -80,79 +83,76 @@ export default class App {
 	constructor(config: IAppConfig) {
 		this._config = config;
 		this._root = new Root();
-		this.state.currentPage = null;
-		this.pages = {
-			home: new HomePage(this),
-			login: new LoginPage(this),
-			signup: new SignupPage(this),
-		};
+
+		const feedView = new ViewFeed(this._config.homeConfig, this._root);
+		const loginView = new ViewLogin(this._config.loginConfig, this._root);
+		const signupView = new ViewSignup(
+			this._config.signupConfig,
+			this._root,
+		);
+		const routerConfig: RouterConfig = [
+			{
+				path: PAGE_LINKS.feed,
+				view: feedView,
+			},
+			{
+				path: PAGE_LINKS.login,
+				view: loginView,
+			},
+			{
+				path: PAGE_LINKS.signup,
+				view: signupView,
+			},
+		];
+		this._router = new Router(routerConfig);
+
+		this._storeApp = new StoreApp();
+		this._storeApp.subscribe(ACTION_LOGIN_TYPES.actionLoginToSignupClick);
+		this._storeApp.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
+		this._storeApp.subscribe(ACTION_APP_TYPES.actionAppInit);
+		this._storeApp.subscribe(ACTION_USER_TYPES.loginClickSuccess);
+		this._storeApp.subscribe(ACTION_MENU_TYPES.titleClick);
+
+		this._storeMenu = new StoreMenu();
+		this._storeMenu.subscribe(ACTION_MENU_TYPES.menuLinkClick);
+		this._storeMenu.subscribe(ACTION_MENU_TYPES.titleClick);
+
+		this._storeHeader = new StoreHeader();
+		this._storeHeader.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
+
+		this._storeLogin = new StoreLogin();
+		this._storeLogin.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
+		this._storeLogin.subscribe(ACTION_USER_TYPES.loginClickSuccess);
+		this._storeLogin.subscribe(ACTION_USER_TYPES.formError);
+		this._storeLogin.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
+
+		this._storeSignup = new StoreSignup();
+		this._storeSignup.subscribe(ACTION_USER_TYPES.formError);
+		this._storeSignup.subscribe(ACTION_USER_TYPES.signupClickSuccess);
+		this._storeSignup.subscribe(
+			ACTION_LOGIN_TYPES.actionLoginToSignupClick,
+		);
+
+		this._storeFeed = new StoreFeed();
+		this._storeFeed.subscribe(ACTION_USER_TYPES.loginClickSuccess);
+		this._storeFeed.subscribe(ACTION_USER_TYPES.signupClickSuccess);
+
+		feedView.register(this._storeFeed);
+		feedView.register(this._storeMenu);
+		feedView.register(this._storeHeader);
+
+		loginView.register(this._storeLogin);
+
+		signupView.register(this._storeSignup);
 	}
 
-	/**
-	 * Возвращает конфигурационный объект приложения
-	 * @returns {IAppConfig}
-	 */
-	get config(): IAppConfig {
-		return this._config;
+	init() {
+		dispatcher.getAction(new ActionAppInit());
 	}
 
-	/**
-	 * @returns {Root}
-	 */
-	get root(): Root {
-		return this._root;
-	}
-
-	/**
-	 * Routing pages
-	 *
-	 * @param {string} pageLink
-	 */
-	render(pageLink: string) {
-		let pageType: string = '';
-		switch (pageLink) {
-			case PAGE_LINKS.signup:
-				history.pushState({}, '', PAGE_LINKS.signup);
-				this.state.currentPage = this.pages.signup;
-				break;
-			case PAGE_LINKS.login:
-				history.pushState({}, '', PAGE_LINKS.login);
-				this.state.currentPage = this.pages.login;
-				break;
-			default:
-				history.pushState({}, '', PAGE_LINKS.feed);
-				this.state.currentPage = this.pages.home;
-				pageType = homePageTypes.feed;
-		}
-		this.state.currentPage?.render(pageType);
-	}
-
-	/**
-	 * Routing to clearing previous components and rendering new
-	 *
-	 * @param {string} pageLink
-	 * @param {boolean} deleteEverything
-	 */
-	goToPage(pageLink: string, deleteEverything: boolean = false) {
-		this.clear(deleteEverything);
-		this.render(pageLink);
-	}
-
-	/**
-	 * Clearing previous components
-	 *
-	 * @param {boolean} deleteEverything
-	 */
-	clear(deleteEverything: boolean) {
-		if (this.state.currentPage === this.pages.home) {
-			const page = this.state.currentPage as IHomePage;
-			if (deleteEverything) {
-				page.clear();
-			} else {
-				page.clearContent();
-			}
-			return;
-		}
-		this.state.currentPage?.clear();
+	get router() {
+		return this._router;
 	}
 }
+
+export default new App(config);

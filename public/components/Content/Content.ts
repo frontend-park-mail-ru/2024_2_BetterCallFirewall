@@ -52,4 +52,8 @@ export class Content extends Container implements IContent {
 			this.message = null;
 		}
 	}
+
+	update(data: IContentConfig): void {
+		this._config = data;
+	}
 }

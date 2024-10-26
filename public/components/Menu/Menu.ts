@@ -23,7 +23,7 @@ export interface IMenu extends IBaseComponent {}
  * Class to menu navigation
  */
 export class Menu extends BaseComponent implements IMenu {
-	protected override config: IMenuConfig | null;
+	protected override _config: IMenuConfig | null;
 	private links: Links = [];
 
 	/**
@@ -33,7 +33,7 @@ export class Menu extends BaseComponent implements IMenu {
 	 */
 	constructor(config: IMenuConfig, parent: IBaseComponent) {
 		super(config, parent);
-		this.config = config;
+		this._config = config;
 	}
 
 	/**
@@ -41,10 +41,21 @@ export class Menu extends BaseComponent implements IMenu {
 	 * @returns {ArrayLike<[string, Object]>}
 	 */
 	get linksConfig(): LinksConfig {
-		if (!this.config) {
+		if (!this._config) {
 			throw new Error('component has no config');
 		}
-		return Object.entries(this.config.links);
+		return Object.entries(this._config.links);
+	}
+
+	get config(): IMenuConfig {
+		if (this._config) {
+			return this._config;
+		}
+		throw new Error('config not found');
+	}
+
+	set config(config: IMenuConfig) {
+		this._config = config;
 	}
 
 	/**
@@ -52,26 +63,44 @@ export class Menu extends BaseComponent implements IMenu {
 	 *
 	 * @returns {string}
 	 */
-	render(): string {
-		if (!this.config) {
-			throw new Error('conponent has no config');
+	render(show: boolean = true): string {
+		this._prerender();
+		this._render('Menu.hbs', show);
+
+		const menuItems = this._htmlElement?.querySelector(
+			'.menu__items',
+		) as HTMLElement;
+		if (menuItems) {
+			this.links.forEach((link) => {
+				link.render(false);
+				link.appendToHTML(menuItems);
+			});
+		} else {
+			throw new Error('menu has no .menu__items');
 		}
+
+		return this.htmlElement.outerHTML;
+	}
+
+	remove(): void {
+		super.remove();
+		this.links = [];
+	}
+
+	removeForUpdate(): void {
+		super.removeForUpdate();
+		this.links = [];
+	}
+
+	protected _prerender(): void {
+		super._prerender();
 		this.linksConfig.forEach(([, value]) => {
-			const link = new MenuLink(value);
+			const link = new MenuLink(value, this);
 			this.links.push(link);
 		});
-		const template = Handlebars.templates['Menu.hbs'];
-		const html = template({
-			...this.config,
-			title: this.config.title,
-			links: this.links.map((link) => link.render()),
-		});
-		if (this.parent) {
-			this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
-			this.links.forEach((link) => {
-				link.appendToComponent(this);
-			});
-		}
-		return html;
+		this._templateContext = {
+			...this._config,
+			title: this._config?.title,
+		};
 	}
 }

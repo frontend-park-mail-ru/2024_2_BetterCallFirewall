@@ -25,8 +25,12 @@ export class ContentMessage extends BaseComponent implements IContentMessage {
 	 */
 	render(): string {
 		const template = Handlebars.templates['ContentMessage.hbs'];
-		const html = template(this.config);
-		this.parent?.htmlElement.insertAdjacentHTML('beforeend', html);
+		const html = template(this._config);
+		this._parent?.htmlElement.insertAdjacentHTML('beforeend', html);
 		return html;
+	}
+
+	update(data: IContentMessageConfig): void {
+		this._config = data;
 	}
 }

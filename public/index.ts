@@ -1,5 +1,5 @@
-import App from './app';
-import config from './config';
+import app from './app';
+import './index.scss';
 
-const app: App = new App(config);
-app.goToPage(window.location.pathname);
+app.router.goToPage(window.location.pathname);
+app.init();

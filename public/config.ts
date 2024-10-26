@@ -1,8 +1,14 @@
-import { IAppConfig, IHomeConfig, PAGE_LINKS, URLInterface } from './app';
+import { IAppConfig, IHomeConfig, URLInterface } from './app';
 import { ILoginFormConfig, ISignupFormConfig } from './components';
 import Validator from './modules/validation';
 
-const DEBUG: boolean = false;
+const DEBUG: boolean = true;
+
+export const PAGE_LINKS = {
+	feed: '/feed',
+	login: '/login',
+	signup: '/signup',
+};
 
 const homeConfig: IHomeConfig = {
 	menu: {

@@ -33,11 +33,22 @@ export class Header extends BaseComponent implements IHeader {
 	 * @returns {string} - generated HTML element
 	 */
 	render(): string {
-		const template = Handlebars.templates['Header.hbs'];
-		const html = template(this.config);
-		if (this.parent) {
-			this.parent.htmlElement.innerHTML += html;
+		this._prerender();
+		return this._render('Header.hbs');
+	}
+
+	get logoutButtonHTML(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'.header__logout',
+		) as HTMLElement;
+		if (html) {
+			return html;
 		}
-		return html;
+		throw new Error('logout button not found');
+	}
+
+	protected _prerender(): void {
+		super._prerender();
+		this._templateContext = { ...this._config };
 	}
 }

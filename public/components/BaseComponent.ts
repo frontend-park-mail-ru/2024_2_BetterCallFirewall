@@ -1,3 +1,5 @@
+import 'handlebars';
+
 type Children = Record<string, IBaseComponent>;
 type Handlers = Record<
 	string,
@@ -11,9 +13,13 @@ export interface IBaseComponentConfig {
 export interface IBaseComponent {
 	get key(): string;
 	get htmlElement(): HTMLElement;
+	set htmlElement(html: HTMLElement);
 	get children(): Children;
-	render(): string;
+	get config(): IBaseComponentConfig;
+	set config(config: IBaseComponentConfig);
+	render(show: boolean): string;
 	appendToComponent(parent: IBaseComponent): void;
+	appendToHTML(parent: HTMLElement): void;
 	addChild(child: IBaseComponent): void;
 	removeHandlers(): void;
 	addHandler(
@@ -21,14 +27,19 @@ export interface IBaseComponent {
 		event: string,
 		handler: (event: Event) => void,
 	): void;
+	update(data: IBaseComponentConfig): void;
 	remove(): void;
+	removeForUpdate(): void;
+	show(parent: HTMLElement): void;
 }
 
 export default abstract class BaseComponent implements IBaseComponent {
-	protected config: IBaseComponentConfig | null;
-	protected parent: IBaseComponent | null;
+	protected _config: IBaseComponentConfig | null;
+	protected _parent: IBaseComponent | null;
 	protected _children: Children = {};
-	private handlers: Handlers = {};
+	protected _htmlElement?: HTMLElement;
+	protected _templateContext: object = {};
+	protected _handlers: Handlers = {};
 
 	/**
 	 * Создает новый компонент
@@ -39,8 +50,8 @@ export default abstract class BaseComponent implements IBaseComponent {
 		config: IBaseComponentConfig | null = null,
 		parent: IBaseComponent | null = null,
 	) {
-		this.config = config;
-		this.parent = parent;
+		this._config = config;
+		this._parent = parent;
 		if (parent) {
 			this.appendToComponent(parent);
 		}
@@ -51,10 +62,10 @@ export default abstract class BaseComponent implements IBaseComponent {
 	 * @returns {string}
 	 */
 	get key(): string {
-		if (!this.config) {
+		if (!this._config) {
 			throw new Error('component has no key');
 		}
-		return this.config.key;
+		return this._config.key;
 	}
 
 	/**
@@ -62,16 +73,14 @@ export default abstract class BaseComponent implements IBaseComponent {
 	 * @returns {HTMLElement}
 	 */
 	get htmlElement(): HTMLElement {
-		if (this.parent) {
-			const html = this.parent.htmlElement.querySelector(
-				`[data-key="${this.key}"]`,
-			) as HTMLElement;
-			if (html) {
-				return html;
-			}
-			throw new Error('Component not found');
+		if (this._htmlElement) {
+			return this._htmlElement;
 		}
-		throw new Error('Component has no parent');
+		throw new Error('component has no html element');
+	}
+
+	set htmlElement(html: HTMLElement) {
+		this._htmlElement = html;
 	}
 
 	/**
@@ -82,12 +91,27 @@ export default abstract class BaseComponent implements IBaseComponent {
 		return this._children;
 	}
 
+	get config(): IBaseComponentConfig {
+		if (this._config) {
+			return this._config;
+		}
+		throw new Error('component has no config');
+	}
+
+	set config(config: IBaseComponentConfig) {
+		this._config = config;
+	}
+
+	appendToHTML(parent: HTMLElement) {
+		parent.appendChild(this.htmlElement);
+	}
+
 	/**
 	 * Добавляет родителя-компонент этому компоненту
 	 * @param {IBaseComponent} parent
 	 */
 	appendToComponent(parent: IBaseComponent) {
-		this.parent = parent;
+		this._parent = parent;
 		parent.addChild(this);
 	}
 
@@ -118,7 +142,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 	) {
 		target.addEventListener(event, handler);
 		if (target === document) {
-			this.handlers[`document-${event}`] = {
+			this._handlers[`document-${event}`] = {
 				target,
 				event,
 				handler,
@@ -127,7 +151,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 		}
 		target = target as HTMLElement;
 		if (target.dataset && target.dataset['key']) {
-			this.handlers[
+			this._handlers[
 				`${target.className}-${target.dataset['key']}-${event}`
 			] = {
 				target,
@@ -135,7 +159,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 				handler,
 			};
 		} else {
-			this.handlers[`${target.className}-${event}`] = {
+			this._handlers[`${target.className}-${event}`] = {
 				target,
 				event,
 				handler,
@@ -147,10 +171,10 @@ export default abstract class BaseComponent implements IBaseComponent {
 	 * Удаляет все обработчики, записанные в этом компоненте
 	 */
 	removeHandlers() {
-		Object.entries(this.handlers).forEach(
+		Object.entries(this._handlers).forEach(
 			([key, { target, event, handler }]) => {
 				target.removeEventListener(event, handler);
-				delete this.handlers[key];
+				delete this._handlers[key];
 			},
 		);
 	}
@@ -164,10 +188,51 @@ export default abstract class BaseComponent implements IBaseComponent {
 			child.remove();
 		});
 		this.htmlElement.outerHTML = '';
-		if (this.parent) {
-			delete this.parent.children[this.key];
+		if (this._parent) {
+			delete this._parent.children[this.key];
 		}
 	}
 
-	abstract render(): string;
+	removeForUpdate() {
+		this.removeHandlers();
+		Object.entries(this._children).forEach(([, child]) => {
+			child.remove();
+		});
+	}
+
+	update(data: IBaseComponentConfig): void {
+		const oldHtmlElement = this.htmlElement;
+		this.removeForUpdate();
+		this._config = data;
+		this.render(false);
+		oldHtmlElement.replaceWith(this.htmlElement);
+	}
+
+	show(parent: HTMLElement) {
+		parent.appendChild(this.htmlElement);
+	}
+
+	protected _render(templateFile: string, show: boolean = true): string {
+		const template = Handlebars.templates[templateFile];
+		const html = template(this._templateContext);
+		const wrapper = document.createElement('div');
+		wrapper.innerHTML = html;
+		const element = wrapper.firstElementChild as HTMLElement;
+		if (element) {
+			this._htmlElement = element;
+			if (show && this._parent) {
+				this._parent.htmlElement.appendChild(element);
+			}
+		} else {
+			throw new Error('html element has not created');
+		}
+		return html;
+	}
+
+	abstract render(show: boolean): string;
+	protected _prerender(): void {
+		if (!this._config) {
+			throw new Error('component has no config');
+		}
+	}
 }

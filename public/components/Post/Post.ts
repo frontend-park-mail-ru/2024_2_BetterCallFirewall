@@ -15,7 +15,7 @@ export interface IPost extends IBaseComponent {}
  * Class of post
  */
 export class Post extends BaseComponent implements IPost {
-	protected config: IPostConfig | null;
+	protected _config: IPostConfig | null;
 
 	/**
 	 * Instance of post
@@ -25,20 +25,16 @@ export class Post extends BaseComponent implements IPost {
 	 */
 	constructor(config: IPostConfig, parent: IBaseComponent) {
 		super(config, parent);
-		this.config = config;
+		this._config = config;
 	}
 
-	/**
-	 * Post rendering with handlebars
-	 *
-	 * @returns {string} - generated HTML code
-	 */
-	render(): string {
-		const template = Handlebars.templates['Post.hbs'];
-		const html = template(this.config);
-		if (this.parent) {
-			this.parent.htmlElement.insertAdjacentHTML('beforeend', html);
-		}
-		return html;
+	render(show: boolean = true): string {
+		this._prerender();
+		return this._render('Post.hbs', show);
+	}
+
+	protected _prerender(): void {
+		super._prerender();
+		this._templateContext = { ...this.config };
 	}
 }

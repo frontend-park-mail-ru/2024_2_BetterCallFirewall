@@ -12,7 +12,7 @@ export type FormResponse = {
 	message: string;
 };
 
-export default new (class Ajax {
+class Ajax {
 	/**
 	 * Post request with data and raising callback
 	 *
@@ -26,7 +26,7 @@ export default new (class Ajax {
 			body: JSON.stringify(data),
 			credentials: 'include',
 		});
-		this.#ajax({
+		this._ajax({
 			request,
 			callback,
 		});
@@ -43,7 +43,7 @@ export default new (class Ajax {
 			method: 'get',
 			credentials: 'include',
 		});
-		return this.#ajaxPromise({
+		return this._ajaxPromise({
 			request,
 		});
 	}
@@ -64,7 +64,8 @@ export default new (class Ajax {
 			method: 'POST',
 			body: JSON.stringify(formData),
 			headers: {
-				'Content-Type': 'application/json:charset=UTF-8',
+				// 'Content-Type': 'application/json:charset=UTF-8',
+				'Content-Type': 'application/json',
 			},
 			credentials: 'include',
 		});
@@ -72,24 +73,26 @@ export default new (class Ajax {
 			.then((response) => callback(response))
 			.catch((error) => callback(null, error));
 	}
+
 	/**
 	 * AJAX request
 	 *
 	 * @param {AjaxConfig} config
 	 */
-	#ajax(config: AjaxConfig) {
+	private _ajax(config: AjaxConfig) {
 		fetch(config.request)
 			.then((response) => response.json())
 			.then((data) => config.callback(data, null))
 			.catch((error) => config.callback(null, error));
 	}
+
 	/**
 	 * Execute AJAX request and returning Promise which resoles by response
 	 *
 	 * @param {AjaxPromiseConfig} config
 	 * @returns {Promise<T>}
 	 */
-	async #ajaxPromise<T>(config: AjaxPromiseConfig): Promise<T> {
+	private async _ajaxPromise<T>(config: AjaxPromiseConfig): Promise<T> {
 		const response = await fetch(config.request);
 		if (response.ok) {
 			return response.json();
@@ -97,4 +100,6 @@ export default new (class Ajax {
 			throw new Error(response.statusText);
 		}
 	}
-})();
+}
+
+export default new Ajax();
