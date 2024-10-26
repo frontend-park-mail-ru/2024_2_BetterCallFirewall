@@ -68,7 +68,7 @@ export class Menu extends BaseComponent implements IMenu {
 		this._render('Menu.hbs', show);
 
 		const menuItems = this._htmlElement?.querySelector(
-			'.menu-items',
+			'.menu__items',
 		) as HTMLElement;
 		if (menuItems) {
 			this.links.forEach((link) => {
@@ -76,7 +76,7 @@ export class Menu extends BaseComponent implements IMenu {
 				link.appendToHTML(menuItems);
 			});
 		} else {
-			throw new Error('menu has no .menu-items');
+			throw new Error('menu has no .menu__items');
 		}
 
 		return this.htmlElement.outerHTML;

@@ -35,6 +35,8 @@ export class Router {
 					const user = match[1];
 					this._activeView.setUser(user); // tmp
 				}
+				history.pushState({}, '', path);
+				this._activeView.render(); // ??
 				break;
 			}
 		}

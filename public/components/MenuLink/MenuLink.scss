@@ -1,0 +1,35 @@
+.menu-link {
+    margin-bottom: 1rem;
+    background-color: var(--main-bg-color);
+    border-radius: 5rem;
+    padding: .65rem 1rem;
+    display: flex;
+    &__item {
+        color: var(--main-text-color);
+    }
+    &__logo {
+        margin-right: .6rem;
+        svg {
+            fill: var(--main-text-color);
+        }
+    }
+    &:hover {
+        background-color: var(--second-bg-color);
+        .menu-link__item {
+            color: var(--main-color);
+        }
+        .menu-link__logo svg {
+            fill: var(--main-color);
+        }
+    }
+
+    &:active {
+        background-color: var(--main-bg-color);
+        .menu-link__item {
+            color: var(--main-text-color);
+        }
+        .menu-link__logo svg {
+            fill: var(--main-text-color);
+        }
+    }
+}

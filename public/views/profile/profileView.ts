@@ -30,6 +30,10 @@ export class ViewProfile extends ViewHome {
 		this._addProfileHandlers();
 	}
 
+	protected _updateContent(parent: IBaseComponent) {
+		console.log(parent);
+	}
+
 	protected _renderContent(parent: IBaseComponent): void {
 		// const profileConfig = this._config.main.header.profile;
 		const profile = new Profile({ key: 'profile' }, parent); // конфиг хардкод

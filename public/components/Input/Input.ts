@@ -34,13 +34,13 @@ export class Input extends BaseComponent implements IInput {
 	 *
 	 * @returns {string} - generated HTML element of input
 	 */
-	render(): string {
-		const template = Handlebars.templates['Input.hbs'];
-		const html = template(this._config);
-		return html;
+	render(show: boolean = true): string {
+		this._prerender();
+		return this._render('Input.hbs', show);
 	}
 
-	update(data: IInputConfig): void {
-		this._config = data;
+	protected _prerender(): void {
+		super._prerender();
+		this._templateContext = this.config;
 	}
 }

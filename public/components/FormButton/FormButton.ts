@@ -34,13 +34,13 @@ export class FormButton extends BaseComponent implements IFormButton {
 	 *
 	 * @returns {string} - generated HTML element
 	 */
-	render(): string {
-		const template = Handlebars.templates['FormButton.hbs'];
-		const html = template(this._config);
-		return html;
+	render(show: boolean = true): string {
+		this._prerender();
+		return this._render('FormButton.hbs', show);
 	}
 
-	update(data: IFormButtonConfig): void {
-		this._config = data;
+	protected _prerender(): void {
+		super._prerender();
+		this._templateContext = this.config;
 	}
 }

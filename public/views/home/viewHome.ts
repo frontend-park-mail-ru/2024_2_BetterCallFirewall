@@ -1,9 +1,12 @@
-import { ActionHeaderLogoutClick } from '../../actions/actionHeader';
+import {
+	ActionHeaderLogoutClickFail,
+	ActionHeaderLogoutClickSuccess,
+} from '../../actions/actionHeader';
 import {
 	ACTION_MENU_TYPES,
 	ActionMenuLinkClick,
 } from '../../actions/actionMenu';
-import { IHomeConfig } from '../../app';
+import app, { IHomeConfig } from '../../app';
 import {
 	Container,
 	Header,
@@ -15,7 +18,9 @@ import {
 	Root,
 } from '../../components';
 import { IBaseComponent } from '../../components/BaseComponent';
+import config, { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
+import ajax from '../../modules/ajax';
 import { BaseView, Components, View, ViewData } from '../view';
 
 export interface MainConfig {
@@ -45,28 +50,16 @@ export interface ViewHeader extends ViewHome {
 	updateHeader(data: IHeaderConfig): void;
 }
 
-// export interface IViewHome {
-// 	get config(): HomeConfig;
-// 	updateMenu(): IMenuConfig;
-// 	updateHeader(data: IHeaderConfig): void;
-// 	_renderMenu(): void;
-// 	_addMenuHandlers(): void;
-// 	_renderMain(): void;
-// 	_renderHeader(parent: IBaseComponent): void;
-// 	_addHeaderHandlers(): void;
-// }
+export interface IViewHome extends View, ViewMenu, ViewHeader {}
 
-export abstract class ViewHome
-	extends BaseView
-	implements View, ViewMenu, ViewHeader
-{
+export abstract class ViewHome extends BaseView implements IViewHome {
 	protected _config: HomeConfig;
 	protected _components: ComponentsHome = {};
 
 	constructor(config: HomeConfig, root: Root) {
 		super(root);
 		this._config = config;
-		this._root = root;
+		// this._root = root;
 	}
 
 	get config() {
@@ -79,24 +72,22 @@ export abstract class ViewHome
 		this.render();
 	}
 
-	clear(): void {
-		Object.keys(this._root.children).forEach((key) => {
-			this._root.children[key].remove();
-		});
-	}
-
 	render(): void {
+		this.clear();
 		this._renderMenu();
 		this._renderMain();
 	}
 
 	protected abstract _renderContent(parent: IBaseComponent): void;
+	protected abstract _updateContent(parent: IBaseComponent): void;
 
 	updateMenu(data: IMenuConfig): void {
 		console.log('update');
 		this._config.menu = data;
 		const menu = this._components.menu as Menu;
 		menu.update(data);
+		const main = this._components.main;
+		this._updateContent(main);
 		this._addMenuHandlers();
 	}
 
@@ -135,6 +126,7 @@ export abstract class ViewHome
 	private _renderMain() {
 		const main = new Container(this._config.main, this._root);
 		main.render();
+		this._components.main = main;
 		this._renderHeader(main);
 		this._renderContent(main);
 	}
@@ -154,7 +146,18 @@ export abstract class ViewHome
 		}
 		header.addHandler(header.logoutButtonHTML, 'click', (event: Event) => {
 			event.preventDefault();
-			dispatcher.getAction(new ActionHeaderLogoutClick());
+			logoutButtonClick();
 		});
 	}
 }
+
+const logoutButtonClick = () => {
+	ajax.post(config.URL.logout, {}, (data, error) => {
+		if (error) {
+			dispatcher.getAction(new ActionHeaderLogoutClickFail());
+			return;
+		}
+		app.router.goToPage(PAGE_LINKS.login);
+		dispatcher.getAction(new ActionHeaderLogoutClickSuccess());
+	});
+};

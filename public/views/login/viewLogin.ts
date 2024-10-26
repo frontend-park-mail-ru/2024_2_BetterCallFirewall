@@ -1,4 +1,19 @@
-import { ILoginFormConfig, LoginForm, Root } from '../../components';
+import {
+	ActionLoginClickSuccess,
+	ActionFormError,
+} from '../../actions/actionUser';
+import app from '../../app';
+import {
+	IInputConfig,
+	ILoginFormConfig,
+	LoginForm,
+	Root,
+} from '../../components';
+import config, { PAGE_LINKS } from '../../config';
+import dispatcher from '../../dispatcher/dispatcher';
+// import dispatcher from '../../dispatcher/dispatcher';
+import ajax from '../../modules/ajax';
+import Validator from '../../modules/validation';
 import { BaseView, Components, ViewData } from '../view';
 
 export class ViewLogin extends BaseView {
@@ -8,7 +23,7 @@ export class ViewLogin extends BaseView {
 	constructor(config: ILoginFormConfig, root: Root) {
 		super(root);
 		this._config = config;
-		this._root = new Root();
+		// this._root = new Root();
 	}
 
 	get config() {
@@ -17,20 +32,61 @@ export class ViewLogin extends BaseView {
 
 	update(data: ViewData) {
 		this._config = data as ILoginFormConfig;
-		this.clear();
 		this.render();
 	}
 
-	clear(): void {
-		Object.keys(this._root.children).forEach((key) => {
-			this._root.children[key].remove();
-		});
-	}
-
 	render() {
+		this.clear();
+
 		const config = this._config;
 		const login = new LoginForm(config, this._root);
 		login.render();
 		this._components.login = login;
+		this._addLoginHandlers();
+	}
+
+	private _addLoginHandlers() {
+		const loginForm = this._components.login as LoginForm;
+		if (!loginForm) {
+			throw new Error('login form not found');
+		}
+		loginForm.addHandler(loginForm.form, 'submit', (event: Event) => {
+			event.preventDefault();
+			loginFormSubmit(loginForm, this._config.inputs);
+		});
 	}
 }
+
+const loginFormSubmit = (
+	loginForm: LoginForm,
+	inputs: Record<string, IInputConfig>,
+) => {
+	const validator = new Validator();
+	const data = validator.validateForm(inputs, loginForm.form);
+	if (data) {
+		ajax.sendForm(config.URL.login, data, async (response, error) => {
+			if (error) {
+				dispatcher.getAction(
+					new ActionFormError('Что-то пошло не так'),
+				);
+				return;
+			}
+			if (response && response.ok) {
+				dispatcher.getAction(new ActionLoginClickSuccess());
+				app.router.goToPage(PAGE_LINKS.feed);
+			} else if (response) {
+				const data = await response.json();
+				if (data.message === 'wrong email or password') {
+					dispatcher.getAction(
+						new ActionFormError('Неверная почта или пароль'),
+					);
+
+				} else {
+					dispatcher.getAction(
+						new ActionFormError('Что-то пошло не так'),
+					);
+ 				}
+			}
+		});
+	}
+};

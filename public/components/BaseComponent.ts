@@ -1,3 +1,5 @@
+import 'handlebars';
+
 type Children = Record<string, IBaseComponent>;
 type Handlers = Record<
 	string,
@@ -91,7 +93,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 
 	get config(): IBaseComponentConfig {
 		if (this._config) {
-			return this.config;
+			return this._config;
 		}
 		throw new Error('component has no config');
 	}
@@ -204,8 +206,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 		this._config = data;
 		this.render(false);
 		oldHtmlElement.replaceWith(this.htmlElement);
-	};
-
+	}
 
 	show(parent: HTMLElement) {
 		parent.appendChild(this.htmlElement);

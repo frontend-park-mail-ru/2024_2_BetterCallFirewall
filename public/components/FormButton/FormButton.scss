@@ -1,4 +1,4 @@
-.form-button {
+.form__button {
     background: var(--button-color);
     border: none;
     border-radius: 7rem;
@@ -9,16 +9,13 @@
     font: inherit;
     color: var(--main-text-color);
     font-size: 1rem;
-}
-
-.form-button:hover {
-    background: #00c77b;
-}
-
-.form-button:active {
-    background: var(--button-color);
-}
-
-.form-button:focus-visible {
-    outline: 1px solid white;
+    &:hover {
+        background: #00c77b;
+    }
+    &:active {
+        background: var(--button-color);
+    }
+    &:focus-visible {
+        outline: 1px solid white;
+    }
 }

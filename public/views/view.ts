@@ -44,6 +44,12 @@ export abstract class BaseView implements View {
 		this._registeredStores.push(store);
 	}
 
+	clear() {
+		Object.entries(this._root.children).forEach(([, child]) => {
+			child.remove();
+		});
+	}
+
 	unregister(store: Store) {
 		store.removeView(this);
 		this._registeredStores = this._registeredStores.filter(
@@ -56,6 +62,5 @@ export abstract class BaseView implements View {
 	}
 
 	abstract update(data: ViewData): void;
-	abstract clear(): void;
 	abstract render(): void;
 }

@@ -22,6 +22,4 @@ export class Root extends BaseComponent implements IRoot {
 	render(): string {
 		return '';
 	}
-
-	update(): void {}
 }
