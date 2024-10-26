@@ -15,8 +15,6 @@ export const reducerLogin = (state?: ILoginFormConfig, action?: Action) => {
 		switch (action.type) {
 			case ACTION_HEADER_TYPES.logoutClickSuccess:
 				break;
-			default:
-				break;
 		}
 	}
 	return newState;

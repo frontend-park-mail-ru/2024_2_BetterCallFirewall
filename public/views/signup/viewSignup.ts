@@ -1,6 +1,11 @@
 import { ActionSignupClickSuccess } from '../../actions/actionUser';
 import app from '../../app';
-import { ISignupFormConfig, SignupForm, Root, IInputConfig } from '../../components';
+import {
+	ISignupFormConfig,
+	SignupForm,
+	Root,
+	IInputConfig,
+} from '../../components';
 import config, { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 // import dispatcher from '../../dispatcher/dispatcher';
@@ -24,7 +29,7 @@ export class ViewSignup extends BaseView {
 
 	update(data: ViewData) {
 		this._config = data as ISignupFormConfig;
-		this.clear();
+		// this.clear();
 		this.render();
 	}
 
@@ -36,7 +41,6 @@ export class ViewSignup extends BaseView {
 		login.render();
 		this._components.login = login;
 		this._addSignupHandlers();
-
 	}
 
 	private _addSignupHandlers() {
@@ -51,31 +55,29 @@ export class ViewSignup extends BaseView {
 	}
 }
 
-
-const loginFormSubmit = (loginForm: SignupForm, inputs: Record<string, IInputConfig>) => {
+const loginFormSubmit = (
+	loginForm: SignupForm,
+	inputs: Record<string, IInputConfig>,
+) => {
 	const validator = new Validator();
 	const data = validator.validateForm(inputs, loginForm.form);
 	if (data) {
-		ajax.sendForm(
-			config.URL.signup,
-			data,
-			async (response, error) => {
-				if (error) {
+		ajax.sendForm(config.URL.signup, data, async (response, error) => {
+			if (error) {
+				loginForm.printError('Что-то пошло не так');
+				return;
+			}
+			if (response && response.ok) {
+				app.router.goToPage(PAGE_LINKS.feed);
+				dispatcher.getAction(new ActionSignupClickSuccess());
+			} else if (response) {
+				const data = await response.json();
+				if (data.message === 'wrong email or password') {
+					loginForm.printError('Неверная почта или пароль');
+				} else {
 					loginForm.printError('Что-то пошло не так');
-					return;
 				}
-				if (response && response.ok) {
-					app.router.goToPage(PAGE_LINKS.feed);
-					dispatcher.getAction(new ActionSignupClickSuccess());
-				} else if (response) {
-					const data = await response.json();
-					if (data.message === 'wrong email or password') {
-						loginForm.printError('Неверная почта или пароль');
-					} else {
-						loginForm.printError('Что-то пошло не так');
-					}
-				}
-			},
-		);
+			}
+		});
 	}
 };

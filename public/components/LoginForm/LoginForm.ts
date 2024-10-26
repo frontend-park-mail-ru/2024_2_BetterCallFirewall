@@ -17,9 +17,7 @@ export class LoginForm extends BaseForm implements ILoginForm {
 	}
 
 	get form(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.form',
-		) as HTMLElement;
+		const html = this.htmlElement.querySelector('.form') as HTMLElement;
 		if (html) {
 			return html;
 		}
@@ -38,6 +36,16 @@ export class LoginForm extends BaseForm implements ILoginForm {
 
 	render(): string {
 		this._prerender();
-		return this._render('LoginForm.hbs');
+		this._render('LoginForm.hbs');
+
+		const toSignupLinkHTML = this.htmlElement.querySelector(
+			`[data-key=${this._config.toSignupLink.key}]`,
+		);
+		if (!toSignupLinkHTML) {
+			throw new Error('toSignupLinkHTML not found');
+		}
+		this.items.toSignupLink.htmlElement = toSignupLinkHTML as HTMLElement;
+
+		return this.htmlElement.outerHTML;
 	}
 }

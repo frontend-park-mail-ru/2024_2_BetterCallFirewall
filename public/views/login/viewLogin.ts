@@ -1,3 +1,4 @@
+import { ActionLoginToSignupClick } from '../../actions/actionLogin';
 import { ActionLoginClickSuccess } from '../../actions/actionUser';
 import app from '../../app';
 import {
@@ -51,6 +52,19 @@ export class ViewLogin extends BaseView {
 			event.preventDefault();
 			loginFormSubmit(loginForm, this._config.inputs);
 		});
+
+		const toSignupLink = loginForm.items.toSignupLink;
+		loginForm.addHandler(toSignupLink.htmlElement, 'click', (event) => {
+			event.preventDefault();
+			dispatcher.getAction(new ActionLoginToSignupClick());
+		});
+
+		const titleLinkHTML = loginForm.htmlElement.querySelector(
+			'.title-link',
+		) as HTMLElement;
+		loginForm.addHandler(titleLinkHTML, 'click', (event) => {
+			event.preventDefault();
+		});
 	}
 }
 
@@ -61,15 +75,12 @@ const loginFormSubmit = (
 	const validator = new Validator();
 	const data = validator.validateForm(inputs, loginForm.form);
 	if (data) {
-		ajax.sendForm(config.URL.login, 
-			data, 
-			async (response, error) => {
+		ajax.sendForm(config.URL.login, data, async (response, error) => {
 			if (error) {
 				loginForm.printError('Что-то пошло не так');
 				return;
 			}
 			if (response && response.ok) {
-				console.log('ok');
 				app.router.goToPage(PAGE_LINKS.feed);
 				dispatcher.getAction(new ActionLoginClickSuccess());
 			} else if (response) {

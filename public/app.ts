@@ -18,6 +18,11 @@ import { StoreHeader } from './stores/storeHeader';
 import { ACTION_HEADER_TYPES } from './actions/actionHeader';
 import { StoreLogin } from './stores/storeLogin';
 import { ACTION_USER_TYPES } from './actions/actionUser';
+import { StoreApp } from './stores/storeApp';
+import { ACTION_LOGIN_TYPES } from './actions/actionLogin';
+import { ACTION_APP_TYPES, ActionAppInit } from './actions/actionApp';
+import dispatcher from './dispatcher/dispatcher';
+import { StoreSignup } from './stores/storeSignup';
 
 export const PAGES = {
 	home: 'home',
@@ -61,9 +66,11 @@ class App {
 	private _config: IAppConfig;
 	private _root: Root;
 
+	private _storeApp: StoreApp;
 	private _storeMenu: StoreMenu;
 	private _storeHeader: StoreHeader;
 	private _storeLogin: StoreLogin;
+	private _storeSignup: StoreSignup;
 
 	/**
 	 * Instance of application
@@ -96,6 +103,10 @@ class App {
 		];
 		this._router = new Router(routerConfig);
 
+		this._storeApp = new StoreApp();
+		this._storeApp.subscribe(ACTION_LOGIN_TYPES.actionLoginToSignupClick);
+		this._storeApp.subscribe(ACTION_APP_TYPES.actionAppInit);
+
 		this._storeMenu = new StoreMenu();
 		this._storeMenu.subscribe(ACTION_MENU_TYPES.menuLinkClick);
 
@@ -104,16 +115,23 @@ class App {
 
 		this._storeLogin = new StoreLogin();
 		this._storeLogin.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
-
 		this._storeLogin.subscribe(ACTION_USER_TYPES.loginClickSuccess);
+
+		this._storeSignup = new StoreSignup();
+		this._storeSignup.subscribe(
+			ACTION_LOGIN_TYPES.actionLoginToSignupClick,
+		);
+
 		feedView.register(this._storeMenu);
 		feedView.register(this._storeHeader);
 
 		loginView.register(this._storeLogin);
+
+		signupView.register(this._storeSignup);
 	}
 
 	init() {
-		this._router.activeView?.render();
+		dispatcher.getAction(new ActionAppInit());
 	}
 
 	get router() {
