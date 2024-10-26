@@ -5,13 +5,22 @@ module.exports = {
 	module: {
 		rules: [
 			{
+				test: /\.ts$/,
 				use: 'ts-loader',
 				exclude: /node_modules/,
 			},
+			{
+				test: /\.scss$/,
+				use: [
+					'style-loader',
+					'css-loader',
+					'sass-loader',
+				]
+			}
 		],
 	},
 	resolve: {
-		extensions: ['.ts', '.js'],
+		extensions: ['.ts', '.js', '.scss'],
 	},
 	mode: 'development',
 	output: {

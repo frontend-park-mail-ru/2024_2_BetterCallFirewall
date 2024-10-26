@@ -1,7 +1,6 @@
 import { Action } from '../actions/action';
 import { ISignupFormConfig } from '../components';
 import { reducerSignup } from '../reducers/reducerSignup';
-import { ViewLogin } from '../views/login/viewLogin';
 import { ViewSignup } from '../views/signup/viewSignup';
 import { BaseStore, Store } from './store';
 
@@ -23,7 +22,7 @@ export class StoreSignup extends BaseStore implements Store {
 		});
 	}
 
-	addView(view: ViewLogin): void {
+	addView(view: ViewSignup): void {
 		this._addView(view);
 	}
 

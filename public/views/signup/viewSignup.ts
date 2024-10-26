@@ -1,4 +1,7 @@
-import { ActionSignupClickSuccess } from '../../actions/actionUser';
+import {
+	ActionFormError,
+	ActionSignupClickSuccess,
+} from '../../actions/actionUser';
 import app from '../../app';
 import {
 	ISignupFormConfig,
@@ -56,15 +59,17 @@ export class ViewSignup extends BaseView {
 }
 
 const loginFormSubmit = (
-	loginForm: SignupForm,
+	signupForm: SignupForm,
 	inputs: Record<string, IInputConfig>,
 ) => {
 	const validator = new Validator();
-	const data = validator.validateForm(inputs, loginForm.form);
+	const data = validator.validateForm(inputs, signupForm.form);
 	if (data) {
 		ajax.sendForm(config.URL.signup, data, async (response, error) => {
 			if (error) {
-				loginForm.printError('Что-то пошло не так');
+				dispatcher.getAction(
+					new ActionFormError('Что-то пошло не так'),
+				);
 				return;
 			}
 			if (response && response.ok) {
@@ -73,9 +78,13 @@ const loginFormSubmit = (
 			} else if (response) {
 				const data = await response.json();
 				if (data.message === 'wrong email or password') {
-					loginForm.printError('Неверная почта или пароль');
+					dispatcher.getAction(
+						new ActionFormError('Неверная почта или пароль'),
+					);
 				} else {
-					loginForm.printError('Что-то пошло не так');
+					dispatcher.getAction(
+						new ActionFormError('Что-то пошло не так'),
+					);
 				}
 			}
 		});

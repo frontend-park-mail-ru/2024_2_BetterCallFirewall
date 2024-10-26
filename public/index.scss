@@ -1,0 +1,88 @@
+@import 'components/Menu/Menu';
+@import 'components/Header/Header';
+@import 'components/Input/Input';
+@import 'components/BaseForm/BaseForm';
+@import 'components/Post/Post';
+@import 'components/FormLink/FormLink';
+@import 'components/ContentMessage/ContentMessage';
+@import 'components/Content/Content';
+
+
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    background-color: var(--main-bg-color);
+    font-style: normal;
+
+    --main-bg-color: #121212;
+    --second-bg-color: #1F1F1F;
+    --main-color: #1DC67F;
+    --main-text-color: #FFFFFF;
+    --button-color: #25AD74;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    height: 100%;
+    min-height: 100vh;
+    min-width: 100%;
+    color: var(--main-text-color);
+    font-style: normal;
+}
+
+.main {
+    width: 77.4%;
+}
+
+.link {
+    text-decoration: none;
+    &:hover {
+        color: var(--main-color);
+    }
+}
+
+.title {
+    text-decoration: none;
+    color: var(--main-color);
+    h1 {
+        margin: 0;
+    }
+}
+
+.avatar {
+    border-radius: 1.5rem; 
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #E2E8F0;
+    opacity: 0.5;
+    padding: 0;
+    margin: 0;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__error {
+        color: red;
+        margin-bottom: 1rem;
+    }
+}
+
+.logo {
+    width: 1.2rem;
+    height: 1.2rem;
+}

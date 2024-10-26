@@ -1,0 +1,33 @@
+.post {
+    margin-bottom: 1.5rem;
+    width: 70%;
+    background-color: var(--second-bg-color);
+    border-radius: .7rem;
+    color: var(--main-text-color);
+    border: .5px solid rgba(255, 255, 255, 0.5);
+
+    &__header {
+        &-text {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+        }
+    }
+    &__title {
+        font-weight: bold;
+    }
+    &__date {
+        font-size: .8rem;
+    }
+    &__content {
+        padding: 1rem;
+        &-text {
+            white-space: pre-line;
+        }
+    }
+}
+
+.header-text {
+    margin-bottom: .3rem;
+}
+

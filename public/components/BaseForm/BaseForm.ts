@@ -12,6 +12,7 @@ export type Items = { [key: string]: IBaseComponent };
 export interface IBaseFormConfig extends IBaseComponentConfig {
 	inputs: Record<string, IInputConfig>;
 	button: IFormButtonConfig;
+	error?: string;
 }
 
 export interface IBaseForm extends IBaseComponent {
@@ -96,6 +97,7 @@ export abstract class BaseForm extends BaseComponent implements IBaseForm {
 			key: this._config?.key,
 			inputs: this._inputs.map((input) => input.render(false)),
 			button: button.render(false),
+			error: this._config?.error
 		};
 	}
 }

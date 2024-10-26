@@ -1,5 +1,8 @@
 import { ActionLoginToSignupClick } from '../../actions/actionLogin';
-import { ActionLoginClickSuccess } from '../../actions/actionUser';
+import {
+	ActionLoginClickSuccess,
+	ActionFormError,
+} from '../../actions/actionUser';
 import app from '../../app';
 import {
 	IInputConfig,
@@ -77,18 +80,26 @@ const loginFormSubmit = (
 	if (data) {
 		ajax.sendForm(config.URL.login, data, async (response, error) => {
 			if (error) {
-				loginForm.printError('Что-то пошло не так');
+				dispatcher.getAction(
+					new ActionFormError('Что-то пошло не так'),
+				);
 				return;
 			}
 			if (response && response.ok) {
+				console.log('ok');
 				app.router.goToPage(PAGE_LINKS.feed);
 				dispatcher.getAction(new ActionLoginClickSuccess());
+				app.router.goToPage(PAGE_LINKS.feed);
 			} else if (response) {
 				const data = await response.json();
 				if (data.message === 'wrong email or password') {
-					loginForm.printError('Неверная почта или пароль');
+					dispatcher.getAction(
+						new ActionFormError('Неверная почта или пароль'),
+					);
 				} else {
-					loginForm.printError('Что-то пошло не так');
+					dispatcher.getAction(
+						new ActionFormError('Что-то пошло не так'),
+					);
 				}
 			}
 		});

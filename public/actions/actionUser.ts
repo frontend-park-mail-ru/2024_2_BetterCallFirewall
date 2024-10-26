@@ -3,6 +3,7 @@ import { Action, ActionType } from './action';
 export const ACTION_USER_TYPES = {
 	loginClickSuccess: 'loginClickSuccess',
 	signupClickSuccess: 'signupClickSuccess',
+	formError: 'formError',
 };
 
 export class ActionSignupClickSuccess implements Action {
@@ -22,5 +23,20 @@ export class ActionLoginClickSuccess implements Action {
 	constructor() {
 		this.type = ACTION_USER_TYPES.loginClickSuccess;
 		this.data = {};
+	}
+}
+
+export interface IFormErrorData {
+	formError: string;
+}
+
+export class ActionFormError {
+	type: ActionType;
+	data: object;
+	constructor(message: string) {
+		this.type = ACTION_USER_TYPES.formError;
+		this.data = {
+			formError: message,
+		};
 	}
 }

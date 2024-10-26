@@ -39,7 +39,7 @@ export class Header extends BaseComponent implements IHeader {
 
 	get logoutButtonHTML(): HTMLElement {
 		const html = this.htmlElement.querySelector(
-			'.header-profile-logout',
+			'.header__logout',
 		) as HTMLElement;
 		if (html) {
 			return html;

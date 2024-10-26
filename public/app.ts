@@ -122,6 +122,14 @@ class App {
 			ACTION_LOGIN_TYPES.actionLoginToSignupClick,
 		);
 
+		this._storeLogin.subscribe(ACTION_USER_TYPES.formError);
+
+		this._storeSignup = new StoreSignup();
+		this._storeSignup.subscribe(ACTION_USER_TYPES.formError);
+		this._storeSignup.subscribe(ACTION_USER_TYPES.signupClickSuccess);
+
+		// this._storeLogin.subscribe(ACTION_USER_TYPES.formError); //
+
 		feedView.register(this._storeMenu);
 		feedView.register(this._storeHeader);
 
