@@ -6,7 +6,7 @@ import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import { HomeConfig, ViewHome } from '../home/viewHome';
 
-export const updateProfileAction = (data: IProfileConfig) => {
+export const updateProfileAction = (data: IProfileConfig,) => {
     dispatcher.getAction({
         type: ACTION_PROFILE_TYPES.updateProfile,
         data,
@@ -19,15 +19,18 @@ export class ViewProfile extends ViewHome {
 	}
 
     async setUser(user: string) {
+		console.log('setUser');
         const profileData = await ajax.getProfileData(user); // temporary
-		// this.updateProfile(profileData);
-		updateProfileAction(profileData);
+		const currentUserId = await ajax.getCurrentUserId();
+		const currentUser = currentUserId === profileData.id;
+		
+		updateProfileAction({...profileData, currentUser});
     }
 
 	updateProfile(data: IProfileConfig): void {
 		const content = this._components.content;
 		content?.update(data);
-		this._addProfileHandlers();
+		this._addProfileHandlers(data);
 	}
 
 	protected _updateContent(parent: IBaseComponent) {
@@ -41,5 +44,10 @@ export class ViewProfile extends ViewHome {
 		this._components.content = profile;
 	}
 
-	_addProfileHandlers() {}
+	_addProfileHandlers(data: IProfileConfig) {
+		if (!data.currentUser) {
+			const profile = this._components.content as Profile;
+			profile.addSendFriendRequestButton();
+		}
+	}
 }

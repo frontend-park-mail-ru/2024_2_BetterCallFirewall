@@ -15,6 +15,7 @@ export type FormResponse = {
 };
 
 export interface IProfileConfig extends IBaseComponentConfig {
+	id: number;
     firstName: string;
     secondName: string;
     description: string;
@@ -70,6 +71,7 @@ class Ajax {
 			console.error('Ошибка при получении данных профиля:', error);
 			return {
 				key: 'profile',
+				id: 0,
 				firstName: 'Неизвестно',
 				secondName: '',
 				description: '',
@@ -77,6 +79,20 @@ class Ajax {
 				groupsCount: 0,
 			};
 		}
+	}
+
+	async getCurrentUserId(): Promise<number> {
+		try {
+			const response = await fetch('/api/currentUserId');
+			if (!response.ok) {
+			  throw new Error(`Error: ${response.status}`);
+			}
+			const data = await response.json();
+			return data.userId;
+		  } catch (error) {
+			console.error('Ошибка при получении Id профиля:', error);
+			throw error;
+		  }
 	}
 
 	/**

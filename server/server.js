@@ -9,51 +9,61 @@ const posts = [
 		header: 'Это заголовок поста',
 		body: 'Это пост',
 		created_at: '23.09.2024',
+		created_by: 2,
 	},
 	{
 		header: 'Это заголовок другого поста',
 		body: 'А это другой пост',
 		created_at: '32.09.2024',
+		created_by: 2,
 	},
 	{
 		header: 'Это заголовок поста',
 		body: 'Это пост',
 		created_at: '23.09.2024',
+		created_by: 2,
 	},
 	{
 		header: 'Это заголовок другого поста',
 		body: 'А это другой пост',
 		created_at: '32.09.2024',
+		created_by: 3,
 	},
 	{
 		header: 'Это заголовок поста',
 		body: 'Это пост',
 		created_at: '23.09.2024',
+		created_by: 3,
 	},
 	{
 		header: 'Это заголовок другого поста',
 		body: 'А это другой пост',
 		created_at: '32.09.2024',
+		created_by: 3,
 	},
 	{
 		header: 'Это заголовок поста',
 		body: 'Это пост',
 		created_at: '23.09.2024',
+		created_by: 3,
 	},
 	{
 		header: 'Это заголовок другого поста',
 		body: 'А это другой пост',
 		created_at: '32.09.2024',
+		created_by: 3,
 	},
 	{
 		header: 'Это заголовок поста',
 		body: 'Это пост',
 		created_at: '23.09.2024',
+		created_by: 3,
 	},
 	{
 		header: 'Это заголовок другого поста',
 		body: 'А это другой пост',
 		created_at: '32.09.2024',
+		created_by: 3,
 	},
 ];
 
@@ -149,6 +159,7 @@ app.get('/api/post', (req, res) => {
 const profiles = {
     lukeskywalker: {
         key: 'profile',
+		id: 2,
         firstName: 'Luke',
         secondName: 'Skywalker',
         description: 'Jedi, master',
@@ -158,6 +169,7 @@ const profiles = {
     },
     johndoe: {
         key: 'profile',
+		id: 3,
         firstName: 'John',
         secondName: 'Doe',
         description: 'A mysterious individual',
@@ -184,6 +196,19 @@ app.get('/api/profiles/:user', (req, res) => {
         });
     }
 });
+
+app.get('/api/currentUserId', (req, res) => {
+	const sessionId = req.cookies['sessionid'];
+
+	const user = users.find(user => user.sessionId === parseInt(sessionId));
+
+	if (user) {
+		res.json({ userId: user.id });
+	} else {
+		res.status(401).json({ error: 'User not authenticated' });
+	}
+});
+
 
 app.get('/dist/bundle.js', (req, res) => {
 	res.sendFile(path.join(__dirname, '../dist', 'bundle.js'));

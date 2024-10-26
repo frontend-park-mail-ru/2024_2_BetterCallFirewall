@@ -112,6 +112,7 @@ class App {
 		
 		this._storeProfile = new StoreProfile({
 			key: 'profile',
+			id: 0,
 			firstName: '',
             secondName: '',
             description: '',

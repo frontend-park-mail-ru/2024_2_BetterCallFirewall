@@ -7,12 +7,15 @@ import { IPost } from '../Post/Post';
 type Posts = IPost[];
 
 export interface IProfileConfig extends IBaseComponentConfig {
-    firstName?: string;
-    secondName?: string;
-    description?: string;
-    friendsCount?: number;
-    groupsCount?: number;
-    img?: string;
+	id?: number;
+	firstName?: string;
+	secondName?: string;
+	description?: string;
+	friendsCount?: number;
+	groupsCount?: number;
+	img?: string;
+	currentUser?: boolean;
+	isFriend?: boolean;
 }
 // export interface IProfileConfig extends IBaseComponentConfig {}
 
@@ -67,8 +70,17 @@ export class Profile extends BaseComponent {
 
 	protected _prerender(): void {
 		super._prerender();
-        this._templateContext = {
+		this._templateContext = {
 			...this._config,
 		};
+	}
+
+	addSendFriendRequestButton() {
+		console.log('send friend req');
+		const friendButton = document.createElement('button');
+		friendButton.textContent = 'Add friend';
+		friendButton.addEventListener('click', () => {
+		});
+		this._htmlElement?.querySelector('.profile__actions')?.appendChild(friendButton);
 	}
 }
