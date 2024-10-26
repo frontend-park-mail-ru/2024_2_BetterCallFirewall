@@ -21,12 +21,20 @@ import { StoreHeader } from './stores/storeHeader';
 import { ACTION_HEADER_TYPES } from './actions/actionHeader';
 import { StoreLogin } from './stores/storeLogin';
 import { ACTION_USER_TYPES } from './actions/actionUser';
+import { StoreApp } from './stores/storeApp';
+import { ACTION_LOGIN_TYPES } from './actions/actionLogin';
+import { ACTION_APP_TYPES, ActionAppInit } from './actions/actionApp';
+import dispatcher from './dispatcher/dispatcher';
 import { StoreSignup } from './stores/storeSignup';
+import { StoreFeed } from './stores/storeFeed';
+import { ACTION_SIGNUP_TYPES } from './actions/actionSignup';
+import { ViewFriends } from './views/friends/viewFriends';
 
 export const PAGES = {
 	home: 'home',
 	login: 'login',
 	signup: 'signup',
+	friends: 'friends',
 };
 
 export interface URLInterface {
@@ -65,11 +73,13 @@ class App {
 	private _config: IAppConfig;
 	private _root: Root;
 
+	private _storeApp: StoreApp;
 	private _storeMenu: StoreMenu;
 	private _storeProfile: StoreProfile;
 	private _storeHeader: StoreHeader;
 	private _storeLogin: StoreLogin;
 	private _storeSignup: StoreSignup;
+	private _storeFeed: StoreFeed;
 
 	/**
 	 * Instance of application
@@ -83,6 +93,7 @@ class App {
 		const feedView = new ViewFeed(this._config.homeConfig, this._root);
 		const profileView = new ViewProfile(this._config.homeConfig, this._root);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
+		const friendView = new ViewFriends(this._config.homeConfig, this._root);
 		const signupView = new ViewSignup(
 			this._config.signupConfig,
 			this._root,
@@ -104,8 +115,19 @@ class App {
 				path: PAGE_LINKS.profile,
 				view: profileView,
 			},
+			{
+				path: PAGE_LINKS.friends,
+				view: friendView,
+			},
 		];
 		this._router = new Router(routerConfig);
+
+		this._storeApp = new StoreApp();
+		this._storeApp.subscribe(ACTION_LOGIN_TYPES.actionLoginToSignupClick);
+		this._storeApp.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
+		this._storeApp.subscribe(ACTION_APP_TYPES.actionAppInit);
+		this._storeApp.subscribe(ACTION_USER_TYPES.loginClickSuccess);
+		this._storeApp.subscribe(ACTION_MENU_TYPES.titleClick);
 
 		this._storeMenu = new StoreMenu();
 		this._storeMenu.subscribe(ACTION_MENU_TYPES.menuLinkClick);
@@ -121,6 +143,7 @@ class App {
             img: '',
 		});
 		this._storeProfile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
+		this._storeMenu.subscribe(ACTION_MENU_TYPES.titleClick);
 
 		this._storeHeader = new StoreHeader();
 		this._storeHeader.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
@@ -129,23 +152,33 @@ class App {
 		this._storeLogin.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
 		this._storeLogin.subscribe(ACTION_USER_TYPES.loginClickSuccess);
 		this._storeLogin.subscribe(ACTION_USER_TYPES.formError);
+		this._storeLogin.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 
 		this._storeSignup = new StoreSignup();
 		this._storeSignup.subscribe(ACTION_USER_TYPES.formError);
 		this._storeSignup.subscribe(ACTION_USER_TYPES.signupClickSuccess);
+		this._storeSignup.subscribe(
+			ACTION_LOGIN_TYPES.actionLoginToSignupClick,
+		);
 
-		// this._storeLogin.subscribe(ACTION_USER_TYPES.formError); //
-		
+		this._storeFeed = new StoreFeed();
+		this._storeFeed.subscribe(ACTION_USER_TYPES.loginClickSuccess);
+		this._storeFeed.subscribe(ACTION_USER_TYPES.signupClickSuccess);
+
+		feedView.register(this._storeFeed);
 		feedView.register(this._storeMenu);
 		profileView.register(this._storeProfile); // ????
 		feedView.register(this._storeHeader);
 
 		loginView.register(this._storeLogin);
+
 		signupView.register(this._storeSignup);
+
+		friendView.register(this._storeMenu);
 	}
 
 	init() {
-		this._router.activeView?.render();
+		dispatcher.getAction(new ActionAppInit());
 	}
 
 	get router() {

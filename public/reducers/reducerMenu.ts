@@ -15,6 +15,8 @@ export const reducerMenu = (state?: IMenuConfig, action?: Action) => {
 		switch (action.type) {
 			case ACTION_MENU_TYPES.menuLinkClick:
 				break;
+			case ACTION_MENU_TYPES.titleClick:
+				break;
 		}
 	}
 	return newState;

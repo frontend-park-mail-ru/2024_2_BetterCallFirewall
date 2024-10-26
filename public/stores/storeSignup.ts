@@ -10,14 +10,13 @@ export class StoreSignup extends BaseStore implements Store {
 
 	constructor() {
 		super();
-		this._state = reducerSignup() as ISignupFormConfig;
+		this._state = reducerSignup();
 	}
 
 	handleAction(action: Action): void {
-        console.log('update sugnup');
 		this._registeredViews.forEach((view) => {
 			if (view.active) {
-				this._state = reducerSignup(this._state, action) as ISignupFormConfig;
+				this._state = reducerSignup(this._state, action);
 				view.update(this._state);
 			}
 		});

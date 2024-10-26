@@ -36,16 +36,13 @@ export class Router {
 					this._activeView.setUser(user); // tmp
 				}
 				history.pushState({}, '', path);
-				this._activeView.render(); // ??
+				// this._activeView.render(); // ??
 				break;
 			}
 		}
 	}
 
-	get activeView(): BaseView | null {
-		if (this._activeView) {
-			return this._activeView;
-		}
-		return null;
+	get activeView(): BaseView | undefined {
+		return this._activeView;
 	}
 }

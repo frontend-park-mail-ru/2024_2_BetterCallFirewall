@@ -100,7 +100,7 @@ export default class Validator {
 	printError(parentElem: HTMLInputElement, error: string): void {
 		if (error) {
 			const errorElem: HTMLElement = parentElem.querySelector(
-				'.error',
+				'.form__input-error',
 			) as HTMLElement;
 			errorElem.textContent = error;
 		}

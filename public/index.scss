@@ -1,13 +1,13 @@
-@import 'components/Menu/Menu';
-@import 'components/Header/Header';
-@import 'components/Input/Input';
-@import 'components/BaseForm/BaseForm';
-@import 'components/Post/Post';
-@import 'components/FormLink/FormLink';
-@import 'components/ContentMessage/ContentMessage';
-@import 'components/Content/Content';
-@import 'components/Profile/Profile';
-
+@use 'components/Menu/Menu';
+@use 'components/Header/Header';
+@use 'components/Input/Input';
+@use 'components/BaseForm/BaseForm';
+@use 'components/Post/Post';
+@use 'components/FormLink/FormLink';
+@use 'components/ContentMessage/ContentMessage';
+@use 'components/Content/Content';
+@use 'components/Friend/Friend';
+@use 'components/Profile/Profile';
 
 html {
     height: 100%;
@@ -48,6 +48,7 @@ body {
 
 .link {
     text-decoration: none;
+    color: var(--main-text-color);
     &:hover {
         color: var(--main-color);
     }
@@ -88,7 +89,37 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-.logo {
-    width: 1.2rem;
-    height: 1.2rem;
+.item {
+    background-color: #1F1F1F;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: .5px solid rgba(255, 255, 255, 0.5);
+    border-radius: 1.5rem;
+    width: 70%;
+    height: 6rem;
+    padding: .5rem 1rem;
+    box-sizing: border-box;
+    &__img {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        width: auto;
+        margin-right: .6rem;
+        padding: .15rem;
+        box-sizing: border-box;
+        img {
+            height: 100%;
+            width: auto;
+        }
+    }
+    &__info {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-start;
+        box-sizing: border-box;
+    }
 }

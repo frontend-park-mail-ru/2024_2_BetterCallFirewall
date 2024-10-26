@@ -1,15 +1,15 @@
+import { ActionLoginToSignupClick } from '../../actions/actionLogin';
 import {
 	ActionLoginClickSuccess,
 	ActionFormError,
 } from '../../actions/actionUser';
-import app from '../../app';
 import {
 	IInputConfig,
 	ILoginFormConfig,
 	LoginForm,
 	Root,
 } from '../../components';
-import config, { PAGE_LINKS } from '../../config';
+import config from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 // import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
@@ -54,6 +54,19 @@ export class ViewLogin extends BaseView {
 			event.preventDefault();
 			loginFormSubmit(loginForm, this._config.inputs);
 		});
+
+		const toSignupLink = loginForm.items.toSignupLink;
+		loginForm.addHandler(toSignupLink.htmlElement, 'click', (event) => {
+			event.preventDefault();
+			dispatcher.getAction(new ActionLoginToSignupClick());
+		});
+
+		const titleLinkHTML = loginForm.htmlElement.querySelector(
+			'.title',
+		) as HTMLElement;
+		loginForm.addHandler(titleLinkHTML, 'click', (event) => {
+			event.preventDefault();
+		});
 	}
 }
 
@@ -73,19 +86,17 @@ const loginFormSubmit = (
 			}
 			if (response && response.ok) {
 				dispatcher.getAction(new ActionLoginClickSuccess());
-				app.router.goToPage(PAGE_LINKS.feed);
 			} else if (response) {
 				const data = await response.json();
 				if (data.message === 'wrong email or password') {
 					dispatcher.getAction(
 						new ActionFormError('Неверная почта или пароль'),
 					);
-
 				} else {
 					dispatcher.getAction(
 						new ActionFormError('Что-то пошло не так'),
 					);
- 				}
+				}
 			}
 		});
 	}
