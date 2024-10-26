@@ -25,11 +25,13 @@ import dispatcher from './dispatcher/dispatcher';
 import { StoreSignup } from './stores/storeSignup';
 import { StoreFeed } from './stores/storeFeed';
 import { ACTION_SIGNUP_TYPES } from './actions/actionSignup';
+import { ViewFriends } from './views/friends/viewFriends';
 
 export const PAGES = {
 	home: 'home',
 	login: 'login',
 	signup: 'signup',
+	friends: 'friends',
 };
 
 export interface URLInterface {
@@ -86,6 +88,7 @@ class App {
 
 		const feedView = new ViewFeed(this._config.homeConfig, this._root);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
+		const friendView = new ViewFriends(this._config.homeConfig, this._root);
 		const signupView = new ViewSignup(
 			this._config.signupConfig,
 			this._root,
@@ -103,6 +106,10 @@ class App {
 				path: PAGE_LINKS.signup,
 				view: signupView,
 			},
+			{
+				path: PAGE_LINKS.friends,
+				view: friendView,
+			}
 		];
 		this._router = new Router(routerConfig);
 

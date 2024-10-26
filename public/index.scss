@@ -1,11 +1,12 @@
-@import 'components/Menu/Menu';
-@import 'components/Header/Header';
-@import 'components/Input/Input';
-@import 'components/BaseForm/BaseForm';
-@import 'components/Post/Post';
-@import 'components/FormLink/FormLink';
-@import 'components/ContentMessage/ContentMessage';
-@import 'components/Content/Content';
+@use 'components/Menu/Menu';
+@use 'components/Header/Header';
+@use 'components/Input/Input';
+@use 'components/BaseForm/BaseForm';
+@use 'components/Post/Post';
+@use 'components/FormLink/FormLink';
+@use 'components/ContentMessage/ContentMessage';
+@use 'components/Content/Content';
+@use 'components/Friend/Friend';
 
 
 html {
@@ -85,4 +86,35 @@ hr {
 .logo {
     width: 1.2rem;
     height: 1.2rem;
+}
+
+.item {
+    background-color: #1F1F1F;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: .5px solid rgba(255, 255, 255, 0.5);
+    border-radius: 1rem;
+    width: 65%;
+    height: 5.5rem;
+    padding: .5rem 1rem;
+    box-sizing: border-box;
+    &__img {
+        height: 4rem;
+        width: 4rem;
+        img {
+            height: 10%;
+            width: 100%;
+        }
+    }
+    &__info {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-start;
+        padding: .7rem;
+        box-sizing: border-box;
+    }
 }

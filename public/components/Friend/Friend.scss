@@ -1,0 +1,27 @@
+.friend {
+    margin-bottom: 2rem;
+    &__state {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 4rem;
+        width: 4rem;
+        white-space: nowrap;
+        svg {
+            width: 2.6rem;
+            height: 2.6rem;
+            &:hover {
+                width: 2.8rem;
+                height: 2.8rem;   
+            }
+            &:active {
+                width: 2.6rem;
+                height: 2.6rem;          
+            }
+        }
+    }
+    &__link {
+        color: var(--main-color)
+    }
+}
