@@ -3,14 +3,13 @@ import {
 	ActionLoginClickSuccess,
 	ActionFormError,
 } from '../../actions/actionUser';
-import app from '../../app';
 import {
 	IInputConfig,
 	ILoginFormConfig,
 	LoginForm,
 	Root,
 } from '../../components';
-import config, { PAGE_LINKS } from '../../config';
+import config from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 // import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
@@ -63,7 +62,7 @@ export class ViewLogin extends BaseView {
 		});
 
 		const titleLinkHTML = loginForm.htmlElement.querySelector(
-			'.title-link',
+			'.title',
 		) as HTMLElement;
 		loginForm.addHandler(titleLinkHTML, 'click', (event) => {
 			event.preventDefault();
@@ -86,10 +85,7 @@ const loginFormSubmit = (
 				return;
 			}
 			if (response && response.ok) {
-				console.log('ok');
-				app.router.goToPage(PAGE_LINKS.feed);
 				dispatcher.getAction(new ActionLoginClickSuccess());
-				app.router.goToPage(PAGE_LINKS.feed);
 			} else if (response) {
 				const data = await response.json();
 				if (data.message === 'wrong email or password') {

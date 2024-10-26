@@ -15,7 +15,7 @@ export const reducerHeader = (
 	}
 	const newState = state; // Потом поменять на let
 	if (action) {
-		switch (action?.type) {
+		switch (action.type) {
 			case ACTION_HEADER_TYPES.logoutClickFail:
 				break;
 		}

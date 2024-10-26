@@ -1,3 +1,4 @@
+import { ActionSignupToLoginClick } from '../../actions/actionSignup';
 import {
 	ActionFormError,
 	ActionSignupClickSuccess,
@@ -23,7 +24,6 @@ export class ViewSignup extends BaseView {
 	constructor(config: ISignupFormConfig, root: Root) {
 		super(root);
 		this._config = config;
-		// this._root = new Root();
 	}
 
 	get config() {
@@ -32,7 +32,6 @@ export class ViewSignup extends BaseView {
 
 	update(data: ViewData) {
 		this._config = data as ISignupFormConfig;
-		// this.clear();
 		this.render();
 	}
 
@@ -40,20 +39,33 @@ export class ViewSignup extends BaseView {
 		this.clear();
 
 		const config = this._config;
-		const login = new SignupForm(config, this._root);
-		login.render();
-		this._components.login = login;
+		const signupForm = new SignupForm(config, this._root);
+		signupForm.render();
+		this._components.signup = signupForm;
 		this._addSignupHandlers();
 	}
 
 	private _addSignupHandlers() {
-		const signupForm = this._components.login as SignupForm;
+		const signupForm = this._components.signup as SignupForm;
 		if (!signupForm) {
 			throw new Error('login form not found');
 		}
 		signupForm.addHandler(signupForm.form, 'submit', (event: Event) => {
 			event.preventDefault();
 			loginFormSubmit(signupForm, this._config.inputs);
+		});
+
+		const toLoginLink = signupForm.items.toLoginLink;
+		signupForm.addHandler(toLoginLink.htmlElement, 'click', (event) => {
+			event.preventDefault();
+			dispatcher.getAction(new ActionSignupToLoginClick());
+		});
+
+		const titleLinkHTML = signupForm.htmlElement.querySelector(
+			'.title',
+		) as HTMLElement;
+		signupForm.addHandler(titleLinkHTML, 'click', (event) => {
+			event.preventDefault();
 		});
 	}
 }

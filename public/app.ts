@@ -23,6 +23,8 @@ import { ACTION_LOGIN_TYPES } from './actions/actionLogin';
 import { ACTION_APP_TYPES, ActionAppInit } from './actions/actionApp';
 import dispatcher from './dispatcher/dispatcher';
 import { StoreSignup } from './stores/storeSignup';
+import { StoreFeed } from './stores/storeFeed';
+import { ACTION_SIGNUP_TYPES } from './actions/actionSignup';
 
 export const PAGES = {
 	home: 'home',
@@ -71,6 +73,7 @@ class App {
 	private _storeHeader: StoreHeader;
 	private _storeLogin: StoreLogin;
 	private _storeSignup: StoreSignup;
+	private _storeFeed: StoreFeed;
 
 	/**
 	 * Instance of application
@@ -105,10 +108,14 @@ class App {
 
 		this._storeApp = new StoreApp();
 		this._storeApp.subscribe(ACTION_LOGIN_TYPES.actionLoginToSignupClick);
+		this._storeApp.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 		this._storeApp.subscribe(ACTION_APP_TYPES.actionAppInit);
+		this._storeApp.subscribe(ACTION_USER_TYPES.loginClickSuccess);
+		this._storeApp.subscribe(ACTION_MENU_TYPES.titleClick);
 
 		this._storeMenu = new StoreMenu();
 		this._storeMenu.subscribe(ACTION_MENU_TYPES.menuLinkClick);
+		this._storeMenu.subscribe(ACTION_MENU_TYPES.titleClick);
 
 		this._storeHeader = new StoreHeader();
 		this._storeHeader.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
@@ -116,20 +123,21 @@ class App {
 		this._storeLogin = new StoreLogin();
 		this._storeLogin.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
 		this._storeLogin.subscribe(ACTION_USER_TYPES.loginClickSuccess);
-
-		this._storeSignup = new StoreSignup();
-		this._storeSignup.subscribe(
-			ACTION_LOGIN_TYPES.actionLoginToSignupClick,
-		);
-
 		this._storeLogin.subscribe(ACTION_USER_TYPES.formError);
+		this._storeLogin.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 
 		this._storeSignup = new StoreSignup();
 		this._storeSignup.subscribe(ACTION_USER_TYPES.formError);
 		this._storeSignup.subscribe(ACTION_USER_TYPES.signupClickSuccess);
+		this._storeSignup.subscribe(
+			ACTION_LOGIN_TYPES.actionLoginToSignupClick,
+		);
 
-		// this._storeLogin.subscribe(ACTION_USER_TYPES.formError); //
+		this._storeFeed = new StoreFeed();
+		this._storeFeed.subscribe(ACTION_USER_TYPES.loginClickSuccess);
+		this._storeFeed.subscribe(ACTION_USER_TYPES.signupClickSuccess);
 
+		feedView.register(this._storeFeed);
 		feedView.register(this._storeMenu);
 		feedView.register(this._storeHeader);
 

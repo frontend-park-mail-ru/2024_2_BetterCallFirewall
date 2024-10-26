@@ -32,7 +32,6 @@ export class LoginForm extends BaseForm implements ILoginForm {
 			...this._templateContext,
 			toSignupLink: toSignupLink.render(false),
 		};
-		console.log(this._templateContext);
 	}
 
 	render(): string {

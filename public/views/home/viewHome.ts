@@ -5,6 +5,7 @@ import {
 import {
 	ACTION_MENU_TYPES,
 	ActionMenuLinkClick,
+	ActionMenuTitleClick,
 } from '../../actions/actionMenu';
 import app, { IHomeConfig } from '../../app';
 import {
@@ -59,7 +60,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	constructor(config: HomeConfig, root: Root) {
 		super(root);
 		this._config = config;
-		// this._root = root;
 	}
 
 	get config() {
@@ -68,7 +68,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 
 	update(data: ViewData) {
 		this._config = data as IHomeConfig;
-		this.clear();
 		this.render();
 	}
 
@@ -119,6 +118,17 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 					href: config.links.feed.href,
 				}),
 			);
+		});
+
+		const titleHTML = menu.htmlElement.querySelector(
+			'[data-key=title]',
+		) as HTMLElement;
+		if (!titleHTML) {
+			throw new Error('title not found');
+		}
+		menu.addHandler(titleHTML, 'click', (event) => {
+			event.preventDefault();
+			dispatcher.getAction(new ActionMenuTitleClick());
 		});
 	}
 
