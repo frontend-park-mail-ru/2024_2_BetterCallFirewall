@@ -1,5 +1,5 @@
 import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
-import { Root } from '../../components';
+import { Post, Root } from '../../components';
 import { IBaseComponent } from '../../components/BaseComponent';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
 import dispatcher from '../../dispatcher/dispatcher';
@@ -42,6 +42,29 @@ export class ViewProfile extends ViewHome {
 		const profile = new Profile({ key: 'profile' }, parent); // конфиг хардкод
 		profile.render();
 		this._components.content = profile;
+
+
+		console.log('post here:', this._components.content.htmlElement.querySelector('.profile__posts'));
+		const posts = this._components.content.htmlElement.querySelector('.profile__posts') as HTMLElement;
+		// Тестовые посты
+		let counter = 0;
+		for (let i = 0; i < 10; i++) {
+			const post = new Post(
+				{
+					key: (counter++).toString(),
+                    id: 1,
+					title: 'Header1',
+					text: 'Text',
+					date: '01.01.2024',
+				},
+				null,
+			);
+			profile.addChild(post);
+			post.render(false);
+			posts.appendChild(post.htmlElement);
+			console.log(post.htmlElement);
+			console.log(post);
+		}
 	}
 
 	_addProfileHandlers(data: IProfileConfig) {

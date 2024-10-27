@@ -24,7 +24,7 @@ export class Post extends BaseComponent implements IPost {
 	 * @param {IPostConfig} config - post data
 	 * @param {IBaseComponent} parent - parent element
 	 */
-	constructor(config: IPostConfig, parent: IBaseComponent) {
+	constructor(config: IPostConfig, parent: IBaseComponent | null) {
 		super(config, parent);
 		this._config = config;
 	}

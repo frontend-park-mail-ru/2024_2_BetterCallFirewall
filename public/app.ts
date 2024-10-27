@@ -112,12 +112,12 @@ class App {
 				view: signupView,
 			},
 			{
-				path: PAGE_LINKS.profile,
-				view: profileView,
-			},
-			{
 				path: PAGE_LINKS.friends,
 				view: friendView,
+			},
+			{
+				path: PAGE_LINKS.profile,
+				view: profileView,
 			},
 		];
 		this._router = new Router(routerConfig);

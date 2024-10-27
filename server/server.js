@@ -188,7 +188,7 @@ app.get('/api/profiles/:user', (req, res) => {
     } else {
         res.status(404).json({
             key: 'profile',
-            firstName: 'Неизвестно',
+            firstName: '',
             secondName: '',
             description: '',
             friendsCount: 0,

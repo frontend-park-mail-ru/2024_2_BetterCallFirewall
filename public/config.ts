@@ -8,8 +8,8 @@ export const PAGE_LINKS = {
 	feed: '/feed',
 	login: '/login',
 	signup: '/signup',
-	profile: '/:user', // ????
 	friends: '/friends',
+	profile: '/:user', // ????
 };
 
 const homeConfig: IHomeConfig = {
