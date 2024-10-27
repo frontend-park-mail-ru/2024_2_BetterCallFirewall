@@ -16,7 +16,7 @@ export class Router {
 		this._config = config;
 	}
 
-	async goToPage(path: string) {
+	goToPage(path: string) {
 		for (const route of this._config) {
 			const regex = new RegExp(
 				`^${route.path.replace(/:[^\s/]+/, '([\\w-]+)')}$`

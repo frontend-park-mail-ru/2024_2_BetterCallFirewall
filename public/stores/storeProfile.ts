@@ -17,7 +17,6 @@ export class StoreProfile extends BaseStore implements Store {
 		this._registeredViews.forEach((view) => {
 			if (view.active) {
 				this._state = reducerProfile(this._state, action);
-				console.log(this._state);
 				view.updateProfile(this._state);
 			}
 		});
