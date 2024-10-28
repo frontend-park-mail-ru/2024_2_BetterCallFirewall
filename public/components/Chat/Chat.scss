@@ -1,0 +1,90 @@
+.chat {
+    background-color: var(--second-bg-color);
+    border-radius: .7rem;
+    border: .5px solid rgba(255, 255, 255, 0.5);
+    height: 100%;
+    margin-left: 2rem;
+    height: calc(100vh - 4.5rem);
+    display: flex;
+    flex-direction: column;
+
+    &__back {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10%;
+        cursor: pointer;
+        &-button {
+            width: .8rem;
+            height: 1.3rem;
+            svg path {
+                fill: var(--main-text-color);
+                stroke: var(--main-text-color);
+            }
+            &:hover svg path {
+                fill: var(--main-color);
+                stroke: var(--main-color);
+            }
+            &:active svg path {
+                fill: var(--main-text-color);
+                stroke: var(--main-text-color);
+            }
+        }
+    }
+    
+    &__header {
+        display: flex;
+        height: 4.5rem;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: .5px solid rgba(255, 255, 255, 0.5);
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &__settings {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10%;
+        cursor: pointer;
+        &-button {
+            width: 1.4rem;
+            height: 1.4rem;
+            svg path {
+                fill: var(--main-text-color);
+            }
+            &:hover svg path {
+                fill: var(--main-color);
+            }
+            &:active svg path {
+                fill: var(--main-text-color);
+            }
+        }
+    }
+
+    &__info {
+        display: flex;
+        width: 80%;
+        img {
+            height: 2.5rem;
+            width: auto;
+            margin-right: .6rem;
+        }
+    }
+
+    &__content {
+        width: 100%;
+        flex-grow: 1;
+        overflow-y: auto;
+    }
+
+    &__bottom {
+        border-top: .5px solid rgba(255, 255, 255, 0.5);
+        height: 3rem;
+    }
+}

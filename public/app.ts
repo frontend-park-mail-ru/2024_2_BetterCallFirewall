@@ -25,6 +25,8 @@ import dispatcher from './dispatcher/dispatcher';
 import { StoreSignup } from './stores/storeSignup';
 import { StoreFeed } from './stores/storeFeed';
 import { ACTION_SIGNUP_TYPES } from './actions/actionSignup';
+import { ViewMessages } from './views/messages/viewMessages';
+import { ViewChat } from './views/chat/viewChat';
 
 export const PAGES = {
 	home: 'home',
@@ -90,6 +92,8 @@ class App {
 			this._config.signupConfig,
 			this._root,
 		);
+		const messagesView = new ViewMessages(this._config.homeConfig, this._root);
+		const chatView = new ViewChat(this._config.homeConfig, this._root);
 		const routerConfig: RouterConfig = [
 			{
 				path: PAGE_LINKS.feed,
@@ -102,6 +106,14 @@ class App {
 			{
 				path: PAGE_LINKS.signup,
 				view: signupView,
+			},
+			{
+				path: PAGE_LINKS.messages,
+				view: messagesView,
+			},
+			{
+				path: PAGE_LINKS.chat,
+				view: chatView,
 			},
 		];
 		this._router = new Router(routerConfig);

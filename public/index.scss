@@ -6,7 +6,12 @@
 @import 'components/FormLink/FormLink';
 @import 'components/ContentMessage/ContentMessage';
 @import 'components/Content/Content';
+@import 'components/Message/Message';
+@import 'components/Chat/Chat';
 
+* {
+    box-sizing: border-box;
+}
 
 html {
     height: 100%;
@@ -18,6 +23,7 @@ html {
 
     --main-bg-color: #121212;
     --second-bg-color: #1F1F1F;
+    --hover-bg-color: #333333;
     --main-color: #1DC67F;
     --main-text-color: #FFFFFF;
     --button-color: #25AD74;
@@ -46,6 +52,7 @@ body {
 
 .link {
     text-decoration: none;
+    color: var(--main-text-color);
     &:hover {
         color: var(--main-color);
     }
@@ -60,7 +67,7 @@ body {
 }
 
 .avatar {
-    border-radius: 1.5rem; 
+    border-radius: 10rem; 
 }
 
 hr {
@@ -85,4 +92,79 @@ hr {
 .logo {
     width: 1.2rem;
     height: 1.2rem;
+}
+
+.item {
+    background-color: #1F1F1F;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: .5px solid rgba(255, 255, 255, 0.5);
+    border-radius: 1rem;
+    width: 100%;
+    height: 5.5rem;
+    padding: .5rem 2rem .5rem 1rem;
+    box-sizing: border-box;
+    &__img {
+        height: 4rem;
+        width: 4rem;
+        img {
+            height: 10%;
+            width: 100%;
+        }
+    }
+    &__info {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-start;
+        // padding: .7rem;
+        padding: .2rem .8rem;
+        box-sizing: border-box;
+    }
+}
+
+.sender {
+    width: 100%;
+    padding: 0rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    height: 4rem;
+    &__input {
+        width: 80%;
+        border: .5px solid rgba(255, 255, 255, 0.5);
+        border-radius: 10rem;
+        outline: none;
+        background: none;
+        box-shadow: none;
+        padding: .6rem .8rem;
+        color:  var(--main-text-color);
+        font-size: 1rem;
+        &::placeholder {
+            font-size: 1rem;
+        }
+    }
+
+    &__send {
+        width: 2.5rem;
+        height: 2.5rem;
+        cursor: pointer;
+        svg {
+            &:hover {
+                fill: var(--hover-bg-color);
+            }
+            &:active {
+                fill: var(--main-bg-color);
+            }
+        }
+    }
+}
+
+.link-no-decorations {
+    text-decoration: none;
+    color: inherit;
 }

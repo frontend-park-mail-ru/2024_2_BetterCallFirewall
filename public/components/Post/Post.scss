@@ -1,10 +1,13 @@
 .post {
     margin-bottom: 1.5rem;
-    width: 70%;
     background-color: var(--second-bg-color);
     border-radius: .7rem;
     color: var(--main-text-color);
     border: .5px solid rgba(255, 255, 255, 0.5);
+    margin-left: 2rem;
+    &:first-child {
+        margin-top: 2rem;
+    }
 
     &__header {
         &-text {

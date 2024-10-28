@@ -8,6 +8,8 @@ export const PAGE_LINKS = {
 	feed: '/feed',
 	login: '/login',
 	signup: '/signup',
+	messages: '/messages',
+	chat: '/chat',
 };
 
 const homeConfig: IHomeConfig = {
