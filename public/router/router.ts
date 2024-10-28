@@ -1,4 +1,3 @@
-import { ViewProfile } from '../views/profile/profileView';
 import { BaseView } from '../views/view';
 
 type Route = {
@@ -10,18 +9,24 @@ export type RouterConfig = Route[];
 
 export class Router {
 	private _config: RouterConfig;
+	private _defaultView: BaseView;
 	private _activeView?: BaseView;
 
-	constructor(config: RouterConfig) {
+	constructor(defaultView: BaseView, config: RouterConfig) {
+		this._defaultView = defaultView;
 		this._config = config;
 	}
 
 	goToPage(path: string) {
+		console.log('router.goToPage: path:', path);
 		for (const route of this._config) {
 			const regex = new RegExp(
-				`^${route.path.replace(/:[^\s/]+/, '([\\w-]+)')}$`
+				// `^${route.path.replace(/:[^\s/]+/, '([\\w-]+)')}$`,
+				`^${route.path}$`,
 			);
+			console.log('regexp:', regex);
 			const match = path.match(regex);
+			console.log('match:', match);
 
 			if (match) {
 				if (this._activeView) {
@@ -31,15 +36,15 @@ export class Router {
 				this._activeView = route.view;
 				this._activeView.active = true;
 
-				if (this._activeView instanceof ViewProfile) {
-					const user = match[1];
-					this._activeView.setUser(user); // tmp
-				}
 				history.pushState({}, '', path);
-				// this._activeView.render(); // ??
-				break;
+				return;
 			}
 		}
+		if (this._activeView) {
+			this._activeView.active = false;
+		}
+		this._activeView = this._defaultView;
+		this._activeView.active = true;
 	}
 
 	get activeView(): BaseView | undefined {

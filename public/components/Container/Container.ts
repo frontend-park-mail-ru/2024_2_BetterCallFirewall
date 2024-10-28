@@ -7,12 +7,10 @@ export interface IContainerConfig extends IBaseComponentConfig {
 	className: string;
 }
 
-export interface IContainer extends IBaseComponent {}
-
 /**
  * class of Container
  */
-export class Container extends BaseComponent implements IContainer {
+export class Container extends BaseComponent {
 	/**
 	 * Instance of Container
 	 *
@@ -31,13 +29,6 @@ export class Container extends BaseComponent implements IContainer {
 	render(): string {
 		this._prerender();
 		return this._render('Container.hbs');
-
-		// const template = Handlebars.templates['Container.hbs'];
-		// const html = template(this._config);
-		// if (this._parent) {
-		// 	this._parent.htmlElement.insertAdjacentHTML('beforeend', html);
-		// }
-		// return html;
 	}
 
 	update(data: IContainerConfig): void {

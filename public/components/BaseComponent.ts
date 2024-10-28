@@ -41,6 +41,8 @@ export default abstract class BaseComponent implements IBaseComponent {
 	protected _templateContext: object = {};
 	protected _handlers: Handlers = {};
 
+	private _visible: boolean = false;
+
 	/**
 	 * Создает новый компонент
 	 * @param {IBaseComponentConfig} config
@@ -187,7 +189,9 @@ export default abstract class BaseComponent implements IBaseComponent {
 		Object.entries(this._children).forEach(([, child]) => {
 			child.remove();
 		});
-		this.htmlElement.outerHTML = '';
+		if (this._visible) {
+			this.htmlElement.outerHTML = '';
+		}
 		if (this._parent) {
 			delete this._parent.children[this.key];
 		}
@@ -222,6 +226,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 			this._htmlElement = element;
 			if (show && this._parent) {
 				this._parent.htmlElement.appendChild(element);
+				this._visible = true;
 			}
 		} else {
 			throw new Error('html element has not created');
@@ -229,10 +234,10 @@ export default abstract class BaseComponent implements IBaseComponent {
 		return html;
 	}
 
-	abstract render(show: boolean): string;
 	protected _prerender(): void {
 		if (!this._config) {
 			throw new Error('component has no config');
 		}
 	}
+	abstract render(show: boolean): string;
 }

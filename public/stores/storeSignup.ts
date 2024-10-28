@@ -14,9 +14,9 @@ export class StoreSignup extends BaseStore implements Store {
 	}
 
 	handleAction(action: Action): void {
+		this._state = reducerSignup(this._state, action);
 		this._registeredViews.forEach((view) => {
 			if (view.active) {
-				this._state = reducerSignup(this._state, action);
 				view.update(this._state);
 			}
 		});

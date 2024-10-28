@@ -16,6 +16,7 @@ export interface IProfileConfig extends IBaseComponentConfig {
 	img?: string;
 	currentUser?: boolean;
 	isFriend?: boolean;
+	posts?: IPost[];
 }
 // export interface IProfileConfig extends IBaseComponentConfig {}
 
@@ -79,8 +80,9 @@ export class Profile extends BaseComponent {
 		console.log('send friend req');
 		const friendButton = document.createElement('button');
 		friendButton.textContent = 'Add friend';
-		friendButton.addEventListener('click', () => {
-		});
-		this._htmlElement?.querySelector('.profile__actions')?.appendChild(friendButton);
+		friendButton.addEventListener('click', () => {});
+		this._htmlElement
+			?.querySelector('.profile__actions')
+			?.appendChild(friendButton);
 	}
 }

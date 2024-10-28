@@ -1,23 +1,33 @@
 import { Action } from '../actions/action';
-import { IProfileConfig } from '../components/Profile/Profile';
+import { reducerHome } from '../reducers/reducerHome';
 import { reducerProfile } from '../reducers/reducerProfile';
-import { ViewProfile } from '../views/profile/profileView';
+import { ViewProfile, ViewProfileConfig } from '../views/profile/viewProfile';
 import { BaseStore, Store } from './store';
 
 export class StoreProfile extends BaseStore implements Store {
-	private _state: IProfileConfig;
+	private _state: ViewProfileConfig;
 	protected _registeredViews: ViewProfile[] = [];
 
-	constructor(data: IProfileConfig) {
+	constructor() {
 		super();
-		this._state = data;
+		this._state = reducerProfile();
 	}
 
 	handleAction(action: Action): void {
+		const homeState = reducerHome(
+			{
+				menu: this._state.menu,
+				main: this._state.main,
+			},
+			action,
+		);
+		this._state.main = homeState.main;
+		this._state.menu = homeState.menu;
+		this._state = reducerProfile(this._state, action);
+		console.log('storeProfile: state:', this._state);
 		this._registeredViews.forEach((view) => {
 			if (view.active) {
-				this._state = reducerProfile(this._state, action);
-				view.updateProfile(this._state);
+				view.updateViewProfile(this._state);
 			}
 		});
 	}

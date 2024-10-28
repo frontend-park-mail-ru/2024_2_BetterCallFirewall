@@ -1,4 +1,4 @@
-import { IBaseComponentConfig } from "../components/BaseComponent";
+import { IBaseComponentConfig } from '../components/BaseComponent';
 
 type AjaxPromiseConfig = {
 	request: Request;
@@ -16,11 +16,12 @@ export type FormResponse = {
 
 export interface IProfileConfig extends IBaseComponentConfig {
 	id: number;
-    firstName: string;
-    secondName: string;
-    description: string;
-    friendsCount: number;
-    groupsCount: number;
+	firstName: string;
+	secondName: string;
+	description: string;
+	friendsCount: number;
+	groupsCount: number;
+	img?: string;
 }
 
 class Ajax {
@@ -85,14 +86,14 @@ class Ajax {
 		try {
 			const response = await fetch('/api/currentUserId');
 			if (!response.ok) {
-			  throw new Error(`Error: ${response.status}`);
+				throw new Error(`Error: ${response.status}`);
 			}
 			const data = await response.json();
 			return data.userId;
-		  } catch (error) {
+		} catch (error) {
 			console.error('Ошибка при получении Id профиля:', error);
 			throw error;
-		  }
+		}
 	}
 
 	/**

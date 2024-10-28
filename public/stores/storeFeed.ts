@@ -15,7 +15,9 @@ export class StoreFeed extends BaseStore implements Store {
 
 	handleAction(action: Action): void {
 		this._state = reducerFeed(this._state, action);
-		this._registeredView?.update(this._state);
+		if (this._registeredView?.active) {
+			this._registeredView.updateViewHome(this._state);
+		}
 	}
 
 	addView(view: ViewFeed): void {

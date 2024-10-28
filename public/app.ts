@@ -1,7 +1,4 @@
 import {
-	IContainerConfig,
-	IContentConfig,
-	IHeaderConfig,
 	ILoginFormConfig,
 	IMenuConfig,
 	ISignupFormConfig,
@@ -12,9 +9,12 @@ import config, { PAGE_LINKS } from './config';
 import { ViewLogin } from './views/login/viewLogin';
 import { ViewSignup } from './views/signup/viewSignup';
 import { StoreMenu } from './stores/storeMenu';
-import { ACTION_MENU_TYPES } from './actions/actionMenu';
+import {
+	ACTION_MENU_TYPES,
+	ActionUpdateProfileLinkHref,
+} from './actions/actionMenu';
 import { ViewFeed } from './views/feed/viewFeed';
-import { ViewProfile } from './views/profile/profileView';
+import { ViewProfile } from './views/profile/viewProfile';
 import { StoreProfile } from './stores/storeProfile';
 import { ACTION_PROFILE_TYPES } from './actions/actionProfile';
 import { StoreHeader } from './stores/storeHeader';
@@ -29,13 +29,9 @@ import { StoreSignup } from './stores/storeSignup';
 import { StoreFeed } from './stores/storeFeed';
 import { ACTION_SIGNUP_TYPES } from './actions/actionSignup';
 import { ViewFriends } from './views/friends/viewFriends';
-
-export const PAGES = {
-	home: 'home',
-	login: 'login',
-	signup: 'signup',
-	friends: 'friends',
-};
+import { StoreMain } from './stores/storeMain';
+import { MainConfig } from './views/home/viewHome';
+import { StoreHome } from './stores/storeHome';
 
 export interface URLInterface {
 	signup: string;
@@ -44,18 +40,9 @@ export interface URLInterface {
 	post: string;
 }
 
-export interface IMainConfig {
-	key: string;
-	className: string;
-	section: string;
-	header: IHeaderConfig;
-	content: IContentConfig;
-	aside: IContainerConfig;
-}
-
 export interface IHomeConfig {
 	menu: IMenuConfig;
-	main: IMainConfig;
+	main: MainConfig;
 }
 
 export interface IAppConfig {
@@ -65,6 +52,18 @@ export interface IAppConfig {
 	loginConfig: ILoginFormConfig;
 }
 
+export interface AppStores {
+	app: StoreApp;
+	menu: StoreMenu;
+	header: StoreHeader;
+	main: StoreMain;
+	home: StoreHome;
+	login: StoreLogin;
+	signup: StoreSignup;
+	profile: StoreProfile;
+	feed: StoreFeed;
+}
+
 /**
  * Main class of application
  */
@@ -72,14 +71,7 @@ class App {
 	private _router: Router;
 	private _config: IAppConfig;
 	private _root: Root;
-
-	private _storeApp: StoreApp;
-	private _storeMenu: StoreMenu;
-	private _storeProfile: StoreProfile;
-	private _storeHeader: StoreHeader;
-	private _storeLogin: StoreLogin;
-	private _storeSignup: StoreSignup;
-	private _storeFeed: StoreFeed;
+	private _stores: AppStores;
 
 	/**
 	 * Instance of application
@@ -91,9 +83,12 @@ class App {
 		this._root = new Root();
 
 		const feedView = new ViewFeed(this._config.homeConfig, this._root);
-		const profileView = new ViewProfile(this._config.homeConfig, this._root);
-		const loginView = new ViewLogin(this._config.loginConfig, this._root);
+		const profileView = new ViewProfile(
+			this._config.homeConfig,
+			this._root,
+		);
 		const friendView = new ViewFriends(this._config.homeConfig, this._root);
+		const loginView = new ViewLogin(this._config.loginConfig, this._root);
 		const signupView = new ViewSignup(
 			this._config.signupConfig,
 			this._root,
@@ -120,69 +115,77 @@ class App {
 				view: profileView,
 			},
 		];
-		this._router = new Router(routerConfig);
+		this._router = new Router(feedView, routerConfig);
 
-		this._storeApp = new StoreApp();
-		this._storeApp.subscribe(ACTION_LOGIN_TYPES.actionLoginToSignupClick);
-		this._storeApp.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
-		this._storeApp.subscribe(ACTION_APP_TYPES.actionAppInit);
-		this._storeApp.subscribe(ACTION_USER_TYPES.loginClickSuccess);
-		this._storeApp.subscribe(ACTION_MENU_TYPES.titleClick);
+		this._stores = {
+			app: new StoreApp(),
+			menu: new StoreMenu(),
+			header: new StoreHeader(),
+			main: new StoreMain(),
+			home: new StoreHome(),
+			login: new StoreLogin(),
+			signup: new StoreSignup(),
+			feed: new StoreFeed(),
+			profile: new StoreProfile(),
+		};
 
-		this._storeMenu = new StoreMenu();
-		this._storeMenu.subscribe(ACTION_MENU_TYPES.menuLinkClick);
-		
-		this._storeProfile = new StoreProfile({
-			key: 'profile',
-			id: 0,
-			firstName: '',
-            secondName: '',
-            description: '',
-            friendsCount: 0,
-            groupsCount: 0,
-            img: '',
-		});
-		this._storeProfile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
-		this._storeMenu.subscribe(ACTION_MENU_TYPES.titleClick);
+		this._stores.app.subscribe(ACTION_APP_TYPES.actionAppInit);
+		this._stores.app.subscribe(ACTION_MENU_TYPES.titleClick);
+		this._stores.app.subscribe(ACTION_MENU_TYPES.menuLinkClick);
+		this._stores.app.subscribe(ACTION_LOGIN_TYPES.actionLoginToSignupClick);
+		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
+		this._stores.app.subscribe(ACTION_USER_TYPES.loginClickSuccess);
+		this._stores.app.subscribe(ACTION_PROFILE_TYPES.goToProfile);
 
-		this._storeHeader = new StoreHeader();
-		this._storeHeader.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
+		this._stores.home.subscribe(ACTION_APP_TYPES.actionAppInit);
+		this._stores.home.subscribe(ACTION_MENU_TYPES.menuLinkClick);
+		this._stores.home.subscribe(ACTION_MENU_TYPES.titleClick);
+		this._stores.home.subscribe(ACTION_MENU_TYPES.updateProfileLinkHref);
+		this._stores.home.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
 
-		this._storeLogin = new StoreLogin();
-		this._storeLogin.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
-		this._storeLogin.subscribe(ACTION_USER_TYPES.loginClickSuccess);
-		this._storeLogin.subscribe(ACTION_USER_TYPES.formError);
-		this._storeLogin.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
+		this._stores.login.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
+		this._stores.login.subscribe(ACTION_USER_TYPES.loginClickSuccess);
+		this._stores.login.subscribe(ACTION_USER_TYPES.formError);
+		this._stores.login.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 
-		this._storeSignup = new StoreSignup();
-		this._storeSignup.subscribe(ACTION_USER_TYPES.formError);
-		this._storeSignup.subscribe(ACTION_USER_TYPES.signupClickSuccess);
-		this._storeSignup.subscribe(
+		this._stores.signup.subscribe(ACTION_USER_TYPES.formError);
+		this._stores.signup.subscribe(ACTION_USER_TYPES.signupClickSuccess);
+		this._stores.signup.subscribe(
 			ACTION_LOGIN_TYPES.actionLoginToSignupClick,
 		);
 
-		this._storeFeed = new StoreFeed();
-		this._storeFeed.subscribe(ACTION_USER_TYPES.loginClickSuccess);
-		this._storeFeed.subscribe(ACTION_USER_TYPES.signupClickSuccess);
+		this._stores.feed.subscribe(ACTION_USER_TYPES.loginClickSuccess);
+		this._stores.feed.subscribe(ACTION_USER_TYPES.signupClickSuccess);
 
-		feedView.register(this._storeFeed);
-		feedView.register(this._storeMenu);
-		profileView.register(this._storeProfile); // ????
-		feedView.register(this._storeHeader);
+		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
+		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.goToProfile);
 
-		loginView.register(this._storeLogin);
+		loginView.register(this._stores.login);
 
-		signupView.register(this._storeSignup);
+		signupView.register(this._stores.signup);
 
-		friendView.register(this._storeMenu);
+		feedView.register(this._stores.feed);
+		feedView.register(this._stores.home);
+
+		profileView.register(this._stores.home);
+		profileView.register(this._stores.profile);
+
+		friendView.register(this._stores.menu);
+		friendView.register(this._stores.header);
+		friendView.register(this._stores.home);
+	}
+
+	get router(): Router {
+		return this._router;
+	}
+
+	get stores(): AppStores {
+		return this._stores;
 	}
 
 	init() {
 		dispatcher.getAction(new ActionAppInit());
-	}
-
-	get router() {
-		return this._router;
+		dispatcher.getAction(new ActionUpdateProfileLinkHref('/lukeskywalker')); // Потом запрашивать данные юзера и вставить сюда
 	}
 }
 

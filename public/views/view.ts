@@ -9,7 +9,7 @@ export type Components = Record<string, IBaseComponent>;
 
 export interface View {
 	sendAction(action: Action): void;
-	update(data: ViewData): void;
+	// update(data: ViewData): void;
 	clear(): void;
 	render(): void;
 	register(store: Store): void;
@@ -61,6 +61,6 @@ export abstract class BaseView implements View {
 		this._registeredStores.forEach((store) => this.unregister(store));
 	}
 
-	abstract update(data: ViewData): void;
+	// abstract update(data: ViewData): void;
 	abstract render(): void;
 }
