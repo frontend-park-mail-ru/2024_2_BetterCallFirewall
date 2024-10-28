@@ -154,6 +154,8 @@ hr {
         height: 2.5rem;
         cursor: pointer;
         svg {
+            // height: 100%;
+            // width: 100%;
             &:hover {
                 fill: var(--hover-bg-color);
             }
@@ -167,4 +169,13 @@ hr {
 .link-no-decorations {
     text-decoration: none;
     color: inherit;
+}
+
+.button-no-decorations {
+    background: none;
+    border: none;
+    color: inherit;
+    text-decoration: none;
+    padding: 0;
+    cursor: pointer;
 }
