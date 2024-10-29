@@ -1,21 +1,19 @@
 import { Action } from '../actions/action';
-import { ACTION_PROFILE_TYPES } from '../actions/actionProfile';
+import {
+	ACTION_PROFILE_TYPES,
+	ActionUpdateProfileData,
+} from '../actions/actionProfile';
 import { IProfileConfig } from '../components/Profile/Profile';
 import config from '../config';
+import deepClone from '../modules/deepClone';
 import { ViewProfileConfig } from '../views/profile/viewProfile';
 
-const initialProfileState: IProfileConfig = {
-	key: 'profile',
-	firstName: '',
-	secondName: '',
-	description: '',
-	friendsCount: 0,
-	groupsCount: 0,
-	img: '',
-};
+const initialProfileState: IProfileConfig = deepClone(
+	config.profileConfig.profile,
+);
 
 const initialState: ViewProfileConfig = {
-	...config.homeConfig,
+	home: config.homeConfig,
 	profile: initialProfileState,
 };
 
@@ -25,7 +23,7 @@ export const reducerProfile = (
 ) => {
 	switch (action?.type) {
 		case ACTION_PROFILE_TYPES.updateProfile:
-			return { ...state, ...action.data };
+			return { ...state, ...(action.data as ActionUpdateProfileData) };
 		case ACTION_PROFILE_TYPES.goToProfile:
 		default:
 			return state;

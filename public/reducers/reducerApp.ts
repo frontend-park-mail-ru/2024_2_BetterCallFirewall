@@ -34,9 +34,6 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			case ACTION_MENU_TYPES.titleClick:
 				router.goToPage(PAGE_LINKS.feed);
 				break;
-			// case ACTION_PROFILE_TYPES.goToProfile:
-			// 	router.goToPage((action.data as ActionGoToProfileData).href);
-			// 	break;
 		}
 	}
 	console.log('activeView:', router.activeView);

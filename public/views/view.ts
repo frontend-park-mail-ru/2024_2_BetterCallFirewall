@@ -61,6 +61,5 @@ export abstract class BaseView implements View {
 		this._registeredStores.forEach((store) => this.unregister(store));
 	}
 
-	// abstract update(data: ViewData): void;
 	abstract render(): void;
 }

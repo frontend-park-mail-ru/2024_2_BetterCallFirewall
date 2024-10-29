@@ -1,4 +1,4 @@
-import { IBaseComponentConfig } from '../components/BaseComponent';
+import { IProfileConfig } from '../components/Profile/Profile';
 
 type AjaxPromiseConfig = {
 	request: Request;
@@ -13,16 +13,6 @@ type AjaxConfig = {
 export type FormResponse = {
 	message: string;
 };
-
-export interface IProfileConfig extends IBaseComponentConfig {
-	id: number;
-	firstName: string;
-	secondName: string;
-	description: string;
-	friendsCount: number;
-	groupsCount: number;
-	img?: string;
-}
 
 class Ajax {
 	/**

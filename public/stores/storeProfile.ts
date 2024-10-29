@@ -14,15 +14,7 @@ export class StoreProfile extends BaseStore implements Store {
 	}
 
 	handleAction(action: Action): void {
-		const homeState = reducerHome(
-			{
-				menu: this._state.menu,
-				main: this._state.main,
-			},
-			action,
-		);
-		this._state.main = homeState.main;
-		this._state.menu = homeState.menu;
+		this._state.home = reducerHome(this._state.home, action);
 		this._state = reducerProfile(this._state, action);
 		console.log('storeProfile: state:', this._state);
 		this._registeredViews.forEach((view) => {

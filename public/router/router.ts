@@ -18,16 +18,12 @@ export class Router {
 	}
 
 	goToPage(path: string) {
-		console.log('router.goToPage: path:', path);
 		for (const route of this._config) {
 			const regex = new RegExp(
 				// `^${route.path.replace(/:[^\s/]+/, '([\\w-]+)')}$`,
 				`^${route.path}$`,
 			);
-			console.log('regexp:', regex);
 			const match = path.match(regex);
-			console.log('match:', match);
-
 			if (match) {
 				if (this._activeView) {
 					this._activeView.active = false;

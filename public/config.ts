@@ -1,6 +1,8 @@
 import { IAppConfig, IHomeConfig, URLInterface } from './app';
 import { ILoginFormConfig, ISignupFormConfig } from './components';
+import { IProfileConfig } from './components/Profile/Profile';
 import Validator from './modules/validation';
+import { ViewProfileConfig } from './views/profile/viewProfile';
 
 const DEBUG: boolean = true;
 
@@ -149,6 +151,21 @@ const loginConfig: ILoginFormConfig = {
 	},
 };
 
+const profileComponentConfig: IProfileConfig = {
+	key: 'profile',
+	firstName: '',
+	secondName: '',
+	description: '',
+	friendsCount: 0,
+	groupsCount: 0,
+	img: '',
+};
+
+const profileConfig: ViewProfileConfig = {
+	home: homeConfig,
+	profile: profileComponentConfig,
+};
+
 const root: string = DEBUG
 	? 'http://127.0.0.1:8000'
 	: 'http://185.241.194.197:8080';
@@ -172,6 +189,7 @@ const config: IAppConfig = {
 	homeConfig,
 	signupConfig,
 	loginConfig,
+	profileConfig,
 };
 
 export default config;

@@ -14,7 +14,7 @@ import {
 	ActionUpdateProfileLinkHref,
 } from './actions/actionMenu';
 import { ViewFeed } from './views/feed/viewFeed';
-import { ViewProfile } from './views/profile/viewProfile';
+import { ViewProfile, ViewProfileConfig } from './views/profile/viewProfile';
 import { StoreProfile } from './stores/storeProfile';
 import { ACTION_PROFILE_TYPES } from './actions/actionProfile';
 import { StoreHeader } from './stores/storeHeader';
@@ -50,6 +50,7 @@ export interface IAppConfig {
 	homeConfig: IHomeConfig;
 	signupConfig: ISignupFormConfig;
 	loginConfig: ILoginFormConfig;
+	profileConfig: ViewProfileConfig;
 }
 
 export interface AppStores {
@@ -84,7 +85,7 @@ class App {
 
 		const feedView = new ViewFeed(this._config.homeConfig, this._root);
 		const profileView = new ViewProfile(
-			this._config.homeConfig,
+			this._config.profileConfig,
 			this._root,
 		);
 		const friendView = new ViewFriends(this._config.homeConfig, this._root);
@@ -135,7 +136,6 @@ class App {
 		this._stores.app.subscribe(ACTION_LOGIN_TYPES.actionLoginToSignupClick);
 		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 		this._stores.app.subscribe(ACTION_USER_TYPES.loginClickSuccess);
-		this._stores.app.subscribe(ACTION_PROFILE_TYPES.goToProfile);
 
 		this._stores.home.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.menuLinkClick);

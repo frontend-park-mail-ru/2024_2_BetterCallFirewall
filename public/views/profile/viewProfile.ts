@@ -1,78 +1,67 @@
-import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
-import { IHomeConfig } from '../../app';
+import { ActionUpdateProfile } from '../../actions/actionProfile';
 import { Post, Root } from '../../components';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
 import dispatcher from '../../dispatcher/dispatcher';
-import { ComponentsHome, ViewHome } from '../home/viewHome';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsProfile = {
 	profile?: Profile;
 } & ComponentsHome;
 
-export const updateProfileAction = (data: IProfileConfig) => {
-	dispatcher.getAction({
-		type: ACTION_PROFILE_TYPES.updateProfile,
-		data,
-	});
-};
-
-export interface ViewProfileConfig extends IHomeConfig {
+export interface ViewProfileConfig {
+	home: HomeConfig;
 	profile: IProfileConfig;
 }
 
 export class ViewProfile extends ViewHome {
+	protected _configProfile: ViewProfileConfig;
 	protected _components: ComponentsProfile = {};
 
-	constructor(config: IHomeConfig, root: Root) {
-		super(config, root);
+	constructor(config: ViewProfileConfig, root: Root) {
+		super(config.home, root);
+		this._configProfile = config;
 	}
 
-	setUser(user: string) {
-		console.log('setUser');
-		console.log('user:', user);
-		const profileData = {
-			key: 'profile',
-			id: 2,
-			firstName: 'Luke',
-			secondName: 'Skywalker',
-			description: 'Jedi, master',
-			friendsCount: 99,
-			groupsCount: 3,
-			img: '../img/avatar.png',
-		}; // temporary
-		const currentUserId = 2;
-		const currentUser = currentUserId === profileData.id;
-
-		updateProfileAction({ ...profileData, currentUser });
+	render(): void {
+		super.render();
+		dispatcher.getAction(
+			new ActionUpdateProfile(this._configProfile.profile),
+		);
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {
-		this.updateViewHome({ main: data.main, menu: data.menu });
-		this.updateProfile(data.profile);
+		data.profile = {
+			key: 'profile',
+			id: 2,
+			firstName: 'Luke',
+			// secondName: 'Skywalker',
+			secondName: '<script>alert("XSS")</script>',
+			// description: 'Jedi, master',
+			description: '<img onerror=alert("XSS")></img>',
+			friendsCount: 99,
+			groupsCount: 3,
+			img: '../img/avatar.png',
+		}; // tmp
+		this._configProfile = data;
+		this.updateViewHome(data.home);
+		this._renderProfile();
 	}
 
-	updateProfile(data: IProfileConfig): void {
-		let profile = this._components.profile;
-		if (!profile) {
-			const content = this._components.content;
-			if (!content) {
-				throw new Error('content does no exist on ViewProfile');
-			}
-			profile = new Profile(data, content);
-			this._components.profile = profile;
-		}
-		profile.update(data);
-		this._addProfileHandlers(data);
+	protected _rerender(): void {
+		super._rerender();
+		this._renderProfile();
 	}
 
-	protected _renderContent(): void {
-		super._renderContent();
+	protected _renderProfile(): void {
 		const content = this._components.content;
 		if (!content) {
 			throw new Error('content does no exist on ViewProfile');
 		}
-		const profile = new Profile({ key: 'profile' }, content); // конфиг хардкод
+		const profile = new Profile(this._configProfile.profile, content);
 		profile.render();
+		this._components.profile = profile;
+
+		this._addProfileHandlers(this._configProfile.profile);
 
 		console.log(
 			'post here:',
@@ -92,17 +81,15 @@ export class ViewProfile extends ViewHome {
 					text: 'Text',
 					date: '01.01.2024',
 				},
-				null,
+				profile,
 			);
-			profile.addChild(post);
+			// profile.addChild(post);
 			post.render(false);
 			posts.appendChild(post.htmlElement);
-			console.log(post.htmlElement);
-			console.log(post);
 		}
 	}
 
-	_addProfileHandlers(data: IProfileConfig) {
+	private _addProfileHandlers(data: IProfileConfig) {
 		if (!data.currentUser) {
 			const profile = this._components.profile;
 			if (!profile) {

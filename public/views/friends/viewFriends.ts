@@ -33,7 +33,5 @@ export class ViewFriends extends ViewHome {
 			content.addChild(friend);
 			friend.render();
 		}
-
-		console.log('viewFriends: components:', this._components);
 	}
 }

@@ -59,40 +59,33 @@ export interface IViewHome extends View, ViewMenu, ViewHeader {
 }
 
 export abstract class ViewHome extends BaseView implements IViewHome {
-	protected _config: HomeConfig;
 	protected _components: ComponentsHome = {};
+	private _configHome: HomeConfig;
+	private _rendered: boolean = false;
 
 	constructor(config: IHomeConfig, root: Root) {
 		super(root);
-		this._config = config;
+		this._configHome = config;
 	}
 
 	get config() {
-		return this._config;
+		return this._configHome;
 	}
 
 	updateViewHome(data: IHomeConfig) {
 		console.log('ViewHome: update');
-		this._config = data as IHomeConfig;
-		this.render();
+		this._configHome = data as IHomeConfig;
+		this._rerender();
 	}
 
 	render(): void {
-		this.clear();
-		this._renderMenu();
-		this._renderMain();
-		this._renderContent();
-		const main = this._components.main;
-		if (!main) {
-			throw new Error('main does not exist on viewHome');
-		}
-		const aside = new Container(this._config.main.aside, main);
-		aside.render();
+		this._rendered = true;
+		this._rerender();
 	}
 
 	updateMenu(data: IMenuConfig): void {
 		console.log('update');
-		this._config.menu = data;
+		this._configHome.menu = data;
 		const menu = this._components.menu;
 		if (!menu) {
 			throw new Error('menu does not exist on ViewHome');
@@ -148,12 +141,32 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		if (!main) {
 			throw new Error('main does not exist on viewHome');
 		}
-		this._components.content = new Content(this._config.main.content, main);
+		this._components.content = new Content(
+			this._configHome.main.content,
+			main,
+		);
 		this._components.content.render();
 	}
 
+	protected _rerender() {
+		if (!this._rendered) {
+			this.render();
+			return;
+		}
+		this.clear();
+		this._renderMenu();
+		this._renderMain();
+		this._renderContent();
+		const main = this._components.main;
+		if (!main) {
+			throw new Error('main does not exist on viewHome');
+		}
+		const aside = new Container(this._configHome.main.aside, main);
+		aside.render();
+	}
+
 	private _renderMenu() {
-		this._components.menu = new Menu(this._config.menu, this._root);
+		this._components.menu = new Menu(this._configHome.menu, this._root);
 		this._components.menu.render();
 		this._addMenuHandlers();
 	}
@@ -206,7 +219,10 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	private _renderMain() {
-		this._components.main = new Container(this._config.main, this._root);
+		this._components.main = new Container(
+			this._configHome.main,
+			this._root,
+		);
 		this._components.main.render();
 		this._renderHeader();
 	}
@@ -216,7 +232,10 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		if (!main) {
 			throw new Error('main does not exist on viewHome');
 		}
-		this._components.header = new Header(this._config.main.header, main);
+		this._components.header = new Header(
+			this._configHome.main.header,
+			main,
+		);
 		this._components.header.render();
 		this._addHeaderHandlers();
 	}

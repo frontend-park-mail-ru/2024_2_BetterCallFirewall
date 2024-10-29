@@ -1,3 +1,4 @@
+import { IProfileConfig } from '../components/Profile/Profile';
 import { Action, ActionType } from './action';
 
 export const ACTION_PROFILE_TYPES = {
@@ -5,20 +6,13 @@ export const ACTION_PROFILE_TYPES = {
 	updateProfile: 'updateProfile',
 };
 
-export interface ActionUpdateProfileData {
-	firstName?: string;
-	secondName?: string;
-	description?: string;
-	friendsCount?: number;
-	groupsCount?: number;
-	img?: string;
-}
+export interface ActionUpdateProfileData extends IProfileConfig {}
 
 export class ActionUpdateProfile implements Action {
 	type: ActionType;
 	data: ActionUpdateProfileData;
-	constructor(type: ActionType, data: ActionUpdateProfileData) {
-		this.type = type;
+	constructor(data: ActionUpdateProfileData) {
+		this.type = ACTION_PROFILE_TYPES.updateProfile;
 		this.data = data;
 	}
 }
