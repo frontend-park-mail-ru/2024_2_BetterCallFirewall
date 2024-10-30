@@ -1,7 +1,10 @@
 import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
 import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
-import { ACTION_MENU_TYPES } from '../actions/actionMenu';
+import {
+	ACTION_MENU_TYPES,
+	ActionMenuLinkClickData,
+} from '../actions/actionMenu';
 import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
 import { ACTION_USER_TYPES } from '../actions/actionUser';
 import app from '../app';
@@ -9,6 +12,7 @@ import { PAGE_LINKS } from '../config';
 import { View } from '../views/view';
 
 export const reducerApp = (activeView?: View, action?: Action) => {
+	console.log('reducerApp: action:', action);
 	const router = app.router;
 	if (action) {
 		switch (action.type) {
@@ -24,10 +28,14 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			case ACTION_USER_TYPES.loginClickSuccess:
 				router.goToPage(PAGE_LINKS.feed);
 				break;
+			case ACTION_MENU_TYPES.menuLinkClick:
+				router.goToPage((action.data as ActionMenuLinkClickData).href);
+				break;
 			case ACTION_MENU_TYPES.titleClick:
 				router.goToPage(PAGE_LINKS.feed);
 				break;
 		}
 	}
+	console.log('activeView:', router.activeView);
 	return router.activeView;
 };

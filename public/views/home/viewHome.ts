@@ -3,31 +3,31 @@ import {
 	ActionHeaderLogoutClickSuccess,
 } from '../../actions/actionHeader';
 import {
-	ACTION_MENU_TYPES,
 	ActionMenuLinkClick,
 	ActionMenuTitleClick,
 } from '../../actions/actionMenu';
 import app, { IHomeConfig } from '../../app';
 import {
-	Container,
 	Header,
+	Container,
 	IContainerConfig,
+	IContent,
 	IContentConfig,
 	IHeaderConfig,
 	IMenuConfig,
 	Menu,
 	Root,
+	Content,
 } from '../../components';
 import { IBaseComponent } from '../../components/BaseComponent';
 import config, { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
-import { BaseView, Components, View, ViewData } from '../view';
+import { BaseView, Components, View } from '../view';
 
 export interface MainConfig {
 	key: string;
 	className: string;
-	section: string;
 	header: IHeaderConfig;
 	content: IContentConfig;
 	aside: IContainerConfig;
@@ -39,8 +39,11 @@ export interface HomeConfig {
 }
 
 export type ComponentsHome = {
+	main?: Container;
 	menu?: Menu;
 	header?: Header;
+	content?: IContent;
+	aside?: Container;
 } & Components;
 
 export interface ViewMenu extends ViewHome {
@@ -51,56 +54,120 @@ export interface ViewHeader extends ViewHome {
 	updateHeader(data: IHeaderConfig): void;
 }
 
-export interface IViewHome extends View, ViewMenu, ViewHeader {}
+export interface IViewHome extends View, ViewMenu, ViewHeader {
+	updateViewHome(data: IHomeConfig): void;
+}
 
 export abstract class ViewHome extends BaseView implements IViewHome {
-	protected _config: HomeConfig;
 	protected _components: ComponentsHome = {};
+	private _configHome: HomeConfig;
+	private _rendered: boolean = false;
 
-	constructor(config: HomeConfig, root: Root) {
+	constructor(config: IHomeConfig, root: Root) {
 		super(root);
-		this._config = config;
+		this._configHome = config;
 	}
 
 	get config() {
-		return this._config;
+		return this._configHome;
 	}
 
-	update(data: ViewData) {
-		this._config = data as IHomeConfig;
-		this.render();
+	updateViewHome(data: IHomeConfig) {
+		console.log('ViewHome: update');
+		this._configHome = data as IHomeConfig;
+		this._rerender();
 	}
 
 	render(): void {
-		this.clear();
-		this._renderMenu();
-		this._renderMain();
+		this._rendered = true;
+		this._rerender();
 	}
 
-	protected abstract _renderContent(parent: IBaseComponent): void;
-	protected abstract _updateContent(parent: IBaseComponent): void;
-
 	updateMenu(data: IMenuConfig): void {
-		this._config.menu = data;
-		const menu = this._components.menu as Menu;
+		console.log('update');
+		this._configHome.menu = data;
+		const menu = this._components.menu;
+		if (!menu) {
+			throw new Error('menu does not exist on ViewHome');
+		}
 		menu.update(data);
-		const main = this._components.main;
-		this._updateContent(main);
 		this._addMenuHandlers();
 	}
 
 	updateHeader(data: IHeaderConfig): void {
 		const header = this._components.header;
-		header?.update(data);
+		if (!header) {
+			throw new Error('header does not exist on ViewHome');
+		}
+		header.update(data);
 		this._addHeaderHandlers();
 	}
 
-	private _renderMenu() {
-		const config = this._config.menu;
+	updateMain(data: MainConfig): void {
+		this.updateHeader(data.header);
+		const content = this._components.content;
+		const main = this._components.main;
+		const aside = this._components.aside;
+		if (!main || !content || !aside) {
+			throw new Error('component does not exist on ViewHome');
+		}
+		main.update(data);
+		content.update(data.content);
+		aside.update(data.aside);
+	}
 
-		const menu = new Menu(config, this._root);
-		menu.render();
-		this._components.menu = menu;
+	protected get _homeComponents(): ComponentsHome {
+		console.log('_homeComponents call:', this);
+		return this._components;
+	}
+
+	protected _clearContent() {
+		const content = this._components.content;
+		if (!content) {
+			throw new Error('content does not exist on ViewHome');
+		}
+		content.removeInner();
+	}
+
+	protected _updateContent(parent: IBaseComponent) {
+		console.log('homeView.updateContent()');
+		console.log('parent:', parent);
+		this._clearContent();
+		this._renderContent();
+	}
+
+	protected _renderContent(): void {
+		const main = this._components.main;
+		if (!main) {
+			throw new Error('main does not exist on viewHome');
+		}
+		this._components.content = new Content(
+			this._configHome.main.content,
+			main,
+		);
+		this._components.content.render();
+	}
+
+	protected _rerender() {
+		if (!this._rendered) {
+			this.render();
+			return;
+		}
+		this.clear();
+		this._renderMenu();
+		this._renderMain();
+		this._renderContent();
+		const main = this._components.main;
+		if (!main) {
+			throw new Error('main does not exist on viewHome');
+		}
+		const aside = new Container(this._configHome.main.aside, main);
+		aside.render();
+	}
+
+	private _renderMenu() {
+		this._components.menu = new Menu(this._configHome.menu, this._root);
+		this._components.menu.render();
 		this._addMenuHandlers();
 	}
 
@@ -114,9 +181,28 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		menu.addHandler(feedLink.htmlElement, 'click', (event) => {
 			event.preventDefault();
 			dispatcher.getAction(
-				new ActionMenuLinkClick(ACTION_MENU_TYPES.menuLinkClick, {
+				new ActionMenuLinkClick({
 					href: config.links.feed.href,
 				}),
+			);
+		});
+
+		const profileLink = menu.children[config.links.profile.key];
+		menu.addHandler(profileLink.htmlElement, 'click', (event) => {
+			event.preventDefault();
+			dispatcher.getAction(
+				// new ActionGoToProfile({
+				// 	href: config.links.profile.href,
+				// }),
+				new ActionMenuLinkClick({ href: config.links.profile.href }),
+			);
+		});
+
+		const friendsLink = menu.children[config.links.friends.key];
+		menu.addHandler(friendsLink.htmlElement, 'click', (event) => {
+			event.preventDefault();
+			dispatcher.getAction(
+				new ActionMenuLinkClick({ href: config.links.friends.href }),
 			);
 		});
 
@@ -133,18 +219,24 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	private _renderMain() {
-		const main = new Container(this._config.main, this._root);
-		main.render();
-		this._components.main = main;
-		this._renderHeader(main);
-		this._renderContent(main);
+		this._components.main = new Container(
+			this._configHome.main,
+			this._root,
+		);
+		this._components.main.render();
+		this._renderHeader();
 	}
 
-	private _renderHeader(parent: IBaseComponent) {
-		const headerConfig = this._config.main.header;
-		const header = new Header(headerConfig, parent);
-		header.render();
-		this._components.header = header;
+	private _renderHeader() {
+		const main = this._components.main;
+		if (!main) {
+			throw new Error('main does not exist on viewHome');
+		}
+		this._components.header = new Header(
+			this._configHome.main.header,
+			main,
+		);
+		this._components.header.render();
 		this._addHeaderHandlers();
 	}
 

@@ -1,12 +1,13 @@
 import { IHomeConfig } from '../../app';
-import { Post, Root } from '../../components';
+import { Root } from '../../components';
+import { Friend } from '../../components/Friend/Friend';
 import { ViewHome } from '../home/viewHome';
 
 // export interface FeedConfig extends IBaseComponentConfig {
 // 	className: string;
 // }
 
-export class ViewFeed extends ViewHome {
+export class ViewFriends extends ViewHome {
 	constructor(config: IHomeConfig, root: Root) {
 		super(config, root);
 	}
@@ -17,21 +18,20 @@ export class ViewFeed extends ViewHome {
 		if (!content) {
 			throw new Error('content does no exist on ViewProfile');
 		}
-		// Тестовые посты
-		let counter = 0;
+		// Тестовые друзья
 		for (let i = 0; i < 10; i++) {
-			const post = new Post(
+			const friend = new Friend(
 				{
-					key: (counter++).toString(),
-					id: 1,
-					title: 'Header',
-					text: 'Text',
-					date: '01.01.2024',
+					key: 'friend',
+					avatar: '../../img/avatar.png',
+					name: 'Asap Rocky',
+					description: 'Canadian singer, songwriter and actor.',
+					isFriend: true,
 				},
 				content,
 			);
-			content.addChild(post);
-			post.render();
+			content.addChild(friend);
+			friend.render();
 		}
 	}
 }

@@ -1,7 +1,6 @@
 import { IBaseComponent } from '../BaseComponent';
 import {
 	Container,
-	IContainer,
 	IContainerConfig,
 	ContentMessage,
 	IContentMessage,
@@ -9,9 +8,10 @@ import {
 
 export interface IContentConfig extends IContainerConfig {}
 
-export interface IContent extends IContainer {
+export interface IContent extends Container {
 	printMessage(message: string): void;
 	removeMessage(): void;
+	removeInner(): void;
 }
 
 export class Content extends Container implements IContent {
@@ -55,5 +55,12 @@ export class Content extends Container implements IContent {
 
 	update(data: IContentConfig): void {
 		this._config = data;
+	}
+
+	removeInner() {
+		this.removeHandlers();
+		Object.entries(this.children).forEach(([, child]) => {
+			child.remove();
+		});
 	}
 }

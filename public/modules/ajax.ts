@@ -1,3 +1,5 @@
+import { IProfileConfig } from '../components/Profile/Profile';
+
 type AjaxPromiseConfig = {
 	request: Request;
 };
@@ -46,6 +48,42 @@ class Ajax {
 		return this._ajaxPromise({
 			request,
 		});
+	}
+
+	async getProfileData(user: string): Promise<IProfileConfig> {
+		try {
+			const response = await fetch(`/api/profiles/${user}`);
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			const data: IProfileConfig = await response.json();
+			return data;
+		} catch (error) {
+			console.error('Ошибка при получении данных профиля:', error);
+			return {
+				key: 'profile',
+				id: 0,
+				firstName: 'Неизвестно',
+				secondName: '',
+				description: '',
+				friendsCount: 0,
+				groupsCount: 0,
+			};
+		}
+	}
+
+	async getCurrentUserId(): Promise<number> {
+		try {
+			const response = await fetch('/api/currentUserId');
+			if (!response.ok) {
+				throw new Error(`Error: ${response.status}`);
+			}
+			const data = await response.json();
+			return data.userId;
+		} catch (error) {
+			console.error('Ошибка при получении Id профиля:', error);
+			throw error;
+		}
 	}
 
 	/**

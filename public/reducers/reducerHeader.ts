@@ -13,7 +13,7 @@ export const reducerHeader = (
 	if (!state) {
 		return initialState;
 	}
-	const newState = state; // Потом поменять на let
+	const newState = state;
 	if (action) {
 		switch (action.type) {
 			case ACTION_HEADER_TYPES.logoutClickFail:

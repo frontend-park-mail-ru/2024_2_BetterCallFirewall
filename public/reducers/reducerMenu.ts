@@ -1,5 +1,8 @@
 import { Action } from '../actions/action';
-import { ACTION_MENU_TYPES } from '../actions/actionMenu';
+import {
+	ACTION_MENU_TYPES,
+	ActionUpdateProfileLinkHrefData,
+} from '../actions/actionMenu';
 import { IMenuConfig } from '../components/Menu/Menu';
 import config from '../config';
 import deepClone from '../modules/deepClone';
@@ -10,12 +13,17 @@ export const reducerMenu = (state?: IMenuConfig, action?: Action) => {
 	if (!state) {
 		return initialState;
 	}
-	const newState = state; // Потом поменять на let
+	const newState = deepClone(state);
 	if (action) {
 		switch (action.type) {
 			case ACTION_MENU_TYPES.menuLinkClick:
 				break;
 			case ACTION_MENU_TYPES.titleClick:
+				break;
+			case ACTION_MENU_TYPES.updateProfileLinkHref:
+				newState.links.profile.href = (
+					action.data as ActionUpdateProfileLinkHrefData
+				).href;
 				break;
 		}
 	}

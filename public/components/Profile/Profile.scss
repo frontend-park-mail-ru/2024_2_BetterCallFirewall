@@ -1,0 +1,37 @@
+.profile {
+    &__header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 1.7rem 2rem;
+        height: 12rem;
+        &-img  {
+            img {
+                height: 12rem;
+                width: 12rem;
+            }
+        }
+        &-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            width: 100%;
+            padding-left: 1.2rem;
+            padding-top: 1.2rem;
+            padding-bottom: 2rem;
+            box-sizing: border-box;
+        }
+    }
+    &__name {
+        display: flex;
+        flex-direction: row;
+        h1 {
+            margin-right: .5rem;
+        }
+    }
+
+    &__posts {
+        padding: 2rem;
+    }
+}

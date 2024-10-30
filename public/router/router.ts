@@ -9,26 +9,38 @@ export type RouterConfig = Route[];
 
 export class Router {
 	private _config: RouterConfig;
+	private _defaultView: BaseView;
 	private _activeView?: BaseView;
 
-	constructor(config: RouterConfig) {
+	constructor(defaultView: BaseView, config: RouterConfig) {
+		this._defaultView = defaultView;
 		this._config = config;
 	}
 
 	goToPage(path: string) {
 		for (const route of this._config) {
-			if (path === route.path) {
+			const regex = new RegExp(
+				// `^${route.path.replace(/:[^\s/]+/, '([\\w-]+)')}$`,
+				`^${route.path}$`,
+			);
+			const match = path.match(regex);
+			if (match) {
 				if (this._activeView) {
 					this._activeView.active = false;
 				}
+
 				this._activeView = route.view;
 				this._activeView.active = true;
 
 				history.pushState({}, '', path);
-				// this._activeView.render(); // ??
-				break;
+				return;
 			}
 		}
+		if (this._activeView) {
+			this._activeView.active = false;
+		}
+		this._activeView = this._defaultView;
+		this._activeView.active = true;
 	}
 
 	get activeView(): BaseView | undefined {

@@ -15,9 +15,9 @@ export class StoreHeader extends BaseStore implements Store {
 	}
 
 	handleAction(action: Action): void {
+		this._state = reducerHeader(this._state, action);
 		this._registeredViews.forEach((view) => {
 			if (view.active) {
-				this._state = reducerHeader(this._state, action);
 				view.updateHeader(this._state);
 			}
 		});

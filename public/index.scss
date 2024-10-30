@@ -1,14 +1,16 @@
-@import 'components/Menu/Menu';
-@import 'components/Header/Header';
-@import 'components/Input/Input';
-@import 'components/BaseForm/BaseForm';
-@import 'components/Post/Post';
-@import 'components/FormLink/FormLink';
-@import 'components/ContentMessage/ContentMessage';
-@import 'components/Content/Content';
-@import 'components/Message/Message';
-@import 'components/Chat/Chat';
-@import 'components/CreatePostForm/CreatePostForm';
+@use 'components/Menu/Menu';
+@use 'components/Header/Header';
+@use 'components/Input/Input';
+@use 'components/BaseForm/BaseForm';
+@use 'components/Post/Post';
+@use 'components/FormLink/FormLink';
+@use 'components/ContentMessage/ContentMessage';
+@use 'components/Content/Content';
+@use 'components/Message/Message';
+@use 'components/Chat/Chat';
+@use 'components/CreatePostForm/CreatePostForm';
+@use 'components/Friend/Friend';
+@use 'components/Profile/Profile';
 
 * {
     box-sizing: border-box;
@@ -21,6 +23,7 @@ html {
     font-family: "Plus Jakarta Sans", sans-serif;
     background-color: var(--main-bg-color);
     font-style: normal;
+    box-sizing: border-box;
 
     --main-bg-color: #121212;
     --second-bg-color: #1F1F1F;
@@ -76,6 +79,10 @@ hr {
     border-top: 1px solid #E2E8F0;
     opacity: 0.5;
     padding: 0;
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
     margin: 0;
 }
 

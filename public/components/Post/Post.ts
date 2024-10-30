@@ -4,6 +4,7 @@ import BaseComponent, {
 } from '../BaseComponent';
 
 export interface IPostConfig extends IBaseComponentConfig {
+	id: number;
 	title: string;
 	text: string;
 	date: string;
@@ -23,7 +24,7 @@ export class Post extends BaseComponent implements IPost {
 	 * @param {IPostConfig} config - post data
 	 * @param {IBaseComponent} parent - parent element
 	 */
-	constructor(config: IPostConfig, parent: IBaseComponent) {
+	constructor(config: IPostConfig, parent: IBaseComponent | null) {
 		super(config, parent);
 		this._config = config;
 	}
@@ -33,6 +34,9 @@ export class Post extends BaseComponent implements IPost {
 		return this._render('Post.hbs', show);
 	}
 
+	update(data: IPostConfig): void {
+		this._config = { ...this._config, ...data };
+	}
 	protected _prerender(): void {
 		super._prerender();
 		this._templateContext = { ...this.config };

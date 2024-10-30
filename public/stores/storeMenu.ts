@@ -13,10 +13,14 @@ export class StoreMenu extends BaseStore implements Store {
 		this._state = reducerMenu();
 	}
 
+	get state(): IMenuConfig {
+		return this._state;
+	}
+
 	handleAction(action: Action): void {
+		this._state = reducerMenu(this._state, action);
 		this._registeredViews.forEach((view) => {
 			if (view.active) {
-				this._state = reducerMenu(this._state, action);
 				view.updateMenu(this._state);
 			}
 		});
