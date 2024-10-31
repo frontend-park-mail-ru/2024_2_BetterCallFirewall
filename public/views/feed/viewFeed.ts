@@ -1,13 +1,12 @@
-import { IHomeConfig } from '../../app';
 import { Post, Root } from '../../components';
-import { ViewHome } from '../home/viewHome';
+import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
-// export interface FeedConfig extends IBaseComponentConfig {
-// 	className: string;
-// }
+export interface ViewFeedConfig extends HomeConfig {}
 
-export class ViewFeed extends ViewHome {
-	constructor(config: IHomeConfig, root: Root) {
+export interface IViewFeed extends IViewHome {} // Добавить handleChange
+
+export class ViewFeed extends ViewHome implements IViewFeed {
+	constructor(config: HomeConfig, root: Root) {
 		super(config, root);
 	}
 

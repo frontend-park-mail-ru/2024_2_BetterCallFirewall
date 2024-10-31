@@ -13,7 +13,7 @@ const initialProfileState: IProfileConfig = deepClone(
 );
 
 const initialState: ViewProfileConfig = {
-	home: config.homeConfig,
+	...config.homeConfig,
 	profile: initialProfileState,
 };
 

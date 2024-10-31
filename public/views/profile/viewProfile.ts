@@ -2,24 +2,37 @@ import { ActionUpdateProfile } from '../../actions/actionProfile';
 import { Post, Root } from '../../components';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
 import dispatcher from '../../dispatcher/dispatcher';
-import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
+import { ChangeProfile } from '../../stores/storeProfile';
+import {
+	ComponentsHome,
+	HomeConfig,
+	IViewHome,
+	ViewHome,
+} from '../home/viewHome';
 
 export type ComponentsProfile = {
 	profile?: Profile;
 } & ComponentsHome;
 
-export interface ViewProfileConfig {
-	home: HomeConfig;
+export interface ViewProfileConfig extends HomeConfig {
 	profile: IProfileConfig;
 }
 
-export class ViewProfile extends ViewHome {
+export interface IViewProfile extends IViewHome {
+	handleChange(change: ChangeProfile): void;
+}
+
+export class ViewProfile extends ViewHome implements IViewProfile {
 	protected _configProfile: ViewProfileConfig;
 	protected _components: ComponentsProfile = {};
 
 	constructor(config: ViewProfileConfig, root: Root) {
-		super(config.home, root);
+		super(config, root);
 		this._configProfile = config;
+	}
+
+	handleChange(change: ChangeProfile): void {
+		super.handleChange(change);
 	}
 
 	render(): void {
@@ -30,29 +43,28 @@ export class ViewProfile extends ViewHome {
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {
-		data.profile = {
-			key: 'profile',
-			id: 2,
-			firstName: 'Luke',
-			// secondName: 'Skywalker',
-			secondName: '<script>alert("XSS")</script>',
-			// description: 'Jedi, master',
-			description: '<img onerror=alert("XSS")></img>',
-			friendsCount: 99,
-			groupsCount: 3,
-			img: '../img/avatar.png',
-		}; // tmp
 		this._configProfile = data;
-		this.updateViewHome(data.home);
+		this.updateViewHome(data);
 		this._renderProfile();
 	}
 
-	protected _rerender(): void {
-		super._rerender();
+	protected _render(): void {
+		super._render();
 		this._renderProfile();
 	}
 
 	protected _renderProfile(): void {
+		this._configProfile.profile = {
+			key: 'profile',
+			id: 2,
+			firstName: 'Luke',
+			secondName: 'Skywalker',
+			description: 'Jedi, master',
+			friendsCount: 99,
+			groupsCount: 3,
+			img: '../img/avatar.png',
+		}; // tmp
+
 		const content = this._components.content;
 		if (!content) {
 			throw new Error('content does no exist on ViewProfile');
@@ -83,7 +95,6 @@ export class ViewProfile extends ViewHome {
 				},
 				profile,
 			);
-			// profile.addChild(post);
 			post.render(false);
 			posts.appendChild(post.htmlElement);
 		}

@@ -3,10 +3,11 @@ import {
 	ActionHeaderLogoutClickSuccess,
 } from '../../actions/actionHeader';
 import {
+	ACTION_MENU_TYPES,
 	ActionMenuLinkClick,
 	ActionMenuTitleClick,
 } from '../../actions/actionMenu';
-import app, { IHomeConfig } from '../../app';
+import app from '../../app';
 import {
 	Header,
 	Container,
@@ -23,6 +24,7 @@ import { IBaseComponent } from '../../components/BaseComponent';
 import config, { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
+import { ChangeHome } from '../../stores/storeHome';
 import { BaseView, Components, View } from '../view';
 
 export interface MainConfig {
@@ -54,16 +56,15 @@ export interface ViewHeader extends ViewHome {
 	updateHeader(data: IHeaderConfig): void;
 }
 
-export interface IViewHome extends View, ViewMenu, ViewHeader {
-	updateViewHome(data: IHomeConfig): void;
+export interface IViewHome extends View {
+	updateViewHome(data: HomeConfig): void;
 }
 
 export abstract class ViewHome extends BaseView implements IViewHome {
 	protected _components: ComponentsHome = {};
 	private _configHome: HomeConfig;
-	private _rendered: boolean = false;
 
-	constructor(config: IHomeConfig, root: Root) {
+	constructor(config: HomeConfig, root: Root) {
 		super(root);
 		this._configHome = config;
 	}
@@ -72,15 +73,27 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		return this._configHome;
 	}
 
-	updateViewHome(data: IHomeConfig) {
+	handleChange(change: ChangeHome): void {
+		if (this.active) {
+			switch (change.type) {
+				case ACTION_MENU_TYPES.menuLinkClick:
+					this._configHome = change.data;
+					this.render();
+					break;
+				default: // Потом расписать конкретные события и убрать default
+					this.updateViewHome(change.data);
+			}
+		}
+	}
+
+	updateViewHome(data: HomeConfig) {
 		console.log('ViewHome: update');
-		this._configHome = data as IHomeConfig;
-		this._rerender();
+		this._configHome = data;
+		this._render();
 	}
 
 	render(): void {
-		this._rendered = true;
-		this._rerender();
+		this._render();
 	}
 
 	updateMenu(data: IMenuConfig): void {
@@ -148,11 +161,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		this._components.content.render();
 	}
 
-	protected _rerender() {
-		if (!this._rendered) {
-			this.render();
-			return;
-		}
+	protected _render() {
 		this.clear();
 		this._renderMenu();
 		this._renderMain();

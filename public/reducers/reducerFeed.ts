@@ -1,15 +1,15 @@
 import { Action } from '../actions/action';
 import { ACTION_USER_TYPES } from '../actions/actionUser';
-import { IHomeConfig } from '../app';
 import config from '../config';
 import deepClone from '../modules/deepClone';
+import { ViewFeedConfig } from '../views/feed/viewFeed';
 
 const initialState = deepClone(config.homeConfig);
 
 export const reducerFeed = (
-	state?: IHomeConfig,
+	state?: ViewFeedConfig,
 	action?: Action,
-): IHomeConfig => {
+): ViewFeedConfig => {
 	if (!state) {
 		return initialState;
 	}

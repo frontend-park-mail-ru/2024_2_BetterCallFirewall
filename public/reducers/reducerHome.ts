@@ -1,13 +1,13 @@
 import { Action } from '../actions/action';
-import { IHomeConfig } from '../app';
 import config from '../config';
 import deepClone from '../modules/deepClone';
+import { HomeConfig } from '../views/home/viewHome';
 import { reducerMain } from './reducerMain';
 import { reducerMenu } from './reducerMenu';
 
 const initialState = deepClone(config.homeConfig);
 
-export const reducerHome = (state?: IHomeConfig, action?: Action) => {
+export const reducerHome = (state?: HomeConfig, action?: Action) => {
 	if (!state) {
 		return initialState;
 	}

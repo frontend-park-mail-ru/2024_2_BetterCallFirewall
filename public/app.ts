@@ -1,14 +1,8 @@
-import {
-	ILoginFormConfig,
-	IMenuConfig,
-	ISignupFormConfig,
-	Root,
-} from './components/index';
+import { ILoginFormConfig, ISignupFormConfig, Root } from './components/index';
 import { Router, RouterConfig } from './router/router';
 import config, { PAGE_LINKS } from './config';
 import { ViewLogin } from './views/login/viewLogin';
 import { ViewSignup } from './views/signup/viewSignup';
-import { StoreMenu } from './stores/storeMenu';
 import {
 	ACTION_MENU_TYPES,
 	ActionUpdateProfileLinkHref,
@@ -17,7 +11,6 @@ import { ViewFeed } from './views/feed/viewFeed';
 import { ViewProfile, ViewProfileConfig } from './views/profile/viewProfile';
 import { StoreProfile } from './stores/storeProfile';
 import { ACTION_PROFILE_TYPES } from './actions/actionProfile';
-import { StoreHeader } from './stores/storeHeader';
 import { ACTION_HEADER_TYPES } from './actions/actionHeader';
 import { StoreLogin } from './stores/storeLogin';
 import { ACTION_USER_TYPES } from './actions/actionUser';
@@ -28,10 +21,10 @@ import dispatcher from './dispatcher/dispatcher';
 import { StoreSignup } from './stores/storeSignup';
 import { StoreFeed } from './stores/storeFeed';
 import { ACTION_SIGNUP_TYPES } from './actions/actionSignup';
-import { ViewFriends } from './views/friends/viewFriends';
-import { StoreMain } from './stores/storeMain';
-import { MainConfig } from './views/home/viewHome';
+import { ViewFriends, ViewFriendsConfig } from './views/friends/viewFriends';
+import { HomeConfig } from './views/home/viewHome';
 import { StoreHome } from './stores/storeHome';
+import { StoreFriends } from './stores/storeFriends';
 
 export interface URLInterface {
 	signup: string;
@@ -40,29 +33,23 @@ export interface URLInterface {
 	post: string;
 }
 
-export interface IHomeConfig {
-	menu: IMenuConfig;
-	main: MainConfig;
-}
-
 export interface IAppConfig {
 	URL: URLInterface;
-	homeConfig: IHomeConfig;
+	homeConfig: HomeConfig;
 	signupConfig: ISignupFormConfig;
 	loginConfig: ILoginFormConfig;
 	profileConfig: ViewProfileConfig;
+	friendsConfig: ViewFriendsConfig;
 }
 
 export interface AppStores {
 	app: StoreApp;
-	menu: StoreMenu;
-	header: StoreHeader;
-	main: StoreMain;
 	home: StoreHome;
 	login: StoreLogin;
 	signup: StoreSignup;
 	profile: StoreProfile;
 	feed: StoreFeed;
+	friends: StoreFriends;
 }
 
 /**
@@ -118,16 +105,15 @@ class App {
 		];
 		this._router = new Router(feedView, routerConfig);
 
+		const storeHome = new StoreHome();
 		this._stores = {
 			app: new StoreApp(),
-			menu: new StoreMenu(),
-			header: new StoreHeader(),
-			main: new StoreMain(),
-			home: new StoreHome(),
+			home: storeHome,
 			login: new StoreLogin(),
 			signup: new StoreSignup(),
-			feed: new StoreFeed(),
-			profile: new StoreProfile(),
+			feed: new StoreFeed(storeHome),
+			profile: new StoreProfile(storeHome),
+			friends: new StoreFriends(storeHome),
 		};
 
 		this._stores.app.subscribe(ACTION_APP_TYPES.actionAppInit);
@@ -170,8 +156,6 @@ class App {
 		profileView.register(this._stores.home);
 		profileView.register(this._stores.profile);
 
-		friendView.register(this._stores.menu);
-		friendView.register(this._stores.header);
 		friendView.register(this._stores.home);
 	}
 

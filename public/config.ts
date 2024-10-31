@@ -1,7 +1,9 @@
-import { IAppConfig, IHomeConfig, URLInterface } from './app';
+import { IAppConfig, URLInterface } from './app';
 import { ILoginFormConfig, ISignupFormConfig } from './components';
 import { IProfileConfig } from './components/Profile/Profile';
 import Validator from './modules/validation';
+import { ViewFriendsConfig } from './views/friends/viewFriends';
+import { HomeConfig } from './views/home/viewHome';
 import { ViewProfileConfig } from './views/profile/viewProfile';
 
 const DEBUG: boolean = true;
@@ -14,7 +16,7 @@ export const PAGE_LINKS = {
 	profile: '/([\\w-]+)', // ????
 };
 
-const homeConfig: IHomeConfig = {
+const homeConfig: HomeConfig = {
 	menu: {
 		key: 'menu',
 		title: {
@@ -162,8 +164,12 @@ const profileComponentConfig: IProfileConfig = {
 };
 
 const profileConfig: ViewProfileConfig = {
-	home: homeConfig,
+	...homeConfig,
 	profile: profileComponentConfig,
+};
+
+const friendsConfig: ViewFriendsConfig = {
+	...homeConfig,
 };
 
 const root: string = DEBUG
@@ -190,6 +196,7 @@ const config: IAppConfig = {
 	signupConfig,
 	loginConfig,
 	profileConfig,
+	friendsConfig,
 };
 
 export default config;
