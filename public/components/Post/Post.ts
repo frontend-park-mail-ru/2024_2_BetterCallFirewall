@@ -6,6 +6,7 @@ import BaseComponent, {
 export interface IPostConfig extends IBaseComponentConfig {
 	id: number; // Зачем?
 	key: string;
+	avatar: string;
 	title: string;
 	text: string;
 	date: string;

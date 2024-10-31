@@ -10,10 +10,10 @@ const posts = [
 		header: {
 			authorId: 1,
 			author: 'Это автор поста',
-			avatar: '',
+			avatar: 'img/avatar.png',
 		},
 		post_content: {
-			text: 'Это тектст поста',
+			text: 'Это текст поста',
 			file: '',
 			created_at: '23.09.2024',
 		},
@@ -23,10 +23,10 @@ const posts = [
 		header: {
 			authorId: 3,
 			author: 'Это автор другого поста',
-			avatar: '',
+			avatar: 'img/avatar.png',
 		},
 		post_content: {
-			text: 'Это тектст другого поста',
+			text: 'Это текст другого поста',
 			file: '',
 			created_at: '23.09.2024',
 		},

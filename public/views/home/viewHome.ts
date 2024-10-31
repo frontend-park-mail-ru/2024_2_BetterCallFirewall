@@ -13,7 +13,6 @@ import {
 	Header,
 	Container,
 	IContainerConfig,
-	IContent,
 	IContentConfig,
 	IHeaderConfig,
 	IMenuConfig,
@@ -45,7 +44,7 @@ export type ComponentsHome = {
 	main?: Container;
 	menu?: Menu;
 	header?: Header;
-	content?: IContent;
+	content?: Content;
 	aside?: Container;
 } & Components;
 
@@ -134,6 +133,14 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	protected get _homeComponents(): ComponentsHome {
 		console.log('_homeComponents call:', this);
 		return this._components;
+	}
+
+	protected get content(): Content {
+		const content = this._components.content;
+		if (!content) {
+			throw new Error('view has no content');
+		}
+		return content;
 	}
 
 	protected _clearContent() {

@@ -7,6 +7,10 @@
     border: .5px solid rgba(255, 255, 255, 0.5);
 
     &__header {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+
         &-text {
             display: flex;
             flex-direction: column;

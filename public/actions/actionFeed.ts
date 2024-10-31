@@ -29,8 +29,8 @@ export class ActionPostsRequestFail implements Action {
 	type: ActionType;
 	data: ActionPostsRequestFailData;
 
-	constructor(message?: string, error?: Error) {
+	constructor(data: ActionPostsRequestFailData) {
 		this.type = ACTION_FEED_TYPES.postsRequestFail;
-		this.data = { message, error };
+		this.data = data;
 	}
 }

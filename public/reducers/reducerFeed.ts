@@ -22,17 +22,19 @@ export const reducerFeed = (
 	const newState = deepClone(state);
 	switch (action.type) {
 		case ACTION_FEED_TYPES.postsRequestSuccess:
-			newState.posts = (
+			const newPosts = (
 				action.data as ActionPostsRequestSuccessData
 			).postsData.map(({ id, header, post_content }) => {
 				return {
 					id,
 					key: `post-${id}`,
+					avatar: header.avatar,
 					title: header.author,
 					text: post_content.text,
 					date: post_content.created_at,
 				};
 			});
+			newState.posts = newState.posts.concat(newPosts);
 			return newState;
 		case ACTION_FEED_TYPES.postsRequestFail:
 			const data = action.data as ActionPostsRequestFailData;

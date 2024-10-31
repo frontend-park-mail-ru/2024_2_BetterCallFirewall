@@ -77,19 +77,59 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	/**
 	 * Выполняет запрос постов и добавляет их
 	 */
-	private _requestPosts(): void {
-		ajax.getPromise<AjaxResponse<PostResponse[]>>(app.config.URL.post)
+	private _requestPosts(): Promise<void> {
+		return ajax
+			.getPromise<AjaxResponse<PostResponse[]>>(app.config.URL.post)
 			.then((body) => {
 				if (body.success) {
 					this.sendAction(new ActionPostsRequestSuccess(body.data));
 				} else {
-					this.sendAction(new ActionPostsRequestFail(body.message));
+					this.sendAction(
+						new ActionPostsRequestFail({ message: body.message }),
+					);
 				}
 			})
 			.catch((error) => {
-				this.sendAction(new ActionPostsRequestFail(error));
+				this.sendAction(new ActionPostsRequestFail({ error }));
 			});
 	}
 
-	private _addHandlers() {}
+	private _addHandlers() {
+		this._addScrollHandler();
+	}
+
+	private _addScrollHandler() {
+		const isNearBottom = () => {
+			return (
+				window.innerHeight * 2 + window.scrollY >
+				document.body.offsetHeight
+			);
+		};
+		let pending = false;
+		const fetchPosts = async () => {
+			if (!pending) {
+				pending = true;
+				await this._requestPosts();
+				pending = false;
+			}
+		};
+		let limited = false;
+		const intervalLimit = (func: () => void): (() => void) => {
+			if (limited) {
+				return () => {};
+			}
+			const limit = 1000;
+			limited = true;
+			setTimeout(() => {
+				limited = false;
+			}, limit);
+			return func;
+		};
+		const handler = () => {
+			if (isNearBottom()) {
+				fetchPosts();
+			}
+		};
+		this.content.addHandler(document, 'scroll', intervalLimit(handler));
+	}
 }

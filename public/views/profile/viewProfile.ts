@@ -91,6 +91,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 					title: 'Header1',
 					text: 'Text',
 					date: '01.01.2024',
+					avatar: '../../img/avatar.png',
 				},
 				profile,
 			);
