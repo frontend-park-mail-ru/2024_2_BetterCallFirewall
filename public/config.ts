@@ -7,7 +7,7 @@ import { ViewFriendsConfig } from './views/friends/viewFriends';
 import { HomeConfig } from './views/home/viewHome';
 import { ViewProfileConfig } from './views/profile/viewProfile';
 
-const DEBUG: boolean = true;
+const DEBUG: boolean = false;
 
 export const PAGE_LINKS = {
 	feed: '/feed',
