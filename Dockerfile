@@ -6,6 +6,7 @@ COPY package.json .
 
 RUN yarn install
 # RUN npm install --verbose
+RUN yarn add -D webpack-cli
 
 COPY . .
 

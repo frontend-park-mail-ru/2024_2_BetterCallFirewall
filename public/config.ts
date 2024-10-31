@@ -194,7 +194,7 @@ const URL: URLInterface = DEBUG
 			signup: root + '/api/v1/auth/register',
 			login: root + '/api/v1/auth/login',
 			logout: root + '/api/v1/auth/logout',
-			post: root + '/api/v1/post',
+			post: root + '/api/v1/feed',
 		};
 
 const config: AppConfig = {
