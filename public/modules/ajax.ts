@@ -14,6 +14,12 @@ export type FormResponse = {
 	message: string;
 };
 
+export interface AjaxResponse<T> {
+	success: boolean;
+	data: T;
+	message: string;
+}
+
 class Ajax {
 	/**
 	 * Post request with data and raising callback

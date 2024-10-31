@@ -1,8 +1,12 @@
 import { Action } from '../actions/action';
 import { reducerFeed } from '../reducers/reducerFeed';
 import { ViewFeed, ViewFeedConfig } from '../views/feed/viewFeed';
-import { BaseStore, Store } from './store';
+import { BaseStore, Change, Store } from './store';
 import { StoreHome } from './storeHome';
+
+export interface ChangeFeed extends Change {
+	data: ViewFeedConfig;
+}
 
 export class StoreFeed extends BaseStore implements Store {
 	protected _registeredView?: ViewFeed;
@@ -19,7 +23,10 @@ export class StoreFeed extends BaseStore implements Store {
 		this._state = { ...this._state, ...this._storeHome.state };
 		this._state = reducerFeed(this._state, action);
 		if (this._registeredView?.active) {
-			this._registeredView.updateViewHome(this._state);
+			this._registeredView.handleChange({
+				type: action.type,
+				data: this._state,
+			});
 		}
 	}
 

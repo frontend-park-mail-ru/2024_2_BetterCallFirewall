@@ -6,7 +6,6 @@ import {
 	ActionMenuLinkClickData,
 } from '../actions/actionMenu';
 import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
-import { ACTION_USER_TYPES } from '../actions/actionUser';
 import app from '../app';
 import { PAGE_LINKS } from '../config';
 import { View } from '../views/view';
@@ -25,7 +24,7 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			case ACTION_SIGNUP_TYPES.toLoginLinkClick:
 				router.goToPage(PAGE_LINKS.login);
 				break;
-			case ACTION_USER_TYPES.loginClickSuccess:
+			case ACTION_LOGIN_TYPES.loginClickSuccess:
 				router.goToPage(PAGE_LINKS.feed);
 				break;
 			case ACTION_MENU_TYPES.menuLinkClick:

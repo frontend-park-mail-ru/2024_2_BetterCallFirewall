@@ -1,8 +1,9 @@
-import { ActionSignupToLoginClick } from '../../actions/actionSignup';
+import { ActionFormError } from '../../actions/actionForm';
 import {
-	ActionFormError,
 	ActionSignupClickSuccess,
-} from '../../actions/actionUser';
+	ActionSignupToLoginClick,
+} from '../../actions/actionSignup';
+
 import app from '../../app';
 import {
 	ISignupFormConfig,

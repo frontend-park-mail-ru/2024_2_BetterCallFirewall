@@ -7,15 +7,17 @@ import {
 	ACTION_MENU_TYPES,
 	ActionUpdateProfileLinkHref,
 } from './actions/actionMenu';
-import { ViewFeed } from './views/feed/viewFeed';
+import { ViewFeed, ViewFeedConfig } from './views/feed/viewFeed';
 import { ViewProfile, ViewProfileConfig } from './views/profile/viewProfile';
 import { StoreProfile } from './stores/storeProfile';
 import { ACTION_PROFILE_TYPES } from './actions/actionProfile';
 import { ACTION_HEADER_TYPES } from './actions/actionHeader';
 import { StoreLogin } from './stores/storeLogin';
-import { ACTION_USER_TYPES } from './actions/actionUser';
 import { StoreApp } from './stores/storeApp';
-import { ACTION_LOGIN_TYPES } from './actions/actionLogin';
+import {
+	ACTION_LOGIN_TYPES,
+	ActionLoginClickSuccess,
+} from './actions/actionLogin';
 import { ACTION_APP_TYPES, ActionAppInit } from './actions/actionApp';
 import dispatcher from './dispatcher/dispatcher';
 import { StoreSignup } from './stores/storeSignup';
@@ -25,6 +27,8 @@ import { ViewFriends, ViewFriendsConfig } from './views/friends/viewFriends';
 import { HomeConfig } from './views/home/viewHome';
 import { StoreHome } from './stores/storeHome';
 import { StoreFriends } from './stores/storeFriends';
+import { ACTION_FORM_TYPES } from './actions/actionForm';
+import { ACTION_FEED_TYPES } from './actions/actionFeed';
 
 export interface URLInterface {
 	signup: string;
@@ -33,11 +37,12 @@ export interface URLInterface {
 	post: string;
 }
 
-export interface IAppConfig {
+export interface AppConfig {
 	URL: URLInterface;
 	homeConfig: HomeConfig;
 	signupConfig: ISignupFormConfig;
 	loginConfig: ILoginFormConfig;
+	feedConfig: ViewFeedConfig;
 	profileConfig: ViewProfileConfig;
 	friendsConfig: ViewFriendsConfig;
 }
@@ -57,20 +62,20 @@ export interface AppStores {
  */
 class App {
 	private _router: Router;
-	private _config: IAppConfig;
+	private _config: AppConfig;
 	private _root: Root;
 	private _stores: AppStores;
 
 	/**
 	 * Instance of application
 	 *
-	 * @param {IAppConfig} config - config of application
+	 * @param {AppConfig} config - config of application
 	 */
-	constructor(config: IAppConfig) {
+	constructor(config: AppConfig) {
 		this._config = config;
 		this._root = new Root();
 
-		const feedView = new ViewFeed(this._config.homeConfig, this._root);
+		const feedView = new ViewFeed(this._config.feedConfig, this._root);
 		const profileView = new ViewProfile(
 			this._config.profileConfig,
 			this._root,
@@ -121,7 +126,7 @@ class App {
 		this._stores.app.subscribe(ACTION_MENU_TYPES.menuLinkClick);
 		this._stores.app.subscribe(ACTION_LOGIN_TYPES.actionLoginToSignupClick);
 		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
-		this._stores.app.subscribe(ACTION_USER_TYPES.loginClickSuccess);
+		this._stores.app.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
 
 		this._stores.home.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.menuLinkClick);
@@ -130,18 +135,20 @@ class App {
 		this._stores.home.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
 
 		this._stores.login.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
-		this._stores.login.subscribe(ACTION_USER_TYPES.loginClickSuccess);
-		this._stores.login.subscribe(ACTION_USER_TYPES.formError);
+		this._stores.login.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
+		this._stores.login.subscribe(ACTION_FORM_TYPES.formError);
 		this._stores.login.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 
-		this._stores.signup.subscribe(ACTION_USER_TYPES.formError);
-		this._stores.signup.subscribe(ACTION_USER_TYPES.signupClickSuccess);
+		this._stores.signup.subscribe(ACTION_FORM_TYPES.formError);
+		this._stores.signup.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
 		this._stores.signup.subscribe(
 			ACTION_LOGIN_TYPES.actionLoginToSignupClick,
 		);
 
-		this._stores.feed.subscribe(ACTION_USER_TYPES.loginClickSuccess);
-		this._stores.feed.subscribe(ACTION_USER_TYPES.signupClickSuccess);
+		this._stores.feed.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
+		this._stores.feed.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
+		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestSuccess);
+		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.goToProfile);
@@ -165,6 +172,10 @@ class App {
 
 	get stores(): AppStores {
 		return this._stores;
+	}
+
+	get config(): AppConfig {
+		return this._config;
 	}
 
 	init() {

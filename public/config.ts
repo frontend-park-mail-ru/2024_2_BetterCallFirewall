@@ -1,7 +1,8 @@
-import { IAppConfig, URLInterface } from './app';
+import { AppConfig, URLInterface } from './app';
 import { ILoginFormConfig, ISignupFormConfig } from './components';
 import { IProfileConfig } from './components/Profile/Profile';
 import Validator from './modules/validation';
+import { ViewFeedConfig } from './views/feed/viewFeed';
 import { ViewFriendsConfig } from './views/friends/viewFriends';
 import { HomeConfig } from './views/home/viewHome';
 import { ViewProfileConfig } from './views/profile/viewProfile';
@@ -163,6 +164,12 @@ const profileComponentConfig: IProfileConfig = {
 	img: '',
 };
 
+const feedConfig: ViewFeedConfig = {
+	...homeConfig,
+	posts: [],
+	errorMessage: '',
+};
+
 const profileConfig: ViewProfileConfig = {
 	...homeConfig,
 	profile: profileComponentConfig,
@@ -190,11 +197,12 @@ const URL: URLInterface = DEBUG
 			post: root + '/api/v1/post',
 		};
 
-const config: IAppConfig = {
+const config: AppConfig = {
 	URL,
 	homeConfig,
 	signupConfig,
 	loginConfig,
+	feedConfig,
 	profileConfig,
 	friendsConfig,
 };

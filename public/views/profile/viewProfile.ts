@@ -36,7 +36,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	}
 
 	render(): void {
-		super.render();
+		this._render();
 		dispatcher.getAction(
 			new ActionUpdateProfile(this._configProfile.profile),
 		);
@@ -44,8 +44,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 
 	updateViewProfile(data: ViewProfileConfig): void {
 		this._configProfile = data;
-		this.updateViewHome(data);
-		this._renderProfile();
+		this._render();
 	}
 
 	protected _render(): void {

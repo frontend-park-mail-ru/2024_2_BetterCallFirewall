@@ -1,7 +1,7 @@
 import { Action } from '../actions/action';
+import { ACTION_FORM_TYPES, IFormErrorData } from '../actions/actionForm';
 import { ACTION_HEADER_TYPES } from '../actions/actionHeader';
 import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
-import { ACTION_USER_TYPES, IFormErrorData } from '../actions/actionUser';
 import { ILoginFormConfig } from '../components';
 import config from '../config';
 import deepClone from '../modules/deepClone';
@@ -15,7 +15,7 @@ export const reducerLogin = (state?: ILoginFormConfig, action?: Action) => {
 	let newState = state;
 	if (action) {
 		switch (action.type) {
-			case ACTION_USER_TYPES.formError:
+			case ACTION_FORM_TYPES.formError:
 				newState = {
 					...newState,
 					error: (action.data as IFormErrorData)?.formError,

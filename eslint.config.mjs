@@ -23,6 +23,7 @@ export default tseslint.config(
 			'no-debugger': 'warn',
 			quotes: ['warn', 'single'],
 			'@typescript-eslint/no-empty-object-type': 'off',
+			'no-case-declarations': 'off',
 		},
 	},
 	{

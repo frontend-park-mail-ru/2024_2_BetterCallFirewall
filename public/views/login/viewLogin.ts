@@ -1,8 +1,8 @@
-import { ActionLoginToSignupClick } from '../../actions/actionLogin';
+import { ActionFormError } from '../../actions/actionForm';
 import {
 	ActionLoginClickSuccess,
-	ActionFormError,
-} from '../../actions/actionUser';
+	ActionLoginToSignupClick,
+} from '../../actions/actionLogin';
 import {
 	IInputConfig,
 	ILoginFormConfig,
