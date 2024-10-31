@@ -183,6 +183,10 @@ app.get('/dist/bundle.js', (req, res) => {
 	res.sendFile(path.join(__dirname, '../dist', 'bundle.js'));
 });
 
+app.get('/favicon.ico', (req, res) => {
+	res.sendFile(path.join(__dirname, '../', 'public/img/favicon.ico'));
+});
+
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });

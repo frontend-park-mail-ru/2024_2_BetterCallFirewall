@@ -20,6 +20,8 @@ export interface AjaxResponse<T> {
 	message: string;
 }
 
+export type QueryParams = Record<string, string>;
+
 class Ajax {
 	/**
 	 * Post request with data and raising callback
@@ -43,10 +45,12 @@ class Ajax {
 	/**
 	 * Get request and promise with resolving by data
 	 *
-	 * @param {string} url
+	 * @param {string} baseUrl
 	 * @returns {Promise<T>}
 	 */
-	getPromise<T>(url: string): Promise<T> {
+	getPromise<T>(baseUrl: string, queryParams?: QueryParams): Promise<T> {
+		const params = new URLSearchParams(queryParams);
+		const url = `${baseUrl}?${params}`;
 		const request = new Request(url, {
 			method: 'get',
 			credentials: 'include',

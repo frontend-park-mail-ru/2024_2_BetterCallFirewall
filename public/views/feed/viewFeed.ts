@@ -5,7 +5,7 @@ import {
 import app from '../../app';
 import { IPostConfig, Post, Root } from '../../components';
 import { PostResponse } from '../../models/post';
-import ajax, { AjaxResponse } from '../../modules/ajax';
+import ajax, { AjaxResponse, QueryParams } from '../../modules/ajax';
 import { ChangeFeed } from '../../stores/storeFeed';
 import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
@@ -22,6 +22,14 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	constructor(config: ViewFeedConfig, root: Root) {
 		super(config, root);
 		this._configFeed = config;
+	}
+
+	get lastPostId(): number {
+		const posts = this._configFeed.posts;
+		if (posts.length) {
+			return posts[posts.length - 1].id;
+		}
+		return -1;
 	}
 
 	handleChange(change: ChangeFeed): void {
@@ -78,8 +86,16 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	 * Выполняет запрос постов и добавляет их
 	 */
 	private _requestPosts(): Promise<void> {
+		const id = this.lastPostId;
+		const params: QueryParams = {};
+		if (id >= 0) {
+			params.id = id.toString();
+		}
 		return ajax
-			.getPromise<AjaxResponse<PostResponse[]>>(app.config.URL.post)
+			.getPromise<AjaxResponse<PostResponse[]>>(
+				app.config.URL.post,
+				params,
+			)
 			.then((body) => {
 				if (body.success) {
 					this.sendAction(new ActionPostsRequestSuccess(body.data));
