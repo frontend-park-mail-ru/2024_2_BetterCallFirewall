@@ -95,9 +95,14 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			case 200:
 				this.sendAction(new ActionPostsRequestSuccess(response.data));
 				break;
-			case 204:
 			case 401:
-			default:
+				this.sendAction(
+					new ActionPostsRequestFail({
+						status: response.status,
+					}),
+				);
+				break;
+			case 204:
 				this.sendAction(
 					new ActionPostsRequestFail({
 						status: response.status,
