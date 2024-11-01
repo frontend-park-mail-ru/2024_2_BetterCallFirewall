@@ -14,10 +14,7 @@ import { ACTION_PROFILE_TYPES } from './actions/actionProfile';
 import { ACTION_HEADER_TYPES } from './actions/actionHeader';
 import { StoreLogin } from './stores/storeLogin';
 import { StoreApp } from './stores/storeApp';
-import {
-	ACTION_LOGIN_TYPES,
-	ActionLoginClickSuccess,
-} from './actions/actionLogin';
+import { ACTION_LOGIN_TYPES } from './actions/actionLogin';
 import { ACTION_APP_TYPES, ActionAppInit } from './actions/actionApp';
 import dispatcher from './dispatcher/dispatcher';
 import { StoreSignup } from './stores/storeSignup';
@@ -125,8 +122,9 @@ class App {
 		this._stores.app.subscribe(ACTION_MENU_TYPES.titleClick);
 		this._stores.app.subscribe(ACTION_MENU_TYPES.menuLinkClick);
 		this._stores.app.subscribe(ACTION_LOGIN_TYPES.actionLoginToSignupClick);
-		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 		this._stores.app.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
+		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
+		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 
 		this._stores.home.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.menuLinkClick);

@@ -1,5 +1,9 @@
 import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
+import {
+	ACTION_FEED_TYPES,
+	ActionPostsRequestFailData,
+} from '../actions/actionFeed';
 import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
 import {
 	ACTION_MENU_TYPES,
@@ -32,6 +36,12 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 				break;
 			case ACTION_MENU_TYPES.titleClick:
 				router.goToPage(PAGE_LINKS.feed);
+				break;
+			case ACTION_FEED_TYPES.postsRequestFail:
+				const data = action.data as ActionPostsRequestFailData;
+				if (data.error?.message === 'Unauthorized') {
+					router.goToPage(PAGE_LINKS.login);
+				}
 				break;
 		}
 	}

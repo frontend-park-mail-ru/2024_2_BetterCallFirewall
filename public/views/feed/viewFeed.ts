@@ -24,14 +24,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		this._configFeed = config;
 	}
 
-	get lastPostId(): number {
-		const posts = this._configFeed.posts;
-		if (posts.length) {
-			return posts[posts.length - 1].id;
-		}
-		return -1;
-	}
-
 	handleChange(change: ChangeFeed): void {
 		super.handleChange(change);
 		switch (change.type) {
@@ -58,6 +50,14 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		super._render();
 		this._renderPosts();
 		this._printMessage();
+	}
+
+	private get lastPostId(): number {
+		const posts = this._configFeed.posts;
+		if (posts.length) {
+			return posts[posts.length - 1].id;
+		}
+		return -1;
 	}
 
 	private _renderPosts(): void {
@@ -106,6 +106,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 				}
 			})
 			.catch((error) => {
+				console.log('ajax error:', error);
 				this.sendAction(new ActionPostsRequestFail({ error }));
 			});
 	}
