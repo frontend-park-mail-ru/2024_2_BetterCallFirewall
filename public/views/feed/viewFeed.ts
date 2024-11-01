@@ -2,10 +2,8 @@ import {
 	ActionPostsRequestFail,
 	ActionPostsRequestSuccess,
 } from '../../actions/actionFeed';
-import app from '../../app';
 import { IPostConfig, Post, Root } from '../../components';
-import { PostResponse } from '../../models/post';
-import ajax, { AjaxResponse, QueryParams } from '../../modules/ajax';
+import ajax, { QueryParams } from '../../modules/ajax';
 import { ChangeFeed } from '../../stores/storeFeed';
 import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
@@ -86,34 +84,58 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	/**
 	 * Выполняет запрос постов и добавляет их
 	 */
-	private _requestPosts(): Promise<void> {
+	private async _requestPosts(): Promise<void> {
 		const id = this.lastPostId;
 		const params: QueryParams = {};
 		if (id >= 0) {
 			params.id = id.toString();
 		}
-		return ajax
-			.getPromise<AjaxResponse<PostResponse[]>>(
-				app.config.URL.post,
-				params,
-			)
-			.then((body) => {
-				if (body.success) {
-					this.sendAction(new ActionPostsRequestSuccess(body.data));
-				} else {
-					this.sendAction(
-						new ActionPostsRequestFail({ message: body.message }),
-					);
-				}
-			})
-			.catch((error: Error) => {
-				console.log('status:', error.message);
+		const response = await ajax.getPosts(params);
+		switch (response.status) {
+			case 200:
+				this.sendAction(new ActionPostsRequestSuccess(response.data));
+				break;
+			case 204:
+			case 401:
+			default:
 				this.sendAction(
 					new ActionPostsRequestFail({
-						status: Number(error.message),
+						status: response.status,
+						message: response.message,
 					}),
 				);
-			});
+		}
+
+		// return ajax
+		// 	.getPromise<AjaxResponse<PostResponse[]>>(
+		// 		app.config.URL.post,
+		// 		params,
+		// 	)
+		// 	.then((body) => {
+		// 		if (!body) {
+		// 			this.sendAction(
+		// 				new ActionPostsRequestFail({
+		// 					message: 'Постов больше нет',
+		// 				}),
+		// 			);
+		// 			return;
+		// 		}
+		// 		if (body.success) {
+		// 			this.sendAction(new ActionPostsRequestSuccess(body.data));
+		// 		} else {
+		// 			this.sendAction(
+		// 				new ActionPostsRequestFail({ message: body.message }),
+		// 			);
+		// 		}
+		// 	})
+		// 	.catch((error: Error) => {
+		// 		console.log('status:', error.message);
+		// 		this.sendAction(
+		// 			new ActionPostsRequestFail({
+		// 				status: Number(error.message),
+		// 			}),
+		// 		);
+		// 	});
 	}
 
 	private _addHandlers() {
