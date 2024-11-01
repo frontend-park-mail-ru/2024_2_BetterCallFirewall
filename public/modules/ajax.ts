@@ -82,14 +82,19 @@ class Ajax {
 			data: [],
 			message: '',
 		};
-		if (postsResponse.status === 204) {
-			postsResponse.message = 'Постов больше нет';
-		} else {
-			const body = (await response.json()) as FetchResponse<
-				PostResponse[]
-			>;
-			console.log('body:', body);
-			postsResponse = Object.assign(postsResponse, body);
+		switch (postsResponse.status) {
+			case 204:
+				postsResponse.message = 'Постов больше нет';
+				break;
+			case 401:
+				postsResponse.message = 'Не авторизован';
+				break;
+			default:
+				const body = (await response.json()) as FetchResponse<
+					PostResponse[]
+				>;
+				console.log('body:', body);
+				postsResponse = Object.assign(postsResponse, body);
 		}
 		console.log('postsResponse:', postsResponse);
 		return postsResponse;
