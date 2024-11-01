@@ -28,12 +28,17 @@ import dispatcher from './dispatcher/dispatcher';
 import { StoreSignup } from './stores/storeSignup';
 import { StoreFeed } from './stores/storeFeed';
 import { ACTION_SIGNUP_TYPES } from './actions/actionSignup';
-import { ViewMessages } from './views/messages/viewMessages';
+import { ViewMessages, ViewMessagesConfig } from './views/messages/viewMessages';
 import { ViewChat } from './views/chat/viewChat';
 import { ViewFriends } from './views/friends/viewFriends';
 import { StoreMain } from './stores/storeMain';
 import { MainConfig } from './views/home/viewHome';
 import { StoreHome } from './stores/storeHome';
+import { StoreMessages } from './stores/storeMessages';
+import { ACTION_MESSAGES_TYPES } from './actions/actionMessages';
+import { ViewChatConfig } from './views/chat/viewChat';
+import { StoreChat } from './stores/storeChat';
+import { ACTION_CHAT_TYPES } from './actions/actionChat';
 
 export const PAGES = {
 	home: 'home',
@@ -59,6 +64,8 @@ export interface IAppConfig {
 	signupConfig: ISignupFormConfig;
 	loginConfig: ILoginFormConfig;
 	profileConfig: ViewProfileConfig;
+	messagesConfig: ViewMessagesConfig;
+	chatConfig: ViewChatConfig;
 }
 
 export interface AppStores {
@@ -71,6 +78,8 @@ export interface AppStores {
 	signup: StoreSignup;
 	profile: StoreProfile;
 	feed: StoreFeed;
+	messages: StoreMessages;
+	chat: StoreChat;
 }
 
 /**
@@ -102,8 +111,8 @@ class App {
 			this._config.signupConfig,
 			this._root,
 		);
-		const messagesView = new ViewMessages(this._config.homeConfig, this._root);
-		const chatView = new ViewChat(this._config.homeConfig, this._root);
+		const messagesView = new ViewMessages(this._config.messagesConfig, this._root);
+		const chatView = new ViewChat(this._config.chatConfig, this._root);
 		const routerConfig: RouterConfig = [
 			{
 				path: PAGE_LINKS.feed,
@@ -146,6 +155,8 @@ class App {
 			signup: new StoreSignup(),
 			feed: new StoreFeed(),
 			profile: new StoreProfile(),
+			messages: new StoreMessages(),
+			chat: new StoreChat(),
 		};
 
 		this._stores.app.subscribe(ACTION_APP_TYPES.actionAppInit);
@@ -178,6 +189,12 @@ class App {
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.goToProfile);
 
+		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.goToMessages);
+		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.updateMessages);
+
+		this._stores.chat.subscribe(ACTION_CHAT_TYPES.goToChat);
+		this._stores.chat.subscribe(ACTION_CHAT_TYPES.updateChat);
+
 		loginView.register(this._stores.login);
 
 		signupView.register(this._stores.signup);
@@ -187,6 +204,12 @@ class App {
 
 		profileView.register(this._stores.home);
 		profileView.register(this._stores.profile);
+
+		messagesView.register(this._stores.home);
+		messagesView.register(this._stores.messages);
+
+		chatView.register(this._stores.home);
+		chatView.register(this._stores.chat);
 
 		friendView.register(this._stores.menu);
 		friendView.register(this._stores.header);

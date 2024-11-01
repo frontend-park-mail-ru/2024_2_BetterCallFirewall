@@ -1,43 +1,58 @@
-import { Content, Root } from '../../components';
-import { IBaseComponent } from '../../components/BaseComponent';
-import { Chat } from '../../components/Chat/Chat';
-import { HomeConfig, ViewHome } from '../home/viewHome';
+import { ActionUpdateChat } from '../../actions/actionChat';
+import { Root } from '../../components';
+import { Chat, IChatConfig } from '../../components/Chat/Chat';
+import dispatcher from '../../dispatcher/dispatcher';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
-// export interface FeedConfig extends IBaseComponentConfig {
-// 	className: string;
-// }
+export type ComponentsChat = {
+    chat?: Chat;
+} & ComponentsHome;
+
+export interface ViewChatConfig {
+    home: HomeConfig;
+    chat: IChatConfig;
+}
 
 export class ViewChat extends ViewHome {
-	constructor(config: HomeConfig, root: Root) {
-		super(config, root);
-	}
+    protected _configChat: ViewChatConfig;
+    protected _components: ComponentsChat = {};
 
-	protected _updateContent(parent: IBaseComponent) {
-		console.log('content');
-		this._clearContent();
-		this._renderContent(parent);
-	}
+    constructor(config: ViewChatConfig, root: Root) {
+        super(config.home, root);
+        this._configChat = config;
+    }
 
-	private _clearContent() {
-		if (this._components.content) {
-			const content = this._components.content;
-			content.remove();
-		}
-	}
+    render(): void {
+        super.render();
+        dispatcher.getAction(
+            new ActionUpdateChat(this._configChat.chat),
+        );
+    }
 
-	protected _renderContent(parent: IBaseComponent): void {
-		const contentConfig = this._config.main.content;
-		const content = new Content(contentConfig, parent);
-		content.render();
-		this._components.content = content;
-
-        const chat = new Chat({
+    updateViewChat(data: ViewChatConfig): void {
+        data.chat = {
             key: 'chat',
             companionAvatar: '../../img/avatar.png',
             companionName: 'Asap Rocky',
             lastDateOnline: '18:00',
-        }, content);
-        content.addChild(chat);
+        }; // tmp
+        this._configChat = data;
+        this.updateViewHome(data.home);
+        this._renderChat();
+    }
+
+    protected _rerender(): void {
+        super._rerender();
+        this._renderChat();
+    }
+
+    protected _renderChat(): void {
+        const content = this._components.content;
+        if (!content) {
+            throw new Error('content does no exist on ViewChat');
+        }
+        const chat = new Chat(this._configChat.chat, content);
         chat.render();
-	}
+        this._components.chat = chat;
+    }
 }
