@@ -39,7 +39,8 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 				break;
 			case ACTION_FEED_TYPES.postsRequestFail:
 				const data = action.data as ActionPostsRequestFailData;
-				if (data.error?.message === 'Unauthorized') {
+				// Убрать хардкод
+				if (data.status === 401) {
 					router.goToPage(PAGE_LINKS.login);
 				}
 				break;
