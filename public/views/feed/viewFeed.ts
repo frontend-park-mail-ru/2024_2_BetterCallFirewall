@@ -32,7 +32,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		switch (change.type) {
 			case ACTION_LOGIN_TYPES.loginClickSuccess:
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
-				if (this._isNearBottom()) {
+				if (!this._configFeed.posts.length) {
 					this._requestPosts();
 				}
 				update = false;
@@ -40,7 +40,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			case ACTION_FEED_TYPES.postsRequestSuccess:
 				this.updateViewFeed(change.data);
 				update = false; // Чтобы посты сначала отрендерились, а потом шел запрос с последним id
-				if (this._isNearBottom()) {
+				if (!this._configFeed.posts.length) {
 					this._requestPosts();
 				}
 				break;
@@ -54,6 +54,10 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		console.log('render');
 		this._render();
 		this._addHandlers();
+
+		if (this._isNearBottom()) {
+			this._requestPosts();
+		}
 	}
 
 	updateViewFeed(data: ViewFeedConfig) {
@@ -66,10 +70,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		super._render();
 		this._renderPosts();
 		this._printMessage();
-
-		if (this._isNearBottom()) {
-			this._requestPosts();
-		}
 	}
 
 	private get lastPostId(): number {
