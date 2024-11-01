@@ -2,12 +2,12 @@ import BaseComponent, {
 	IBaseComponent,
 	IBaseComponentConfig,
 } from '../BaseComponent';
-import { IPost } from '../Post/Post';
+import { IPost, IPostConfig, Post } from '../Post/Post';
 
 type Posts = IPost[];
 
 export interface IProfileConfig extends IBaseComponentConfig {
-	id?: number;
+	id: number;
 	firstName?: string;
 	secondName?: string;
 	description?: string;
@@ -16,7 +16,7 @@ export interface IProfileConfig extends IBaseComponentConfig {
 	img?: string;
 	currentUser?: boolean;
 	isFriend?: boolean;
-	posts?: IPost[];
+	posts?: IPostConfig[];
 }
 // export interface IProfileConfig extends IBaseComponentConfig {}
 
@@ -40,6 +40,16 @@ export class Profile extends BaseComponent {
 		this._config = config;
 	}
 
+	get postsContainer(): HTMLElement {
+		const container = this.htmlElement.querySelector(
+			'div.profile__posts',
+		) as HTMLElement;
+		if (!container) {
+			throw new Error('.profile__posts not found');
+		}
+		return container;
+	}
+
 	render(show: boolean = true): string {
 		this._prerender();
 		this._render('Profile.hbs', show);
@@ -48,10 +58,16 @@ export class Profile extends BaseComponent {
 			'.profile__posts',
 		) as HTMLElement;
 		if (postsItems) {
-			this.posts.forEach((post) => {
+			this.config.posts?.forEach((config) => {
+				const post = new Post(config, this);
+				this.posts.push(post);
 				post.render(false);
 				post.appendToHTML(postsItems);
 			});
+			// this.posts.forEach((post) => {
+			// 	post.render(false);
+			// 	post.appendToHTML(postsItems);
+			// });
 		} else {
 			throw new Error('profile has no .profile__posts');
 		}

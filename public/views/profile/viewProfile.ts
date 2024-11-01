@@ -1,7 +1,12 @@
-import { ActionUpdateProfile } from '../../actions/actionProfile';
+import { ActionPostsRequestFail } from '../../actions/actionFeed';
+import {
+	ActionProfileRequestFail,
+	ActionProfileRequestSuccess,
+	ActionUpdateProfile,
+} from '../../actions/actionProfile';
 import { Post, Root } from '../../components';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
-import dispatcher from '../../dispatcher/dispatcher';
+import ajax from '../../modules/ajax';
 import { ChangeProfile } from '../../stores/storeProfile';
 import {
 	ComponentsHome,
@@ -31,15 +36,22 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		this._configProfile = config;
 	}
 
+	get profile(): Profile {
+		const profile = this._components.profile;
+		if (!profile) {
+			throw new Error('profile on ViewProfile does not exist');
+		}
+		return profile;
+	}
+
 	handleChange(change: ChangeProfile): void {
 		super.handleChange(change);
 	}
 
 	render(): void {
 		this._render();
-		dispatcher.getAction(
-			new ActionUpdateProfile(this._configProfile.profile),
-		);
+		this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
+		this._requestProfile();
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {
@@ -53,34 +65,28 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	}
 
 	protected _renderProfile(): void {
-		this._configProfile.profile = {
-			key: 'profile',
-			id: 2,
-			firstName: 'Luke',
-			secondName: 'Skywalker',
-			description: 'Jedi, master',
-			friendsCount: 99,
-			groupsCount: 3,
-			img: '../img/avatar.png',
-		}; // tmp
+		// this._configProfile.profile = {
+		// 	key: 'profile',
+		// 	id: 2,
+		// 	firstName: 'Luke',
+		// 	secondName: 'Skywalker',
+		// 	description: 'Jedi, master',
+		// 	friendsCount: 99,
+		// 	groupsCount: 3,
+		// 	img: '../img/avatar.png',
+		// }; // tmp
 
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does no exist on ViewProfile');
-		}
+		const content = this.content;
 		const profile = new Profile(this._configProfile.profile, content);
 		profile.render();
 		this._components.profile = profile;
 
 		this._addProfileHandlers(this._configProfile.profile);
+		// this._renderPosts();
+	}
 
-		console.log(
-			'post here:',
-			profile.htmlElement.querySelector('.profile__posts'),
-		);
-		const posts = profile.htmlElement.querySelector(
-			'.profile__posts',
-		) as HTMLElement;
+	private _renderPosts() {
+		const postsContainer = this.profile.postsContainer;
 		// Тестовые посты
 		let counter = 0;
 		for (let i = 0; i < 10; i++) {
@@ -93,10 +99,35 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 					date: '01.01.2024',
 					avatar: '../../img/avatar.png',
 				},
-				profile,
+				this.profile,
 			);
 			post.render(false);
-			posts.appendChild(post.htmlElement);
+			postsContainer.appendChild(post.htmlElement);
+		}
+	}
+
+	private async _requestProfile() {
+		const response = await ajax.getProfile(this._configProfile.profile.id);
+		switch (response.status) {
+			case 400:
+			case 405:
+				this.sendAction(
+					new ActionProfileRequestFail({ status: response.status }),
+				);
+				break;
+			case 200:
+				if (!response.data) {
+					this.sendAction(
+						new ActionPostsRequestFail({ message: 'empty data' }),
+					);
+					return;
+				}
+				this.sendAction(
+					new ActionProfileRequestSuccess({
+						profileResponse: response.data,
+					}),
+				);
+				break;
 		}
 	}
 

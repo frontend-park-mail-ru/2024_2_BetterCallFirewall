@@ -1,14 +1,11 @@
 import app from '../app';
 import { IProfileConfig } from '../components/Profile/Profile';
 import { PostResponse } from '../models/post';
+import { FullProfileResponse } from '../models/profile';
 
 type AjaxPromiseConfig = {
 	request: Request;
 };
-
-// type FetchConfig = {
-// 	request: Request;
-// };
 
 type Callback = (data: object | null, error: Error | null) => void;
 
@@ -22,8 +19,8 @@ export type FormResponse = {
 
 export interface FetchResponse<T> {
 	success: boolean;
-	data: T;
-	message: string;
+	data?: T;
+	message?: string;
 }
 
 export interface AjaxResponse<T> extends FetchResponse<T> {
@@ -98,6 +95,31 @@ class Ajax {
 		}
 		console.log('postsResponse:', postsResponse);
 		return postsResponse;
+	}
+
+	async getProfile(
+		profileId: number,
+	): Promise<AjaxResponse<FullProfileResponse>> {
+		const request = this._getRequest(
+			app.config.URL.profile + `/${profileId}`,
+		);
+		const response = await this._response(request);
+		let profileResponse: AjaxResponse<FullProfileResponse> = {
+			status: response.status,
+			success: false,
+		};
+		switch (profileResponse.status) {
+			case 400:
+			case 405:
+				break;
+			default:
+				const body =
+					(await response.json()) as FetchResponse<FullProfileResponse>;
+				console.log('body:', body);
+				profileResponse = Object.assign(profileResponse, body);
+		}
+		console.log('profileResponse:', profileResponse);
+		return profileResponse;
 	}
 
 	async getProfileData(user: string): Promise<IProfileConfig> {

@@ -32,6 +32,7 @@ export interface URLInterface {
 	login: string;
 	logout: string;
 	post: string;
+	profile: string;
 }
 
 export interface AppConfig {
@@ -151,6 +152,10 @@ class App {
 
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.goToProfile);
+		this._stores.profile.subscribe(
+			ACTION_PROFILE_TYPES.profileRequestSuccess,
+		);
+		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.profileRequestFail);
 
 		loginView.register(this._stores.login);
 
@@ -179,7 +184,8 @@ class App {
 
 	init() {
 		dispatcher.getAction(new ActionAppInit());
-		dispatcher.getAction(new ActionUpdateProfileLinkHref('/lukeskywalker')); // Потом запрашивать данные юзера и вставить сюда
+		// dispatcher.getAction(new ActionUpdateProfileLinkHref('/lukeskywalker')); // Потом запрашивать данные юзера и вставить сюда
+		dispatcher.getAction(new ActionUpdateProfileLinkHref('/2'));
 	}
 }
 

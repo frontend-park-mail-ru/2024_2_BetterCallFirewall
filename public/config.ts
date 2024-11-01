@@ -156,6 +156,7 @@ const loginConfig: ILoginFormConfig = {
 };
 
 const profileComponentConfig: IProfileConfig = {
+	id: 0,
 	key: 'profile',
 	firstName: '',
 	secondName: '',
@@ -189,12 +190,14 @@ const URL: URLInterface = DEBUG
 			login: ROOT + '/auth/login',
 			logout: ROOT + '/auth/logout',
 			post: ROOT + '/api/post',
+			profile: ROOT + '/api',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
 			login: ROOT + '/api/v1/auth/login',
 			logout: ROOT + '/api/v1/auth/logout',
 			post: ROOT + '/api/v1/feed',
+			profile: ROOT + '/api/v1/profile',
 		};
 
 const config: AppConfig = {
