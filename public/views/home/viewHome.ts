@@ -182,7 +182,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		}
 		const aside = new Container(this._configHome.main.aside, main);
 		aside.render();
-		this._printMessage();
 	}
 
 	// true, если до конца документа осталось меньше двух экранов
@@ -191,6 +190,17 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 			window.innerHeight * 2 + window.scrollY > document.body.offsetHeight
 		);
 	};
+
+	protected _printMessage() {
+		const content = this._components.content;
+		if (!content) {
+			throw new Error('content does no exist on ViewFeed');
+		}
+		if (this._configHome.errorMessage) {
+			content.printMessage(this._configHome.errorMessage);
+		}
+	}
+
 	private _renderMenu() {
 		this._components.menu = new Menu(this._configHome.menu, this._root);
 		this._components.menu.render();
@@ -264,16 +274,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		);
 		this._components.header.render();
 		this._addHeaderHandlers();
-	}
-
-	private _printMessage() {
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does no exist on ViewFeed');
-		}
-		if (this._configHome.errorMessage) {
-			content.printMessage(this._configHome.errorMessage);
-		}
 	}
 
 	private _addHeaderHandlers() {

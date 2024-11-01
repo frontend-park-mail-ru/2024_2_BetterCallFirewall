@@ -38,6 +38,8 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 				update = false;
 				break;
 			case ACTION_FEED_TYPES.postsRequestSuccess:
+				this.updateViewFeed(change.data);
+				update = false; // Чтобы посты сначала отрендерились, а потом шел запрос с последним id
 				if (this._isNearBottom()) {
 					this._requestPosts();
 				}
@@ -67,6 +69,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	protected _render(): void {
 		super._render();
 		this._renderPosts();
+		this._printMessage();
 	}
 
 	private get lastPostId(): number {
