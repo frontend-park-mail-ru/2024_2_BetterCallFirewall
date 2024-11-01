@@ -185,6 +185,12 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		this._printMessage();
 	}
 
+	// true, если до конца документа осталось меньше двух экранов
+	protected _isNearBottom = () => {
+		return (
+			window.innerHeight * 2 + window.scrollY > document.body.offsetHeight
+		);
+	};
 	private _renderMenu() {
 		this._components.menu = new Menu(this._configHome.menu, this._root);
 		this._components.menu.render();

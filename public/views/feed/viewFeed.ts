@@ -1,4 +1,5 @@
 import {
+	ACTION_FEED_TYPES,
 	ActionPostsRequestFail,
 	ActionPostsRequestSuccess,
 } from '../../actions/actionFeed';
@@ -25,17 +26,25 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	handleChange(change: ChangeFeed): void {
+		console.log('ViewFeed: change:', change);
 		super.handleChange(change);
+		let update = true;
 		switch (change.type) {
 			case ACTION_LOGIN_TYPES.loginClickSuccess:
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 				if (!this._configFeed.posts.length) {
 					this._requestPosts();
 				}
+				update = false;
 				break;
-			default:
-				console.log('change:', change);
-				this.updateViewFeed(change.data);
+			case ACTION_FEED_TYPES.postsRequestSuccess:
+				if (this._isNearBottom()) {
+					this._requestPosts();
+				}
+				break;
+		}
+		if (update) {
+			this.updateViewFeed(change.data);
 		}
 	}
 
@@ -58,7 +67,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	protected _render(): void {
 		super._render();
 		this._renderPosts();
-		// this._printMessage();
 	}
 
 	private get lastPostId(): number {
@@ -80,16 +88,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			post.render();
 		});
 	}
-
-	// private _printMessage() {
-	// 	const content = this._components.content;
-	// 	if (!content) {
-	// 		throw new Error('content does no exist on ViewFeed');
-	// 	}
-	// 	if (this._configFeed.errorMessage) {
-	// 		content.printMessage(this._configFeed.errorMessage);
-	// 	}
-	// }
 
 	/**
 	 * Выполняет запрос постов и добавляет их
@@ -127,12 +125,12 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	private _addScrollHandler() {
-		const isNearBottom = () => {
-			return (
-				window.innerHeight * 2 + window.scrollY >
-				document.body.offsetHeight
-			);
-		};
+		// const isNearBottom = () => {
+		// 	return (
+		// 		window.innerHeight * 2 + window.scrollY >
+		// 		document.body.offsetHeight
+		// 	);
+		// };
 		let pending = false;
 		const fetchPosts = async () => {
 			if (!pending) {
@@ -154,7 +152,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			return func;
 		};
 		const handler = () => {
-			if (isNearBottom()) {
+			if (this._isNearBottom()) {
 				fetchPosts();
 			}
 		};
