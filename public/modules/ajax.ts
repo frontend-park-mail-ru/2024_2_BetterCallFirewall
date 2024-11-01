@@ -75,26 +75,24 @@ class Ajax {
 	): Promise<AjaxResponse<PostResponse[]>> {
 		const request = this._getRequest(app.config.URL.post, queryParams);
 		const response = await this._response(request);
-		const status = response.status;
-		let success = false;
-		let data: PostResponse[] = [];
-		let message = '';
-		if (status === 204) {
-			message = 'Постов больше нет';
+		console.log('response:', response);
+		let postsResponse: AjaxResponse<PostResponse[]> = {
+			status: response.status,
+			success: false,
+			data: [],
+			message: '',
+		};
+		if (postsResponse.status === 204) {
+			postsResponse.message = 'Постов больше нет';
 		} else {
 			const body = (await response.json()) as FetchResponse<
 				PostResponse[]
 			>;
-			success = body.success;
-			data = body.data;
-			message = body.message;
+			console.log('body:', body);
+			postsResponse = Object.assign(postsResponse, body);
 		}
-		return {
-			status,
-			success,
-			data,
-			message,
-		};
+		console.log('postsResponse:', postsResponse);
+		return postsResponse;
 	}
 
 	async getProfileData(user: string): Promise<IProfileConfig> {
