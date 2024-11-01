@@ -183,9 +183,9 @@ class App {
 	}
 
 	init() {
+		dispatcher.getAction(new ActionUpdateProfileLinkHref('/2'));
 		dispatcher.getAction(new ActionAppInit());
 		// dispatcher.getAction(new ActionUpdateProfileLinkHref('/lukeskywalker')); // Потом запрашивать данные юзера и вставить сюда
-		dispatcher.getAction(new ActionUpdateProfileLinkHref('/2'));
 	}
 }
 
