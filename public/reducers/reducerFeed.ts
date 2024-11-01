@@ -22,6 +22,7 @@ export const reducerFeed = (
 	const newState = deepClone(state);
 	switch (action.type) {
 		case ACTION_FEED_TYPES.postsRequestSuccess:
+			newState.errorMessage = '';
 			const newPosts = (
 				action.data as ActionPostsRequestSuccessData
 			).postsData.map(({ id, header, post_content }) => {

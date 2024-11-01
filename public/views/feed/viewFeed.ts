@@ -11,7 +11,7 @@ import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
 export interface ViewFeedConfig extends HomeConfig {
 	posts: IPostConfig[];
-	errorMessage: string;
+	// errorMessage: string;
 }
 
 export interface IViewFeed extends IViewHome {}
@@ -58,7 +58,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	protected _render(): void {
 		super._render();
 		this._renderPosts();
-		this._printMessage();
+		// this._printMessage();
 	}
 
 	private get lastPostId(): number {
@@ -81,15 +81,15 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		});
 	}
 
-	private _printMessage() {
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does no exist on ViewFeed');
-		}
-		if (this._configFeed.errorMessage) {
-			content.printMessage(this._configFeed.errorMessage);
-		}
-	}
+	// private _printMessage() {
+	// 	const content = this._components.content;
+	// 	if (!content) {
+	// 		throw new Error('content does no exist on ViewFeed');
+	// 	}
+	// 	if (this._configFeed.errorMessage) {
+	// 		content.printMessage(this._configFeed.errorMessage);
+	// 	}
+	// }
 
 	/**
 	 * Выполняет запрос постов и добавляет их
@@ -120,37 +120,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 					}),
 				);
 		}
-
-		// return ajax
-		// 	.getPromise<AjaxResponse<PostResponse[]>>(
-		// 		app.config.URL.post,
-		// 		params,
-		// 	)
-		// 	.then((body) => {
-		// 		if (!body) {
-		// 			this.sendAction(
-		// 				new ActionPostsRequestFail({
-		// 					message: 'Постов больше нет',
-		// 				}),
-		// 			);
-		// 			return;
-		// 		}
-		// 		if (body.success) {
-		// 			this.sendAction(new ActionPostsRequestSuccess(body.data));
-		// 		} else {
-		// 			this.sendAction(
-		// 				new ActionPostsRequestFail({ message: body.message }),
-		// 			);
-		// 		}
-		// 	})
-		// 	.catch((error: Error) => {
-		// 		console.log('status:', error.message);
-		// 		this.sendAction(
-		// 			new ActionPostsRequestFail({
-		// 				status: Number(error.message),
-		// 			}),
-		// 		);
-		// 	});
 	}
 
 	private _addHandlers() {

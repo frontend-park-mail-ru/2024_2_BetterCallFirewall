@@ -73,6 +73,7 @@ const homeConfig: HomeConfig = {
 			className: 'aside',
 		},
 	},
+	errorMessage: '',
 };
 
 const signupConfig: ISignupFormConfig = {
@@ -167,7 +168,6 @@ const profileComponentConfig: IProfileConfig = {
 const feedConfig: ViewFeedConfig = {
 	...homeConfig,
 	posts: [],
-	errorMessage: '',
 };
 
 const profileConfig: ViewProfileConfig = {

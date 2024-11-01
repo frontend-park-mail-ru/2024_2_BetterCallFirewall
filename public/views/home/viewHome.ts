@@ -38,6 +38,7 @@ export interface MainConfig {
 export interface HomeConfig {
 	menu: IMenuConfig;
 	main: MainConfig;
+	errorMessage: string;
 }
 
 export type ComponentsHome = {
@@ -181,6 +182,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		}
 		const aside = new Container(this._configHome.main.aside, main);
 		aside.render();
+		this._printMessage();
 	}
 
 	private _renderMenu() {
@@ -256,6 +258,16 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		);
 		this._components.header.render();
 		this._addHeaderHandlers();
+	}
+
+	private _printMessage() {
+		const content = this._components.content;
+		if (!content) {
+			throw new Error('content does no exist on ViewFeed');
+		}
+		if (this._configHome.errorMessage) {
+			content.printMessage(this._configHome.errorMessage);
+		}
 	}
 
 	private _addHeaderHandlers() {
