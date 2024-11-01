@@ -98,11 +98,9 @@ class Ajax {
 	}
 
 	async getProfile(
-		profileId: number,
+		profilePath: string,
 	): Promise<AjaxResponse<FullProfileResponse>> {
-		const request = this._getRequest(
-			app.config.URL.profile + `/${profileId}`,
-		);
+		const request = this._getRequest(app.config.URL.profile + profilePath);
 		const response = await this._response(request);
 		let profileResponse: AjaxResponse<FullProfileResponse> = {
 			status: response.status,

@@ -107,7 +107,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	}
 
 	private async _requestProfile() {
-		const response = await ajax.getProfile(this._configProfile.profile.id);
+		const response = await ajax.getProfile(this._profileLinkHref);
 		switch (response.status) {
 			case 400:
 			case 405:
