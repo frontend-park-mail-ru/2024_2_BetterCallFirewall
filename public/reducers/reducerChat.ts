@@ -13,7 +13,7 @@ const initialChatState: IChatConfig = deepClone(
 );
 
 const initialState: ViewChatConfig = {
-    home: config.homeConfig,
+    ...config.homeConfig,
     chat: initialChatState,
 };
 

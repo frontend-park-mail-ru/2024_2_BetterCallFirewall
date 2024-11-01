@@ -1,25 +1,31 @@
 import { Action } from '../actions/action';
-import { reducerHome } from '../reducers/reducerHome';
 import { reducerMessages } from '../reducers/reducerMessages';
 import { ViewMessages, ViewMessagesConfig } from '../views/messages/viewMessages';
 import { BaseStore, Store } from './store';
+import { ChangeHome, StoreHome } from './storeHome';
+
+export interface ChangeMessages extends ChangeHome {
+	data: ViewMessagesConfig;
+}
 
 export class StoreMessages extends BaseStore implements Store {
     private _state: ViewMessagesConfig;
     protected _registeredViews: ViewMessages[] = [];
+    private _storeHome: StoreHome;
 
-    constructor() {
+    constructor(storeHome: StoreHome) {
         super();
         this._state = reducerMessages();
+        this._storeHome = storeHome;
     }
 
     handleAction(action: Action): void {
-        this._state.home = reducerHome(this._state.home, action);
+        this._state = { ...this._state, ...this._storeHome.state };
         this._state = reducerMessages(this._state, action);
         console.log('storeMessages: state:', this._state);
         this._registeredViews.forEach((view) => {
             if (view.active) {
-                view.updateViewMessages(this._state);
+                view.handleChange({ type: action.type, data: this._state });
             }
         });
     }

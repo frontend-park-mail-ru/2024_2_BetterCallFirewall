@@ -1,8 +1,14 @@
+import app from '../app';
 import { IProfileConfig } from '../components/Profile/Profile';
+import { PostResponse } from '../models/post';
 
 type AjaxPromiseConfig = {
 	request: Request;
 };
+
+// type FetchConfig = {
+// 	request: Request;
+// };
 
 type Callback = (data: object | null, error: Error | null) => void;
 
@@ -13,6 +19,18 @@ type AjaxConfig = {
 export type FormResponse = {
 	message: string;
 };
+
+export interface FetchResponse<T> {
+	success: boolean;
+	data: T;
+	message: string;
+}
+
+export interface AjaxResponse<T> extends FetchResponse<T> {
+	status: number;
+}
+
+export type QueryParams = Record<string, string>;
 
 class Ajax {
 	/**
@@ -34,20 +52,52 @@ class Ajax {
 		});
 	}
 
-	/**
-	 * Get request and promise with resolving by data
-	 *
-	 * @param {string} url
-	 * @returns {Promise<T>}
-	 */
-	getPromise<T>(url: string): Promise<T> {
-		const request = new Request(url, {
-			method: 'get',
-			credentials: 'include',
-		});
-		return this._ajaxPromise({
-			request,
-		});
+	// /**
+	//  * Get request and promise with resolving by data
+	//  *
+	//  * @param {string} baseUrl
+	//  * @returns {Promise<T>}
+	//  */
+	// getPromise<T>(baseUrl: string, queryParams?: QueryParams): Promise<T> {
+	// 	const params = new URLSearchParams(queryParams);
+	// 	const url = `${baseUrl}?${params}`;
+	// 	const request = new Request(url, {
+	// 		method: 'get',
+	// 		credentials: 'include',
+	// 	});
+	// 	return this._ajaxPromise({
+	// 		request,
+	// 	});
+	// }
+
+	async getPosts(
+		queryParams?: QueryParams,
+	): Promise<AjaxResponse<PostResponse[]>> {
+		const request = this._getRequest(app.config.URL.post, queryParams);
+		const response = await this._response(request);
+		console.log('response:', response);
+		let postsResponse: AjaxResponse<PostResponse[]> = {
+			status: response.status,
+			success: false,
+			data: [],
+			message: '',
+		};
+		switch (postsResponse.status) {
+			case 204:
+				postsResponse.message = 'Постов больше нет';
+				break;
+			case 401:
+				postsResponse.message = 'Не авторизован';
+				break;
+			default:
+				const body = (await response.json()) as FetchResponse<
+					PostResponse[]
+				>;
+				console.log('body:', body);
+				postsResponse = Object.assign(postsResponse, body);
+		}
+		console.log('postsResponse:', postsResponse);
+		return postsResponse;
 	}
 
 	async getProfileData(user: string): Promise<IProfileConfig> {
@@ -102,8 +152,8 @@ class Ajax {
 			method: 'POST',
 			body: JSON.stringify(formData),
 			headers: {
-				// 'Content-Type': 'application/json:charset=UTF-8',
-				'Content-Type': 'application/json',
+				'Content-Type': 'application/json:charset=UTF-8',
+				// 'Content-Type': 'application/json',
 			},
 			credentials: 'include',
 		});
@@ -130,13 +180,31 @@ class Ajax {
 	 * @param {AjaxPromiseConfig} config
 	 * @returns {Promise<T>}
 	 */
-	private async _ajaxPromise<T>(config: AjaxPromiseConfig): Promise<T> {
+	private async _ajaxPromise<T>(
+		config: AjaxPromiseConfig,
+	): Promise<T | null> {
 		const response = await fetch(config.request);
 		if (response.ok) {
+			if (response.status === 204) {
+				return null;
+			}
 			return response.json();
 		} else {
-			throw new Error(response.statusText);
+			throw new Error(response.status.toString());
 		}
+	}
+
+	private _getRequest(baseUrl: string, queryParams?: QueryParams) {
+		const params = new URLSearchParams(queryParams);
+		const url = `${baseUrl}?${params}`;
+		return new Request(url, {
+			method: 'get',
+			credentials: 'include',
+		});
+	}
+
+	private async _response(request: Request): Promise<Response> {
+		return await fetch(request);
 	}
 }
 

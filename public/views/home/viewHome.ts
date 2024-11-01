@@ -1,17 +1,18 @@
+import { ACTION_APP_TYPES } from '../../actions/actionApp';
 import {
 	ActionHeaderLogoutClickFail,
 	ActionHeaderLogoutClickSuccess,
 } from '../../actions/actionHeader';
 import {
+	ACTION_MENU_TYPES,
 	ActionMenuLinkClick,
 	ActionMenuTitleClick,
 } from '../../actions/actionMenu';
-import app, { IHomeConfig } from '../../app';
+import app from '../../app';
 import {
 	Header,
 	Container,
 	IContainerConfig,
-	IContent,
 	IContentConfig,
 	IHeaderConfig,
 	IMenuConfig,
@@ -23,6 +24,7 @@ import { IBaseComponent } from '../../components/BaseComponent';
 import config, { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
+import { ChangeHome } from '../../stores/storeHome';
 import { BaseView, Components, View } from '../view';
 
 export interface MainConfig {
@@ -36,13 +38,14 @@ export interface MainConfig {
 export interface HomeConfig {
 	menu: IMenuConfig;
 	main: MainConfig;
+	errorMessage: string;
 }
 
 export type ComponentsHome = {
 	main?: Container;
 	menu?: Menu;
 	header?: Header;
-	content?: IContent;
+	content?: Content;
 	aside?: Container;
 } & Components;
 
@@ -54,16 +57,15 @@ export interface ViewHeader extends ViewHome {
 	updateHeader(data: IHeaderConfig): void;
 }
 
-export interface IViewHome extends View, ViewMenu, ViewHeader {
-	updateViewHome(data: IHomeConfig): void;
+export interface IViewHome extends View {
+	updateViewHome(data: HomeConfig): void;
 }
 
 export abstract class ViewHome extends BaseView implements IViewHome {
 	protected _components: ComponentsHome = {};
 	private _configHome: HomeConfig;
-	private _rendered: boolean = false;
 
-	constructor(config: IHomeConfig, root: Root) {
+	constructor(config: HomeConfig, root: Root) {
 		super(root);
 		this._configHome = config;
 	}
@@ -72,15 +74,28 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		return this._configHome;
 	}
 
-	updateViewHome(data: IHomeConfig) {
+	handleChange(change: ChangeHome): void {
+		if (this.active) {
+			switch (change.type) {
+				case ACTION_APP_TYPES.actionAppInit:
+				case ACTION_MENU_TYPES.menuLinkClick:
+					this._configHome = change.data;
+					this.render();
+					break;
+				default: // Потом расписать конкретные события и убрать default чтобы не было двойного обновления в унаследованных классах
+					this.updateViewHome(change.data);
+			}
+		}
+	}
+
+	updateViewHome(data: HomeConfig) {
 		console.log('ViewHome: update');
-		this._configHome = data as IHomeConfig;
-		this._rerender();
+		this._configHome = data;
+		this._render();
 	}
 
 	render(): void {
-		this._rendered = true;
-		this._rerender();
+		this._render();
 	}
 
 	updateMenu(data: IMenuConfig): void {
@@ -121,6 +136,14 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		return this._components;
 	}
 
+	protected get content(): Content {
+		const content = this._components.content;
+		if (!content) {
+			throw new Error('view has no content');
+		}
+		return content;
+	}
+
 	protected _clearContent() {
 		const content = this._components.content;
 		if (!content) {
@@ -148,11 +171,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		this._components.content.render();
 	}
 
-	protected _rerender() {
-		if (!this._rendered) {
-			this.render();
-			return;
-		}
+	protected _render() {
 		this.clear();
 		this._renderMenu();
 		this._renderMain();
@@ -163,6 +182,23 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		}
 		const aside = new Container(this._configHome.main.aside, main);
 		aside.render();
+	}
+
+	// true, если до конца документа осталось меньше двух экранов
+	protected _isNearBottom = () => {
+		return (
+			window.innerHeight * 2 + window.scrollY > document.body.offsetHeight
+		);
+	};
+
+	protected _printMessage() {
+		const content = this._components.content;
+		if (!content) {
+			throw new Error('content does no exist on ViewFeed');
+		}
+		if (this._configHome.errorMessage) {
+			content.printMessage(this._configHome.errorMessage);
+		}
 	}
 
 	private _renderMenu() {

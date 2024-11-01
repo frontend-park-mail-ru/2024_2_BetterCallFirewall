@@ -1,22 +1,32 @@
 import { Action } from '../actions/action';
-import { IHomeConfig } from '../app';
 import { reducerFeed } from '../reducers/reducerFeed';
-import { ViewFeed } from '../views/feed/viewFeed';
-import { BaseStore, Store } from './store';
+import { ViewFeed, ViewFeedConfig } from '../views/feed/viewFeed';
+import { BaseStore, Change, Store } from './store';
+import { StoreHome } from './storeHome';
+
+export interface ChangeFeed extends Change {
+	data: ViewFeedConfig;
+}
 
 export class StoreFeed extends BaseStore implements Store {
-	private _registeredView?: ViewFeed;
-	private _state: IHomeConfig;
+	protected _registeredView?: ViewFeed;
+	private _state: ViewFeedConfig;
+	private _storeHome: StoreHome;
 
-	constructor() {
+	constructor(storeHome: StoreHome) {
 		super();
 		this._state = reducerFeed();
+		this._storeHome = storeHome;
 	}
 
 	handleAction(action: Action): void {
+		this._state = { ...this._state, ...this._storeHome.state };
 		this._state = reducerFeed(this._state, action);
 		if (this._registeredView?.active) {
-			this._registeredView.updateViewHome(this._state);
+			this._registeredView.handleChange({
+				type: action.type,
+				data: this._state,
+			});
 		}
 	}
 

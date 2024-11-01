@@ -2,51 +2,60 @@ import { ActionUpdateChat } from '../../actions/actionChat';
 import { Root } from '../../components';
 import { Chat, IChatConfig } from '../../components/Chat/Chat';
 import dispatcher from '../../dispatcher/dispatcher';
-import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
+import { ChangeChat } from '../../stores/storeChat';
+import { ComponentsHome, HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
+
 
 export type ComponentsChat = {
     chat?: Chat;
 } & ComponentsHome;
 
-export interface ViewChatConfig {
-    home: HomeConfig;
+export interface ViewChatConfig extends HomeConfig {
     chat: IChatConfig;
 }
 
-export class ViewChat extends ViewHome {
+export interface IViewChat extends IViewHome {
+    handleChange(change: ChangeChat): void;
+}
+
+export class ViewChat extends ViewHome implements IViewChat {
     protected _configChat: ViewChatConfig;
     protected _components: ComponentsChat = {};
 
     constructor(config: ViewChatConfig, root: Root) {
-        super(config.home, root);
+        super(config, root);
         this._configChat = config;
     }
 
+    handleChange(change: ChangeChat): void {
+        super.handleChange(change);
+    }
+
     render(): void {
-        super.render();
+        this._render();
         dispatcher.getAction(
             new ActionUpdateChat(this._configChat.chat),
         );
     }
 
     updateViewChat(data: ViewChatConfig): void {
-        data.chat = {
+        this._configChat = { ...this._configChat, ...data };
+        this._render();
+    }
+
+    protected _render(): void {
+        super._render();
+        this._renderChat();
+    }
+
+    protected _renderChat(): void {
+        this._configChat.chat = {
             key: 'chat',
             companionAvatar: '../../img/avatar.png',
             companionName: 'Asap Rocky',
             lastDateOnline: '18:00',
         }; // tmp
-        this._configChat = data;
-        this.updateViewHome(data.home);
-        this._renderChat();
-    }
 
-    protected _rerender(): void {
-        super._rerender();
-        this._renderChat();
-    }
-
-    protected _renderChat(): void {
         const content = this._components.content;
         if (!content) {
             throw new Error('content does no exist on ViewChat');

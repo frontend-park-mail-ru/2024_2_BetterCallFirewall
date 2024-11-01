@@ -1,4 +1,4 @@
-import { IAppConfig, IHomeConfig, URLInterface } from './app';
+import { AppConfig, URLInterface } from './app';
 import { ILoginFormConfig, ISignupFormConfig } from './components';
 import { IChatConfig } from './components/Chat/Chat';
 import { IMessagesConfig } from './components/Message/Message';
@@ -6,9 +6,12 @@ import { IProfileConfig } from './components/Profile/Profile';
 import Validator from './modules/validation';
 import { ViewChatConfig } from './views/chat/viewChat';
 import { ViewMessagesConfig } from './views/messages/viewMessages';
+import { ViewFeedConfig } from './views/feed/viewFeed';
+import { ViewFriendsConfig } from './views/friends/viewFriends';
+import { HomeConfig } from './views/home/viewHome';
 import { ViewProfileConfig } from './views/profile/viewProfile';
 
-const DEBUG: boolean = true;
+const DEBUG: boolean = false;
 
 export const PAGE_LINKS = {
 	feed: '/feed',
@@ -20,7 +23,7 @@ export const PAGE_LINKS = {
 	profile: '/([\\w-]+)', // ????
 };
 
-const homeConfig: IHomeConfig = {
+const homeConfig: HomeConfig = {
 	menu: {
 		key: 'menu',
 		title: {
@@ -85,6 +88,7 @@ const homeConfig: IHomeConfig = {
 			className: 'aside',
 		},
 	},
+	errorMessage: '',
 };
 
 const signupConfig: ISignupFormConfig = {
@@ -166,6 +170,11 @@ const loginConfig: ILoginFormConfig = {
 	},
 };
 
+const feedConfig: ViewFeedConfig = {
+	...homeConfig,
+	posts: [],
+};
+
 const profileComponentConfig: IProfileConfig = {
 	key: 'profile',
 	firstName: '',
@@ -177,7 +186,7 @@ const profileComponentConfig: IProfileConfig = {
 };
 
 const profileConfig: ViewProfileConfig = {
-	home: homeConfig,
+	...homeConfig,
 	profile: profileComponentConfig,
 };
 
@@ -191,7 +200,7 @@ const messagesComponentConfig: IMessagesConfig = {
 };
 
 const messagesConfig: ViewMessagesConfig = {
-	home: homeConfig,
+	...homeConfig,
 	messages: messagesComponentConfig,
 };
 
@@ -203,36 +212,43 @@ const chatComponentConfig: IChatConfig = {
 };
 
 const chatConfig: ViewChatConfig = {
-    home: homeConfig,
+	...homeConfig,
     chat: chatComponentConfig,
 };
 
-const root: string = DEBUG
+
+const friendsConfig: ViewFriendsConfig = {
+	...homeConfig,
+};
+
+export const ROOT: string = DEBUG
 	? 'http://127.0.0.1:8000'
 	: 'http://185.241.194.197:8080';
 
 const URL: URLInterface = DEBUG
 	? {
-			signup: root + '/auth/signup',
-			login: root + '/auth/login',
-			logout: root + '/auth/logout',
-			post: root + '/api/post',
+			signup: ROOT + '/auth/signup',
+			login: ROOT + '/auth/login',
+			logout: ROOT + '/auth/logout',
+			post: ROOT + '/api/post',
 		}
 	: {
-			signup: root + '/api/v1/auth/register',
-			login: root + '/api/v1/auth/login',
-			logout: root + '/api/v1/auth/logout',
-			post: root + '/api/v1/post',
+			signup: ROOT + '/api/v1/auth/register',
+			login: ROOT + '/api/v1/auth/login',
+			logout: ROOT + '/api/v1/auth/logout',
+			post: ROOT + '/api/v1/feed',
 		};
 
-const config: IAppConfig = {
+const config: AppConfig = {
 	URL,
 	homeConfig,
 	signupConfig,
 	loginConfig,
+	feedConfig,
 	profileConfig,
 	messagesConfig,
 	chatConfig,
+	friendsConfig,
 };
 
 export default config;

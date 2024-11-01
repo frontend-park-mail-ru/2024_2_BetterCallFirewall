@@ -9,6 +9,10 @@
     }
 
     &__header {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+
         &-text {
             display: flex;
             flex-direction: column;

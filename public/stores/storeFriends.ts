@@ -1,27 +1,27 @@
 import { Action } from '../actions/action';
-import { reducerProfile } from '../reducers/reducerProfile';
-import { ViewProfile, ViewProfileConfig } from '../views/profile/viewProfile';
+import { reducerFriends } from '../reducers/reducerFriends';
+import { ViewFriends, ViewFriendsConfig } from '../views/friends/viewFriends';
 import { BaseStore, Store } from './store';
 import { ChangeHome, StoreHome } from './storeHome';
 
-export interface ChangeProfile extends ChangeHome {
-	data: ViewProfileConfig;
+export interface ChangeFriends extends ChangeHome {
+	data: ViewFriendsConfig;
 }
 
-export class StoreProfile extends BaseStore implements Store {
-	protected _registeredViews: ViewProfile[] = [];
-	private _state: ViewProfileConfig;
+export class StoreFriends extends BaseStore implements Store {
+	protected _registeredViews: ViewFriends[] = [];
+	private _state: ViewFriendsConfig;
 	private _storeHome: StoreHome;
 
 	constructor(storeHome: StoreHome) {
 		super();
-		this._state = reducerProfile();
+		this._state = reducerFriends();
 		this._storeHome = storeHome;
 	}
 
 	handleAction(action: Action): void {
 		this._state = { ...this._state, ...this._storeHome.state };
-		this._state = reducerProfile(this._state, action);
+		this._state = reducerFriends(this._state, action);
 		this._registeredViews.forEach((view) => {
 			if (view.active) {
 				view.handleChange({ type: action.type, data: this._state });
@@ -29,11 +29,11 @@ export class StoreProfile extends BaseStore implements Store {
 		});
 	}
 
-	addView(view: ViewProfile): void {
+	addView(view: ViewFriends): void {
 		this._addView(view);
 	}
 
-	removeView(view: ViewProfile): void {
+	removeView(view: ViewFriends): void {
 		this._removeView(view);
 	}
 }

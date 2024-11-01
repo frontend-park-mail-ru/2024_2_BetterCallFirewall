@@ -13,7 +13,7 @@ const initialMessagesState: IMessagesConfig = deepClone(
 );
 
 const initialState: ViewMessagesConfig = {
-    home: config.homeConfig,
+    ...config.homeConfig,
     messages: initialMessagesState,
 };
 

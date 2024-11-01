@@ -2,6 +2,11 @@ import { Action, ActionType } from '../actions/action';
 import dispatcher from '../dispatcher/dispatcher';
 import { View } from '../views/view';
 
+export interface Change {
+	type: ActionType;
+	data: object;
+}
+
 export interface Store {
 	handleAction(action: Action): void;
 	subscribe(actionType: ActionType): void;

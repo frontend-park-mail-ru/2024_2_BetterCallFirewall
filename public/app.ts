@@ -1,26 +1,18 @@
-import {
-	ILoginFormConfig,
-	IMenuConfig,
-	ISignupFormConfig,
-	Root,
-} from './components/index';
+import { ILoginFormConfig, ISignupFormConfig, Root } from './components/index';
 import { Router, RouterConfig } from './router/router';
 import config, { PAGE_LINKS } from './config';
 import { ViewLogin } from './views/login/viewLogin';
 import { ViewSignup } from './views/signup/viewSignup';
-import { StoreMenu } from './stores/storeMenu';
 import {
 	ACTION_MENU_TYPES,
 	ActionUpdateProfileLinkHref,
 } from './actions/actionMenu';
-import { ViewFeed } from './views/feed/viewFeed';
+import { ViewFeed, ViewFeedConfig } from './views/feed/viewFeed';
 import { ViewProfile, ViewProfileConfig } from './views/profile/viewProfile';
 import { StoreProfile } from './stores/storeProfile';
 import { ACTION_PROFILE_TYPES } from './actions/actionProfile';
-import { StoreHeader } from './stores/storeHeader';
 import { ACTION_HEADER_TYPES } from './actions/actionHeader';
 import { StoreLogin } from './stores/storeLogin';
-import { ACTION_USER_TYPES } from './actions/actionUser';
 import { StoreApp } from './stores/storeApp';
 import { ACTION_LOGIN_TYPES } from './actions/actionLogin';
 import { ACTION_APP_TYPES, ActionAppInit } from './actions/actionApp';
@@ -30,15 +22,18 @@ import { StoreFeed } from './stores/storeFeed';
 import { ACTION_SIGNUP_TYPES } from './actions/actionSignup';
 import { ViewMessages, ViewMessagesConfig } from './views/messages/viewMessages';
 import { ViewChat } from './views/chat/viewChat';
-import { ViewFriends } from './views/friends/viewFriends';
-import { StoreMain } from './stores/storeMain';
-import { MainConfig } from './views/home/viewHome';
-import { StoreHome } from './stores/storeHome';
 import { StoreMessages } from './stores/storeMessages';
 import { ACTION_MESSAGES_TYPES } from './actions/actionMessages';
 import { ViewChatConfig } from './views/chat/viewChat';
 import { StoreChat } from './stores/storeChat';
 import { ACTION_CHAT_TYPES } from './actions/actionChat';
+import { ViewFriends, ViewFriendsConfig } from './views/friends/viewFriends';
+import { HomeConfig } from './views/home/viewHome';
+import { StoreHome } from './stores/storeHome';
+import { StoreFriends } from './stores/storeFriends';
+import { ACTION_FORM_TYPES } from './actions/actionForm';
+import { ACTION_FEED_TYPES } from './actions/actionFeed';
+
 
 export const PAGES = {
 	home: 'home',
@@ -53,26 +48,20 @@ export interface URLInterface {
 	post: string;
 }
 
-export interface IHomeConfig {
-	menu: IMenuConfig;
-	main: MainConfig;
-}
-
-export interface IAppConfig {
+export interface AppConfig {
 	URL: URLInterface;
-	homeConfig: IHomeConfig;
+	homeConfig: HomeConfig;
 	signupConfig: ISignupFormConfig;
 	loginConfig: ILoginFormConfig;
+	feedConfig: ViewFeedConfig;
 	profileConfig: ViewProfileConfig;
 	messagesConfig: ViewMessagesConfig;
 	chatConfig: ViewChatConfig;
+	friendsConfig: ViewFriendsConfig;
 }
 
 export interface AppStores {
 	app: StoreApp;
-	menu: StoreMenu;
-	header: StoreHeader;
-	main: StoreMain;
 	home: StoreHome;
 	login: StoreLogin;
 	signup: StoreSignup;
@@ -80,6 +69,7 @@ export interface AppStores {
 	feed: StoreFeed;
 	messages: StoreMessages;
 	chat: StoreChat;
+	friends: StoreFriends;
 }
 
 /**
@@ -87,20 +77,20 @@ export interface AppStores {
  */
 class App {
 	private _router: Router;
-	private _config: IAppConfig;
+	private _config: AppConfig;
 	private _root: Root;
 	private _stores: AppStores;
 
 	/**
 	 * Instance of application
 	 *
-	 * @param {IAppConfig} config - config of application
+	 * @param {AppConfig} config - config of application
 	 */
-	constructor(config: IAppConfig) {
+	constructor(config: AppConfig) {
 		this._config = config;
 		this._root = new Root();
 
-		const feedView = new ViewFeed(this._config.homeConfig, this._root);
+		const feedView = new ViewFeed(this._config.feedConfig, this._root);
 		const profileView = new ViewProfile(
 			this._config.profileConfig,
 			this._root,
@@ -145,26 +135,26 @@ class App {
 		];
 		this._router = new Router(feedView, routerConfig);
 
+		const storeHome = new StoreHome();
 		this._stores = {
 			app: new StoreApp(),
-			menu: new StoreMenu(),
-			header: new StoreHeader(),
-			main: new StoreMain(),
-			home: new StoreHome(),
+			home: storeHome,
 			login: new StoreLogin(),
 			signup: new StoreSignup(),
-			feed: new StoreFeed(),
-			profile: new StoreProfile(),
-			messages: new StoreMessages(),
-			chat: new StoreChat(),
+			feed: new StoreFeed(storeHome),
+			profile: new StoreProfile(storeHome),
+			friends: new StoreFriends(storeHome),
+			messages: new StoreMessages(storeHome),
+			chat: new StoreChat(storeHome),
 		};
 
 		this._stores.app.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.app.subscribe(ACTION_MENU_TYPES.titleClick);
 		this._stores.app.subscribe(ACTION_MENU_TYPES.menuLinkClick);
 		this._stores.app.subscribe(ACTION_LOGIN_TYPES.actionLoginToSignupClick);
+		this._stores.app.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
 		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
-		this._stores.app.subscribe(ACTION_USER_TYPES.loginClickSuccess);
+		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 
 		this._stores.home.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.menuLinkClick);
@@ -173,18 +163,21 @@ class App {
 		this._stores.home.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
 
 		this._stores.login.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
-		this._stores.login.subscribe(ACTION_USER_TYPES.loginClickSuccess);
-		this._stores.login.subscribe(ACTION_USER_TYPES.formError);
+		this._stores.login.subscribe(ACTION_FORM_TYPES.formError);
+		this._stores.login.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
 		this._stores.login.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
+		this._stores.login.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 
-		this._stores.signup.subscribe(ACTION_USER_TYPES.formError);
-		this._stores.signup.subscribe(ACTION_USER_TYPES.signupClickSuccess);
+		this._stores.signup.subscribe(ACTION_FORM_TYPES.formError);
+		this._stores.signup.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
 		this._stores.signup.subscribe(
 			ACTION_LOGIN_TYPES.actionLoginToSignupClick,
 		);
 
-		this._stores.feed.subscribe(ACTION_USER_TYPES.loginClickSuccess);
-		this._stores.feed.subscribe(ACTION_USER_TYPES.signupClickSuccess);
+		this._stores.feed.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
+		this._stores.feed.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
+		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestSuccess);
+		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.goToProfile);
@@ -211,8 +204,8 @@ class App {
 		chatView.register(this._stores.home);
 		chatView.register(this._stores.chat);
 
-		friendView.register(this._stores.menu);
-		friendView.register(this._stores.header);
+		// friendView.register(this._stores.menu);
+		// friendView.register(this._stores.header);
 		friendView.register(this._stores.home);
 	}
 
@@ -222,6 +215,10 @@ class App {
 
 	get stores(): AppStores {
 		return this._stores;
+	}
+
+	get config(): AppConfig {
+		return this._config;
 	}
 
 	init() {

@@ -2,15 +2,15 @@ import { Action } from '../actions/action';
 import { Root } from '../components';
 import { IBaseComponent } from '../components/BaseComponent';
 import dispatcher from '../dispatcher/dispatcher';
-import { Store } from '../stores/store';
+import { Change, Store } from '../stores/store';
 
 export type ViewData = object;
 export type Components = Record<string, IBaseComponent>;
 
 export interface View {
 	sendAction(action: Action): void;
-	// update(data: ViewData): void;
 	clear(): void;
+	handleChange(change: Change): void;
 	render(): void;
 	register(store: Store): void;
 	unregister(store: Store): void;
@@ -19,8 +19,8 @@ export interface View {
 
 export abstract class BaseView implements View {
 	protected _root: Root;
+	protected _registeredStores: Store[] = [];
 	private _isActive: boolean;
-	private _registeredStores: Store[] = [];
 
 	constructor(root: Root) {
 		this._root = root;
@@ -62,4 +62,5 @@ export abstract class BaseView implements View {
 	}
 
 	abstract render(): void;
+	abstract handleChange(change: Change): void;
 }

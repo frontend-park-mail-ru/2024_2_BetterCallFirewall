@@ -6,64 +6,30 @@ const port = 8000;
 
 const posts = [
 	{
-		header: 'Это заголовок поста',
-		body: 'Это пост',
-		created_at: '23.09.2024',
-		created_by: 2,
+		id: 1,
+		header: {
+			authorId: 1,
+			author: 'Это автор поста',
+			avatar: 'img/avatar.png',
+		},
+		post_content: {
+			text: 'Это текст поста',
+			file: '',
+			created_at: '23.09.2024',
+		},
 	},
 	{
-		header: 'Это заголовок другого поста',
-		body: 'А это другой пост',
-		created_at: '32.09.2024',
-		created_by: 2,
-	},
-	{
-		header: 'Это заголовок поста',
-		body: 'Это пост',
-		created_at: '23.09.2024',
-		created_by: 2,
-	},
-	{
-		header: 'Это заголовок другого поста',
-		body: 'А это другой пост',
-		created_at: '32.09.2024',
-		created_by: 3,
-	},
-	{
-		header: 'Это заголовок поста',
-		body: 'Это пост',
-		created_at: '23.09.2024',
-		created_by: 3,
-	},
-	{
-		header: 'Это заголовок другого поста',
-		body: 'А это другой пост',
-		created_at: '32.09.2024',
-		created_by: 3,
-	},
-	{
-		header: 'Это заголовок поста',
-		body: 'Это пост',
-		created_at: '23.09.2024',
-		created_by: 3,
-	},
-	{
-		header: 'Это заголовок другого поста',
-		body: 'А это другой пост',
-		created_at: '32.09.2024',
-		created_by: 3,
-	},
-	{
-		header: 'Это заголовок поста',
-		body: 'Это пост',
-		created_at: '23.09.2024',
-		created_by: 3,
-	},
-	{
-		header: 'Это заголовок другого поста',
-		body: 'А это другой пост',
-		created_at: '32.09.2024',
-		created_by: 3,
+		id: 2,
+		header: {
+			authorId: 3,
+			author: 'Это автор другого поста',
+			avatar: 'img/avatar.png',
+		},
+		post_content: {
+			text: 'Это текст другого поста',
+			file: '',
+			created_at: '23.09.2024',
+		},
 	},
 ];
 
@@ -88,10 +54,12 @@ app.use(express.static('./node_modules'));
 
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+	res.header(
+		'Access-Control-Allow-Methods',
+		'GET, POST, PUT, DELETE, OPTIONS',
+	);
 	next();
 });
-
 
 app.post('/auth/login', (req, res) => {
 	const body = req.body;
@@ -148,7 +116,9 @@ app.get('/api/post', (req, res) => {
 	});
 	if (isAuthorised) {
 		const body = {};
+		body.success = true;
 		body.data = posts;
+		body.message = '';
 		res.send(JSON.stringify(body));
 	} else {
 		res.status(401);
@@ -157,50 +127,50 @@ app.get('/api/post', (req, res) => {
 });
 
 const profiles = {
-    lukeskywalker: {
-        key: 'profile',
+	lukeskywalker: {
+		key: 'profile',
 		id: 2,
-        firstName: 'Luke',
-        secondName: 'Skywalker',
-        description: 'Jedi, master',
-        friendsCount: 99,
-        groupsCount: 3,
+		firstName: 'Luke',
+		secondName: 'Skywalker',
+		description: 'Jedi, master',
+		friendsCount: 99,
+		groupsCount: 3,
 		img: '../img/avatar.png',
-    },
-    johndoe: {
-        key: 'profile',
+	},
+	johndoe: {
+		key: 'profile',
 		id: 3,
-        firstName: 'John',
-        secondName: 'Doe',
-        description: 'A mysterious individual',
-        friendsCount: 10,
-        groupsCount: 1,
-    }
+		firstName: 'John',
+		secondName: 'Doe',
+		description: 'A mysterious individual',
+		friendsCount: 10,
+		groupsCount: 1,
+	},
 };
 
 app.get('/api/profiles/:user', (req, res) => {
-    const user = req.params.user.toLowerCase();
-    
-    const profile = profiles[user];
+	const user = req.params.user.toLowerCase();
 
-    if (profile) {
-        res.json(profile);
-    } else {
-        res.status(404).json({
-            key: 'profile',
-            firstName: '',
-            secondName: '',
-            description: '',
-            friendsCount: 0,
-            groupsCount: 0,
-        });
-    }
+	const profile = profiles[user];
+
+	if (profile) {
+		res.json(profile);
+	} else {
+		res.status(404).json({
+			key: 'profile',
+			firstName: '',
+			secondName: '',
+			description: '',
+			friendsCount: 0,
+			groupsCount: 0,
+		});
+	}
 });
 
 app.get('/api/currentUserId', (req, res) => {
 	const sessionId = req.cookies['sessionid'];
 
-	const user = users.find(user => user.sessionId === parseInt(sessionId));
+	const user = users.find((user) => user.sessionId === parseInt(sessionId));
 
 	if (user) {
 		res.json({ userId: user.id });
@@ -209,9 +179,12 @@ app.get('/api/currentUserId', (req, res) => {
 	}
 });
 
-
 app.get('/dist/bundle.js', (req, res) => {
 	res.sendFile(path.join(__dirname, '../dist', 'bundle.js'));
+});
+
+app.get('/favicon.ico', (req, res) => {
+	res.sendFile(path.join(__dirname, '../', 'public/img/favicon.ico'));
 });
 
 app.get('*', (req, res) => {
@@ -221,5 +194,3 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
 	console.log(`Server is listening on port ${port}`);
 });
-
-

@@ -1,15 +1,24 @@
-import { IHomeConfig } from '../../app';
 import { Root } from '../../components';
 import { Friend } from '../../components/Friend/Friend';
-import { ViewHome } from '../home/viewHome';
+import { ChangeFriends } from '../../stores/storeFriends';
+import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
-// export interface FeedConfig extends IBaseComponentConfig {
-// 	className: string;
-// }
+export interface ViewFriendsConfig extends HomeConfig {}
 
-export class ViewFriends extends ViewHome {
-	constructor(config: IHomeConfig, root: Root) {
+export interface IViewFriends extends IViewHome {
+	handleChange(change: ChangeFriends): void;
+}
+
+export class ViewFriends extends ViewHome implements IViewFriends {
+	constructor(config: ViewFriendsConfig, root: Root) {
 		super(config, root);
+	}
+
+	handleChange(change: ChangeFriends): void {
+		super.handleChange(change);
+		switch (change.type) {
+			default:
+		}
 	}
 
 	protected _renderContent(): void {

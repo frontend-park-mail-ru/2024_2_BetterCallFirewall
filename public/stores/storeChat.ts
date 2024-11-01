@@ -1,25 +1,31 @@
 import { Action } from '../actions/action';
-import { reducerHome } from '../reducers/reducerHome';
 import { reducerChat } from '../reducers/reducerChat';
 import { ViewChat, ViewChatConfig } from '../views/chat/viewChat';
 import { BaseStore, Store } from './store';
+import { ChangeHome, StoreHome } from './storeHome';
+
+export interface ChangeChat extends ChangeHome {
+	data: ViewChatConfig;
+}
 
 export class StoreChat extends BaseStore implements Store {
     private _state: ViewChatConfig;
     protected _registeredViews: ViewChat[] = [];
+    private _storeHome: StoreHome;
 
-    constructor() {
+    constructor(storeHome: StoreHome) {
         super();
         this._state = reducerChat();
+        this._storeHome = storeHome;
     }
 
     handleAction(action: Action): void {
-        this._state.home = reducerHome(this._state.home, action);
+        this._state = { ...this._state, ...this._storeHome.state };
         this._state = reducerChat(this._state, action);
         console.log('storeChat: state:', this._state);
         this._registeredViews.forEach((view) => {
             if (view.active) {
-                view.updateViewChat(this._state);
+                view.handleChange({ type: action.type, data: this._state });
             }
         });
     }

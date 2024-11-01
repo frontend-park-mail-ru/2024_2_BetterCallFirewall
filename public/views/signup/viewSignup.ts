@@ -1,8 +1,9 @@
-import { ActionSignupToLoginClick } from '../../actions/actionSignup';
+import { ActionFormError } from '../../actions/actionForm';
 import {
-	ActionFormError,
 	ActionSignupClickSuccess,
-} from '../../actions/actionUser';
+	ActionSignupToLoginClick,
+} from '../../actions/actionSignup';
+
 import app from '../../app';
 import {
 	ISignupFormConfig,
@@ -15,6 +16,7 @@ import dispatcher from '../../dispatcher/dispatcher';
 // import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
+import { Change } from '../../stores/store';
 import { BaseView, Components, ViewData } from '../view';
 
 export class ViewSignup extends BaseView {
@@ -28,6 +30,13 @@ export class ViewSignup extends BaseView {
 
 	get config() {
 		return this._config;
+	}
+
+	// Исправить
+	handleChange(change: Change): void {
+		switch (change.type) {
+			default:
+		}
 	}
 
 	update(data: ViewData) {
