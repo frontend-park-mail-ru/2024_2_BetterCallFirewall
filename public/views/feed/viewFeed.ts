@@ -106,8 +106,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 				}
 			})
 			.catch((error: Error) => {
-				console.log('ajax error:', error);
-				console.log('ajax error:', error.message);
 				this.sendAction(
 					new ActionPostsRequestFail({
 						status: Number(error.message),

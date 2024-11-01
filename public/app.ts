@@ -133,9 +133,10 @@ class App {
 		this._stores.home.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
 
 		this._stores.login.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
-		this._stores.login.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
 		this._stores.login.subscribe(ACTION_FORM_TYPES.formError);
+		this._stores.login.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
 		this._stores.login.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
+		this._stores.login.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 
 		this._stores.signup.subscribe(ACTION_FORM_TYPES.formError);
 		this._stores.signup.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
