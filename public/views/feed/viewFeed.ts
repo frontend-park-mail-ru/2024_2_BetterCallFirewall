@@ -2,6 +2,8 @@ import {
 	ActionPostsRequestFail,
 	ActionPostsRequestSuccess,
 } from '../../actions/actionFeed';
+import { ACTION_LOGIN_TYPES } from '../../actions/actionLogin';
+import { ACTION_SIGNUP_TYPES } from '../../actions/actionSignup';
 import { IPostConfig, Post, Root } from '../../components';
 import ajax, { QueryParams } from '../../modules/ajax';
 import { ChangeFeed } from '../../stores/storeFeed';
@@ -25,6 +27,12 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	handleChange(change: ChangeFeed): void {
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_LOGIN_TYPES.loginClickSuccess:
+			case ACTION_SIGNUP_TYPES.signupClickSuccess:
+				if (!this._configFeed.posts.length) {
+					this._requestPosts();
+				}
+				break;
 			default:
 				console.log('change:', change);
 				this.updateViewFeed(change.data);
@@ -36,7 +44,9 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		this._render();
 		this._addHandlers();
 
-		this._requestPosts(); // tmp
+		if (!this._configFeed.posts.length) {
+			this._requestPosts();
+		}
 	}
 
 	updateViewFeed(data: ViewFeedConfig) {
