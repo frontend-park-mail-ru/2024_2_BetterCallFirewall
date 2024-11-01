@@ -34,6 +34,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	render(): void {
+		console.log('render');
 		this._render();
 		this._addHandlers();
 
@@ -86,6 +87,8 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	 * Выполняет запрос постов и добавляет их
 	 */
 	private _requestPosts(): Promise<void> {
+		debugger;
+
 		const id = this.lastPostId;
 		const params: QueryParams = {};
 		if (id >= 0) {

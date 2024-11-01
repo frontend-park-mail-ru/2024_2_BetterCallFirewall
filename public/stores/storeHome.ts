@@ -29,7 +29,6 @@ export class StoreHome extends BaseStore implements Store {
 					this._state.menu.links.profile.href,
 				);
 				view.handleChange({ type: action.type, data: this._state });
-				// view.updateViewHome(this._state);
 			}
 		});
 	}
