@@ -21,7 +21,7 @@ export class ActionPostsRequestSuccess implements Action {
 }
 
 export type ActionPostsRequestFailData = {
-	error?: Error;
+	status?: number;
 	message?: string;
 };
 

@@ -40,7 +40,8 @@ export const reducerFeed = (
 			const data = action.data as ActionPostsRequestFailData;
 			if (data.message) {
 				newState.errorMessage = data.message;
-			} else if (data.error) {
+				// убрать хардкод
+			} else if (data.status !== 200) {
 				newState.errorMessage = 'Что-то пошло не так';
 			}
 			return newState; // tmp

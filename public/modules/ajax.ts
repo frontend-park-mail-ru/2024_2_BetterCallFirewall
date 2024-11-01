@@ -145,7 +145,7 @@ class Ajax {
 		if (response.ok) {
 			return response.json();
 		} else {
-			throw new Error(response.statusText);
+			throw new Error(response.status.toString());
 		}
 	}
 }
