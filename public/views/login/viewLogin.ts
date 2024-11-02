@@ -48,6 +48,7 @@ export class ViewLogin extends BaseView {
 	}
 
 	render() {
+		console.log('ViewLogin: render');
 		this.clear();
 
 		const config = this._config;
