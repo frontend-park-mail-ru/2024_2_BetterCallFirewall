@@ -31,6 +31,7 @@ export class ViewLogin extends BaseView {
 	}
 
 	handleChange(change: ChangeLogin): void {
+		console.log('change:', change);
 		switch (change.type) {
 			case ACTION_APP_TYPES.actionAppInit:
 				this._config = change.data;
