@@ -142,6 +142,9 @@ class API {
 				);
 				break;
 		}
+		if (!app.inited) {
+			this.sendAction(new ActionAppInit());
+		}
 	}
 }
 
