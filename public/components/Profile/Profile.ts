@@ -92,7 +92,6 @@ export class Profile extends BaseComponent {
 	}
 
 	addSendFriendRequestButton() {
-		console.log('send friend req');
 		const friendButton = document.createElement('button');
 		friendButton.textContent = 'Add friend';
 		friendButton.addEventListener('click', () => {});

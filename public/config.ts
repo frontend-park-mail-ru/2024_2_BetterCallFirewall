@@ -190,6 +190,7 @@ const profileComponentConfig: IProfileConfig = {
 const profileConfig: ViewProfileConfig = {
 	...homeConfig,
 	profile: profileComponentConfig,
+	path: '/',
 };
 
 const messagesComponentConfig: IMessagesConfig = {

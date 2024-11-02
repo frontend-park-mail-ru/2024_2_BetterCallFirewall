@@ -8,6 +8,8 @@ import {
 	ActionMenuLinkClick,
 	ActionMenuTitleClick,
 } from '../../actions/actionMenu';
+import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
+import api from '../../api/api';
 import app from '../../app';
 import {
 	Header,
@@ -77,6 +79,9 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	handleChange(change: ChangeHome): void {
 		if (this.active) {
 			switch (change.type) {
+				case ACTION_PROFILE_TYPES.getHeader:
+					api.requestHeader();
+					break;
 				case ACTION_APP_TYPES.actionAppInit:
 				case ACTION_MENU_TYPES.menuLinkClick:
 					this._configHome = change.data;
