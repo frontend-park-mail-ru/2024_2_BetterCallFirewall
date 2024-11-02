@@ -5,6 +5,8 @@ import {
 	ActionPostsRequestSuccess,
 } from '../actions/actionFeed';
 import {
+	ActionProfileGetHeaderFail,
+	ActionProfileGetHeaderSuccess,
 	ActionProfileGetYourOwnProfileFail,
 	ActionProfileGetYourOwnProfileSuccess,
 	ActionProfileRequestFail,
@@ -117,6 +119,28 @@ class API {
 						message: response.message,
 					}),
 				);
+		}
+	}
+
+	async requestHeader(): Promise<void> {
+		const response = await ajax.getHeader();
+		switch (response.status) {
+			case 200:
+				if (!response.data) {
+					break;
+				}
+				this.sendAction(
+					new ActionProfileGetHeaderSuccess({
+						headerResponse: response.data,
+					}),
+				);
+				break;
+			case 401:
+				this.sendAction(new ActionUserUnauthorized());
+				this.sendAction(
+					new ActionProfileGetHeaderFail({ status: response.status }),
+				);
+				break;
 		}
 	}
 }

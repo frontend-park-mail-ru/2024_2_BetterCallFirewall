@@ -234,6 +234,7 @@ const URL: URLInterface = DEBUG
 			post: ROOT + '/api/post',
 			profile: ROOT + '/api/profile',
 			profileYourOwn: ROOT + '/api/profile',
+			header: ROOT + '/api/profile/header',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -241,7 +242,8 @@ const URL: URLInterface = DEBUG
 			logout: ROOT + '/api/v1/auth/logout',
 			post: ROOT + '/api/v1/feed',
 			profile: ROOT + '/api/v1/profile',
-			profileYourOwn: ROOT + '/api/v1/profile/',
+			profileYourOwn: ROOT + '/api/v1/profile',
+			header: ROOT + '/api/v1/profile/header',
 		};
 
 const config: AppConfig = {

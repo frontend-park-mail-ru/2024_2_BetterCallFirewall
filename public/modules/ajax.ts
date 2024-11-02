@@ -1,4 +1,5 @@
 import app from '../app';
+import { HeaderResponse } from '../models/header';
 import { PostResponse } from '../models/post';
 import { FullProfileResponse } from '../models/profile';
 
@@ -142,6 +143,26 @@ class Ajax {
 		}
 		console.log('profileResponse:', profileResponse);
 		return profileResponse;
+	}
+
+	async getHeader(): Promise<AjaxResponse<HeaderResponse>> {
+		const request = this._getRequest(app.config.URL.header);
+		const response = await this._response(request);
+		let headerResponse: AjaxResponse<HeaderResponse> = {
+			status: response.status,
+			success: false,
+		};
+		switch (headerResponse.status) {
+			case 200: {
+				const body =
+					(await response.json()) as FetchResponse<HeaderResponse>;
+				console.log('body');
+				headerResponse = Object.assign(headerResponse, body);
+				break;
+			}
+		}
+		console.log('headerResponse:', headerResponse);
+		return headerResponse;
 	}
 
 	async getCurrentUserId(): Promise<number> {

@@ -60,6 +60,8 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				break;
 			case ACTION_PROFILE_TYPES.profileRequestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestFail:
+			case ACTION_PROFILE_TYPES.getHeaderSuccess:
+			case ACTION_PROFILE_TYPES.getHeaderFail:
 				if (this.active) {
 					this.updateViewProfile(change.data);
 				}

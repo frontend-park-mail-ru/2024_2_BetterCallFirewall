@@ -1,11 +1,13 @@
 import { Action } from '../actions/action';
 import {
 	ACTION_PROFILE_TYPES,
+	ActionProfileGetHeaderSuccessData,
 	ActionProfileGetYourOwnProfileSuccessData,
 	ActionProfileRequestSuccessData,
 	ActionUpdateProfileData,
 } from '../actions/actionProfile';
 import config from '../config';
+import { headerResponseToProfileConfig } from '../models/header';
 import { toProfileConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
 import { ViewProfileConfig } from '../views/profile/viewProfile';
@@ -38,6 +40,15 @@ export const reducerProfile = (
 			const profileConfig = toProfileConfig(
 				newState.profile,
 				actionData.profile,
+			);
+			newState.profile = Object.assign(newState.profile, profileConfig);
+			return newState;
+		}
+		case ACTION_PROFILE_TYPES.getHeaderSuccess: {
+			const actionData = action.data as ActionProfileGetHeaderSuccessData;
+			const profileConfig = headerResponseToProfileConfig(
+				newState.profile,
+				actionData.headerResponse,
 			);
 			newState.profile = Object.assign(newState.profile, profileConfig);
 			return newState;

@@ -1,4 +1,5 @@
 import { IProfileConfig } from '../components/Profile/Profile';
+import { HeaderResponse } from '../models/header';
 import { FullProfileResponse } from '../models/profile';
 import { Action, ActionType } from './action';
 
@@ -10,6 +11,8 @@ export const ACTION_PROFILE_TYPES = {
 	getYourOwnProfile: 'getYourOwnProfile',
 	getYourOwnProfileSuccess: 'getYourOwnProfileSuccess',
 	getYourOwnProfileFail: 'getYourOwnProfileFail',
+	getHeaderSuccess: 'getHeaderSuccess',
+	getHeaderFail: 'getHeaderFail',
 };
 
 export interface ActionUpdateProfileData extends IProfileConfig {}
@@ -101,6 +104,34 @@ export class ActionProfileGetYourOwnProfileFail implements Action {
 
 	constructor(data: ActionProfileGetYourOwnProfileFailData) {
 		this.type = ACTION_PROFILE_TYPES.getYourOwnProfileFail;
+		this.data = data;
+	}
+}
+
+export interface ActionProfileGetHeaderSuccessData {
+	headerResponse: HeaderResponse;
+}
+
+export class ActionProfileGetHeaderSuccess implements Action {
+	type: ActionType;
+	data: ActionProfileGetHeaderSuccessData;
+
+	constructor(data: ActionProfileGetHeaderSuccessData) {
+		this.type = ACTION_PROFILE_TYPES.getHeaderSuccess;
+		this.data = data;
+	}
+}
+
+export interface ActionProfileGetHeaderFailData {
+	status: number;
+}
+
+export class ActionProfileGetHeaderFail implements Action {
+	type: ActionType;
+	data: ActionProfileGetHeaderFailData;
+
+	constructor(data: ActionProfileGetHeaderFailData) {
+		this.type = ACTION_PROFILE_TYPES.getHeaderFail;
 		this.data = data;
 	}
 }

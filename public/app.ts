@@ -51,6 +51,7 @@ export interface URLInterface {
 	post: string;
 	profile: string;
 	profileYourOwn: string;
+	header: string;
 }
 
 export interface AppConfig {
@@ -165,6 +166,7 @@ class App {
 		this._stores.app.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
 		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
+		this._stores.app.subscribe(ACTION_PROFILE_TYPES.getHeaderFail);
 
 		this._stores.home.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.menuLinkClick);
@@ -206,6 +208,7 @@ class App {
 		this._stores.profile.subscribe(
 			ACTION_PROFILE_TYPES.getYourOwnProfileFail,
 		);
+		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.getHeaderSuccess);
 
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.goToMessages);
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.updateMessages);

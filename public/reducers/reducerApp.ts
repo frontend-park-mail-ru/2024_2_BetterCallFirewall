@@ -42,6 +42,13 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			// 	}
 			// 	break;
 			// }
+			// case ACTION_PROFILE_TYPES.getHeaderFail: {
+			// 	const data = action.data as ActionProfileGetHeaderFailData;
+			// 	if (data.status === 401) {
+			// 		router.goToPage(PAGE_LINKS.login);
+			// 	}
+			// 	break;
+			// }
 			case ACTION_USER_TYPES.unauthorized:
 				router.goToPage(PAGE_LINKS.login);
 				break;

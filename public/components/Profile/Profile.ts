@@ -18,7 +18,6 @@ export interface IProfileConfig extends IBaseComponentConfig {
 	isFriend?: boolean;
 	posts?: IPostConfig[];
 }
-// export interface IProfileConfig extends IBaseComponentConfig {}
 
 export class Profile extends BaseComponent {
 	protected override _config: IProfileConfig | null;
