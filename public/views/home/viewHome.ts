@@ -253,11 +253,11 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 			);
 		});
 
-		const messagesLink = menu.children[config.links.friends.key];
+		const messagesLink = menu.children[config.links.messages.key];
 		menu.addHandler(messagesLink.htmlElement, 'click', (event) => {
 			event.preventDefault();
 			this.sendAction(
-				new ActionMenuLinkClick({ href: config.links.friends.href }),
+				new ActionMenuLinkClick({ href: config.links.messages.href }),
 			);
 		});
 
