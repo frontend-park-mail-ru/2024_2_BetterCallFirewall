@@ -3,6 +3,7 @@ import { ACTION_APP_TYPES } from '../actions/actionApp';
 import { ACTION_FORM_TYPES, IFormErrorData } from '../actions/actionForm';
 import { ACTION_HEADER_TYPES } from '../actions/actionHeader';
 import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
+import { ACTION_USER_TYPES } from '../actions/actionUser';
 import { ILoginFormConfig } from '../components';
 import config from '../config';
 import deepClone from '../modules/deepClone';
@@ -27,6 +28,8 @@ export const reducerLogin = (state?: ILoginFormConfig, action?: Action) => {
 			case ACTION_SIGNUP_TYPES.toLoginLinkClick:
 				break;
 			case ACTION_APP_TYPES.actionAppInit:
+				break;
+			case ACTION_USER_TYPES.unauthorized:
 				break;
 		}
 	}

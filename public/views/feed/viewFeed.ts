@@ -5,6 +5,7 @@ import {
 } from '../../actions/actionFeed';
 import { ACTION_LOGIN_TYPES } from '../../actions/actionLogin';
 import { ACTION_SIGNUP_TYPES } from '../../actions/actionSignup';
+import { ActionUserUnauthorized } from '../../actions/actionUser';
 import { IPostConfig, Post, Root } from '../../components';
 import ajax, { QueryParams } from '../../modules/ajax';
 import { ChangeFeed } from '../../stores/storeFeed';
@@ -110,6 +111,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 				this.sendAction(new ActionPostsRequestSuccess(response.data));
 				break;
 			case 401:
+				this.sendAction(new ActionUserUnauthorized());
 				this.sendAction(
 					new ActionPostsRequestFail({
 						status: response.status,

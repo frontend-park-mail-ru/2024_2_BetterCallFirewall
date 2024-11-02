@@ -1,15 +1,12 @@
 import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
-import {
-	ACTION_FEED_TYPES,
-	ActionPostsRequestFailData,
-} from '../actions/actionFeed';
 import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
 import {
 	ACTION_MENU_TYPES,
 	ActionMenuLinkClickData,
 } from '../actions/actionMenu';
 import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
+import { ACTION_USER_TYPES } from '../actions/actionUser';
 import app from '../app';
 import { PAGE_LINKS } from '../config';
 import { View } from '../views/view';
@@ -37,14 +34,16 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			case ACTION_MENU_TYPES.titleClick:
 				router.goToPage(PAGE_LINKS.feed);
 				break;
-			case ACTION_FEED_TYPES.postsRequestFail: {
-				const data = action.data as ActionPostsRequestFailData;
-				// Убрать хардкод
-				if (data.status === 401) {
-					router.goToPage(PAGE_LINKS.login);
-				}
+			// case ACTION_FEED_TYPES.postsRequestFail: {
+			// 	const data = action.data as ActionPostsRequestFailData;
+			// 	if (data.status === 401) {
+			// 		router.goToPage(PAGE_LINKS.login);
+			// 	}
+			// 	break;
+			// }
+			case ACTION_USER_TYPES.unauthorized:
+				router.goToPage(PAGE_LINKS.login);
 				break;
-			}
 		}
 	}
 	console.log('activeView:', router.activeView);

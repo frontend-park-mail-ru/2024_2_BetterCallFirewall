@@ -6,6 +6,7 @@ import {
 	ActionProfileRequestSuccess,
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
+import { ActionUserUnauthorized } from '../../actions/actionUser';
 import { Post, Root } from '../../components';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
 import ajax from '../../modules/ajax';
@@ -121,6 +122,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	private async _requestProfile() {
 		const response = await ajax.getProfile(this._profileLinkHref);
 		switch (response.status) {
+			case 401:
+				this.sendAction(new ActionUserUnauthorized());
+				break;
 			case 400:
 			case 405:
 				this.sendAction(
@@ -149,6 +153,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	private async _requestYourOwnProfile() {
 		const response = await ajax.getYourOwnProfile();
 		switch (response.status) {
+			case 401:
+				this.sendAction(new ActionUserUnauthorized());
+				break;
 			case 400:
 			case 405:
 				this.sendAction(

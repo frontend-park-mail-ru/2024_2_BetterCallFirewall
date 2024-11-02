@@ -20,7 +20,10 @@ import dispatcher from './dispatcher/dispatcher';
 import { StoreSignup } from './stores/storeSignup';
 import { StoreFeed } from './stores/storeFeed';
 import { ACTION_SIGNUP_TYPES } from './actions/actionSignup';
-import { ViewMessages, ViewMessagesConfig } from './views/messages/viewMessages';
+import {
+	ViewMessages,
+	ViewMessagesConfig,
+} from './views/messages/viewMessages';
 import { ViewChat } from './views/chat/viewChat';
 import { StoreMessages } from './stores/storeMessages';
 import { ACTION_MESSAGES_TYPES } from './actions/actionMessages';
@@ -33,7 +36,7 @@ import { StoreHome } from './stores/storeHome';
 import { StoreFriends } from './stores/storeFriends';
 import { ACTION_FORM_TYPES } from './actions/actionForm';
 import { ACTION_FEED_TYPES } from './actions/actionFeed';
-
+import { ACTION_USER_TYPES } from './actions/actionUser';
 
 export const PAGES = {
 	home: 'home',
@@ -103,7 +106,10 @@ class App {
 			this._config.signupConfig,
 			this._root,
 		);
-		const messagesView = new ViewMessages(this._config.messagesConfig, this._root);
+		const messagesView = new ViewMessages(
+			this._config.messagesConfig,
+			this._root,
+		);
 		const chatView = new ViewChat(this._config.chatConfig, this._root);
 		const routerConfig: RouterConfig = [
 			{
@@ -151,6 +157,7 @@ class App {
 		};
 
 		this._stores.app.subscribe(ACTION_APP_TYPES.actionAppInit);
+		this._stores.app.subscribe(ACTION_USER_TYPES.unauthorized);
 		this._stores.app.subscribe(ACTION_MENU_TYPES.titleClick);
 		this._stores.app.subscribe(ACTION_MENU_TYPES.menuLinkClick);
 		this._stores.app.subscribe(ACTION_LOGIN_TYPES.toSignupClick);
@@ -168,6 +175,7 @@ class App {
 		);
 
 		this._stores.login.subscribe(ACTION_APP_TYPES.actionAppInit);
+		this._stores.login.subscribe(ACTION_USER_TYPES.unauthorized);
 		this._stores.login.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
 		this._stores.login.subscribe(ACTION_FORM_TYPES.formError);
 		this._stores.login.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
@@ -220,8 +228,6 @@ class App {
 		chatView.register(this._stores.home);
 		chatView.register(this._stores.chat);
 
-		// friendView.register(this._stores.menu);
-		// friendView.register(this._stores.header);
 		friendView.register(this._stores.home);
 	}
 
