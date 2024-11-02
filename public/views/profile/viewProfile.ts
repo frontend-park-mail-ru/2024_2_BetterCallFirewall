@@ -8,6 +8,7 @@ import {
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
 import { ActionUserUnauthorized } from '../../actions/actionUser';
+import api from '../../api/api';
 import app from '../../app';
 import { Post, Root } from '../../components';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
@@ -54,7 +55,8 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_PROFILE_TYPES.getYourOwnProfile:
-				this._requestYourOwnProfile();
+				// this._requestYourOwnProfile();
+				api.requestYourOwnProfile();
 				break;
 			case ACTION_PROFILE_TYPES.profileRequestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestFail:
@@ -68,7 +70,8 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	render(): void {
 		this._render();
 		this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
-		this._requestProfile();
+		api.requestProfile(this._profileLinkHref);
+		// this._requestProfile();
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {
