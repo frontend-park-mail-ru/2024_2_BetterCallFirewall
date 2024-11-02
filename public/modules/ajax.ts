@@ -217,7 +217,7 @@ class Ajax {
 
 	private _getRequest(baseUrl: string, queryParams?: QueryParams) {
 		const params = new URLSearchParams(queryParams);
-		const url = params ? `${baseUrl}?${params}` : `${baseUrl}`;
+		const url = queryParams ? `${baseUrl}?${params}` : `${baseUrl}`;
 		return new Request(url, {
 			method: 'get',
 			credentials: 'include',

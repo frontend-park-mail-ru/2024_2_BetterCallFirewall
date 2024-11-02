@@ -25,9 +25,8 @@ export const reducerMenu = (state?: IMenuConfig, action?: Action) => {
 			case ACTION_MENU_TYPES.titleClick:
 				break;
 			case ACTION_MENU_TYPES.updateProfileLinkHref:
-				newState.links.profile.href = (
-					action.data as ActionUpdateProfileLinkHrefData
-				).href;
+				newState.links.profile.href =
+					'/' + (action.data as ActionUpdateProfileLinkHrefData).href;
 				break;
 			case ACTION_PROFILE_TYPES.getYourOwnProfileSuccess: {
 				const actionData =
