@@ -78,19 +78,17 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 
 	handleChange(change: ChangeHome): void {
 		console.log('ViewHome: change:', change);
-		if (this.active) {
-			switch (change.type) {
-				case ACTION_PROFILE_TYPES.getHeader:
-					api.requestHeader();
-					break;
-				case ACTION_APP_TYPES.actionAppInit:
-				case ACTION_MENU_TYPES.menuLinkClick:
-					this._configHome = change.data;
-					this.render();
-					break;
-				default: // Потом расписать конкретные события и убрать default чтобы не было двойного обновления в унаследованных классах
-					this.updateViewHome(change.data);
-			}
+		switch (change.type) {
+			case ACTION_PROFILE_TYPES.getHeader:
+				api.requestHeader();
+				break;
+			case ACTION_APP_TYPES.actionAppInit:
+			case ACTION_MENU_TYPES.menuLinkClick:
+				this._configHome = change.data;
+				this.render();
+				break;
+			default: // Потом расписать конкретные события и убрать default чтобы не было двойного обновления в унаследованных классах
+				this.updateViewHome(change.data);
 		}
 	}
 
