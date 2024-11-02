@@ -3,8 +3,8 @@ import { PostResponse, toPostConfig } from './post';
 
 export interface ShortProfileResponse {
 	id: number;
-	firstName: string;
-	lastName: string;
+	first_name: string;
+	last_name: string;
 	avatar: string;
 }
 
@@ -21,8 +21,8 @@ export const toProfileConfig = (
 	const profileData: IProfileConfig = {
 		id: profileResponse.id,
 		key: `profile-${profileResponse.id}`,
-		firstName: profileResponse.firstName,
-		secondName: profileResponse.lastName,
+		firstName: profileResponse.first_name,
+		secondName: profileResponse.last_name,
 		img: profileResponse.avatar,
 		description: profileResponse.bio,
 		posts: profileResponse.posts?.map((postResponse) =>
