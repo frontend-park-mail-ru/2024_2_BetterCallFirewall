@@ -1,0 +1,30 @@
+.form__textarea {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: .7rem;
+    &-error {
+        color: red;
+        font-size: .9rem;
+        margin-top: .3rem;
+    }
+    &:last-of-type {
+        margin-bottom: 1.5rem;
+    }
+    label {
+        color: var(--main-text-color);
+        margin-bottom: .25rem;
+    }
+
+    textarea {
+        background: none;
+        box-shadow: none;
+        border: 1.3px var(--main-text-color) solid;
+        border-radius: .25rem;
+        padding-left: .5rem;
+        outline: none;
+        margin: 0;           
+        font: inherit;
+        color: var(--main-text-color);
+    }
+}

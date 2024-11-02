@@ -60,7 +60,9 @@ export class ViewLogin extends BaseView {
 		}
 		loginForm.addHandler(loginForm.form, 'submit', (event: Event) => {
 			event.preventDefault();
-			loginFormSubmit(loginForm, this._config.inputs);
+			if (this._config.inputs) {
+				loginFormSubmit(loginForm, this._config.inputs);
+			}
 		});
 
 		const toSignupLink = loginForm.items.toSignupLink;

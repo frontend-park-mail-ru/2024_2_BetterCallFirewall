@@ -1,6 +1,7 @@
 @use 'components/Menu/Menu';
 @use 'components/Header/Header';
 @use 'components/Input/Input';
+@use 'components/TextArea/TextArea';
 @use 'components/BaseForm/BaseForm';
 @use 'components/Post/Post';
 @use 'components/FormLink/FormLink';
@@ -192,4 +193,18 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration: none;
     padding: 0;
     cursor: pointer;
+}
+
+.buton-action {
+    border-radius: 4rem;
+    border: 1px solid var(--main-color);
+    padding: .6rem;
+    color: var(--main-color);
+    background-color: var(--main-bg-color);
+    &:hover {
+        background-color: var(--hover-bg-color);
+    }
+    &:active {
+        background-color: var(--main-bg-color);
+    }
 }

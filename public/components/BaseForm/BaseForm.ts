@@ -4,27 +4,34 @@ import BaseComponent, {
 } from '../BaseComponent';
 import { FormButton, IFormButtonConfig } from '../FormButton/FormButton';
 import { IInputConfig, Input } from '../Input/Input';
+import { ITextAreaConfig, TextArea } from '../TextArea/TextArea';
 
 export type ConfigInputs = Record<string, IInputConfig>;
 export type ConfigInputsItems = [string, IInputConfig][];
+export type ConfigTextAreas = Record<string, ITextAreaConfig>;
+export type ConfigTextAreaItems = [string, ITextAreaConfig][];
 export type Items = { [key: string]: IBaseComponent };
 
 export interface IBaseFormConfig extends IBaseComponentConfig {
-	inputs: Record<string, IInputConfig>;
+	inputs?: Record<string, IInputConfig>;
 	button: IFormButtonConfig;
+	textAreas?: Record<string, ITextAreaConfig>;
 	error?: string;
 }
 
 export interface IBaseForm extends IBaseComponent {
 	get configInputsItems(): ConfigInputsItems;
+	get configTextAreaItems(): ConfigTextAreaItems;
 	get items(): Items;
 }
 
 export abstract class BaseForm extends BaseComponent implements IBaseForm {
 	protected override _config: IBaseFormConfig;
 	protected _inputs: Input[] = [];
+	protected _textAreas: TextArea[] = [];
 	protected _items: Items = {};
-	private _configInputs: ConfigInputs;
+	private _configInputs: ConfigInputs = {};
+	private _configTextAreas: ConfigTextAreas = {};
 	private _configButton;
 
 	/**
@@ -36,7 +43,13 @@ export abstract class BaseForm extends BaseComponent implements IBaseForm {
 	constructor(config: IBaseFormConfig, parent: IBaseComponent) {
 		super(config, parent);
 		this._config = config;
-		this._configInputs = config.inputs;
+		if (config.inputs) {
+			this._configInputs = config.inputs;
+		}
+		if (config.textAreas) {
+			this._configTextAreas = config.textAreas;
+
+		}
 		this._configButton = config.button;
 	}
 
@@ -46,7 +59,11 @@ export abstract class BaseForm extends BaseComponent implements IBaseForm {
 	 * @returns {ConfigInputsItems} - array of input
 	 */
 	get configInputsItems(): ConfigInputsItems {
-		return Object.entries(this._configInputs);
+		return this._configInputs ? Object.entries(this._configInputs) : [];
+	}
+
+	get configTextAreaItems(): ConfigTextAreaItems {
+		return this._configTextAreas ? Object.entries(this._configTextAreas) : [];
 	}
 
 	/**
@@ -90,6 +107,12 @@ export abstract class BaseForm extends BaseComponent implements IBaseForm {
 			this._items[key] = input;
 			this._inputs.push(input);
 		});
+		this.configTextAreaItems.forEach(([key, config]) => {
+			const textArea = new TextArea(config, this);
+			this._items[key] = textArea;
+			this._textAreas.push(textArea);
+			console.log('text areas config', this._textAreas);
+		});
 		const button = new FormButton(this._configButton, this);
 		this._items.button = button;
 
@@ -97,6 +120,7 @@ export abstract class BaseForm extends BaseComponent implements IBaseForm {
 			key: this._config?.key,
 			inputs: this._inputs.map((input) => input.render(false)),
 			button: button.render(false),
+			textAreas: this._textAreas.map((textArea) => textArea.render(false)),
 			error: this._config?.error
 		};
 	}

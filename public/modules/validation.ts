@@ -52,6 +52,10 @@ export default class Validator {
 		return '';
 	}
 
+	static validatePost(name: HTMLTextAreaElement): string {
+		return '';
+	}
+
 	/**
 	 * Validation of email
 	 *

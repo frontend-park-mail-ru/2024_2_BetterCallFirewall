@@ -1,9 +1,15 @@
-<form method="post" class="form" id="formCreatePost">
-    {{#each inputs}}
-        {{{this}}}
-    {{/each}}
-    <span class="form__error">
-        {{{error}}}
-    </span>
-    {{{button}}}
-</form>
+<div class="publish-form">
+    <h2 class="publish-form__title">Что у вас нового?</h2>
+    <form method="post" class="form" id="formCreatePost">
+        {{#each textAreas}}
+            {{{this}}}
+        {{/each}}
+        {{#each inputs}}
+            {{{this}}}
+        {{/each}}
+        <span class="form__error">
+            {{{error}}}
+        </span>
+        {{{button}}}
+    </form>
+</div>

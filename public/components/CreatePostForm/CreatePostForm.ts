@@ -1,8 +1,7 @@
-import { IBaseComponent, IBaseComponentConfig } from '../BaseComponent';
+import { IBaseComponent } from '../BaseComponent';
 import { BaseForm, IBaseForm, IBaseFormConfig } from '../BaseForm/BaseForm';
 
-export interface ICreatePostFormConfig extends IBaseFormConfig, IBaseComponentConfig {
-    key: string;
+export interface ICreatePostFormConfig extends IBaseFormConfig {
 }
 
 export interface ICreatePostForm extends IBaseForm {}
