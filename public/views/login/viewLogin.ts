@@ -15,7 +15,7 @@ import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
 import { ChangeLogin } from '../../stores/storeLogin';
-import { BaseView, Components, ViewData } from '../view';
+import { BaseView, Components } from '../view';
 
 export class ViewLogin extends BaseView {
 	private _config: ILoginFormConfig;
@@ -35,11 +35,14 @@ export class ViewLogin extends BaseView {
 			case ACTION_APP_TYPES.actionAppInit:
 				this._config = change.data;
 				this.render();
+				break;
+			default:
+				this.update(change.data);
 		}
 	}
 
-	update(data: ViewData) {
-		this._config = data as ILoginFormConfig;
+	update(data: ILoginFormConfig) {
+		this._config = data;
 		this.render();
 	}
 

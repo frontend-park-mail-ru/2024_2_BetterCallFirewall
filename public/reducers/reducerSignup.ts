@@ -24,7 +24,7 @@ export const reducerSignup = (state?: ISignupFormConfig, action?: Action) => {
 				break;
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 				break;
-			case ACTION_LOGIN_TYPES.actionLoginToSignupClick:
+			case ACTION_LOGIN_TYPES.toSignupClick:
 				break;
 			case ACTION_APP_TYPES.actionAppInit:
 				break;

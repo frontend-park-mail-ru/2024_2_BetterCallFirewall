@@ -22,7 +22,7 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			case ACTION_APP_TYPES.actionAppInit:
 				// router.activeView?.render();
 				break;
-			case ACTION_LOGIN_TYPES.actionLoginToSignupClick:
+			case ACTION_LOGIN_TYPES.toSignupClick:
 				router.goToPage(PAGE_LINKS.signup);
 				break;
 			case ACTION_SIGNUP_TYPES.toLoginLinkClick:

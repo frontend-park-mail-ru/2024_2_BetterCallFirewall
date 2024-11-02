@@ -18,7 +18,7 @@ import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
 import { ChangeSignup } from '../../stores/storeSignup';
-import { BaseView, Components, ViewData } from '../view';
+import { BaseView, Components } from '../view';
 
 export class ViewSignup extends BaseView {
 	private _config: ISignupFormConfig;
@@ -38,11 +38,14 @@ export class ViewSignup extends BaseView {
 			case ACTION_APP_TYPES.actionAppInit:
 				this._config = change.data;
 				this.render();
+				break;
+			default:
+				this.update(change.data);
 		}
 	}
 
-	update(data: ViewData) {
-		this._config = data as ISignupFormConfig;
+	update(data: ISignupFormConfig) {
+		this._config = data;
 		this.render();
 	}
 

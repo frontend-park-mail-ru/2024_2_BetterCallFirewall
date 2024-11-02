@@ -123,7 +123,7 @@ class App {
 		this._stores.app.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.app.subscribe(ACTION_MENU_TYPES.titleClick);
 		this._stores.app.subscribe(ACTION_MENU_TYPES.menuLinkClick);
-		this._stores.app.subscribe(ACTION_LOGIN_TYPES.actionLoginToSignupClick);
+		this._stores.app.subscribe(ACTION_LOGIN_TYPES.toSignupClick);
 		this._stores.app.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
 		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
@@ -147,9 +147,7 @@ class App {
 		this._stores.signup.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.signup.subscribe(ACTION_FORM_TYPES.formError);
 		this._stores.signup.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
-		this._stores.signup.subscribe(
-			ACTION_LOGIN_TYPES.actionLoginToSignupClick,
-		);
+		this._stores.signup.subscribe(ACTION_LOGIN_TYPES.toSignupClick);
 
 		this._stores.feed.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
 		this._stores.feed.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
