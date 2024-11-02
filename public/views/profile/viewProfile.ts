@@ -1,6 +1,7 @@
-import { ActionPostsRequestFail } from '../../actions/actionFeed';
 import {
 	ACTION_PROFILE_TYPES,
+	ActionProfileGetYourOwnProfileFail,
+	ActionProfileGetYourOwnProfileSuccess,
 	ActionProfileRequestFail,
 	ActionProfileRequestSuccess,
 	ActionUpdateProfile,
@@ -49,9 +50,13 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		console.log('ViewProfile: change:', change);
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_PROFILE_TYPES.getYourOwnProfile:
+				this._requestYourOwnProfile();
+				break;
 			case ACTION_PROFILE_TYPES.profileRequestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestFail:
 				this.updateViewProfile(change.data);
+				break;
 		}
 	}
 
@@ -125,7 +130,10 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 			case 200:
 				if (!response.data) {
 					this.sendAction(
-						new ActionPostsRequestFail({ message: 'empty data' }),
+						new ActionProfileRequestFail({
+							status: response.status,
+							message: 'empty data',
+						}),
 					);
 					return;
 				}
@@ -135,6 +143,35 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 					}),
 				);
 				break;
+		}
+	}
+
+	private async _requestYourOwnProfile() {
+		const response = await ajax.getYourOwnProfile();
+		switch (response.status) {
+			case 400:
+			case 405:
+				this.sendAction(
+					new ActionProfileGetYourOwnProfileFail({
+						status: response.status,
+					}),
+				);
+				break;
+			case 200:
+				if (!response.data) {
+					this.sendAction(
+						new ActionProfileGetYourOwnProfileFail({
+							status: response.status,
+							message: 'empty body',
+						}),
+					);
+					return;
+				}
+				this.sendAction(
+					new ActionProfileGetYourOwnProfileSuccess({
+						profile: response.data,
+					}),
+				);
 		}
 	}
 

@@ -21,7 +21,7 @@ export const reducerFeed = (
 	}
 	const newState = deepClone(state);
 	switch (action.type) {
-		case ACTION_FEED_TYPES.postsRequestSuccess:
+		case ACTION_FEED_TYPES.postsRequestSuccess: {
 			newState.errorMessage = '';
 			const newPosts = (
 				action.data as ActionPostsRequestSuccessData
@@ -37,7 +37,8 @@ export const reducerFeed = (
 			});
 			newState.posts = newState.posts.concat(newPosts);
 			return newState;
-		case ACTION_FEED_TYPES.postsRequestFail:
+		}
+		case ACTION_FEED_TYPES.postsRequestFail: {
 			console.log('reducerFeed: postsRequestFail:', action);
 			const data = action.data as ActionPostsRequestFailData;
 			if (data.message) {
@@ -49,6 +50,7 @@ export const reducerFeed = (
 				newState.errorMessage = 'Что-то пошло не так';
 			}
 			return newState; // tmp
+		}
 		case ACTION_LOGIN_TYPES.loginClickSuccess:
 		case ACTION_SIGNUP_TYPES.signupClickSuccess:
 		default:

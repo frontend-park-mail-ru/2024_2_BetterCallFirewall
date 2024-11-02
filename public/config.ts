@@ -14,7 +14,8 @@ export const PAGE_LINKS = {
 	login: '/login',
 	signup: '/signup',
 	friends: '/friends',
-	profile: '/([\\w-]+)', // ????
+	// profile: '/([\\w-]+)', // ????
+	profile: '/', // ????
 };
 
 const homeConfig: HomeConfig = {
@@ -190,7 +191,8 @@ const URL: URLInterface = DEBUG
 			login: ROOT + '/auth/login',
 			logout: ROOT + '/auth/logout',
 			post: ROOT + '/api/post',
-			profile: ROOT + '/api',
+			profile: ROOT + '/api/profile',
+			profileYourOwn: ROOT + '/api/profile',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -198,6 +200,7 @@ const URL: URLInterface = DEBUG
 			logout: ROOT + '/api/v1/auth/logout',
 			post: ROOT + '/api/v1/feed',
 			profile: ROOT + '/api/v1/profile',
+			profileYourOwn: ROOT + '/api/v1/profile',
 		};
 
 const config: AppConfig = {

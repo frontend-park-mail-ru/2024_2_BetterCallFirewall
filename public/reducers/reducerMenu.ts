@@ -3,6 +3,10 @@ import {
 	ACTION_MENU_TYPES,
 	ActionUpdateProfileLinkHrefData,
 } from '../actions/actionMenu';
+import {
+	ACTION_PROFILE_TYPES,
+	ActionProfileGetYourOwnProfileSuccessData,
+} from '../actions/actionProfile';
 import { IMenuConfig } from '../components/Menu/Menu';
 import config from '../config';
 import deepClone from '../modules/deepClone';
@@ -25,6 +29,12 @@ export const reducerMenu = (state?: IMenuConfig, action?: Action) => {
 					action.data as ActionUpdateProfileLinkHrefData
 				).href;
 				break;
+			case ACTION_PROFILE_TYPES.getYourOwnProfileSuccess: {
+				const actionData =
+					action.data as ActionProfileGetYourOwnProfileSuccessData;
+				newState.links.profile.href = `${actionData.profile.id}`;
+				break;
+			}
 		}
 	}
 	return newState;

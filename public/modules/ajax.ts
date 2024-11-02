@@ -1,5 +1,4 @@
 import app from '../app';
-import { IProfileConfig } from '../components/Profile/Profile';
 import { PostResponse } from '../models/post';
 import { FullProfileResponse } from '../models/profile';
 
@@ -86,12 +85,13 @@ class Ajax {
 			case 401:
 				postsResponse.message = 'Не авторизован';
 				break;
-			default:
+			default: {
 				const body = (await response.json()) as FetchResponse<
 					PostResponse[]
 				>;
 				console.log('body:', body);
 				postsResponse = Object.assign(postsResponse, body);
+			}
 		}
 		console.log('postsResponse:', postsResponse);
 		return postsResponse;
@@ -110,36 +110,38 @@ class Ajax {
 			case 400:
 			case 405:
 				break;
-			default:
+			case 200: {
 				const body =
 					(await response.json()) as FetchResponse<FullProfileResponse>;
 				console.log('body:', body);
 				profileResponse = Object.assign(profileResponse, body);
+			}
 		}
 		console.log('profileResponse:', profileResponse);
 		return profileResponse;
 	}
 
-	async getProfileData(user: string): Promise<IProfileConfig> {
-		try {
-			const response = await fetch(`/api/profiles/${user}`);
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
+	async getYourOwnProfile(): Promise<AjaxResponse<FullProfileResponse>> {
+		const request = this._getRequest(app.config.URL.profileYourOwn);
+		const response = await this._response(request);
+		let profileResponse: AjaxResponse<FullProfileResponse> = {
+			status: response.status,
+			success: false,
+		};
+		switch (profileResponse.status) {
+			case 200: {
+				const body =
+					(await response.json()) as FetchResponse<FullProfileResponse>;
+				console.log('body:', body);
+				profileResponse = Object.assign(profileResponse, body);
+				break;
 			}
-			const data: IProfileConfig = await response.json();
-			return data;
-		} catch (error) {
-			console.error('Ошибка при получении данных профиля:', error);
-			return {
-				key: 'profile',
-				id: 0,
-				firstName: 'Неизвестно',
-				secondName: '',
-				description: '',
-				friendsCount: 0,
-				groupsCount: 0,
-			};
+			case 400:
+			case 405:
+				break;
 		}
+		console.log('profileResponse:', profileResponse);
+		return profileResponse;
 	}
 
 	async getCurrentUserId(): Promise<number> {
@@ -173,7 +175,6 @@ class Ajax {
 			body: JSON.stringify(formData),
 			headers: {
 				'Content-Type': 'application/json:charset=UTF-8',
-				// 'Content-Type': 'application/json',
 			},
 			credentials: 'include',
 		});

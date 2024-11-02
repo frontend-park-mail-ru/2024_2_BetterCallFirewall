@@ -3,14 +3,14 @@ import { Router, RouterConfig } from './router/router';
 import config, { PAGE_LINKS } from './config';
 import { ViewLogin } from './views/login/viewLogin';
 import { ViewSignup } from './views/signup/viewSignup';
-import {
-	ACTION_MENU_TYPES,
-	ActionUpdateProfileLinkHref,
-} from './actions/actionMenu';
+import { ACTION_MENU_TYPES } from './actions/actionMenu';
 import { ViewFeed, ViewFeedConfig } from './views/feed/viewFeed';
 import { ViewProfile, ViewProfileConfig } from './views/profile/viewProfile';
 import { StoreProfile } from './stores/storeProfile';
-import { ACTION_PROFILE_TYPES } from './actions/actionProfile';
+import {
+	ACTION_PROFILE_TYPES,
+	ActionProfileGetYourOwnProfile,
+} from './actions/actionProfile';
 import { ACTION_HEADER_TYPES } from './actions/actionHeader';
 import { StoreLogin } from './stores/storeLogin';
 import { StoreApp } from './stores/storeApp';
@@ -33,6 +33,7 @@ export interface URLInterface {
 	logout: string;
 	post: string;
 	profile: string;
+	profileYourOwn: string;
 }
 
 export interface AppConfig {
@@ -132,6 +133,9 @@ class App {
 		this._stores.home.subscribe(ACTION_MENU_TYPES.titleClick);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.updateProfileLinkHref);
 		this._stores.home.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
+		this._stores.home.subscribe(
+			ACTION_PROFILE_TYPES.getYourOwnProfileSuccess,
+		);
 
 		this._stores.login.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
 		this._stores.login.subscribe(ACTION_FORM_TYPES.formError);
@@ -156,6 +160,13 @@ class App {
 			ACTION_PROFILE_TYPES.profileRequestSuccess,
 		);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.profileRequestFail);
+		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.getYourOwnProfile);
+		this._stores.profile.subscribe(
+			ACTION_PROFILE_TYPES.getYourOwnProfileSuccess,
+		);
+		this._stores.profile.subscribe(
+			ACTION_PROFILE_TYPES.getYourOwnProfileFail,
+		);
 
 		loginView.register(this._stores.login);
 
@@ -183,9 +194,9 @@ class App {
 	}
 
 	init() {
-		dispatcher.getAction(new ActionUpdateProfileLinkHref('/2'));
+		dispatcher.getAction(new ActionProfileGetYourOwnProfile());
+		// dispatcher.getAction(new ActionUpdateProfileLinkHref('/2'));
 		dispatcher.getAction(new ActionAppInit());
-		// dispatcher.getAction(new ActionUpdateProfileLinkHref('/lukeskywalker')); // Потом запрашивать данные юзера и вставить сюда
 	}
 }
 

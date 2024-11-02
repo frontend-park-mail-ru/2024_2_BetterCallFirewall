@@ -37,13 +37,14 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			case ACTION_MENU_TYPES.titleClick:
 				router.goToPage(PAGE_LINKS.feed);
 				break;
-			case ACTION_FEED_TYPES.postsRequestFail:
+			case ACTION_FEED_TYPES.postsRequestFail: {
 				const data = action.data as ActionPostsRequestFailData;
 				// Убрать хардкод
 				if (data.status === 401) {
 					router.goToPage(PAGE_LINKS.login);
 				}
 				break;
+			}
 		}
 	}
 	console.log('activeView:', router.activeView);

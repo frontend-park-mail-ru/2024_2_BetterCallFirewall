@@ -1,6 +1,7 @@
 import { Action } from '../actions/action';
 import {
 	ACTION_PROFILE_TYPES,
+	ActionProfileGetYourOwnProfileSuccessData,
 	ActionProfileRequestSuccessData,
 	ActionUpdateProfileData,
 } from '../actions/actionProfile';
@@ -22,7 +23,7 @@ export const reducerProfile = (
 			actionData = action.data as ActionUpdateProfileData;
 			newState.profile = Object.assign(newState.profile, actionData);
 			return newState;
-		case ACTION_PROFILE_TYPES.profileRequestSuccess:
+		case ACTION_PROFILE_TYPES.profileRequestSuccess: {
 			actionData = action.data as ActionProfileRequestSuccessData;
 			const profileConfig = toProfileConfig(
 				newState.profile,
@@ -30,8 +31,20 @@ export const reducerProfile = (
 			);
 			newState.profile = Object.assign(newState.profile, profileConfig);
 			return newState;
+		}
+		case ACTION_PROFILE_TYPES.getYourOwnProfileSuccess: {
+			const actionData =
+				action.data as ActionProfileGetYourOwnProfileSuccessData;
+			const profileConfig = toProfileConfig(
+				newState.profile,
+				actionData.profile,
+			);
+			newState.profile = Object.assign(newState.profile, profileConfig);
+			return newState;
+		}
 		case ACTION_PROFILE_TYPES.profileRequestFail:
 		case ACTION_PROFILE_TYPES.goToProfile:
+		case ACTION_PROFILE_TYPES.getYourOwnProfileFail:
 		default:
 			return state;
 	}
