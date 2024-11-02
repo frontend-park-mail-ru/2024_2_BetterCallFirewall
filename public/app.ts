@@ -208,6 +208,7 @@ class App {
 		this._stores.profile.subscribe(
 			ACTION_PROFILE_TYPES.getYourOwnProfileFail,
 		);
+		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.getHeader);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.getHeaderSuccess);
 
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.goToMessages);
