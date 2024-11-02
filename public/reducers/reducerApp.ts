@@ -22,7 +22,7 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			case ACTION_APP_TYPES.actionAppInit:
 				// router.activeView?.render();
 				break;
-			case ACTION_LOGIN_TYPES.actionLoginToSignupClick:
+			case ACTION_LOGIN_TYPES.toSignupClick:
 				router.goToPage(PAGE_LINKS.signup);
 				break;
 			case ACTION_SIGNUP_TYPES.toLoginLinkClick:
@@ -37,13 +37,14 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			case ACTION_MENU_TYPES.titleClick:
 				router.goToPage(PAGE_LINKS.feed);
 				break;
-			case ACTION_FEED_TYPES.postsRequestFail:
+			case ACTION_FEED_TYPES.postsRequestFail: {
 				const data = action.data as ActionPostsRequestFailData;
 				// Убрать хардкод
 				if (data.status === 401) {
 					router.goToPage(PAGE_LINKS.login);
 				}
 				break;
+			}
 		}
 	}
 	console.log('activeView:', router.activeView);

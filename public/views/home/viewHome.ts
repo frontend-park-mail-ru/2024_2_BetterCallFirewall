@@ -144,6 +144,14 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		return content;
 	}
 
+	protected get _profileLinkHref(): string {
+		const profileLink = this._configHome.menu.links.profile;
+		if (!profileLink) {
+			throw new Error('profile link not found');
+		}
+		return profileLink.href;
+	}
+
 	protected _clearContent() {
 		const content = this._components.content;
 		if (!content) {

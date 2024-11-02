@@ -104,6 +104,9 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		const response = await ajax.getPosts(params);
 		switch (response.status) {
 			case 200:
+				if (!response.data) {
+					break;
+				}
 				this.sendAction(new ActionPostsRequestSuccess(response.data));
 				break;
 			case 401:

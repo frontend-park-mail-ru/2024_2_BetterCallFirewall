@@ -1,7 +1,7 @@
 import { Action, ActionType } from './action';
 
 export const ACTION_LOGIN_TYPES = {
-	actionLoginToSignupClick: 'actionLoginToSignupClick',
+	toSignupClick: 'actionLoginToSignupClick',
 	loginClickSuccess: 'loginClickSuccess',
 };
 
@@ -10,7 +10,7 @@ export class ActionLoginToSignupClick implements Action {
 	data: object;
 
 	constructor() {
-		this.type = ACTION_LOGIN_TYPES.actionLoginToSignupClick;
+		this.type = ACTION_LOGIN_TYPES.toSignupClick;
 		this.data = {};
 	}
 }
