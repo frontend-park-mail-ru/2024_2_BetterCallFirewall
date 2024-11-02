@@ -9,7 +9,7 @@ import { ViewProfile, ViewProfileConfig } from './views/profile/viewProfile';
 import { StoreProfile } from './stores/storeProfile';
 import {
 	ACTION_PROFILE_TYPES,
-	ActionProfileGetYourOwnProfile,
+	ActionProfileGetHeader,
 } from './actions/actionProfile';
 import { ACTION_HEADER_TYPES } from './actions/actionHeader';
 import { StoreLogin } from './stores/storeLogin';
@@ -256,7 +256,8 @@ class App {
 	}
 
 	init() {
-		dispatcher.getAction(new ActionProfileGetYourOwnProfile());
+		dispatcher.getAction(new ActionProfileGetHeader());
+		// dispatcher.getAction(new ActionProfileGetYourOwnProfile());
 		// dispatcher.getAction(new ActionAppInit());
 	}
 }

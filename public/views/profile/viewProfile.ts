@@ -54,6 +54,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		console.log('ViewProfile: change:', change);
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_PROFILE_TYPES.getHeader:
+				api.requestHeader();
+				break;
 			case ACTION_PROFILE_TYPES.getYourOwnProfile:
 				// this._requestYourOwnProfile();
 				api.requestYourOwnProfile();

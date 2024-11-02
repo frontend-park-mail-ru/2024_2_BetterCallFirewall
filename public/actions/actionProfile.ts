@@ -11,6 +11,7 @@ export const ACTION_PROFILE_TYPES = {
 	getYourOwnProfile: 'getYourOwnProfile',
 	getYourOwnProfileSuccess: 'getYourOwnProfileSuccess',
 	getYourOwnProfileFail: 'getYourOwnProfileFail',
+	getHeader: 'actioProfileGetHeader',
 	getHeaderSuccess: 'getHeaderSuccess',
 	getHeaderFail: 'getHeaderFail',
 };
@@ -105,6 +106,16 @@ export class ActionProfileGetYourOwnProfileFail implements Action {
 	constructor(data: ActionProfileGetYourOwnProfileFailData) {
 		this.type = ACTION_PROFILE_TYPES.getYourOwnProfileFail;
 		this.data = data;
+	}
+}
+
+export class ActionProfileGetHeader implements Action {
+	type: ActionType;
+	data: object;
+
+	constructor() {
+		this.type = ACTION_PROFILE_TYPES.getHeader;
+		this.data = {};
 	}
 }
 
