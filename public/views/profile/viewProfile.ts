@@ -45,7 +45,12 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	}
 
 	handleChange(change: ChangeProfile): void {
+		console.log('ViewProfile: change:', change);
 		super.handleChange(change);
+		switch (change.type) {
+			default:
+				this.updateViewProfile(change.data);
+		}
 	}
 
 	render(): void {
