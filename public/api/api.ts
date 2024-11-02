@@ -4,6 +4,7 @@ import {
 	ActionPostsRequestFail,
 	ActionPostsRequestSuccess,
 } from '../actions/actionFeed';
+import { ActionUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
 	ActionProfileGetHeaderFail,
 	ActionProfileGetHeaderSuccess,
@@ -82,9 +83,6 @@ class API {
 						profile: response.data,
 					}),
 				);
-			// this.sendAction(
-			// 	new ActionUpdateProfileLinkHref(`/${response.data.id}`),
-			// );
 		}
 		if (!app.inited) {
 			this.sendAction(new ActionAppInit());
@@ -133,6 +131,11 @@ class API {
 					new ActionProfileGetHeaderSuccess({
 						headerResponse: response.data,
 					}),
+				);
+				this.sendAction(
+					new ActionUpdateProfileLinkHref(
+						`/${response.data.author_id}`,
+					),
 				);
 				break;
 			case 401:
