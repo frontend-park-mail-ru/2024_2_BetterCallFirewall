@@ -106,7 +106,7 @@ const signupConfig: ISignupFormConfig = {
 			key: 'secondName',
 			type: 'text',
 			text: 'Фамилия',
-			name: 'second_name',
+			name: 'last_name',
 			validator: Validator.validateName,
 		},
 		email: {
