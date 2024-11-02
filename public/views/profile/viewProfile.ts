@@ -1,5 +1,6 @@
 import { ActionPostsRequestFail } from '../../actions/actionFeed';
 import {
+	ACTION_PROFILE_TYPES,
 	ActionProfileRequestFail,
 	ActionProfileRequestSuccess,
 	ActionUpdateProfile,
@@ -48,7 +49,8 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		console.log('ViewProfile: change:', change);
 		super.handleChange(change);
 		switch (change.type) {
-			default:
+			case ACTION_PROFILE_TYPES.profileRequestSuccess:
+			case ACTION_PROFILE_TYPES.profileRequestFail:
 				this.updateViewProfile(change.data);
 		}
 	}
