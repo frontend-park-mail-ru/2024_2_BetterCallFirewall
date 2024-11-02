@@ -3,6 +3,7 @@ import {
 	ActionHeaderLogoutClickFail,
 	ActionHeaderLogoutClickSuccess,
 } from '../../actions/actionHeader';
+import { ACTION_LOGIN_TYPES } from '../../actions/actionLogin';
 import {
 	ACTION_MENU_TYPES,
 	ActionMenuLinkClick,
@@ -79,6 +80,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	handleChange(change: ChangeHome): void {
 		console.log('ViewHome: change:', change);
 		switch (change.type) {
+			case ACTION_LOGIN_TYPES.loginClickSuccess:
 			case ACTION_PROFILE_TYPES.getHeader:
 				api.requestHeader();
 				break;
@@ -239,9 +241,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		menu.addHandler(profileLink.htmlElement, 'click', (event) => {
 			event.preventDefault();
 			dispatcher.getAction(
-				// new ActionGoToProfile({
-				// 	href: config.links.profile.href,
-				// }),
 				new ActionMenuLinkClick({ href: config.links.profile.href }),
 			);
 		});

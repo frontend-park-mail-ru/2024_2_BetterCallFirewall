@@ -27,20 +27,6 @@ export class ActionUpdateProfile implements Action {
 	}
 }
 
-export type ActionGoToProfileData = {
-	href: string;
-};
-
-export class ActionGoToProfile implements Action {
-	type: ActionType;
-	data: object;
-
-	constructor(data: ActionGoToProfileData) {
-		this.type = ACTION_PROFILE_TYPES.goToProfile;
-		this.data = data;
-	}
-}
-
 export interface ActionProfileRequestSuccessData {
 	profileResponse: FullProfileResponse;
 }
