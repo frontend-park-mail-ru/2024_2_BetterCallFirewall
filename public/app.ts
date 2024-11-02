@@ -254,7 +254,6 @@ class App {
 
 	init() {
 		dispatcher.getAction(new ActionProfileGetYourOwnProfile());
-		// dispatcher.getAction(new ActionUpdateProfileLinkHref('/2'));
 		// dispatcher.getAction(new ActionAppInit());
 	}
 }
