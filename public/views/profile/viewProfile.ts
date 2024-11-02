@@ -159,9 +159,6 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		switch (response.status) {
 			case 401:
 				this.sendAction(new ActionUserUnauthorized());
-				if (!app.inited) {
-					this.sendAction(new ActionAppInit());
-				}
 				break;
 			case 400:
 			case 405:
@@ -186,6 +183,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 						profile: response.data,
 					}),
 				);
+		}
+		if (!app.inited) {
+			this.sendAction(new ActionAppInit());
 		}
 	}
 
