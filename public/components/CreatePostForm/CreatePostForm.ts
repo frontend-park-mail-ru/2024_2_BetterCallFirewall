@@ -1,29 +1,45 @@
-import BaseComponent, { IBaseComponent, IBaseComponentConfig } from '../BaseComponent';
+import { IBaseComponent, IBaseComponentConfig } from '../BaseComponent';
+import { BaseForm, IBaseForm, IBaseFormConfig } from '../BaseForm/BaseForm';
 
-export interface ICreatePostFormConfig extends IBaseComponentConfig {
-    placeholder?: string;
+export interface ICreatePostFormConfig extends IBaseFormConfig, IBaseComponentConfig {
+    key: string;
 }
 
-export class CreatePostForm extends BaseComponent {
-    protected _config: ICreatePostFormConfig | null;
-    // private _form: HTMLFormElement;
+export interface ICreatePostForm extends IBaseForm {}
+
+export class CreatePostForm extends BaseForm implements ICreatePostForm {
+    protected override _config: ICreatePostFormConfig;
 
     constructor(config: ICreatePostFormConfig, parent: IBaseComponent) {
         super(config, parent);
         this._config = config;
     }
 
-    // get form(): HTMLFormElement {
-    //     return this._form;
-    // }
-
-    render(show: boolean = true): string {
-        this._prerender();
-        return this._render('CreatePostForm.hbs', show);
+    get form(): HTMLElement {
+        const html = this.htmlElement.querySelector('.form') as HTMLElement;
+        if (html) {
+            return html;
+        }
+        throw new Error('form not found');
     }
 
     protected _prerender(): void {
         super._prerender();
-        this._templateContext = { ...this.config };
+        this._templateContext = {
+            ...this._templateContext,
+            className: 'send-post'
+        };
+    }
+
+    render(): string {
+        this._prerender();
+        this._render('CreatePostForm.hbs');
+        return this.htmlElement.outerHTML;
+    }
+
+    update(data: ICreatePostFormConfig): void {
+        this._config = { ...this._config, ...data };
+        this.removeForUpdate();
+        this.render();
     }
 }

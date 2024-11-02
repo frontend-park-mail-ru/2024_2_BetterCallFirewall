@@ -38,12 +38,20 @@
 }
 
 .logo {
+    &__profile {
+        width: 1.4rem;
+        height: 1.4rem;
+    }
     &__feed {
         width: 1.4rem;
         height: 1.4rem;
     }
     &__friends {
-        width: 1.7rem;
-        height: 1.7rem;
+        width: 1.8rem;
+        height: 1.8rem;
+    }
+    &__messages {
+        width: 1.8rem;
+        height: 1.8rem;
     }
 }

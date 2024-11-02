@@ -2,6 +2,8 @@
     margin-bottom: 1rem;
     margin-left: 2rem;
     cursor: pointer;
+    max-width: 42rem;
+    min-width: 42rem;
     &:first-child {
         margin-top: 2rem;
     }
