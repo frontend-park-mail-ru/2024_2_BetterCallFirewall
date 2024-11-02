@@ -133,12 +133,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	private _addScrollHandler() {
-		// const isNearBottom = () => {
-		// 	return (
-		// 		window.innerHeight * 2 + window.scrollY >
-		// 		document.body.offsetHeight
-		// 	);
-		// };
 		let pending = false;
 		const fetchPosts = async () => {
 			if (!pending) {

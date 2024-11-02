@@ -207,17 +207,16 @@ const messagesConfig: ViewMessagesConfig = {
 };
 
 const chatComponentConfig: IChatConfig = {
-    key: 'chat',
-    companionAvatar: '',
-    companionName: '',
-    lastDateOnline: '',
+	key: 'chat',
+	companionAvatar: '',
+	companionName: '',
+	lastDateOnline: '',
 };
 
 const chatConfig: ViewChatConfig = {
 	...homeConfig,
-    chat: chatComponentConfig,
+	chat: chatComponentConfig,
 };
-
 
 const friendsConfig: ViewFriendsConfig = {
 	...homeConfig,
@@ -242,7 +241,7 @@ const URL: URLInterface = DEBUG
 			logout: ROOT + '/api/v1/auth/logout',
 			post: ROOT + '/api/v1/feed',
 			profile: ROOT + '/api/v1/profile',
-			profileYourOwn: ROOT + '/api/v1/profile',
+			profileYourOwn: ROOT + '/api/v1/profile/',
 		};
 
 const config: AppConfig = {
