@@ -1,3 +1,4 @@
+import { ACTION_APP_TYPES } from '../../actions/actionApp';
 import { ActionFormError } from '../../actions/actionForm';
 import {
 	ActionLoginClickSuccess,
@@ -11,11 +12,10 @@ import {
 } from '../../components';
 import config from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
-// import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
-import { Change } from '../../stores/store';
-import { BaseView, Components, ViewData } from '../view';
+import { ChangeLogin } from '../../stores/storeLogin';
+import { BaseView, Components } from '../view';
 
 export class ViewLogin extends BaseView {
 	private _config: ILoginFormConfig;
@@ -24,26 +24,31 @@ export class ViewLogin extends BaseView {
 	constructor(config: ILoginFormConfig, root: Root) {
 		super(root);
 		this._config = config;
-		// this._root = new Root();
 	}
 
 	get config() {
 		return this._config;
 	}
 
-	// Исправить
-	handleChange(change: Change): void {
+	handleChange(change: ChangeLogin): void {
+		console.log('change:', change);
 		switch (change.type) {
+			case ACTION_APP_TYPES.actionAppInit:
+				this._config = change.data;
+				this.render();
+				break;
 			default:
+				this.update(change.data);
 		}
 	}
 
-	update(data: ViewData) {
-		this._config = data as ILoginFormConfig;
+	update(data: ILoginFormConfig) {
+		this._config = data;
 		this.render();
 	}
 
 	render() {
+		console.log('ViewLogin: render');
 		this.clear();
 
 		const config = this._config;

@@ -23,6 +23,7 @@ export const PAGE_LINKS = {
 	friends: '/friends',
 	createPost: '/create-post',
 	profile: '/([\\w-]+)', // ????
+	// profile: '/', // ????
 };
 
 const homeConfig: HomeConfig = {
@@ -107,7 +108,7 @@ const signupConfig: ISignupFormConfig = {
 			key: 'secondName',
 			type: 'text',
 			text: 'Фамилия',
-			name: 'second_name',
+			name: 'last_name',
 			validator: Validator.validateName,
 		},
 		email: {
@@ -198,6 +199,7 @@ const feedConfig: ViewFeedConfig = {
 };
 
 const profileComponentConfig: IProfileConfig = {
+	id: 0,
 	key: 'profile',
 	firstName: '',
 	secondName: '',
@@ -227,17 +229,16 @@ const messagesConfig: ViewMessagesConfig = {
 };
 
 const chatComponentConfig: IChatConfig = {
-    key: 'chat',
-    companionAvatar: '',
-    companionName: '',
-    lastDateOnline: '',
+	key: 'chat',
+	companionAvatar: '',
+	companionName: '',
+	lastDateOnline: '',
 };
 
 const chatConfig: ViewChatConfig = {
 	...homeConfig,
-    chat: chatComponentConfig,
+	chat: chatComponentConfig,
 };
-
 
 const friendsConfig: ViewFriendsConfig = {
 	...homeConfig,
@@ -253,12 +254,18 @@ const URL: URLInterface = DEBUG
 			login: ROOT + '/auth/login',
 			logout: ROOT + '/auth/logout',
 			post: ROOT + '/api/post',
+			profile: ROOT + '/api/profile',
+			profileYourOwn: ROOT + '/api/profile',
+			header: ROOT + '/api/profile/header',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
 			login: ROOT + '/api/v1/auth/login',
 			logout: ROOT + '/api/v1/auth/logout',
 			post: ROOT + '/api/v1/feed',
+			profile: ROOT + '/api/v1/profile',
+			profileYourOwn: ROOT + '/api/v1/profile',
+			header: ROOT + '/api/v1/profile/header',
 		};
 
 const config: AppConfig = {

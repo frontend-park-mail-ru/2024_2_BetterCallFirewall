@@ -1,7 +1,18 @@
-import { ActionUpdateProfile } from '../../actions/actionProfile';
+import { ActionAppInit } from '../../actions/actionApp';
+import {
+	ACTION_PROFILE_TYPES,
+	ActionProfileGetYourOwnProfileFail,
+	ActionProfileGetYourOwnProfileSuccess,
+	ActionProfileRequestFail,
+	ActionProfileRequestSuccess,
+	ActionUpdateProfile,
+} from '../../actions/actionProfile';
+import { ActionUserUnauthorized } from '../../actions/actionUser';
+import api from '../../api/api';
+import app from '../../app';
 import { Post, Root } from '../../components';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
-import dispatcher from '../../dispatcher/dispatcher';
+import ajax from '../../modules/ajax';
 import { ChangeProfile } from '../../stores/storeProfile';
 import {
 	ComponentsHome,
@@ -31,15 +42,41 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		this._configProfile = config;
 	}
 
+	get profile(): Profile {
+		const profile = this._components.profile;
+		if (!profile) {
+			throw new Error('profile on ViewProfile does not exist');
+		}
+		return profile;
+	}
+
 	handleChange(change: ChangeProfile): void {
+		console.log('ViewProfile: change:', change);
 		super.handleChange(change);
+		switch (change.type) {
+			case ACTION_PROFILE_TYPES.getHeader:
+				api.requestHeader();
+				break;
+			case ACTION_PROFILE_TYPES.getYourOwnProfile:
+				// this._requestYourOwnProfile();
+				api.requestYourOwnProfile();
+				break;
+			case ACTION_PROFILE_TYPES.profileRequestSuccess:
+			case ACTION_PROFILE_TYPES.profileRequestFail:
+			case ACTION_PROFILE_TYPES.getHeaderSuccess:
+			case ACTION_PROFILE_TYPES.getHeaderFail:
+				if (this.active) {
+					this.updateViewProfile(change.data);
+				}
+				break;
+		}
 	}
 
 	render(): void {
 		this._render();
-		dispatcher.getAction(
-			new ActionUpdateProfile(this._configProfile.profile),
-		);
+		this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
+		api.requestProfile(this._profileLinkHref);
+		// this._requestProfile();
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {
@@ -53,34 +90,28 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	}
 
 	protected _renderProfile(): void {
-		this._configProfile.profile = {
-			key: 'profile',
-			id: 2,
-			firstName: 'Luke',
-			secondName: 'Skywalker',
-			description: 'Jedi, master',
-			friendsCount: 99,
-			groupsCount: 3,
-			img: '../img/avatar.png',
-		}; // tmp
+		// this._configProfile.profile = {
+		// 	key: 'profile',
+		// 	id: 2,
+		// 	firstName: 'Luke',
+		// 	secondName: 'Skywalker',
+		// 	description: 'Jedi, master',
+		// 	friendsCount: 99,
+		// 	groupsCount: 3,
+		// 	img: '../img/avatar.png',
+		// }; // tmp
 
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does no exist on ViewProfile');
-		}
+		const content = this.content;
 		const profile = new Profile(this._configProfile.profile, content);
 		profile.render();
 		this._components.profile = profile;
 
 		this._addProfileHandlers(this._configProfile.profile);
+		// this._renderPosts();
+	}
 
-		console.log(
-			'post here:',
-			profile.htmlElement.querySelector('.profile__posts'),
-		);
-		const posts = profile.htmlElement.querySelector(
-			'.profile__posts',
-		) as HTMLElement;
+	private _renderPosts() {
+		const postsContainer = this.profile.postsContainer;
 		// Тестовые посты
 		let counter = 0;
 		for (let i = 0; i < 10; i++) {
@@ -93,10 +124,79 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 					date: '01.01.2024',
 					avatar: '../../img/avatar.png',
 				},
-				profile,
+				this.profile,
 			);
 			post.render(false);
-			posts.appendChild(post.htmlElement);
+			postsContainer.appendChild(post.htmlElement);
+		}
+	}
+
+	private async _requestProfile() {
+		const response = await ajax.getProfile(this._profileLinkHref);
+		switch (response.status) {
+			case 401:
+				this.sendAction(new ActionUserUnauthorized());
+				break;
+			case 400:
+			case 405:
+				this.sendAction(
+					new ActionProfileRequestFail({ status: response.status }),
+				);
+				break;
+			case 200:
+				if (!response.data) {
+					this.sendAction(
+						new ActionProfileRequestFail({
+							status: response.status,
+							message: 'empty data',
+						}),
+					);
+					return;
+				}
+				this.sendAction(
+					new ActionProfileRequestSuccess({
+						profileResponse: response.data,
+					}),
+				);
+				break;
+		}
+	}
+
+	private async _requestYourOwnProfile() {
+		const response = await ajax.getYourOwnProfile();
+		switch (response.status) {
+			case 401:
+				this.sendAction(new ActionUserUnauthorized());
+				break;
+			case 400:
+			case 405:
+				this.sendAction(
+					new ActionProfileGetYourOwnProfileFail({
+						status: response.status,
+					}),
+				);
+				break;
+			case 200:
+				if (!response.data) {
+					this.sendAction(
+						new ActionProfileGetYourOwnProfileFail({
+							status: response.status,
+							message: 'empty body',
+						}),
+					);
+					return;
+				}
+				this.sendAction(
+					new ActionProfileGetYourOwnProfileSuccess({
+						profile: response.data,
+					}),
+				);
+			// this.sendAction(
+			// 	new ActionUpdateProfileLinkHref(`/${response.data.id}`),
+			// );
+		}
+		if (!app.inited) {
+			this.sendAction(new ActionAppInit());
 		}
 	}
 

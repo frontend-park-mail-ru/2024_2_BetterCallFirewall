@@ -3,24 +3,27 @@ import { Router, RouterConfig } from './router/router';
 import config, { PAGE_LINKS } from './config';
 import { ViewLogin } from './views/login/viewLogin';
 import { ViewSignup } from './views/signup/viewSignup';
-import {
-	ACTION_MENU_TYPES,
-	ActionUpdateProfileLinkHref,
-} from './actions/actionMenu';
+import { ACTION_MENU_TYPES } from './actions/actionMenu';
 import { ViewFeed, ViewFeedConfig } from './views/feed/viewFeed';
 import { ViewProfile, ViewProfileConfig } from './views/profile/viewProfile';
 import { StoreProfile } from './stores/storeProfile';
-import { ACTION_PROFILE_TYPES } from './actions/actionProfile';
+import {
+	ACTION_PROFILE_TYPES,
+	ActionProfileGetHeader,
+} from './actions/actionProfile';
 import { ACTION_HEADER_TYPES } from './actions/actionHeader';
 import { StoreLogin } from './stores/storeLogin';
 import { StoreApp } from './stores/storeApp';
 import { ACTION_LOGIN_TYPES } from './actions/actionLogin';
-import { ACTION_APP_TYPES, ActionAppInit } from './actions/actionApp';
+import { ACTION_APP_TYPES } from './actions/actionApp';
 import dispatcher from './dispatcher/dispatcher';
 import { StoreSignup } from './stores/storeSignup';
 import { StoreFeed } from './stores/storeFeed';
 import { ACTION_SIGNUP_TYPES } from './actions/actionSignup';
-import { ViewMessages, ViewMessagesConfig } from './views/messages/viewMessages';
+import {
+	ViewMessages,
+	ViewMessagesConfig,
+} from './views/messages/viewMessages';
 import { ViewChat } from './views/chat/viewChat';
 import { StoreMessages } from './stores/storeMessages';
 import { ACTION_MESSAGES_TYPES } from './actions/actionMessages';
@@ -37,6 +40,7 @@ import { ViewCreatePost, ViewCreatePostConfig } from './views/createPost/viewCre
 import { StoreCreatePost } from './stores/storeCreatePost';
 import { ACTION_CREATE_POST_TYPES } from './actions/actionCreatePost';
 
+import { ACTION_USER_TYPES } from './actions/actionUser';
 
 export const PAGES = {
 	home: 'home',
@@ -49,6 +53,9 @@ export interface URLInterface {
 	login: string;
 	logout: string;
 	post: string;
+	profile: string;
+	profileYourOwn: string;
+	header: string;
 }
 
 export interface AppConfig {
@@ -85,6 +92,7 @@ class App {
 	private _config: AppConfig;
 	private _root: Root;
 	private _stores: AppStores;
+	private _inited: boolean = false;
 
 	/**
 	 * Instance of application
@@ -160,30 +168,36 @@ class App {
 		};
 
 		this._stores.app.subscribe(ACTION_APP_TYPES.actionAppInit);
+		this._stores.app.subscribe(ACTION_USER_TYPES.unauthorized);
 		this._stores.app.subscribe(ACTION_MENU_TYPES.titleClick);
 		this._stores.app.subscribe(ACTION_MENU_TYPES.menuLinkClick);
-		this._stores.app.subscribe(ACTION_LOGIN_TYPES.actionLoginToSignupClick);
+		this._stores.app.subscribe(ACTION_LOGIN_TYPES.toSignupClick);
 		this._stores.app.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
 		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
+		this._stores.app.subscribe(ACTION_PROFILE_TYPES.getHeaderFail);
 
 		this._stores.home.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.menuLinkClick);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.titleClick);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.updateProfileLinkHref);
 		this._stores.home.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
+		this._stores.home.subscribe(
+			ACTION_PROFILE_TYPES.getYourOwnProfileSuccess,
+		);
 
+		this._stores.login.subscribe(ACTION_APP_TYPES.actionAppInit);
+		this._stores.login.subscribe(ACTION_USER_TYPES.unauthorized);
 		this._stores.login.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
 		this._stores.login.subscribe(ACTION_FORM_TYPES.formError);
 		this._stores.login.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
 		this._stores.login.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 		this._stores.login.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 
+		this._stores.signup.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.signup.subscribe(ACTION_FORM_TYPES.formError);
 		this._stores.signup.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
-		this._stores.signup.subscribe(
-			ACTION_LOGIN_TYPES.actionLoginToSignupClick,
-		);
+		this._stores.signup.subscribe(ACTION_LOGIN_TYPES.toSignupClick);
 
 		this._stores.feed.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
 		this._stores.feed.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
@@ -192,6 +206,19 @@ class App {
 
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.goToProfile);
+		this._stores.profile.subscribe(
+			ACTION_PROFILE_TYPES.profileRequestSuccess,
+		);
+		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.profileRequestFail);
+		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.getYourOwnProfile);
+		this._stores.profile.subscribe(
+			ACTION_PROFILE_TYPES.getYourOwnProfileSuccess,
+		);
+		this._stores.profile.subscribe(
+			ACTION_PROFILE_TYPES.getYourOwnProfileFail,
+		);
+		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.getHeader);
+		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.getHeaderSuccess);
 
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.goToMessages);
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.updateMessages);
@@ -238,9 +265,18 @@ class App {
 		return this._config;
 	}
 
+	get inited(): boolean {
+		return this._inited;
+	}
+
+	set inited(value: boolean) {
+		this._inited = value;
+	}
+
 	init() {
-		dispatcher.getAction(new ActionAppInit());
-		dispatcher.getAction(new ActionUpdateProfileLinkHref('/lukeskywalker')); // Потом запрашивать данные юзера и вставить сюда
+		dispatcher.getAction(new ActionProfileGetHeader());
+		// dispatcher.getAction(new ActionProfileGetYourOwnProfile());
+		// dispatcher.getAction(new ActionAppInit());
 	}
 }
 

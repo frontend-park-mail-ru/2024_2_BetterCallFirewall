@@ -1,14 +1,11 @@
 import app from '../app';
-import { IProfileConfig } from '../components/Profile/Profile';
+import { HeaderResponse } from '../models/header';
 import { PostResponse } from '../models/post';
+import { FullProfileResponse } from '../models/profile';
 
 type AjaxPromiseConfig = {
 	request: Request;
 };
-
-// type FetchConfig = {
-// 	request: Request;
-// };
 
 type Callback = (data: object | null, error: Error | null) => void;
 
@@ -22,8 +19,8 @@ export type FormResponse = {
 
 export interface FetchResponse<T> {
 	success: boolean;
-	data: T;
-	message: string;
+	data?: T;
+	message?: string;
 }
 
 export interface AjaxResponse<T> extends FetchResponse<T> {
@@ -89,37 +86,83 @@ class Ajax {
 			case 401:
 				postsResponse.message = 'Не авторизован';
 				break;
-			default:
+			default: {
 				const body = (await response.json()) as FetchResponse<
 					PostResponse[]
 				>;
 				console.log('body:', body);
 				postsResponse = Object.assign(postsResponse, body);
+			}
 		}
 		console.log('postsResponse:', postsResponse);
 		return postsResponse;
 	}
 
-	async getProfileData(user: string): Promise<IProfileConfig> {
-		try {
-			const response = await fetch(`/api/profiles/${user}`);
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
+	async getProfile(
+		profilePath: string,
+	): Promise<AjaxResponse<FullProfileResponse>> {
+		const request = this._getRequest(app.config.URL.profile + profilePath);
+		const response = await this._response(request);
+		let profileResponse: AjaxResponse<FullProfileResponse> = {
+			status: response.status,
+			success: false,
+		};
+		switch (profileResponse.status) {
+			case 400:
+			case 405:
+				break;
+			case 200: {
+				const body =
+					(await response.json()) as FetchResponse<FullProfileResponse>;
+				console.log('body:', body);
+				profileResponse = Object.assign(profileResponse, body);
 			}
-			const data: IProfileConfig = await response.json();
-			return data;
-		} catch (error) {
-			console.error('Ошибка при получении данных профиля:', error);
-			return {
-				key: 'profile',
-				id: 0,
-				firstName: 'Неизвестно',
-				secondName: '',
-				description: '',
-				friendsCount: 0,
-				groupsCount: 0,
-			};
 		}
+		console.log('profileResponse:', profileResponse);
+		return profileResponse;
+	}
+
+	async getYourOwnProfile(): Promise<AjaxResponse<FullProfileResponse>> {
+		const request = this._getRequest(app.config.URL.profileYourOwn);
+		const response = await this._response(request);
+		let profileResponse: AjaxResponse<FullProfileResponse> = {
+			status: response.status,
+			success: false,
+		};
+		switch (profileResponse.status) {
+			case 200: {
+				const body =
+					(await response.json()) as FetchResponse<FullProfileResponse>;
+				console.log('body:', body);
+				profileResponse = Object.assign(profileResponse, body);
+				break;
+			}
+			case 400:
+			case 405:
+				break;
+		}
+		console.log('profileResponse:', profileResponse);
+		return profileResponse;
+	}
+
+	async getHeader(): Promise<AjaxResponse<HeaderResponse>> {
+		const request = this._getRequest(app.config.URL.header);
+		const response = await this._response(request);
+		let headerResponse: AjaxResponse<HeaderResponse> = {
+			status: response.status,
+			success: false,
+		};
+		switch (headerResponse.status) {
+			case 200: {
+				const body =
+					(await response.json()) as FetchResponse<HeaderResponse>;
+				console.log('body');
+				headerResponse = Object.assign(headerResponse, body);
+				break;
+			}
+		}
+		console.log('headerResponse:', headerResponse);
+		return headerResponse;
 	}
 
 	async getCurrentUserId(): Promise<number> {
@@ -153,7 +196,6 @@ class Ajax {
 			body: JSON.stringify(formData),
 			headers: {
 				'Content-Type': 'application/json:charset=UTF-8',
-				// 'Content-Type': 'application/json',
 			},
 			credentials: 'include',
 		});
@@ -196,7 +238,7 @@ class Ajax {
 
 	private _getRequest(baseUrl: string, queryParams?: QueryParams) {
 		const params = new URLSearchParams(queryParams);
-		const url = `${baseUrl}?${params}`;
+		const url = queryParams ? `${baseUrl}?${params}` : `${baseUrl}`;
 		return new Request(url, {
 			method: 'get',
 			credentials: 'include',

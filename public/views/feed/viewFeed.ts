@@ -5,6 +5,8 @@ import {
 } from '../../actions/actionFeed';
 import { ACTION_LOGIN_TYPES } from '../../actions/actionLogin';
 import { ACTION_SIGNUP_TYPES } from '../../actions/actionSignup';
+import { ActionUserUnauthorized } from '../../actions/actionUser';
+import api from '../../api/api';
 import { IPostConfig, Post, Root } from '../../components';
 import ajax, { QueryParams } from '../../modules/ajax';
 import { ChangeFeed } from '../../stores/storeFeed';
@@ -33,7 +35,8 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			case ACTION_LOGIN_TYPES.loginClickSuccess:
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 				if (!this._configFeed.posts.length) {
-					this._requestPosts();
+					// this._requestPosts();
+					api.requestPosts(this.lastPostId);
 				}
 				update = false;
 				break;
@@ -41,7 +44,8 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 				this.updateViewFeed(change.data);
 				update = false; // Чтобы посты сначала отрендерились, а потом шел запрос с последним id
 				if (!this._configFeed.posts.length) {
-					this._requestPosts();
+					api.requestPosts(this.lastPostId);
+					// this._requestPosts();
 				}
 				break;
 		}
@@ -56,7 +60,8 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		this._addHandlers();
 
 		if (this._isNearBottom()) {
-			this._requestPosts();
+			api.requestPosts(this.lastPostId);
+			// this._requestPosts();
 		}
 	}
 
@@ -104,9 +109,13 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		const response = await ajax.getPosts(params);
 		switch (response.status) {
 			case 200:
+				if (!response.data) {
+					break;
+				}
 				this.sendAction(new ActionPostsRequestSuccess(response.data));
 				break;
 			case 401:
+				this.sendAction(new ActionUserUnauthorized());
 				this.sendAction(
 					new ActionPostsRequestFail({
 						status: response.status,
@@ -128,17 +137,12 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	private _addScrollHandler() {
-		// const isNearBottom = () => {
-		// 	return (
-		// 		window.innerHeight * 2 + window.scrollY >
-		// 		document.body.offsetHeight
-		// 	);
-		// };
 		let pending = false;
 		const fetchPosts = async () => {
 			if (!pending) {
 				pending = true;
-				await this._requestPosts();
+				await api.requestPosts(this.lastPostId);
+				// await this._requestPosts();
 				pending = false;
 			}
 		};
