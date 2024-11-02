@@ -1,4 +1,5 @@
 import { ActionAppInit } from '../../actions/actionApp';
+import { ActionUpdateProfileLinkHref } from '../../actions/actionMenu';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileGetYourOwnProfileFail,
@@ -182,6 +183,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 					new ActionProfileGetYourOwnProfileSuccess({
 						profile: response.data,
 					}),
+				);
+				this.sendAction(
+					new ActionUpdateProfileLinkHref(`/${response.data.id}`),
 				);
 		}
 		if (!app.inited) {

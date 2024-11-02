@@ -28,12 +28,12 @@ export const reducerMenu = (state?: IMenuConfig, action?: Action) => {
 				newState.links.profile.href =
 					'/' + (action.data as ActionUpdateProfileLinkHrefData).href;
 				break;
-			case ACTION_PROFILE_TYPES.getYourOwnProfileSuccess: {
-				const actionData =
-					action.data as ActionProfileGetYourOwnProfileSuccessData;
-				newState.links.profile.href = `${actionData.profile.id}`;
-				break;
-			}
+			// case ACTION_PROFILE_TYPES.getYourOwnProfileSuccess: {
+			// 	const actionData =
+			// 		action.data as ActionProfileGetYourOwnProfileSuccessData;
+			// 	newState.links.profile.href = `${actionData.profile.id}`;
+			// 	break;
+			// }
 		}
 	}
 	return newState;
