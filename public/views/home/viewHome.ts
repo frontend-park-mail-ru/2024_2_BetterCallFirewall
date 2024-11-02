@@ -77,6 +77,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	handleChange(change: ChangeHome): void {
+		console.log('ViewHome: change:', change);
 		if (this.active) {
 			switch (change.type) {
 				case ACTION_PROFILE_TYPES.getHeader:

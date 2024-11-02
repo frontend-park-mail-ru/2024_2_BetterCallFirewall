@@ -11,7 +11,7 @@ export const ACTION_PROFILE_TYPES = {
 	getYourOwnProfile: 'getYourOwnProfile',
 	getYourOwnProfileSuccess: 'getYourOwnProfileSuccess',
 	getYourOwnProfileFail: 'getYourOwnProfileFail',
-	getHeader: 'actioProfileGetHeader',
+	getHeader: 'actionProfileGetHeader',
 	getHeaderSuccess: 'getHeaderSuccess',
 	getHeaderFail: 'getHeaderFail',
 };
