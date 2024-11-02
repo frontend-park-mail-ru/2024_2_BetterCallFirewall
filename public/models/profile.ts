@@ -10,8 +10,8 @@ export interface ShortProfileResponse {
 
 export interface FullProfileResponse extends ShortProfileResponse {
 	bio: string;
-	pics: string[];
-	posts: PostResponse[];
+	pics?: string[];
+	posts?: PostResponse[];
 }
 
 export const toProfileConfig = (
@@ -25,7 +25,7 @@ export const toProfileConfig = (
 		secondName: profileResponse.lastName,
 		img: profileResponse.avatar,
 		description: profileResponse.bio,
-		posts: profileResponse.posts.map((postResponse) =>
+		posts: profileResponse.posts?.map((postResponse) =>
 			toPostConfig(postResponse),
 		),
 	};
