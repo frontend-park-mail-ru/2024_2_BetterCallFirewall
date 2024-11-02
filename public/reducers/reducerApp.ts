@@ -17,6 +17,7 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 	if (action) {
 		switch (action.type) {
 			case ACTION_APP_TYPES.actionAppInit:
+				app.inited = true;
 				// router.activeView?.render();
 				break;
 			case ACTION_LOGIN_TYPES.toSignupClick:

@@ -15,7 +15,7 @@ import { ACTION_HEADER_TYPES } from './actions/actionHeader';
 import { StoreLogin } from './stores/storeLogin';
 import { StoreApp } from './stores/storeApp';
 import { ACTION_LOGIN_TYPES } from './actions/actionLogin';
-import { ACTION_APP_TYPES, ActionAppInit } from './actions/actionApp';
+import { ACTION_APP_TYPES } from './actions/actionApp';
 import dispatcher from './dispatcher/dispatcher';
 import { StoreSignup } from './stores/storeSignup';
 import { StoreFeed } from './stores/storeFeed';
@@ -85,6 +85,7 @@ class App {
 	private _config: AppConfig;
 	private _root: Root;
 	private _stores: AppStores;
+	private _inited: boolean = false;
 
 	/**
 	 * Instance of application
@@ -243,10 +244,18 @@ class App {
 		return this._config;
 	}
 
+	get inited(): boolean {
+		return this._inited;
+	}
+
+	set inited(value: boolean) {
+		this._inited = value;
+	}
+
 	init() {
 		dispatcher.getAction(new ActionProfileGetYourOwnProfile());
 		// dispatcher.getAction(new ActionUpdateProfileLinkHref('/2'));
-		dispatcher.getAction(new ActionAppInit());
+		// dispatcher.getAction(new ActionAppInit());
 	}
 }
 

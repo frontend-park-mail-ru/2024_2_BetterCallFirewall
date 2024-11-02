@@ -1,3 +1,4 @@
+import { ActionAppInit } from '../../actions/actionApp';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileGetYourOwnProfileFail,
@@ -7,6 +8,7 @@ import {
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
 import { ActionUserUnauthorized } from '../../actions/actionUser';
+import app from '../../app';
 import { Post, Root } from '../../components';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
 import ajax from '../../modules/ajax';
@@ -157,6 +159,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		switch (response.status) {
 			case 401:
 				this.sendAction(new ActionUserUnauthorized());
+				if (!app.inited) {
+					this.sendAction(new ActionAppInit());
+				}
 				break;
 			case 400:
 			case 405:
