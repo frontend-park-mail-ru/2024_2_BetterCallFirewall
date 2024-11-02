@@ -1,3 +1,4 @@
+import { ACTION_APP_TYPES } from '../../actions/actionApp';
 import { ActionFormError } from '../../actions/actionForm';
 import {
 	ActionSignupClickSuccess,
@@ -16,7 +17,7 @@ import dispatcher from '../../dispatcher/dispatcher';
 // import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
-import { Change } from '../../stores/store';
+import { ChangeSignup } from '../../stores/storeSignup';
 import { BaseView, Components, ViewData } from '../view';
 
 export class ViewSignup extends BaseView {
@@ -32,10 +33,11 @@ export class ViewSignup extends BaseView {
 		return this._config;
 	}
 
-	// Исправить
-	handleChange(change: Change): void {
+	handleChange(change: ChangeSignup): void {
 		switch (change.type) {
-			default:
+			case ACTION_APP_TYPES.actionAppInit:
+				this._config = change.data;
+				this.render();
 		}
 	}
 

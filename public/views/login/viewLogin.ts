@@ -1,3 +1,4 @@
+import { ACTION_APP_TYPES } from '../../actions/actionApp';
 import { ActionFormError } from '../../actions/actionForm';
 import {
 	ActionLoginClickSuccess,
@@ -11,10 +12,9 @@ import {
 } from '../../components';
 import config from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
-// import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
-import { Change } from '../../stores/store';
+import { ChangeLogin } from '../../stores/storeLogin';
 import { BaseView, Components, ViewData } from '../view';
 
 export class ViewLogin extends BaseView {
@@ -24,17 +24,17 @@ export class ViewLogin extends BaseView {
 	constructor(config: ILoginFormConfig, root: Root) {
 		super(root);
 		this._config = config;
-		// this._root = new Root();
 	}
 
 	get config() {
 		return this._config;
 	}
 
-	// Исправить
-	handleChange(change: Change): void {
+	handleChange(change: ChangeLogin): void {
 		switch (change.type) {
-			default:
+			case ACTION_APP_TYPES.actionAppInit:
+				this._config = change.data;
+				this.render();
 		}
 	}
 

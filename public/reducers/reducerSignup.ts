@@ -1,4 +1,5 @@
 import { Action } from '../actions/action';
+import { ACTION_APP_TYPES } from '../actions/actionApp';
 import { ACTION_FORM_TYPES, IFormErrorData } from '../actions/actionForm';
 import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
 import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
@@ -24,6 +25,8 @@ export const reducerSignup = (state?: ISignupFormConfig, action?: Action) => {
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 				break;
 			case ACTION_LOGIN_TYPES.actionLoginToSignupClick:
+				break;
+			case ACTION_APP_TYPES.actionAppInit:
 				break;
 			default:
 				break;

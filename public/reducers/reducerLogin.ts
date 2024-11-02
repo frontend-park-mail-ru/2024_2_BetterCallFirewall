@@ -1,4 +1,5 @@
 import { Action } from '../actions/action';
+import { ACTION_APP_TYPES } from '../actions/actionApp';
 import { ACTION_FORM_TYPES, IFormErrorData } from '../actions/actionForm';
 import { ACTION_HEADER_TYPES } from '../actions/actionHeader';
 import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
@@ -24,6 +25,8 @@ export const reducerLogin = (state?: ILoginFormConfig, action?: Action) => {
 			case ACTION_HEADER_TYPES.logoutClickSuccess:
 				break;
 			case ACTION_SIGNUP_TYPES.toLoginLinkClick:
+				break;
+			case ACTION_APP_TYPES.actionAppInit:
 				break;
 		}
 	}
