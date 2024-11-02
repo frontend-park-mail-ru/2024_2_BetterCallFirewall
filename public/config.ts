@@ -20,8 +20,8 @@ export const PAGE_LINKS = {
 	messages: '/messages',
 	chat: '/chat',
 	friends: '/friends',
-	// profile: '/([\\w-]+)', // ????
-	profile: '/', // ????
+	profile: '/([\\w-]+)', // ????
+	// profile: '/', // ????
 };
 
 const homeConfig: HomeConfig = {
