@@ -4,34 +4,29 @@ import {
 	ActionProfileRequestSuccessData,
 	ActionUpdateProfileData,
 } from '../actions/actionProfile';
-import { IProfileConfig } from '../components/Profile/Profile';
 import config from '../config';
 import { toProfileConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
 import { ViewProfileConfig } from '../views/profile/viewProfile';
 
-const initialProfileState: IProfileConfig = deepClone(
-	config.profileConfig.profile,
-);
-
-const initialState: ViewProfileConfig = {
-	...config.homeConfig,
-	profile: initialProfileState,
-};
+const initialState: ViewProfileConfig = deepClone(config.profileConfig);
 
 export const reducerProfile = (
 	state: ViewProfileConfig = initialState,
 	action?: Action,
 ) => {
 	const newState = deepClone(state);
+	let actionData;
 	switch (action?.type) {
 		case ACTION_PROFILE_TYPES.updateProfile:
-			return { ...state, ...(action.data as ActionUpdateProfileData) };
+			actionData = action.data as ActionUpdateProfileData;
+			newState.profile = Object.assign(newState.profile, actionData);
+			return newState;
 		case ACTION_PROFILE_TYPES.profileRequestSuccess:
-			const data = action.data as ActionProfileRequestSuccessData;
+			actionData = action.data as ActionProfileRequestSuccessData;
 			const profileConfig = toProfileConfig(
 				newState.profile,
-				data.profileResponse,
+				actionData.profileResponse,
 			);
 			newState.profile = Object.assign(newState.profile, profileConfig);
 			return newState;
