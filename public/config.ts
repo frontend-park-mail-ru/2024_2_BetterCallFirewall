@@ -268,6 +268,7 @@ const profileComponentConfig: IProfileConfig = {
 	friendsCount: -1,
 	groupsCount: -1,
 	img: '',
+	createPostHref: PAGE_LINKS.createPost,
 };
 
 const profileConfig: ViewProfileConfig = {

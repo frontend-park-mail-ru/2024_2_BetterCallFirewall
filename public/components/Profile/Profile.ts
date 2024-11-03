@@ -17,6 +17,7 @@ export interface IProfileConfig extends IBaseComponentConfig {
 	currentUser?: boolean;
 	isFriend?: boolean;
 	posts?: IPostConfig[];
+	createPostHref: string;
 }
 
 export class Profile extends BaseComponent {
@@ -63,10 +64,6 @@ export class Profile extends BaseComponent {
 				post.render(false);
 				post.appendToHTML(postsItems);
 			});
-			// this.posts.forEach((post) => {
-			// 	post.render(false);
-			// 	post.appendToHTML(postsItems);
-			// });
 		} else {
 			throw new Error('profile has no .profile__posts');
 		}
