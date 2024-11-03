@@ -165,6 +165,7 @@ class App {
 		this._stores.app.subscribe(ACTION_LOGIN_TYPES.toSignupClick);
 		this._stores.app.subscribe(ACTION_LOGIN_TYPES.loginClickSuccess);
 		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
+		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
 		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 		this._stores.app.subscribe(ACTION_PROFILE_TYPES.getHeaderFail);
 		this._stores.app.subscribe(ACTION_CHAT_TYPES.goToChat);
