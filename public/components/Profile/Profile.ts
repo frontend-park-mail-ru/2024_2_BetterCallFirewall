@@ -1,3 +1,4 @@
+import { PAGE_LINKS } from '../../config';
 import BaseComponent, {
 	IBaseComponent,
 	IBaseComponentConfig,
@@ -60,6 +61,16 @@ export class Profile extends BaseComponent {
 		return html;
 	}
 
+	get profileEditLink(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'a.profile-edit',
+		) as HTMLElement;
+		if (!html) {
+			throw new Error('profileEditLink not found');
+		}
+		return html;
+	}
+
 	render(show: boolean = true): string {
 		this._prerender();
 		this._render('Profile.hbs', show);
@@ -102,7 +113,6 @@ export class Profile extends BaseComponent {
 		const friendButton = document.createElement('button');
 		friendButton.classList.add('buton-action', 'button-no-decorations');
 		friendButton.textContent = 'Добавить в друзья';
-		friendButton.addEventListener('click', () => {});
 		this._htmlElement
 			?.querySelector('.profile__actions')
 			?.appendChild(friendButton);
@@ -112,9 +122,18 @@ export class Profile extends BaseComponent {
 		const writeMessageLink = document.createElement('a');
 		writeMessageLink.href = '#';
 		writeMessageLink.textContent = 'Написать сообщение';
-		writeMessageLink.addEventListener('click', () => {});
 		this._htmlElement
 			?.querySelector('.profile__actions')
 			?.appendChild(writeMessageLink);
+	}
+
+	addProfileEditLink() {
+		const profileEditLink = document.createElement('a');
+		profileEditLink.classList.add('.profile-edit');
+		profileEditLink.href = PAGE_LINKS.profileEdit;
+		profileEditLink.textContent = 'Редактировать профиль';
+		this._htmlElement
+			?.querySelector('.profile__actions')
+			?.appendChild(profileEditLink);
 	}
 }

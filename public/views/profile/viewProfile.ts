@@ -3,6 +3,7 @@ import {
 	ACTION_PROFILE_TYPES,
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
+import { ActionProfileEditGoTo } from '../../actions/actionProfileEdit';
 import api from '../../api/api';
 import app from '../../app';
 import { Root } from '../../components';
@@ -104,6 +105,12 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		this.content.addHandler(createPostLink, 'click', (event) => {
 			event.preventDefault();
 			this.sendAction(new ActionCreatePostGoTo());
+		});
+
+		const profileEditLink = this.profile.profileEditLink;
+		this.content.addHandler(profileEditLink, 'click', (event) => {
+			event.preventDefault();
+			this.sendAction(new ActionProfileEditGoTo());
 		});
 	}
 }
