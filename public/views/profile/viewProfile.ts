@@ -3,7 +3,10 @@ import {
 	ACTION_PROFILE_TYPES,
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
-import { ActionProfileEditGoTo } from '../../actions/actionProfileEdit';
+import {
+	ActionProfileEditGoTo,
+	ActionProfileEditUpdate,
+} from '../../actions/actionProfileEdit';
 import api from '../../api/api';
 import app from '../../app';
 import { Root } from '../../components';
@@ -55,8 +58,14 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				break;
 			case ACTION_PROFILE_TYPES.profileRequestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestFail:
-				// case ACTION_PROFILE_TYPES.getHeaderSuccess:
-				// case ACTION_PROFILE_TYPES.getHeaderFail:
+				this.sendAction(
+					new ActionProfileEditUpdate({
+						inputs: {
+							firstName: change.data.profile.firstName,
+							lastName: change.data.profile.secondName,
+						},
+					}),
+				);
 				if (this.active) {
 					this.updateViewProfile(change.data);
 				}

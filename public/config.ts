@@ -241,6 +241,7 @@ const profileEditConfig: ViewProfileEditConfig = {
 			},
 			avatar: {
 				key: 'avatar',
+				name: 'file',
 				type: 'file',
 				accept: 'image/*',
 				// extra: 'multiple',

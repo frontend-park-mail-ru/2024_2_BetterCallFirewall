@@ -5,13 +5,19 @@ export const ACTION_PROFILE_EDIT_TYPES = {
 	goToProfileEdit: 'actionProfileEditGoTo',
 };
 
-export class ActionUpdateProfileEdit implements Action {
-	type: ActionType;
-	data: object;
+export interface ActionProfileEditUpdateData {
+	inputs: {
+		firstName?: string;
+		lastName?: string;
+	};
+}
 
-	constructor() {
-		this.type = ACTION_PROFILE_EDIT_TYPES.updateProfileEdit;
-		this.data = {};
+export class ActionProfileEditUpdate implements Action {
+	type: ActionType = ACTION_PROFILE_EDIT_TYPES.updateProfileEdit;
+	data: ActionProfileEditUpdateData;
+
+	constructor(data: ActionProfileEditUpdateData) {
+		this.data = data;
 	}
 }
 

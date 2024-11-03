@@ -1,6 +1,6 @@
 import {
 	ACTION_PROFILE_EDIT_TYPES,
-	ActionUpdateProfileEdit,
+	ActionProfileEditUpdate,
 } from '../../actions/actionProfileEdit';
 import { Root } from '../../components';
 import {
@@ -48,7 +48,7 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 
 	render(): void {
 		this._render();
-		dispatcher.getAction(new ActionUpdateProfileEdit());
+		dispatcher.getAction(new ActionProfileEditUpdate());
 	}
 
 	updateViewProfileEdit(data: ViewProfileEditConfig): void {
