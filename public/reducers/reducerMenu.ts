@@ -13,10 +13,10 @@ import deepClone from '../modules/deepClone';
 
 const initialState: IMenuConfig = deepClone(config.homeConfig.menu);
 
-export const reducerMenu = (state?: IMenuConfig, action?: Action) => {
-	if (!state) {
-		return initialState;
-	}
+export const reducerMenu = (
+	state: IMenuConfig = initialState,
+	action?: Action,
+) => {
 	const newState = deepClone(state);
 	if (action) {
 		switch (action.type) {

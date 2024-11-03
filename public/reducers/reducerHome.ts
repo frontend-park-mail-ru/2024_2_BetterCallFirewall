@@ -17,6 +17,5 @@ export const reducerHome = (state?: HomeConfig, action?: Action) => {
 	const newState = deepClone(state);
 	newState.menu = reducerMenu(state.menu, action);
 	newState.main = reducerMain(state.main, action);
-	console.log('reducerHome: newState:', newState);
 	return newState;
 };

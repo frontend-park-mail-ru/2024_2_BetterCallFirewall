@@ -7,10 +7,10 @@ import { reducerHeader } from './reducerHeader';
 
 const initialState: MainConfig = deepClone(config.homeConfig.main);
 
-export const reducerMain = (state?: MainConfig, action?: Action) => {
-	if (!state) {
-		return initialState;
-	}
+export const reducerMain = (
+	state: MainConfig = initialState,
+	action?: Action,
+) => {
 	if (!action) {
 		return state;
 	}
@@ -18,8 +18,7 @@ export const reducerMain = (state?: MainConfig, action?: Action) => {
 	newState.header = reducerHeader(newState.header, action);
 	switch (action.type) {
 		case ACTION_APP_TYPES.actionAppInit:
-			return state;
-		default:
-			return state;
+			return newState;
 	}
+	return newState;
 };
