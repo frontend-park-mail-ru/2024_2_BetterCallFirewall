@@ -6,6 +6,7 @@ import {
 	ActionPostsRequestFail,
 	ActionPostsRequestSuccess,
 } from '../actions/actionFeed';
+import { ActionFormError } from '../actions/actionForm';
 import {
 	ActionProfileGetFriendsSuccess,
 	ActionProfileGetSubscribersSuccess,
@@ -13,6 +14,7 @@ import {
 } from '../actions/actionFriends';
 import { ActionUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
+	ActionProfileGetHeader,
 	ActionProfileGetHeaderFail,
 	ActionProfileGetHeaderSuccess,
 	ActionProfileGetYourOwnProfileFail,
@@ -20,6 +22,7 @@ import {
 	ActionProfileRequestFail,
 	ActionProfileRequestSuccess,
 } from '../actions/actionProfile';
+import { ActionSignupClickSuccess } from '../actions/actionSignup';
 import { ActionUserUnauthorized } from '../actions/actionUser';
 import app from '../app';
 import dispatcher from '../dispatcher/dispatcher';
@@ -225,6 +228,23 @@ class API {
 				break;
 			default:
 				this.sendAction(new actionFeedPostCreateFail());
+		}
+	}
+
+	async sendForm(url: string, formData: FormData) {
+		const response = await ajax.sendForm(url, formData);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionSignupClickSuccess());
+				this.sendAction(new ActionProfileGetHeader());
+				break;
+			case STATUS.badRequest:
+				if (response.message) {
+					this.sendAction(new ActionFormError(response.message));
+				}
+				break;
+			default:
+				this.sendAction(new ActionFormError('Что-то пошло не так'));
 		}
 	}
 }

@@ -23,6 +23,10 @@ export class SignupForm extends BaseForm implements ISignupForm {
 		}
 		throw new Error('form not found');
 	}
+	 
+	get formData(): FormData {
+		return new FormData(this.form as HTMLFormElement);
+	}
 
 	protected _prerender(): void {
 		super._prerender();

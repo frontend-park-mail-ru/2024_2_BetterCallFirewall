@@ -24,6 +24,10 @@ export class LoginForm extends BaseForm implements ILoginForm {
 		throw new Error('form not found');
 	}
 
+	get formData(): FormData {
+		return new FormData(this.form as HTMLFormElement);
+	}
+
 	protected _prerender(): void {
 		super._prerender();
 		const toSignupLink = new FormLink(this._config?.toSignupLink, this);

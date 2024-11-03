@@ -208,30 +208,42 @@ class Ajax {
 		return this._postObjectResponse(url);
 	}
 
-	/**
-	 * Sending data form data
-	 *
-	 * @param {string} url
-	 * @param {Record<string, string>} formData
-	 * @param {function} callback
-	 */
-	sendForm(
-		url: string,
-		formData: Record<string, string>,
-		callback: (response: Response | null, error?: Error) => void,
-	) {
-		const request = new Request(url, {
-			method: 'POST',
-			body: JSON.stringify(formData),
-			headers: {
-				'Content-Type': 'application/json:charset=UTF-8',
-			},
-			credentials: 'include',
-		});
-		fetch(request)
-			.then((response) => callback(response))
-			.catch((error) => callback(null, error));
+	async sendForm(url: string, formData: FormData): Promise<AjaxResponse<FormResponse>> {
+		const request = this._sendFormRequest(url, formData);
+		const response = await this._response(request);
+		
+		let formResponse: AjaxResponse<FormResponse> = {
+			status: response.status,
+			success: false,
+		};
+		
+		try {
+			const body = await response.json() as FetchResponse<FormResponse>;
+			formResponse = Object.assign(formResponse, body);
+		} catch {
+			formResponse.message = 'Ошибка при обработке ответа';
+		}
+		
+		return formResponse;
 	}
+
+	// sendForm(
+	// 	url: string,
+	// 	formData: FormData,
+	// 	callback: (response: Response | null, error?: Error) => void,
+	// ) {
+	// 	const request = new Request(url, {
+	// 		method: 'POST',
+	// 		body: formData,
+	// 		headers: {
+	// 			'Content-Type': 'application/json:charset=UTF-8',
+	// 		},
+	// 		credentials: 'include',
+	// 	});
+	// 	fetch(request)
+	// 		.then((response) => callback(response))
+	// 		.catch((error) => callback(null, error));
+	// }
 
 	/**
 	 * AJAX request

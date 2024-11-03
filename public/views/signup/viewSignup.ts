@@ -1,21 +1,17 @@
 import { ACTION_APP_TYPES } from '../../actions/actionApp';
-import { ActionFormError } from '../../actions/actionForm';
-import { ActionProfileGetHeader } from '../../actions/actionProfile';
 import {
-	ActionSignupClickSuccess,
 	ActionSignupToLoginClick,
 } from '../../actions/actionSignup';
+import api from '../../api/api';
 import {
 	ISignupFormConfig,
 	SignupForm,
 	Root,
-	IInputConfig,
 } from '../../components';
 import config from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
-// import dispatcher from '../../dispatcher/dispatcher';
-import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
+// import dispatcher from '../../dispatcher/dispatcher';
 import { ChangeSignup } from '../../stores/storeSignup';
 import { BaseView, Components } from '../view';
 
@@ -66,7 +62,12 @@ export class ViewSignup extends BaseView {
 		signupForm.addHandler(signupForm.form, 'submit', (event: Event) => {
 			event.preventDefault();
 			if (this._config.inputs) {
-				loginFormSubmit(signupForm);
+				const validator = new Validator();
+				const formData = validator.validateForm(signupForm.formData, signupForm.form);
+				if (formData) {
+					api.sendForm(config.URL.signup, formData);
+				}
+				// loginFormSubmit(signupForm);
 			}
 		});
 
@@ -85,41 +86,41 @@ export class ViewSignup extends BaseView {
 	}
 }
 
-const loginFormSubmit = (
-	signupForm: SignupForm,
-) => {
-	const validator = new Validator();
-	const form = signupForm.form as HTMLFormElement;
-	const formData = new FormData(form);
-	const data = validator.validateForm(formData, signupForm.form);
-	if (data) {
-		for (const [key, value] of data.entries()) {
-			console.log(key, value);
-		}
-	}
-	if (data) {
-		ajax.sendForm(config.URL.signup, data, async (response, error) => {
-			if (error) {
-				dispatcher.getAction(
-					new ActionFormError('Что-то пошло не так'),
-				);
-				return;
-			}
-			if (response && response.ok) {
-				dispatcher.getAction(new ActionSignupClickSuccess());
-				dispatcher.getAction(new ActionProfileGetHeader());
-			} else if (response) {
-				const data = await response.json();
-				if (data.message === 'wrong email or password') {
-					dispatcher.getAction(
-						new ActionFormError('Неверная почта или пароль'),
-					);
-				} else {
-					dispatcher.getAction(
-						new ActionFormError('Что-то пошло не так'),
-					);
-				}
-			}
-		});
-	}
-};
+// const loginFormSubmit = (
+// 	signupForm: SignupForm,
+// ) => {
+// 	const validator = new Validator();
+// 	const form = signupForm.form as HTMLFormElement;
+// 	const formData = new FormData(form);
+// 	const data = validator.validateForm(formData, signupForm.form);
+// 	if (data) {
+// 		for (const [key, value] of data.entries()) {
+// 			console.log(key, value);
+// 		}
+// 	}
+// 	if (data) {
+// 		ajax.sendForm(config.URL.signup, data, async (response, error) => {
+// 			if (error) {
+// 				dispatcher.getAction(
+// 					new ActionFormError('Что-то пошло не так'),
+// 				);
+// 				return;
+// 			}
+// 			if (response && response.ok) {
+// 				dispatcher.getAction(new ActionSignupClickSuccess());
+// 				dispatcher.getAction(new ActionProfileGetHeader());
+// 			} else if (response) {
+// 				const data = await response.json();
+// 				if (data.message === 'wrong email or password') {
+// 					dispatcher.getAction(
+// 						new ActionFormError('Неверная почта или пароль'),
+// 					);
+// 				} else {
+// 					dispatcher.getAction(
+// 						new ActionFormError('Что-то пошло не так'),
+// 					);
+// 				}
+// 			}
+// 		});
+// 	}
+// };

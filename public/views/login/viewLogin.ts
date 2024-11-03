@@ -1,18 +1,15 @@
 import { ACTION_APP_TYPES } from '../../actions/actionApp';
-import { ActionFormError } from '../../actions/actionForm';
 import {
-	ActionLoginClickSuccess,
 	ActionLoginToSignupClick,
 } from '../../actions/actionLogin';
+import api from '../../api/api';
 import {
-	IInputConfig,
 	ILoginFormConfig,
 	LoginForm,
 	Root,
 } from '../../components';
 import config from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
-import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
 import { ChangeLogin } from '../../stores/storeLogin';
 import { BaseView, Components } from '../view';
@@ -66,7 +63,11 @@ export class ViewLogin extends BaseView {
 		loginForm.addHandler(loginForm.form, 'submit', (event: Event) => {
 			event.preventDefault();
 			if (this._config.inputs) {
-				loginFormSubmit(loginForm, this._config.inputs);
+				const validator = new Validator();
+				const formData = validator.validateForm(loginForm.formData, loginForm.form);
+				if (formData) {
+					api.sendForm(config.URL.login, formData);
+				}
 			}
 		});
 
@@ -84,35 +85,3 @@ export class ViewLogin extends BaseView {
 		});
 	}
 }
-
-const loginFormSubmit = (
-	loginForm: LoginForm,
-	inputs: Record<string, IInputConfig>,
-) => {
-	const validator = new Validator();
-	// const data = validator.validateForm(inputs, loginForm.form);
-	// if (data) {
-	// 	ajax.sendForm(config.URL.login, data, async (response, error) => {
-	// 		if (error) {
-	// 			dispatcher.getAction(
-	// 				new ActionFormError('Что-то пошло не так'),
-	// 			);
-	// 			return;
-	// 		}
-	// 		if (response && response.ok) {
-	// 			dispatcher.getAction(new ActionLoginClickSuccess());
-	// 		} else if (response) {
-	// 			const data = await response.json();
-	// 			if (data.message === 'wrong email or password') {
-	// 				dispatcher.getAction(
-	// 					new ActionFormError('Неверная почта или пароль'),
-	// 				);
-	// 			} else {
-	// 				dispatcher.getAction(
-	// 					new ActionFormError('Что-то пошло не так'),
-	// 				);
-	// 			}
-	// 		}
-	// 	});
-	// }
-};
