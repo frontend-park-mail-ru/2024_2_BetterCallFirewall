@@ -44,6 +44,10 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 			case ACTION_FRIENDS_TYPES.getFriends:
 				this.updateViewFriends(change.data);
 				api.requestFriends(this._configFriends.main.header.profile.id);
+				api.requestSubscribers(
+					this._configFriends.main.header.profile.id,
+				);
+				api.requestUsers();
 				break;
 		}
 	}
