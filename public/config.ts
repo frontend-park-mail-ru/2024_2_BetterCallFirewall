@@ -204,6 +204,7 @@ const messagesComponentConfig: IMessageConfig[] = Array.from(
 			lastMessage: '',
 			date: '',
 			unreadedCount: 0,
+			href: PAGE_LINKS.chat,
 		};
 	},
 );

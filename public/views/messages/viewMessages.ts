@@ -1,7 +1,7 @@
 import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import { Root } from '../../components';
 import { IMessageConfig, Message } from '../../components/Message/Message';
-import dispatcher from '../../dispatcher/dispatcher';
+import { PAGE_LINKS } from '../../config';
 import { ChangeMessages } from '../../stores/storeMessages';
 import {
 	ComponentsHome,
@@ -77,6 +77,7 @@ export class ViewMessages extends ViewHome implements IViewHome {
 					lastMessage: 'Lets do it.',
 					date: '12:34',
 					unreadedCount: 3,
+					href: PAGE_LINKS.chat,
 				},
 				content,
 			);
@@ -86,12 +87,9 @@ export class ViewMessages extends ViewHome implements IViewHome {
 	}
 
 	protected _addMessageHandlers(message: Message): void {
-		message.htmlElement.addEventListener('click', () => {
-			dispatcher.getAction(
-				new ActionMenuLinkClick({
-					href: '/chat',
-				}),
-			);
+		message.addHandler(message.htmlElement, 'click', (event) => {
+			event.preventDefault();
+			this.sendAction(new ActionMenuLinkClick({ href: message.href }));
 		});
 	}
 }

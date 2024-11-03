@@ -10,12 +10,13 @@ export interface IMessageConfig extends IBaseComponentConfig {
 	lastMessage: string;
 	date: string;
 	unreadedCount: number;
+	href: string;
 }
 
 export interface IMessages extends BaseComponent {}
 
 export class Message extends BaseComponent implements IMessages {
-	protected _config: IMessageConfig | null;
+	protected _config: IMessageConfig;
 
 	/**
 	 * Instance of messages
@@ -26,6 +27,14 @@ export class Message extends BaseComponent implements IMessages {
 	constructor(config: IMessageConfig, parent: IBaseComponent) {
 		super(config, parent);
 		this._config = config;
+	}
+
+	get config(): IMessageConfig {
+		return this._config;
+	}
+
+	get href(): string {
+		return this.config.href;
 	}
 
 	render(show: boolean = true): string {
