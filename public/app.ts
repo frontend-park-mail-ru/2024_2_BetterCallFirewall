@@ -293,11 +293,9 @@ class App {
 		createPostView.register(this._stores.createPost);
 
 		profileEditView.register(this._stores.home);
-		// profileEditView.register(this._stores.);
 
-		// friendView.register(this._stores.menu);
-		// friendView.register(this._stores.header);
 		friendView.register(this._stores.home);
+		friendView.register(this._stores.friends);
 	}
 
 	get router(): Router {
