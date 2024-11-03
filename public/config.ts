@@ -317,16 +317,7 @@ const friendsConfig: ViewFriendsConfig = {
 	friends: {
 		key: 'friends',
 		headerText: 'Друзья',
-		friendsConfig: Array.from({ length: 10 }, () => {
-			return {
-				id: -1,
-				key: 'friend',
-				avatar: '../../img/avatar.png',
-				name: 'Asap Rocky',
-				description: 'Canadian singer, songwriter and actor.',
-				isFriend: true,
-			};
-		}),
+		friendsConfig: [],
 	},
 	subcribers: {
 		key: 'subscribers',
