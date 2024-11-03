@@ -44,7 +44,7 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 	}
 
 	updateViewProfileEdit(data: ViewProfileEditConfig): void {
-		this._configProfileEdit = data;
+		this._configProfileEdit = Object.assign(this._configProfileEdit, data);
 		this._render();
 	}
 
