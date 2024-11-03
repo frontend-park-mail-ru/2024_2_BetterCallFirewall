@@ -18,6 +18,15 @@ import app from '../app';
 import dispatcher from '../dispatcher/dispatcher';
 import ajax, { QueryParams } from '../modules/ajax';
 
+export const STATUS = {
+	ok: 200,
+	noMoreContent: 204,
+	badRequest: 400,
+	unauthorized: 401,
+	wrongMethod: 405,
+	internalServerError: 500,
+};
+
 class API {
 	sendAction(action: Action) {
 		dispatcher.getAction(action);

@@ -1,3 +1,4 @@
+import { STATUS } from '../api/api';
 import app from '../app';
 import { HeaderResponse } from '../models/header';
 import { PostResponse } from '../models/post';
@@ -49,24 +50,6 @@ class Ajax {
 		});
 	}
 
-	// /**
-	//  * Get request and promise with resolving by data
-	//  *
-	//  * @param {string} baseUrl
-	//  * @returns {Promise<T>}
-	//  */
-	// getPromise<T>(baseUrl: string, queryParams?: QueryParams): Promise<T> {
-	// 	const params = new URLSearchParams(queryParams);
-	// 	const url = `${baseUrl}?${params}`;
-	// 	const request = new Request(url, {
-	// 		method: 'get',
-	// 		credentials: 'include',
-	// 	});
-	// 	return this._ajaxPromise({
-	// 		request,
-	// 	});
-	// }
-
 	async getPosts(
 		queryParams?: QueryParams,
 	): Promise<AjaxResponse<PostResponse[]>> {
@@ -80,12 +63,12 @@ class Ajax {
 			message: '',
 		};
 		switch (postsResponse.status) {
-			case 204:
+			case STATUS.noMoreContent:
 				postsResponse.message = 'Постов больше нет';
 				break;
-			case 401:
-				postsResponse.message = 'Не авторизован';
-				break;
+			// case STATUS.unauthorized:
+			// 	postsResponse.message = 'Не авторизован';
+			// 	break;
 			default: {
 				const body = (await response.json()) as FetchResponse<
 					PostResponse[]
@@ -108,10 +91,7 @@ class Ajax {
 			success: false,
 		};
 		switch (profileResponse.status) {
-			case 400:
-			case 405:
-				break;
-			case 200: {
+			case STATUS.ok: {
 				const body =
 					(await response.json()) as FetchResponse<FullProfileResponse>;
 				console.log('body:', body);
@@ -130,16 +110,13 @@ class Ajax {
 			success: false,
 		};
 		switch (profileResponse.status) {
-			case 200: {
+			case STATUS.ok: {
 				const body =
 					(await response.json()) as FetchResponse<FullProfileResponse>;
 				console.log('body:', body);
 				profileResponse = Object.assign(profileResponse, body);
 				break;
 			}
-			case 400:
-			case 405:
-				break;
 		}
 		console.log('profileResponse:', profileResponse);
 		return profileResponse;
@@ -153,7 +130,7 @@ class Ajax {
 			success: false,
 		};
 		switch (headerResponse.status) {
-			case 200: {
+			case STATUS.ok: {
 				const body =
 					(await response.json()) as FetchResponse<HeaderResponse>;
 				console.log('body');
@@ -216,32 +193,23 @@ class Ajax {
 			.catch((error) => config.callback(null, error));
 	}
 
-	/**
-	 * Execute AJAX request and returning Promise which resoles by response
-	 *
-	 * @param {AjaxPromiseConfig} config
-	 * @returns {Promise<T>}
-	 */
-	private async _ajaxPromise<T>(
-		config: AjaxPromiseConfig,
-	): Promise<T | null> {
-		const response = await fetch(config.request);
-		if (response.ok) {
-			if (response.status === 204) {
-				return null;
-			}
-			return response.json();
-		} else {
-			throw new Error(response.status.toString());
-		}
-	}
-
 	private _getRequest(baseUrl: string, queryParams?: QueryParams) {
 		const params = new URLSearchParams(queryParams);
 		const url = queryParams ? `${baseUrl}?${params}` : `${baseUrl}`;
 		return new Request(url, {
 			method: 'get',
 			credentials: 'include',
+		});
+	}
+
+	private _postRequest(baseUrl: string, data: object) {
+		return new Request(baseUrl, {
+			method: 'post',
+			credentials: 'include',
+			body: JSON.stringify(data),
+			headers: {
+				'Content-Type': 'application/json:charset=UTF-8',
+			},
 		});
 	}
 
