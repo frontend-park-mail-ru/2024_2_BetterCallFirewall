@@ -1,4 +1,5 @@
 import { IPostConfig } from '../components';
+import parseImage from '../modules/parseImage';
 
 interface Header {
 	authorId: number;
@@ -22,7 +23,7 @@ export const toPostConfig = (postResponse: PostResponse): IPostConfig => {
 	return {
 		id: postResponse.id,
 		key: `post-${postResponse.id}`,
-		avatar: postResponse.header.avatar,
+		avatar: parseImage(postResponse.header.avatar),
 		title: postResponse.header.author,
 		text: postResponse.post_content.text,
 		date: postResponse.post_content.created_at,
