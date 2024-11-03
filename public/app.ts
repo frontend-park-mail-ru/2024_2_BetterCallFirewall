@@ -256,6 +256,7 @@ class App {
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.getHeader);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.getHeaderSuccess);
 
+		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriendsSuccess);
 
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.goToMessages);
