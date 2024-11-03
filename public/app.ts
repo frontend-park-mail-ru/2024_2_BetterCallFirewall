@@ -65,6 +65,8 @@ export interface URLInterface {
 	post: string;
 	profile: string;
 	profileYourOwn: string;
+	profiles: string;
+	subscribers: string;
 	header: string;
 	friends: string;
 }

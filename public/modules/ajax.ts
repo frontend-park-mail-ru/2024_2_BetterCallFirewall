@@ -144,22 +144,19 @@ class Ajax {
 	): Promise<AjaxResponse<ShortProfileResponse[]>> {
 		let url = app.config.URL.friends;
 		url = url.replace('{id}', `${profileId}`);
-		const request = this._getRequest(url);
-		const response = await this._response(request);
-		let friendsResponse: AjaxResponse<ShortProfileResponse[]> = {
-			status: response.status,
-			success: false,
-		};
-		switch (friendsResponse.status) {
-			case STATUS.ok: {
-				const body = (await response.json()) as FetchResponse<
-					ShortProfileResponse[]
-				>;
-				console.log('body:', body);
-				friendsResponse = Object.assign(friendsResponse, body);
-			}
-		}
-		return friendsResponse;
+		return this._getShortProfileResponse(url);
+	}
+
+	async getSubscribers(
+		profileId: number,
+	): Promise<AjaxResponse<ShortProfileResponse[]>> {
+		let url = app.config.URL.subscribers;
+		url = url.replace('{id}', `${profileId}`);
+		return this._getShortProfileResponse(url);
+	}
+
+	async getProfiles(): Promise<AjaxResponse<ShortProfileResponse[]>> {
+		return this._getShortProfileResponse(app.config.URL.profiles);
 	}
 
 	/**
@@ -197,6 +194,30 @@ class Ajax {
 			.then((response) => response.json())
 			.then((data) => config.callback(data, null))
 			.catch((error) => config.callback(null, error));
+	}
+
+	private async _getShortProfileResponse(
+		baseUrl: string,
+	): Promise<AjaxResponse<ShortProfileResponse[]>> {
+		const request = this._getRequest(baseUrl);
+		const response = await this._response(request);
+		let shortProfileResponse: AjaxResponse<ShortProfileResponse[]> = {
+			status: response.status,
+			success: false,
+		};
+		switch (shortProfileResponse.status) {
+			case STATUS.ok: {
+				const body = (await response.json()) as FetchResponse<
+					ShortProfileResponse[]
+				>;
+				console.log('body:', body);
+				shortProfileResponse = Object.assign(
+					shortProfileResponse,
+					body,
+				);
+			}
+		}
+		return shortProfileResponse;
 	}
 
 	private _getRequest(baseUrl: string, queryParams?: QueryParams) {

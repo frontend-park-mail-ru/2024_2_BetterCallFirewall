@@ -81,7 +81,7 @@ const homeConfig: HomeConfig = {
 		header: {
 			key: 'header',
 			profile: {
-				id: 0,
+				id: -1,
 				avatar: 'img/avatar.png',
 			},
 		},
@@ -243,13 +243,13 @@ const feedConfig: ViewFeedConfig = {
 };
 
 const profileComponentConfig: IProfileConfig = {
-	id: 0,
+	id: -1,
 	key: 'profile',
 	firstName: '',
 	secondName: '',
 	description: '',
-	friendsCount: 0,
-	groupsCount: 0,
+	friendsCount: -1,
+	groupsCount: -1,
 	img: '',
 };
 
@@ -263,13 +263,13 @@ const messagesComponentConfig: IMessageConfig[] = Array.from(
 	{ length: 10 },
 	() => {
 		return {
-			authorId: 0,
+			authorId: -1,
 			key: 'messages',
 			avatar: '',
 			name: '',
 			lastMessage: '',
 			date: '',
-			unreadedCount: 0,
+			unreadedCount: -1,
 			href: PAGE_LINKS.chat,
 		};
 	},
@@ -281,7 +281,7 @@ const messagesConfig: ViewMessagesConfig = {
 };
 
 const chatComponentConfig: IChatConfig = {
-	userId: 0,
+	userId: -1,
 	key: 'chat',
 	companionAvatar: '',
 	companionName: '',
@@ -301,7 +301,7 @@ const friendsConfig: ViewFriendsConfig = {
 		headerText: 'Друзья',
 		friendsConfig: Array.from({ length: 10 }, () => {
 			return {
-				id: 0,
+				id: -1,
 				key: 'friend',
 				avatar: '../../img/avatar.png',
 				name: 'Asap Rocky',
@@ -324,6 +324,8 @@ const URL: URLInterface = DEBUG
 			post: ROOT + '/api/post',
 			profile: ROOT + '/api/profile',
 			profileYourOwn: ROOT + '/api/profile',
+			profiles: ROOT + '/api/profiles',
+			subscribers: ROOT + '/api/profile/{id}/subscribers',
 			header: ROOT + '/api/profile/header',
 			friends: ROOT + '/api/profile/{id}/friends',
 		}
@@ -334,6 +336,8 @@ const URL: URLInterface = DEBUG
 			post: ROOT + '/api/v1/feed',
 			profile: ROOT + '/api/v1/profile',
 			profileYourOwn: ROOT + '/api/v1/profile',
+			profiles: ROOT + '/api/v1/profiles',
+			subscribers: ROOT + '/api/v1/profile/{id}/subscribers',
 			header: ROOT + '/api/v1/profile/header',
 			friends: ROOT + '/api/v1/profile/{id}/friends',
 		};
