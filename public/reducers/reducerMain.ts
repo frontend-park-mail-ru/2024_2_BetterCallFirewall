@@ -5,16 +5,6 @@ import deepClone from '../modules/deepClone';
 import { MainConfig } from '../views/home/viewHome';
 import { reducerHeader } from './reducerHeader';
 
-// const initialState: IMainConfig = {
-//     key: 'main',
-//     className: 'main',
-
-//     aside: {
-//         key: 'aside',
-//         className: 'content',
-//     }
-// }
-
 const initialState: MainConfig = deepClone(config.homeConfig.main);
 
 export const reducerMain = (state?: MainConfig, action?: Action) => {

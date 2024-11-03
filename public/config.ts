@@ -81,6 +81,7 @@ const homeConfig: HomeConfig = {
 		header: {
 			key: 'header',
 			profile: {
+				id: 0,
 				avatar: 'img/avatar.png',
 			},
 		},

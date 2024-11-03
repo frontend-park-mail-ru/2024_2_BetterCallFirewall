@@ -1,4 +1,5 @@
 import { ACTION_FRIENDS_TYPES } from '../../actions/actionFriends';
+import api from '../../api/api';
 import { Root } from '../../components';
 import { Friends, FriendsConfig } from '../../components/Friends/Friends';
 import { ChangeFriends } from '../../stores/storeFriends';
@@ -30,6 +31,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 
 	updateViewFriends(data: ViewFriendsConfig) {
 		this._configFriends = Object.assign(this._configFriends, data);
+		this._render();
 	}
 
 	render(): void {
@@ -45,5 +47,8 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		const content = this.content;
 		const friends = new Friends(this._configFriends.friends, content);
 		friends.render();
+
+		api.requestFriends(this._configFriends.main.header.profile.id);
+		// this.sendAction(new ActionProfileGetFriends());
 	}
 }

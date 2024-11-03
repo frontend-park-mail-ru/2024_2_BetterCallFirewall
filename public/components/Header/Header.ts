@@ -4,6 +4,7 @@ import BaseComponent, {
 } from '../BaseComponent';
 
 type Profile = {
+	id: number;
 	avatar: string;
 };
 
