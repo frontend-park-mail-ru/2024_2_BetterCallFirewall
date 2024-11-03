@@ -94,10 +94,20 @@ export class Profile extends BaseComponent {
 	addSendFriendRequestButton() {
 		const friendButton = document.createElement('button');
 		friendButton.classList.add('buton-action', 'button-no-decorations');
-		friendButton.textContent = 'Add friend';
+		friendButton.textContent = 'Добавить в друзья';
 		friendButton.addEventListener('click', () => {});
 		this._htmlElement
 			?.querySelector('.profile__actions')
 			?.appendChild(friendButton);
+	}
+
+	addWriteMessageLink() {
+		const writeMessageLink = document.createElement('a');
+		writeMessageLink.href = '#';
+		writeMessageLink.textContent = 'Написать сообщение';
+		writeMessageLink.addEventListener('click', () => {});
+		this._htmlElement
+			?.querySelector('.profile__actions')
+			?.appendChild(writeMessageLink);
 	}
 }

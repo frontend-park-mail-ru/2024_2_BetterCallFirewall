@@ -229,6 +229,13 @@ const profileEditConfig: ViewProfileEditConfig = {
 				name: 'password',
 				validator: Validator.validatePassword,
 			},
+			avatar: {
+				key: 'avatar',
+				type: 'file',
+				accept: 'image/*',
+				// extra: 'multiple',
+				validator: Validator.validateImg,
+			}
 		},
 		button: {
 			key: 'profileEditButton',
