@@ -28,6 +28,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		switch (change.type) {
 			case ACTION_MENU_TYPES.menuLinkClick:
 			case ACTION_APP_TYPES.actionAppInit:
+				debugger;
 				api.requestFriends(this._configFriends.main.header.profile.id);
 				break;
 			case ACTION_FRIENDS_TYPES.getFriendsSuccess:
