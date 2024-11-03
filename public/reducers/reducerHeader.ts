@@ -21,7 +21,9 @@ export const reducerHeader = (
 	switch (action.type) {
 		case ACTION_PROFILE_TYPES.getHeaderSuccess: {
 			const actionData = action.data as ActionProfileGetHeaderSuccessData;
+			console.log('actionData:', actionData);
 			newState.profile.id = actionData.headerResponse.author_id;
+			console.log('newState:', newState);
 			break;
 		}
 		case ACTION_HEADER_TYPES.logoutClickFail:
