@@ -1,4 +1,4 @@
-import { ActionUpdateChat } from '../../actions/actionChat';
+import { ACTION_CHAT_TYPES, ActionUpdateChat } from '../../actions/actionChat';
 import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import { Root } from '../../components';
 import { Chat, IChatConfig } from '../../components/Chat/Chat';
@@ -34,11 +34,19 @@ export class ViewChat extends ViewHome implements IViewChat {
 
 	handleChange(change: ChangeChat): void {
 		super.handleChange(change);
+		switch (change.type) {
+			case ACTION_CHAT_TYPES.goToChat:
+				this.render();
+				break;
+			case ACTION_CHAT_TYPES.updateChat:
+				this.updateViewChat(change.data);
+				break;
+		}
 	}
 
 	render(): void {
 		this._render();
-		dispatcher.getAction(new ActionUpdateChat(this._configChat.chat)); // Не уверен, что нужно
+		dispatcher.getAction(new ActionUpdateChat());
 		this._addHandlers();
 	}
 

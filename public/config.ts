@@ -215,6 +215,7 @@ const messagesConfig: ViewMessagesConfig = {
 };
 
 const chatComponentConfig: IChatConfig = {
+	userId: 0,
 	key: 'chat',
 	companionAvatar: '',
 	companionName: '',

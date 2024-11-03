@@ -1,4 +1,4 @@
-import { ActionMenuLinkClick } from '../../actions/actionMenu';
+import { ActionChatGoToChat } from '../../actions/actionChat';
 import { Root } from '../../components';
 import { IMessageConfig, Message } from '../../components/Message/Message';
 import { PAGE_LINKS } from '../../config';
@@ -89,7 +89,10 @@ export class ViewMessages extends ViewHome implements IViewHome {
 	protected _addMessageHandlers(message: Message): void {
 		message.addHandler(message.htmlElement, 'click', (event) => {
 			event.preventDefault();
-			this.sendAction(new ActionMenuLinkClick({ href: message.href }));
+			this.sendAction(
+				new ActionChatGoToChat({ userId: message.authorId }),
+			);
+			// this.sendAction(new ActionMenuLinkClick({ href: message.href }));
 		});
 	}
 }

@@ -37,6 +37,10 @@ export class Message extends BaseComponent implements IMessages {
 		return this.config.href;
 	}
 
+	get authorId(): number {
+		return this.config.authorId;
+	}
+
 	render(show: boolean = true): string {
 		this._prerender();
 		return this._render('Message.hbs', show);

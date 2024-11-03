@@ -4,6 +4,7 @@ import BaseComponent, {
 } from '../BaseComponent';
 
 export interface IChatConfig extends IBaseComponentConfig {
+	userId: number;
 	companionAvatar: string;
 	companionName: string;
 	lastDateOnline: string;
