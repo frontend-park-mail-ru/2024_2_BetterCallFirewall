@@ -66,9 +66,6 @@ class Ajax {
 			case STATUS.noMoreContent:
 				postsResponse.message = 'Постов больше нет';
 				break;
-			// case STATUS.unauthorized:
-			// 	postsResponse.message = 'Не авторизован';
-			// 	break;
 			default: {
 				const body = (await response.json()) as FetchResponse<
 					PostResponse[]

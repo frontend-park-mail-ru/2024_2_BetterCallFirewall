@@ -35,16 +35,16 @@ class API {
 	async requestProfile(href: string) {
 		const response = await ajax.getProfile(href);
 		switch (response.status) {
-			case 401:
+			case STATUS.unauthorized:
 				this.sendAction(new ActionUserUnauthorized());
 				break;
-			case 400:
-			case 405:
+			case STATUS.badRequest:
+			case STATUS.wrongMethod:
 				this.sendAction(
 					new ActionProfileRequestFail({ status: response.status }),
 				);
 				break;
-			case 200:
+			case STATUS.ok:
 				if (!response.data) {
 					this.sendAction(
 						new ActionProfileRequestFail({
@@ -66,18 +66,18 @@ class API {
 	async requestYourOwnProfile() {
 		const response = await ajax.getYourOwnProfile();
 		switch (response.status) {
-			case 401:
+			case STATUS.unauthorized:
 				this.sendAction(new ActionUserUnauthorized());
 				break;
-			case 400:
-			case 405:
+			case STATUS.badRequest:
+			case STATUS.wrongMethod:
 				this.sendAction(
 					new ActionProfileGetYourOwnProfileFail({
 						status: response.status,
 					}),
 				);
 				break;
-			case 200:
+			case STATUS.ok:
 				if (!response.data) {
 					this.sendAction(
 						new ActionProfileGetYourOwnProfileFail({
@@ -105,13 +105,13 @@ class API {
 		}
 		const response = await ajax.getPosts(params);
 		switch (response.status) {
-			case 200:
+			case STATUS.ok:
 				if (!response.data) {
 					break;
 				}
 				this.sendAction(new ActionPostsRequestSuccess(response.data));
 				break;
-			case 401:
+			case STATUS.unauthorized:
 				this.sendAction(new ActionUserUnauthorized());
 				this.sendAction(
 					new ActionPostsRequestFail({
@@ -119,7 +119,7 @@ class API {
 					}),
 				);
 				break;
-			case 204:
+			case STATUS.noMoreContent:
 				this.sendAction(
 					new ActionPostsRequestFail({
 						status: response.status,
@@ -132,7 +132,7 @@ class API {
 	async requestHeader(): Promise<void> {
 		const response = await ajax.getHeader();
 		switch (response.status) {
-			case 200:
+			case STATUS.ok:
 				if (!response.data) {
 					break;
 				}
@@ -147,7 +147,7 @@ class API {
 					),
 				);
 				break;
-			case 401:
+			case STATUS.unauthorized:
 				this.sendAction(new ActionUserUnauthorized());
 				this.sendAction(
 					new ActionProfileGetHeaderFail({ status: response.status }),

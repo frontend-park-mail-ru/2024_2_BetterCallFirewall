@@ -259,8 +259,6 @@ class App {
 
 	init() {
 		dispatcher.getAction(new ActionProfileGetHeader());
-		// dispatcher.getAction(new ActionProfileGetYourOwnProfile());
-		// dispatcher.getAction(new ActionAppInit());
 	}
 }
 
