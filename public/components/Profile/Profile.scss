@@ -51,13 +51,16 @@
     }
 
     &__posts-header {
-        font-size: 1.5rem;
-    }
-
-    &__posts {
-        &-header {
-            margin-left: 2rem;
-            margin-top: 1rem;
+        margin-left: 2rem;
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        h2 {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+        a {
+            color: var(--main-color);
         }
     }
 }
