@@ -1,7 +1,6 @@
 import { Action } from '../actions/action';
 import { reducerCreatePost } from '../reducers/reducerCreatePost';
 import { ViewCreatePost, ViewCreatePostConfig } from '../views/createPost/viewCreatePost';
-// import { ViewCreatePost, ViewCreatePostConfig } from '../views/createPost/viewCreatePost';
 import { BaseStore, Store } from './store';
 import { ChangeHome, StoreHome } from './storeHome';
 

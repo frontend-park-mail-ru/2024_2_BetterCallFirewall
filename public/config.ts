@@ -11,6 +11,7 @@ import { ViewFriendsConfig } from './views/friends/viewFriends';
 import { HomeConfig } from './views/home/viewHome';
 import { ViewProfileConfig } from './views/profile/viewProfile';
 import { ViewCreatePostConfig } from './views/createPost/viewCreatePost';
+import { ViewProfileEditConfig } from './views/profileEdit/viewProfileEdit';
 
 const DEBUG: boolean = true;
 
@@ -22,6 +23,7 @@ export const PAGE_LINKS = {
 	chat: '/chat',
 	friends: '/friends',
 	createPost: '/create-post',
+	profileEdit: '/profile-edit',
 	profile: '/([\\w-]+)', // ????
 	// profile: '/', // ????
 };
@@ -193,6 +195,48 @@ const createPostConfig: ViewCreatePostConfig = {
     }
 };
 
+
+const profileEditConfig: ViewProfileEditConfig = {
+	...homeConfig,
+	profileEditForm: {
+        key: 'profileEditForm',
+		inputs: {
+			firstName: {
+				key: 'firstName',
+				type: 'text',
+				text: 'Имя',
+				name: 'first_name',
+				validator: Validator.validateName,
+			},
+			secondName: {
+				key: 'secondName',
+				type: 'text',
+				text: 'Фамилия',
+				name: 'last_name',
+				validator: Validator.validateName,
+			},
+			email: {
+				key: 'email',
+				type: 'text',
+				text: 'Email',
+				name: 'email',
+				validator: Validator.validateEmail,
+			},
+			password: {
+				key: 'password',
+				type: 'password',
+				text: 'Пароль',
+				name: 'password',
+				validator: Validator.validatePassword,
+			},
+		},
+		button: {
+			key: 'profileEditButton',
+			text: 'Сохранить',
+		},
+	}
+};
+
 const feedConfig: ViewFeedConfig = {
 	...homeConfig,
 	posts: [],
@@ -276,6 +320,7 @@ const config: AppConfig = {
 	feedConfig,
 	profileConfig,
 	createPostConfig,
+	profileEditConfig,
 	messagesConfig,
 	chatConfig,
 	friendsConfig,

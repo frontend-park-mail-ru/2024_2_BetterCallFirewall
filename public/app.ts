@@ -41,6 +41,9 @@ import { StoreCreatePost } from './stores/storeCreatePost';
 import { ACTION_CREATE_POST_TYPES } from './actions/actionCreatePost';
 
 import { ACTION_USER_TYPES } from './actions/actionUser';
+import { ViewProfileEdit, ViewProfileEditConfig } from './views/profileEdit/viewProfileEdit';
+import { StoreProfileEdit } from './stores/storeProfileEditForm';
+import { ACTION_PROFILE_EDIT_TYPES } from './actions/actionProfileEdit';
 
 export const PAGES = {
 	home: 'home',
@@ -65,6 +68,7 @@ export interface AppConfig {
 	loginConfig: ILoginFormConfig;
 	feedConfig: ViewFeedConfig;
 	profileConfig: ViewProfileConfig;
+	profileEditConfig: ViewProfileEditConfig;
 	messagesConfig: ViewMessagesConfig;
 	chatConfig: ViewChatConfig;
 	friendsConfig: ViewFriendsConfig;
@@ -82,6 +86,7 @@ export interface AppStores {
 	chat: StoreChat;
 	friends: StoreFriends;
 	createPost: StoreCreatePost;
+	profileEdit: StoreProfileEdit;
 }
 
 /**
@@ -115,6 +120,7 @@ class App {
 			this._root,
 		);
 		const createPostView = new ViewCreatePost(this._config.createPostConfig, this._root);
+		const profileEditView = new ViewProfileEdit(this._config.profileEditConfig, this._root);
 		const messagesView = new ViewMessages(this._config.messagesConfig, this._root);
 		const chatView = new ViewChat(this._config.chatConfig, this._root);
 		const routerConfig: RouterConfig = [
@@ -137,6 +143,10 @@ class App {
 			{
 				path: PAGE_LINKS.createPost,
 				view: createPostView,
+			},
+			{
+				path: PAGE_LINKS.profileEdit,
+				view: profileEditView,
 			},
 			{
 				path: PAGE_LINKS.chat,
@@ -165,6 +175,7 @@ class App {
 			messages: new StoreMessages(storeHome),
 			chat: new StoreChat(storeHome),
 			createPost: new StoreCreatePost(storeHome),
+			profileEdit: new StoreProfileEdit(storeHome),
 		};
 
 		this._stores.app.subscribe(ACTION_APP_TYPES.actionAppInit);
@@ -226,8 +237,10 @@ class App {
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.goToChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.updateChat);
 
-
 		this._stores.createPost.subscribe(ACTION_CREATE_POST_TYPES.updateCreatePost);
+
+		this._stores.profileEdit.subscribe(ACTION_PROFILE_EDIT_TYPES.updateProfileEdit);
+
 
 		loginView.register(this._stores.login);
 
@@ -247,6 +260,9 @@ class App {
 
 		createPostView.register(this._stores.home);
 		createPostView.register(this._stores.createPost);
+
+		profileEditView.register(this._stores.home);
+		// profileEditView.register(this._stores.);
 
 		// friendView.register(this._stores.menu);
 		// friendView.register(this._stores.header);
