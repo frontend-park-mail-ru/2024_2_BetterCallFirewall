@@ -13,6 +13,8 @@
 @use 'components/Friend/Friend';
 @use 'components/Profile/Profile';
 @use 'components/ChatMessage/ChatMessage';
+@use 'components/ProfileEditForm/ProfileEditForm';
+@use 'components/Friends/Friends';
 
 * {
     box-sizing: border-box;

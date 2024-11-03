@@ -96,6 +96,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				);
 			}
 			profile.addSendFriendRequestButton();
+			profile.addWriteMessageLink();
 		}
 	}
 }

@@ -48,6 +48,9 @@ export class Message extends BaseComponent implements IMessages {
 
 	protected _prerender(): void {
 		super._prerender();
-		this._templateContext = { ...this.config };
+		this._templateContext = {
+			 ...this.config,
+			 hasUnreadMessages: this.config.unreadedCount > 0,
+			};
 	}
 }

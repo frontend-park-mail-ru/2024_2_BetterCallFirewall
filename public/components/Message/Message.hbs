@@ -8,8 +8,12 @@
     </div>
     <div class="message__state item__state">
         <span>{{this.date}}</span>
+        {{#if this.hasUnreadMessages}}
         <div class="message__count">
             <span>{{this.unreadedCount}}</span>
         </div>
+        {{else}}
+        <div></div>
+        {{/if}}
     </div>
 </a>
