@@ -7,6 +7,7 @@ import {
 import { IHeaderConfig } from '../components';
 import config from '../config';
 import deepClone from '../modules/deepClone';
+import parseImage from '../modules/parseImage';
 
 const initialState = deepClone(config.homeConfig.main.header);
 
@@ -22,6 +23,9 @@ export const reducerHeader = (
 		case ACTION_PROFILE_TYPES.getHeaderSuccess: {
 			const actionData = action.data as ActionProfileGetHeaderSuccessData;
 			newState.profile.id = actionData.headerResponse.author_id;
+			newState.profile.avatar = parseImage(
+				actionData.headerResponse.avatar,
+			);
 			break;
 		}
 		case ACTION_HEADER_TYPES.logoutClickFail:

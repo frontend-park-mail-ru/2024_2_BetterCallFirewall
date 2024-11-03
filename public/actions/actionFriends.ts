@@ -5,6 +5,10 @@ export const ACTION_FRIENDS_TYPES = {
 	getFriends: 'actionFriendsGetFriends',
 	getFriendsSuccess: 'actionFriendsGetFriendsSuccess',
 	getFriendsFail: 'actionFriendsGetFriendsFail',
+	getSubscribersSuccess: 'actionFriendsGetSubscribersSuccess',
+	getSubscribersFail: 'actionFriendsGetSubscribersFail',
+	getUsersSuccess: 'actionFriendsGetUsersSuccess',
+	getUsersFail: 'actionFriendsGetUsersFail',
 };
 
 export class ActionProfileGetFriends implements Action {
@@ -27,6 +31,34 @@ export class ActionProfileGetFriendsSuccess implements Action {
 
 	constructor(data: ActionProfileGetFriendsSuccessData) {
 		this.type = ACTION_FRIENDS_TYPES.getFriendsSuccess;
+		this.data = data;
+	}
+}
+
+export interface ActionProfileGetSubscribersSuccessData {
+	subscribers: ShortProfileResponse[];
+}
+
+export class ActionProfileGetSubscribersSuccess implements Action {
+	type: ActionType;
+	data: ActionProfileGetSubscribersSuccessData;
+
+	constructor(data: ActionProfileGetSubscribersSuccessData) {
+		this.type = ACTION_FRIENDS_TYPES.getSubscribersSuccess;
+		this.data = data;
+	}
+}
+
+export interface ActionProfileGetUsersSuccessData {
+	users: ShortProfileResponse[];
+}
+
+export class ActionProfileGetUsersSuccess implements Action {
+	type: ActionType;
+	data: ActionProfileGetUsersSuccessData;
+
+	constructor(data: ActionProfileGetUsersSuccessData) {
+		this.type = ACTION_FRIENDS_TYPES.getUsersSuccess;
 		this.data = data;
 	}
 }

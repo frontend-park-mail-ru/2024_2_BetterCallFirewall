@@ -2,6 +2,8 @@ import { Action } from '../actions/action';
 import {
 	ACTION_FRIENDS_TYPES,
 	ActionProfileGetFriendsSuccessData,
+	ActionProfileGetSubscribersSuccessData,
+	ActionProfileGetUsersSuccessData,
 } from '../actions/actionFriends';
 import config from '../config';
 import { toFriendConfig } from '../models/profile';
@@ -19,6 +21,21 @@ export const reducerFriends = (
 	}
 	const newState = deepClone(state);
 	switch (action.type) {
+		case ACTION_FRIENDS_TYPES.getUsersSuccess: {
+			const actionData = action.data as ActionProfileGetUsersSuccessData;
+			newState.users.friendsConfig = actionData.users.map((user) =>
+				toFriendConfig(user),
+			);
+			return newState;
+		}
+		case ACTION_FRIENDS_TYPES.getSubscribersSuccess: {
+			const actionData =
+				action.data as ActionProfileGetSubscribersSuccessData;
+			newState.subcribers.friendsConfig = actionData.subscribers.map(
+				(subscriber) => toFriendConfig(subscriber),
+			);
+			return newState;
+		}
 		case ACTION_FRIENDS_TYPES.getFriendsSuccess: {
 			const actionData =
 				action.data as ActionProfileGetFriendsSuccessData;

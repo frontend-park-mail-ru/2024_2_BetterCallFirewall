@@ -1,5 +1,6 @@
 import { IFriendConfig } from '../components/Friend/Friend';
 import { IProfileConfig } from '../components/Profile/Profile';
+import parseImage from '../modules/parseImage';
 import { PostResponse, toPostConfig } from './post';
 
 export interface ShortProfileResponse {
@@ -24,7 +25,7 @@ export const toProfileConfig = (
 		key: `profile-${profileResponse.id}`,
 		firstName: profileResponse.first_name,
 		secondName: profileResponse.last_name,
-		img: profileResponse.avatar,
+		img: parseImage(profileResponse.avatar),
 		description: profileResponse.bio,
 		posts: profileResponse.posts?.map((postResponse) =>
 			toPostConfig(postResponse),
@@ -40,7 +41,7 @@ export const toFriendConfig = (
 		id: profileResponse.id,
 		key: `friend-${profileResponse.id}`,
 		name: `${profileResponse.first_name} ${profileResponse.last_name}`,
-		avatar: profileResponse.avatar,
+		avatar: parseImage(profileResponse.avatar),
 	};
 	return newConfig;
 };
