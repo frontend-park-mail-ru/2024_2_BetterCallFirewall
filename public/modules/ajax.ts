@@ -145,7 +145,7 @@ class Ajax {
 			case STATUS.ok: {
 				const body =
 					(await response.json()) as FetchResponse<HeaderResponse>;
-				console.log('body');
+				console.log('body:', body);
 				headerResponse = Object.assign(headerResponse, body);
 				break;
 			}
