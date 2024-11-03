@@ -62,13 +62,19 @@ export interface URLInterface {
 	signup: string;
 	login: string;
 	logout: string;
-	post: string;
+	feed: string; // Лента и создание поста
 	profile: string;
 	profileYourOwn: string;
 	profiles: string;
-	subscribers: string;
-	header: string;
+	subscribeToProfile: string;
+	acceptFriend: string;
+	unsubscribeFromProfile: string;
+	removeFriend: string;
 	friends: string;
+	subscribers: string;
+	profileSubscriptions: string;
+	header: string;
+	post: string;
 }
 
 export interface AppConfig {
