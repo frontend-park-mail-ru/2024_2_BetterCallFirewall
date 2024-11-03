@@ -1,3 +1,4 @@
+import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionUpdateProfile,
@@ -98,5 +99,11 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 			profile.addSendFriendRequestButton();
 			profile.addWriteMessageLink();
 		}
+
+		const createPostLink = this.profile.createPostLink;
+		this.content.addHandler(createPostLink, 'click', (event) => {
+			event.preventDefault();
+			this.sendAction(new ActionCreatePostGoTo());
+		});
 	}
 }

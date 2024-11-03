@@ -50,6 +50,16 @@ export class Profile extends BaseComponent {
 		return container;
 	}
 
+	get createPostLink(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'a.header__link',
+		) as HTMLElement;
+		if (!html) {
+			throw new Error('createPostLink not found');
+		}
+		return html;
+	}
+
 	render(show: boolean = true): string {
 		this._prerender();
 		this._render('Profile.hbs', show);

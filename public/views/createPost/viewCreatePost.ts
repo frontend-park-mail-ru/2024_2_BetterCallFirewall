@@ -1,4 +1,7 @@
-import { ActionUpdateCreatePost } from '../../actions/actionCreatePost';
+import {
+	ACTION_CREATE_POST_TYPES,
+	ActionUpdateCreatePost,
+} from '../../actions/actionCreatePost';
 import api from '../../api/api';
 import { Root } from '../../components';
 import {
@@ -37,6 +40,10 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 
 	handleChange(change: ChangeCreatePost): void {
 		super.handleChange(change);
+		switch (change.type) {
+			case ACTION_CREATE_POST_TYPES.goToCreatePost:
+				this.render();
+		}
 	}
 
 	render(): void {
