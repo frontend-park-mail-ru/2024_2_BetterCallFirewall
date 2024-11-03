@@ -1,13 +1,9 @@
-import {
-	ACTION_PROFILE_EDIT_TYPES,
-	ActionProfileEditUpdate,
-} from '../../actions/actionProfileEdit';
+import { ACTION_PROFILE_EDIT_TYPES } from '../../actions/actionProfileEdit';
 import { Root } from '../../components';
 import {
 	ProfileEditForm,
 	IProfileEditFormConfig,
 } from '../../components/ProfileEditForm/ProfileEditForm';
-import dispatcher from '../../dispatcher/dispatcher';
 import { ChangeProfileEdit } from '../../stores/storeProfileEditForm';
 import {
 	ComponentsHome,
@@ -39,6 +35,10 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 
 	handleChange(change: ChangeProfileEdit): void {
 		super.handleChange(change);
+		this._configProfileEdit = Object.assign(
+			this._configProfileEdit,
+			change.data,
+		);
 		switch (change.type) {
 			case ACTION_PROFILE_EDIT_TYPES.goToProfileEdit:
 				this.render();
@@ -48,7 +48,6 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 
 	render(): void {
 		this._render();
-		dispatcher.getAction(new ActionProfileEditUpdate());
 	}
 
 	updateViewProfileEdit(data: ViewProfileEditConfig): void {
