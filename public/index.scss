@@ -12,9 +12,11 @@
 @use 'components/CreatePostForm/CreatePostForm';
 @use 'components/Friend/Friend';
 @use 'components/Profile/Profile';
+@use 'components/ChatMessage/ChatMessage';
 
 * {
     box-sizing: border-box;
+    font-size: 1.2vw;
 }
 
 html {
@@ -67,6 +69,7 @@ body {
     text-decoration: none;
     color: var(--main-color);
     h1 {
+        font-size: 1.8rem;
         margin: 0;
     }
 }

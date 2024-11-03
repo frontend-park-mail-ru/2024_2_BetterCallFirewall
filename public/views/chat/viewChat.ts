@@ -2,6 +2,7 @@ import { ACTION_CHAT_TYPES, ActionUpdateChat } from '../../actions/actionChat';
 import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import { Root } from '../../components';
 import { Chat, IChatConfig } from '../../components/Chat/Chat';
+import { ChatMessage } from '../../components/ChatMessage/ChatMessage';
 import dispatcher from '../../dispatcher/dispatcher';
 import { ChangeChat } from '../../stores/storeChat';
 import {
@@ -47,6 +48,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 	render(): void {
 		this._render();
 		dispatcher.getAction(new ActionUpdateChat());
+		this._scrollToBottom();
 		this._addHandlers();
 	}
 
@@ -58,6 +60,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 	protected _render(): void {
 		super._render();
 		this._renderChat();
+		this._renderChatMessages();
 	}
 
 	protected _renderChat(): void {
@@ -75,6 +78,37 @@ export class ViewChat extends ViewHome implements IViewChat {
 		const chat = new Chat(this._configChat.chat, content);
 		chat.render();
 		this._components.chat = chat;
+	}
+
+	private _scrollToBottom(): void {
+		const chatContainer = document.querySelector('.chat__content');
+		if (chatContainer) {
+			chatContainer.scrollTop = chatContainer.scrollHeight;
+		}
+	}
+
+	protected _renderChatMessages(): void {
+		const chatContent = this._chat.htmlElement.querySelector('.chat__content');
+		if (!chatContent) {
+			throw new Error('chat content not found');
+		}
+	
+		// Тестовые сообщения
+		for (let i = 0; i < 15; i++) {
+			const message = new ChatMessage(
+				{
+					userId: 0,
+					key: 'chatMessage',
+					messageAvatar: '../../img/avatar.png',
+					messageName: 'Asap Rocky',
+					messageText: 'Привет! Как дела?',
+				},
+				this._chat
+			);
+			message.render(false);
+			chatContent.appendChild(message.htmlElement);
+		}
+
 	}
 
 	private _addHandlers() {
