@@ -1,18 +1,17 @@
 import { ACTION_APP_TYPES } from '../../actions/actionApp';
 import { ActionFormError } from '../../actions/actionForm';
+import { ActionProfileGetHeader } from '../../actions/actionProfile';
 import {
 	ActionSignupClickSuccess,
 	ActionSignupToLoginClick,
 } from '../../actions/actionSignup';
-
-import app from '../../app';
 import {
 	ISignupFormConfig,
 	SignupForm,
 	Root,
 	IInputConfig,
 } from '../../components';
-import config, { PAGE_LINKS } from '../../config';
+import config from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 // import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
@@ -101,8 +100,9 @@ const loginFormSubmit = (
 				return;
 			}
 			if (response && response.ok) {
-				app.router.goToPage(PAGE_LINKS.feed);
+				// app.router.goToPage(PAGE_LINKS.feed);
 				dispatcher.getAction(new ActionSignupClickSuccess());
+				dispatcher.getAction(new ActionProfileGetHeader());
 			} else if (response) {
 				const data = await response.json();
 				if (data.message === 'wrong email or password') {

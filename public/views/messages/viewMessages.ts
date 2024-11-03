@@ -1,8 +1,7 @@
-import { ActionGoToChat } from '../../actions/actionChat';
-import { ActionUpdateMessages } from '../../actions/actionMessages';
-import { Content, Root } from '../../components';
-import { IMessagesConfig, Message } from '../../components/Message/Message';
-import dispatcher from '../../dispatcher/dispatcher';
+import { ActionChatGoToChat } from '../../actions/actionChat';
+import { Root } from '../../components';
+import { IMessageConfig, Message } from '../../components/Message/Message';
+import { PAGE_LINKS } from '../../config';
 import { ChangeMessages } from '../../stores/storeMessages';
 import {
 	ComponentsHome,
@@ -12,11 +11,11 @@ import {
 } from '../home/viewHome';
 
 export type ComponentsMessages = {
-	messages?: Message;
+	messages?: Message[];
 } & ComponentsHome;
 
 export interface ViewMessagesConfig extends HomeConfig {
-	messages: IMessagesConfig;
+	messages: IMessageConfig[];
 }
 
 export interface IViewMessages extends IViewHome {
@@ -42,12 +41,13 @@ export class ViewMessages extends ViewHome implements IViewHome {
 
 	render(): void {
 		this._render();
-		dispatcher.getAction(
-			new ActionUpdateMessages(this._configMessages.messages),
-		);
+		// dispatcher.getAction(
+		// 	new ActionUpdateMessages(this._configMessages.messages),
+		// );
 	}
 
 	updateViewMessages(data: ViewMessagesConfig): void {
+		this.updateViewHome(data);
 		this._configMessages = data;
 		this._render();
 	}
@@ -58,55 +58,45 @@ export class ViewMessages extends ViewHome implements IViewHome {
 	}
 
 	protected _renderMessages(): void {
-		this._configMessages.messages = {
-			key: 'message',
-			avatar: '../../img/avatar.png',
-			name: 'Asap Rocky',
-			lastMessage: 'Lets do it.',
-			date: '12:34',
-			unreadedCount: 3,
-		}; // tmp
+		// this._configMessages.messages = {
+		// 	authorId: 0,
+		// 	key: 'message',
+		// 	avatar: '../../img/avatar.png',
+		// 	name: 'Asap Rocky',
+		// 	lastMessage: 'Lets do it.',
+		// 	date: '12:34',
+		// 	unreadedCount: 3,
+		// }; // tmp
 
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does no exist on ViewMessages');
-		}
-		const messages = new Content(
-			{
-				...this._configMessages.messages,
-				className: 'messages',
-			},
-			content,
-		);
-		messages.render();
-		this._components.content = messages;
+		const content = this.content;
 
 		// Тестовые сообщения
 		for (let i = 0; i < 10; i++) {
 			const message = new Message(
 				{
+					authorId: 0,
 					key: 'message',
 					avatar: '../../img/avatar.png',
 					name: 'Asap Rocky',
 					lastMessage: 'Lets do it.',
 					date: '12:34',
 					unreadedCount: 3,
+					href: PAGE_LINKS.chat,
 				},
-				this._components.content,
+				content,
 			);
-			messages.addChild(message);
 			message.render();
 			this._addMessageHandlers(message);
 		}
 	}
 
 	protected _addMessageHandlers(message: Message): void {
-		message.htmlElement.addEventListener('click', () => {
-			dispatcher.getAction(
-				new ActionGoToChat({
-					href: '/chat',
-				}),
+		message.addHandler(message.htmlElement, 'click', (event) => {
+			event.preventDefault();
+			this.sendAction(
+				new ActionChatGoToChat({ userId: message.authorId }),
 			);
+			// this.sendAction(new ActionMenuLinkClick({ href: message.href }));
 		});
 	}
 }

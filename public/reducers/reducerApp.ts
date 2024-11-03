@@ -1,5 +1,6 @@
 import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
+import { ACTION_CHAT_TYPES } from '../actions/actionChat';
 import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
 import {
 	ACTION_MENU_TYPES,
@@ -18,7 +19,6 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 		switch (action.type) {
 			case ACTION_APP_TYPES.actionAppInit:
 				app.inited = true;
-				// router.activeView?.render();
 				break;
 			case ACTION_LOGIN_TYPES.toSignupClick:
 				router.goToPage(PAGE_LINKS.signup);
@@ -26,31 +26,19 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			case ACTION_SIGNUP_TYPES.toLoginLinkClick:
 				router.goToPage(PAGE_LINKS.login);
 				break;
+			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 			case ACTION_LOGIN_TYPES.loginClickSuccess:
+			case ACTION_MENU_TYPES.titleClick:
 				router.goToPage(PAGE_LINKS.feed);
 				break;
 			case ACTION_MENU_TYPES.menuLinkClick:
 				router.goToPage((action.data as ActionMenuLinkClickData).href);
 				break;
-			case ACTION_MENU_TYPES.titleClick:
-				router.goToPage(PAGE_LINKS.feed);
-				break;
-			// case ACTION_FEED_TYPES.postsRequestFail: {
-			// 	const data = action.data as ActionPostsRequestFailData;
-			// 	if (data.status === 401) {
-			// 		router.goToPage(PAGE_LINKS.login);
-			// 	}
-			// 	break;
-			// }
-			// case ACTION_PROFILE_TYPES.getHeaderFail: {
-			// 	const data = action.data as ActionProfileGetHeaderFailData;
-			// 	if (data.status === 401) {
-			// 		router.goToPage(PAGE_LINKS.login);
-			// 	}
-			// 	break;
-			// }
 			case ACTION_USER_TYPES.unauthorized:
 				router.goToPage(PAGE_LINKS.login);
+				break;
+			case ACTION_CHAT_TYPES.goToChat:
+				router.goToPage(PAGE_LINKS.chat);
 				break;
 		}
 	}

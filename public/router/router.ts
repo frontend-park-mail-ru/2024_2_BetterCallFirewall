@@ -11,6 +11,7 @@ export class Router {
 	private _config: RouterConfig;
 	private _defaultView: BaseView;
 	private _activeView?: BaseView;
+	private _path: string = '';
 
 	constructor(defaultView: BaseView, config: RouterConfig) {
 		this._defaultView = defaultView;
@@ -18,6 +19,7 @@ export class Router {
 	}
 
 	goToPage(path: string) {
+		this._path = path;
 		for (const route of this._config) {
 			const regex = new RegExp(
 				// `^${route.path.replace(/:[^\s/]+/, '([\\w-]+)')}$`,
@@ -45,5 +47,9 @@ export class Router {
 
 	get activeView(): BaseView | undefined {
 		return this._activeView;
+	}
+
+	get path(): string {
+		return this._path;
 	}
 }

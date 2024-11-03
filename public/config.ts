@@ -1,7 +1,7 @@
 import { AppConfig, URLInterface } from './app';
 import { ILoginFormConfig, ISignupFormConfig } from './components';
 import { IChatConfig } from './components/Chat/Chat';
-import { IMessagesConfig } from './components/Message/Message';
+import { IMessageConfig } from './components/Message/Message';
 import { IProfileConfig } from './components/Profile/Profile';
 import Validator from './modules/validation';
 import { ViewChatConfig } from './views/chat/viewChat';
@@ -256,16 +256,24 @@ const profileComponentConfig: IProfileConfig = {
 const profileConfig: ViewProfileConfig = {
 	...homeConfig,
 	profile: profileComponentConfig,
+	path: '/',
 };
 
-const messagesComponentConfig: IMessagesConfig = {
-	key: 'messages',
-	avatar: '',
-	name: '',
-	lastMessage: '',
-	date: '',
-	unreadedCount: 0,
-};
+const messagesComponentConfig: IMessageConfig[] = Array.from(
+	{ length: 10 },
+	() => {
+		return {
+			authorId: 0,
+			key: 'messages',
+			avatar: '',
+			name: '',
+			lastMessage: '',
+			date: '',
+			unreadedCount: 0,
+			href: PAGE_LINKS.chat,
+		};
+	},
+);
 
 const messagesConfig: ViewMessagesConfig = {
 	...homeConfig,
@@ -273,10 +281,12 @@ const messagesConfig: ViewMessagesConfig = {
 };
 
 const chatComponentConfig: IChatConfig = {
+	userId: 0,
 	key: 'chat',
 	companionAvatar: '',
 	companionName: '',
 	lastDateOnline: '',
+	backButtonHref: PAGE_LINKS.messages,
 };
 
 const chatConfig: ViewChatConfig = {
