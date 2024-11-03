@@ -29,7 +29,6 @@ export class Friend extends BaseComponent implements IFriend {
 
 	render(show: boolean = true): string {
 		this._prerender();
-		console.log(this._config);
 		return this._render('Friend.hbs', show);
 	}
 

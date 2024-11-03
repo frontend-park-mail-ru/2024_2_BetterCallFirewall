@@ -24,10 +24,6 @@ export class StoreHome extends BaseStore implements Store {
 		this._state = reducerHome(this._state, action);
 		this._registeredViews.forEach((view) => {
 			if (view.active) {
-				console.log(
-					'storeHome: before view.handleChange():',
-					this._state.menu.links.profile.href,
-				);
 				view.handleChange({ type: action.type, data: this._state });
 			}
 		});
