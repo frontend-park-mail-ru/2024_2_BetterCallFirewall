@@ -33,7 +33,7 @@ export interface ActionUpdateProfileLinkHrefData {
 	href: string;
 }
 
-export class ActionUpdateProfileLinkHref implements Action {
+export class ActionMenuUpdateProfileLinkHref implements Action {
 	type: ActionType;
 	data: ActionUpdateProfileLinkHrefData;
 

@@ -6,8 +6,8 @@ import {
 } from '../actions/actionProfile';
 import { IHeaderConfig } from '../components';
 import config from '../config';
+import { headerResponseToHeaderConfig } from '../models/header';
 import deepClone from '../modules/deepClone';
-import parseImage from '../modules/parseImage';
 
 const initialState = deepClone(config.homeConfig.main.header);
 
@@ -18,13 +18,13 @@ export const reducerHeader = (
 	if (!action) {
 		return state;
 	}
-	const newState = deepClone(state);
+	let newState = deepClone(state);
 	switch (action.type) {
 		case ACTION_PROFILE_TYPES.getHeaderSuccess: {
 			const actionData = action.data as ActionProfileGetHeaderSuccessData;
-			newState.profile.id = actionData.headerResponse.author_id;
-			newState.profile.avatar = parseImage(
-				actionData.headerResponse.avatar,
+			newState = headerResponseToHeaderConfig(
+				newState,
+				actionData.headerResponse,
 			);
 			break;
 		}

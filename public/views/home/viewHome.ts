@@ -79,6 +79,11 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	handleChange(change: ChangeHome): void {
 		console.log('ViewHome: change:', change);
 		switch (change.type) {
+			case ACTION_PROFILE_TYPES.getHeaderSuccess:
+			case ACTION_MENU_TYPES.updateProfileLinkHref:
+				this.updateViewHome(change.data);
+				// this.sendAction(new ActionMenuUpdateProfileLinkHref());
+				break;
 			case ACTION_LOGIN_TYPES.loginClickSuccess:
 			case ACTION_PROFILE_TYPES.getHeader:
 				api.requestHeader();

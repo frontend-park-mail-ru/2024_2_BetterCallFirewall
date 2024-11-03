@@ -11,7 +11,7 @@ import {
 	ActionProfileGetSubscribersSuccess,
 	ActionProfileGetUsersSuccess,
 } from '../actions/actionFriends';
-import { ActionUpdateProfileLinkHref } from '../actions/actionMenu';
+import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
 	ActionProfileGetHeaderFail,
 	ActionProfileGetHeaderSuccess,
@@ -149,7 +149,7 @@ class API {
 					}),
 				);
 				this.sendAction(
-					new ActionUpdateProfileLinkHref(
+					new ActionMenuUpdateProfileLinkHref(
 						`/${response.data.author_id}`,
 					),
 				);
