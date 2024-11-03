@@ -78,6 +78,21 @@ class Ajax {
 		return postsResponse;
 	}
 
+	async createPost(formData: FormData): Promise<AjaxResponse<PostResponse>> {
+		const request = this._sendFormRequest(app.config.URL.feed, formData);
+		const response = await this._response(request);
+		const postResponse: AjaxResponse<PostResponse> = {
+			status: response.status,
+			success: false,
+		};
+		try {
+			const body = await response.json();
+			return Object.assign(postResponse, body);
+		} catch {
+			return postResponse;
+		}
+	}
+
 	async getProfile(
 		profilePath: string,
 	): Promise<AjaxResponse<FullProfileResponse>> {

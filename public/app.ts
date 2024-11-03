@@ -278,6 +278,8 @@ class App {
 		this._stores.createPost.subscribe(
 			ACTION_CREATE_POST_TYPES.updateCreatePost,
 		);
+		this._stores.createPost.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
+		this._stores.createPost.subscribe(ACTION_FEED_TYPES.postCreateFail);
 
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.updateProfileEdit,
@@ -287,8 +289,8 @@ class App {
 
 		signupView.register(this._stores.signup);
 
-		feedView.register(this._stores.feed);
 		feedView.register(this._stores.home);
+		feedView.register(this._stores.feed);
 
 		profileView.register(this._stores.home);
 		profileView.register(this._stores.profile);
@@ -303,6 +305,7 @@ class App {
 		createPostView.register(this._stores.createPost);
 
 		profileEditView.register(this._stores.home);
+		profileEditView.register(this._stores.profileEdit);
 
 		friendView.register(this._stores.home);
 		friendView.register(this._stores.friends);

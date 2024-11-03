@@ -1,6 +1,8 @@
 import { Action } from '../actions/action';
 import { ActionAppInit } from '../actions/actionApp';
 import {
+	actionFeedPostCreateFail,
+	ActionFeedPostCreateSuccess,
 	ActionPostsRequestFail,
 	ActionPostsRequestSuccess,
 } from '../actions/actionFeed';
@@ -207,6 +209,22 @@ class API {
 						users: response.data,
 					}),
 				);
+		}
+	}
+
+	async createPost(formData: FormData) {
+		const response = await ajax.createPost(formData);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					return;
+				}
+				this.sendAction(
+					new ActionFeedPostCreateSuccess({ post: response.data }),
+				);
+				break;
+			default:
+				this.sendAction(new actionFeedPostCreateFail());
 		}
 	}
 }

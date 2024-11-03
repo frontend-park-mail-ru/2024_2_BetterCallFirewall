@@ -4,6 +4,8 @@ import { Action, ActionType } from './action';
 export const ACTION_FEED_TYPES = {
 	postsRequestSuccess: 'actionFeedPostsRequestSuccess',
 	postsRequestFail: 'actionFeedPostsRequestFail',
+	postCreateSuccess: 'actionFeedPostCreateSuccess',
+	postCreateFail: 'actionFeedPostCreateFail',
 };
 
 export type ActionPostsRequestSuccessData = {
@@ -32,5 +34,29 @@ export class ActionPostsRequestFail implements Action {
 	constructor(data: ActionPostsRequestFailData) {
 		this.type = ACTION_FEED_TYPES.postsRequestFail;
 		this.data = data;
+	}
+}
+
+export interface ActionFeedPostCreateSuccessData {
+	post: PostResponse;
+}
+
+export class ActionFeedPostCreateSuccess implements Action {
+	type: ActionType;
+	data: ActionFeedPostCreateSuccessData;
+
+	constructor(data: ActionFeedPostCreateSuccessData) {
+		this.type = ACTION_FEED_TYPES.postCreateSuccess;
+		this.data = data;
+	}
+}
+
+export class actionFeedPostCreateFail implements Action {
+	type: ActionType;
+	data: object;
+
+	constructor() {
+		this.type = ACTION_FEED_TYPES.postCreateFail;
+		this.data = {};
 	}
 }
