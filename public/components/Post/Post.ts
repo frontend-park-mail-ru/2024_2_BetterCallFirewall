@@ -4,11 +4,12 @@ import BaseComponent, {
 } from '../BaseComponent';
 
 export interface IPostConfig extends IBaseComponentConfig {
-	id: number; // Зачем?
+	id: number;
 	key: string;
 	avatar: string;
 	title: string;
 	text: string;
+	img?: string;
 	date: string;
 }
 

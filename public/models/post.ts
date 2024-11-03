@@ -26,6 +26,7 @@ export const toPostConfig = (postResponse: PostResponse): IPostConfig => {
 		avatar: parseImage(postResponse.header.avatar),
 		title: postResponse.header.author,
 		text: postResponse.post_content.text,
+		img: parseImage(postResponse.post_content.file),
 		date: postResponse.post_content.created_at,
 	};
 };
