@@ -147,6 +147,7 @@ class API {
 					),
 				);
 				break;
+			case STATUS.badRequest:
 			case STATUS.unauthorized:
 				this.sendAction(new ActionUserUnauthorized());
 				this.sendAction(
