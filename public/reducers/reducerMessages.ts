@@ -8,7 +8,7 @@ import config from '../config';
 import deepClone from '../modules/deepClone';
 import { ViewMessagesConfig } from '../views/messages/viewMessages';
 
-const initialMessagesState: IMessageConfig = deepClone(
+const initialMessagesState: IMessageConfig[] = deepClone(
 	config.messagesConfig.messages,
 );
 
