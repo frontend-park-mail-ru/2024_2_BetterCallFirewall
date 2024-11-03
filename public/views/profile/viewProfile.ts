@@ -99,6 +99,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 			}
 			profile.addSendFriendRequestButton();
 			profile.addWriteMessageLink();
+			profile.addProfileEditLink();
 		}
 
 		const createPostLink = this.profile.createPostLink;
