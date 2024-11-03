@@ -93,6 +93,11 @@ const loginFormSubmit = (
 	const formData = new FormData(form);
 	const data = validator.validateForm(formData, signupForm.form);
 	if (data) {
+		for (const [key, value] of data.entries()) {
+			console.log(key, value);
+		}
+	}
+	if (data) {
 		ajax.sendForm(config.URL.signup, data, async (response, error) => {
 			if (error) {
 				dispatcher.getAction(

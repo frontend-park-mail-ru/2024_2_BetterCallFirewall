@@ -153,12 +153,12 @@ export default class Validator {
 	}
 
 	validateForm(formData: FormData, form: HTMLElement) {
-		let error: string | null = null;
 		this.errorsDelete(form.parentNode as HTMLElement);
 		let hasErrors = false;
 
 		for (const [key, value] of formData.entries()) {
 			let updatedValue = value;
+			let error: string = '';
 			if (typeof value === 'string') {
 				updatedValue = value.trim();
 				switch (key) {
@@ -191,9 +191,10 @@ export default class Validator {
 				error = Validator.validateImg(value);
 			}
 			if (error) {
-				this.printError(form.querySelector(`[name="${key}"]`) as HTMLInputElement, error);
+				this.printError(form.querySelector(`[name="${key}"]`)?.parentElement as HTMLInputElement, error);
+				console.log('error:  ', key);
 				hasErrors = true;
-				error = null;
+				error = '';
 			} else {
 				formData.delete(key);
 				formData.append(key, updatedValue);

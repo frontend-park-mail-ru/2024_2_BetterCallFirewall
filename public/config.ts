@@ -12,7 +12,7 @@ import { ViewProfileConfig } from './views/profile/viewProfile';
 import { ViewCreatePostConfig } from './views/createPost/viewCreatePost';
 import { ViewProfileEditConfig } from './views/profileEdit/viewProfileEdit';
 
-const DEBUG: boolean = false;
+const DEBUG: boolean = true;
 
 export const PAGE_LINKS = {
 	feed: '/feed',
