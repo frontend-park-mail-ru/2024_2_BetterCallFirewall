@@ -6,7 +6,9 @@ import {
 } from '../actions/actionFeed';
 import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
 import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
-import config, { ROOT } from '../config';
+import { STATUS } from '../api/api';
+import config from '../config';
+import { toPostConfig } from '../models/post';
 import deepClone from '../modules/deepClone';
 import { ViewFeedConfig } from '../views/feed/viewFeed';
 
@@ -25,31 +27,22 @@ export const reducerFeed = (
 			newState.errorMessage = '';
 			const newPosts = (
 				action.data as ActionPostsRequestSuccessData
-			).postsData.map(({ id, header, post_content }) => {
-				return {
-					id,
-					key: `post-${id}`,
-					avatar: ROOT + header.avatar,
-					title: header.author,
-					text: post_content.text,
-					date: post_content.created_at,
-				};
+			).postsData.map((postResponse) => {
+				return toPostConfig(postResponse);
 			});
 			newState.posts = newState.posts.concat(newPosts);
 			return newState;
 		}
 		case ACTION_FEED_TYPES.postsRequestFail: {
-			console.log('reducerFeed: postsRequestFail:', action);
 			const data = action.data as ActionPostsRequestFailData;
 			if (data.message) {
 				newState.errorMessage = data.message;
-				// убрать хардкод
-			} else if (data.status === 204) {
+			} else if (data.status === STATUS.noMoreContent) {
 				newState.errorMessage = 'Постов больше нет';
-			} else if (data.status !== 200) {
+			} else if (data.status !== STATUS.ok) {
 				newState.errorMessage = 'Что-то пошло не так';
 			}
-			return newState; // tmp
+			return newState;
 		}
 		case ACTION_LOGIN_TYPES.loginClickSuccess:
 		case ACTION_SIGNUP_TYPES.signupClickSuccess:
