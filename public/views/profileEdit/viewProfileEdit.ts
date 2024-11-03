@@ -1,4 +1,7 @@
-import { ActionUpdateProfileEdit } from '../../actions/actionProfileEdit';
+import {
+	ACTION_PROFILE_EDIT_TYPES,
+	ActionUpdateProfileEdit,
+} from '../../actions/actionProfileEdit';
 import { Root } from '../../components';
 import {
 	ProfileEditForm,
@@ -36,6 +39,11 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 
 	handleChange(change: ChangeProfileEdit): void {
 		super.handleChange(change);
+		switch (change.type) {
+			case ACTION_PROFILE_EDIT_TYPES.goToProfileEdit:
+				this.render();
+				break;
+		}
 	}
 
 	render(): void {
@@ -54,10 +62,7 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 	}
 
 	protected _renderProfileEditForm(): void {
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does no exist on ViewProfileEdit');
-		}
+		const content = this.content;
 		const profileEditForm = new ProfileEditForm(
 			this._configProfileEdit.profileEditForm,
 			content,
