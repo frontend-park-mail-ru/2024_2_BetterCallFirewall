@@ -210,6 +210,17 @@ class Ajax {
 		});
 	}
 
+	private _sendFormRequest(baseUrl: string, data: FormData) {
+		return new Request(baseUrl, {
+			method: 'post',
+			credentials: 'include',
+			body: data,
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		});
+	}
+
 	private async _response(request: Request): Promise<Response> {
 		return await fetch(request);
 	}
