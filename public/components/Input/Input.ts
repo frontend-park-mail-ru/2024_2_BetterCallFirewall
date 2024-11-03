@@ -4,8 +4,10 @@ import BaseComponent, {
 } from '../BaseComponent';
 
 export interface IInputConfig extends IBaseComponentConfig {
-	name: string;
-	text: string;
+	name?: string;
+	text?: string;
+	accept?: string;
+	extra?: string;
 	type: string;
 	validator: (name: HTMLInputElement) => string;
 }

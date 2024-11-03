@@ -21,6 +21,26 @@ export default class Validator {
 		return data;
 	}
 
+	static validateImg(img: HTMLInputElement): string {
+		const file = img.files?.[0];
+		if (!file) {
+			return 'Файл не выбран';
+		}
+
+		const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+		if (!validImageTypes.includes(file.type)) {
+			return 'Разрешены только изображения (JPEG, PNG, GIF)';
+		}
+
+		const maxSizeInMB = 5;
+		const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+		if (file.size > maxSizeInBytes) {
+			return `Размер файла не должен превышать ${maxSizeInMB} МБ`;
+		}
+
+		return '';
+	}
+
 	/**
 	 * Validation of password confirmation
 	 *
