@@ -326,30 +326,45 @@ export const ROOT: string = DEBUG
 	? 'http://127.0.0.1:8000'
 	: 'http://185.241.194.197:8080';
 
+const apiv1 = '/api/v1';
+
 const URL: URLInterface = DEBUG
 	? {
 			signup: ROOT + '/auth/signup',
 			login: ROOT + '/auth/login',
 			logout: ROOT + '/auth/logout',
-			post: ROOT + '/api/post',
+			feed: ROOT + '/api/post',
 			profile: ROOT + '/api/profile',
 			profileYourOwn: ROOT + '/api/profile',
 			profiles: ROOT + '/api/profiles',
 			subscribers: ROOT + '/api/profile/{id}/subscribers',
 			header: ROOT + '/api/profile/header',
 			friends: ROOT + '/api/profile/{id}/friends',
+			subscribeToProfile: ROOT + '/api/profile/{id}/friend/subscribe',
+			acceptFriend: '',
+			unsubscribeFromProfile: '',
+			removeFriend: '',
+			profileSubscriptions: '',
+			post: '',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
 			login: ROOT + '/api/v1/auth/login',
 			logout: ROOT + '/api/v1/auth/logout',
-			post: ROOT + '/api/v1/feed',
+			feed: ROOT + '/api/v1/feed',
 			profile: ROOT + '/api/v1/profile',
 			profileYourOwn: ROOT + '/api/v1/profile',
 			profiles: ROOT + '/api/v1/profiles',
 			subscribers: ROOT + '/api/v1/profile/{id}/subscribers',
 			header: ROOT + '/api/v1/profile/header',
 			friends: ROOT + '/api/v1/profile/{id}/friends',
+			subscribeToProfile: ROOT + '/api/v1/profile/{id}/friend/subscribe',
+			acceptFriend: ROOT + '/api/v1/profile/{id}/friend/accept',
+			unsubscribeFromProfile:
+				ROOT + '/api/v1/profile/{id}/friend/unsubscribe',
+			removeFriend: ROOT + '/api/v1/profile/{id}/friend/remove',
+			profileSubscriptions: ROOT + apiv1 + '/profile/{id}/subscriptions',
+			post: ROOT + apiv1 + '/feed/{id}',
 		};
 
 const config: AppConfig = {
