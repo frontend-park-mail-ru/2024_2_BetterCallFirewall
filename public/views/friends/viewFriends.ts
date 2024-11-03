@@ -1,4 +1,6 @@
+import { ACTION_APP_TYPES } from '../../actions/actionApp';
 import { ACTION_FRIENDS_TYPES } from '../../actions/actionFriends';
+import { ACTION_MENU_TYPES } from '../../actions/actionMenu';
 import api from '../../api/api';
 import { Root } from '../../components';
 import { Friends, FriendsConfig } from '../../components/Friends/Friends';
@@ -24,8 +26,13 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 	handleChange(change: ChangeFriends): void {
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_MENU_TYPES.menuLinkClick:
+			case ACTION_APP_TYPES.actionAppInit:
+				api.requestFriends(this._configFriends.main.header.profile.id);
+				break;
 			case ACTION_FRIENDS_TYPES.getFriendsSuccess:
 				this.updateViewFriends(change.data);
+				break;
 		}
 	}
 
@@ -47,8 +54,5 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		const content = this.content;
 		const friends = new Friends(this._configFriends.friends, content);
 		friends.render();
-
-		api.requestFriends(this._configFriends.main.header.profile.id);
-		// this.sendAction(new ActionProfileGetFriends());
 	}
 }
