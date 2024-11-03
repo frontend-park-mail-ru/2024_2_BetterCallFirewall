@@ -62,6 +62,7 @@ export interface URLInterface {
 	signup: string;
 	login: string;
 	logout: string;
+	feed: string;
 	post: string;
 	profile: string;
 	profileYourOwn: string;
@@ -69,6 +70,11 @@ export interface URLInterface {
 	subscribers: string;
 	header: string;
 	friends: string;
+	subscribeToProfile: string;
+	acceptFriend: string;
+	unsubscribeFromProfile: string,
+	removeFriend: string,
+	profileSubscriptions: string,
 }
 
 export interface AppConfig {

@@ -66,7 +66,7 @@ export class ViewSignup extends BaseView {
 		signupForm.addHandler(signupForm.form, 'submit', (event: Event) => {
 			event.preventDefault();
 			if (this._config.inputs) {
-				loginFormSubmit(signupForm, this._config.inputs);
+				loginFormSubmit(signupForm);
 			}
 		});
 
@@ -87,10 +87,11 @@ export class ViewSignup extends BaseView {
 
 const loginFormSubmit = (
 	signupForm: SignupForm,
-	inputs: Record<string, IInputConfig>,
 ) => {
 	const validator = new Validator();
-	const data = validator.validateForm(inputs, signupForm.form);
+	const form = signupForm.form as HTMLFormElement;
+	const formData = new FormData(form);
+	const data = validator.validateForm(formData, signupForm.form);
 	if (data) {
 		ajax.sendForm(config.URL.signup, data, async (response, error) => {
 			if (error) {

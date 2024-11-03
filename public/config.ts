@@ -3,7 +3,6 @@ import { ILoginFormConfig, ISignupFormConfig } from './components';
 import { IChatConfig } from './components/Chat/Chat';
 import { IMessageConfig } from './components/Message/Message';
 import { IProfileConfig } from './components/Profile/Profile';
-import Validator from './modules/validation';
 import { ViewChatConfig } from './views/chat/viewChat';
 import { ViewMessagesConfig } from './views/messages/viewMessages';
 import { ViewFeedConfig } from './views/feed/viewFeed';
@@ -105,35 +104,30 @@ const signupConfig: ISignupFormConfig = {
 			type: 'text',
 			text: 'Имя',
 			name: 'first_name',
-			validator: Validator.validateName,
 		},
 		secondName: {
 			key: 'secondName',
 			type: 'text',
 			text: 'Фамилия',
 			name: 'last_name',
-			validator: Validator.validateName,
 		},
 		email: {
 			key: 'email',
 			type: 'text',
 			text: 'Email',
 			name: 'email',
-			validator: Validator.validateEmail,
 		},
 		password: {
 			key: 'password',
 			type: 'password',
 			text: 'Пароль',
 			name: 'password',
-			validator: Validator.validatePassword,
 		},
 		passwordAgain: {
 			key: 'passwordAgain',
 			type: 'password',
 			text: 'Повторите пароль',
 			name: 'password_again',
-			validator: Validator.validateConfirmation,
 		},
 	},
 	button: {
@@ -155,14 +149,12 @@ const loginConfig: ILoginFormConfig = {
 			type: 'text',
 			text: 'Email',
 			name: 'email',
-			validator: Validator.validateEmail,
 		},
 		password: {
 			key: 'password',
 			type: 'password',
 			text: 'Пароль',
 			name: 'password',
-			validator: Validator.validatePassword,
 		},
 	},
 	button: {
@@ -186,7 +178,15 @@ const createPostConfig: ViewCreatePostConfig = {
 				type: 'textarea',
 				text: 'Текст поста',
 				name: 'text',
-				validator: Validator.validatePost,
+			},
+		},
+		inputs: {
+			image: {
+				key: 'image',
+				type: 'file',
+				accept: 'image/*',
+				name: 'img',
+				// extra: 'multiple',
 			},
 		},
 		button: {
@@ -206,36 +206,32 @@ const profileEditConfig: ViewProfileEditConfig = {
 				type: 'text',
 				text: 'Имя',
 				name: 'first_name',
-				validator: Validator.validateName,
 			},
 			secondName: {
 				key: 'secondName',
 				type: 'text',
 				text: 'Фамилия',
 				name: 'last_name',
-				validator: Validator.validateName,
 			},
 			email: {
 				key: 'email',
 				type: 'text',
 				text: 'Email',
 				name: 'email',
-				validator: Validator.validateEmail,
 			},
 			password: {
 				key: 'password',
 				type: 'password',
 				text: 'Пароль',
 				name: 'password',
-				validator: Validator.validatePassword,
 			},
 			avatar: {
 				key: 'avatar',
 				type: 'file',
 				accept: 'image/*',
+				name: 'avatar',
 				// extra: 'multiple',
-				validator: Validator.validateImg,
-			}
+			},
 		},
 		button: {
 			key: 'profileEditButton',
@@ -333,30 +329,45 @@ export const ROOT: string = DEBUG
 	? 'http://127.0.0.1:8000'
 	: 'http://185.241.194.197:8080';
 
+const apiv1 = '/api/v1';
+
 const URL: URLInterface = DEBUG
 	? {
 			signup: ROOT + '/auth/signup',
 			login: ROOT + '/auth/login',
 			logout: ROOT + '/auth/logout',
-			post: ROOT + '/api/post',
+			feed: ROOT + '/api/post',
 			profile: ROOT + '/api/profile',
 			profileYourOwn: ROOT + '/api/profile',
 			profiles: ROOT + '/api/profiles',
 			subscribers: ROOT + '/api/profile/{id}/subscribers',
 			header: ROOT + '/api/profile/header',
 			friends: ROOT + '/api/profile/{id}/friends',
+			subscribeToProfile: ROOT + '/api/profile/{id}/friend/subscribe',
+			acceptFriend: '',
+			unsubscribeFromProfile: '',
+			removeFriend: '',
+			profileSubscriptions: '',
+			post: '',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
 			login: ROOT + '/api/v1/auth/login',
 			logout: ROOT + '/api/v1/auth/logout',
-			post: ROOT + '/api/v1/feed',
+			feed: ROOT + '/api/v1/feed',
 			profile: ROOT + '/api/v1/profile',
 			profileYourOwn: ROOT + '/api/v1/profile',
 			profiles: ROOT + '/api/v1/profiles',
 			subscribers: ROOT + '/api/v1/profile/{id}/subscribers',
 			header: ROOT + '/api/v1/profile/header',
 			friends: ROOT + '/api/v1/profile/{id}/friends',
+			subscribeToProfile: ROOT + '/api/v1/profile/{id}/friend/subscribe',
+			acceptFriend: ROOT + '/api/v1/profile/{id}/friend/accept',
+			unsubscribeFromProfile:
+				ROOT + '/api/v1/profile/{id}/friend/unsubscribe',
+			removeFriend: ROOT + '/api/v1/profile/{id}/friend/remove',
+			profileSubscriptions: ROOT + apiv1 + '/profile/{id}/subscriptions',
+			post: ROOT + apiv1 + '/feed/{id}',
 		};
 
 const config: AppConfig = {

@@ -7,7 +7,6 @@ export interface ITextAreaConfig extends IBaseComponentConfig {
 	name: string;
 	text: string;
 	type: string;
-	validator?: (name: HTMLTextAreaElement) => string;
 }
 
 export interface ITextArea extends IBaseComponent {}
