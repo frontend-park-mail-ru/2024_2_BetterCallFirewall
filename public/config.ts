@@ -310,6 +310,16 @@ const friendsConfig: ViewFriendsConfig = {
 			};
 		}),
 	},
+	subcribers: {
+		key: 'subscribers',
+		headerText: 'Подписчики',
+		friendsConfig: [],
+	},
+	users: {
+		key: 'users',
+		headerText: 'Поиск друзей',
+		friendsConfig: [],
+	},
 };
 
 export const ROOT: string = DEBUG

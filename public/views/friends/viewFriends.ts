@@ -12,6 +12,8 @@ import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
 export interface ViewFriendsConfig extends HomeConfig {
 	friends: FriendsConfig;
+	subcribers: FriendsConfig;
+	users: FriendsConfig;
 }
 
 export interface IViewFriends extends IViewHome {
@@ -56,11 +58,28 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 	protected _render(): void {
 		super._render();
 		this._renderFriends();
+		this._renderSubscribers();
+		this._renderUsers();
 	}
 
-	protected _renderFriends(): void {
+	private _renderFriends(): void {
 		const content = this.content;
 		const friends = new Friends(this._configFriends.friends, content);
 		friends.render();
+	}
+
+	private _renderSubscribers() {
+		const content = this.content;
+		const subscribers = new Friends(
+			this._configFriends.subcribers,
+			content,
+		);
+		subscribers.render();
+	}
+
+	private _renderUsers() {
+		const content = this.content;
+		const users = new Friends(this._configFriends.users, content);
+		users.render();
 	}
 }
