@@ -36,6 +36,8 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 				this.render();
 				this.sendAction(new ActionProfileGetFriends());
 				break;
+			case ACTION_FRIENDS_TYPES.getUsersSuccess:
+			case ACTION_FRIENDS_TYPES.getSubscribersSuccess:
 			case ACTION_FRIENDS_TYPES.getFriendsSuccess:
 				this.updateViewFriends(change.data);
 				break;

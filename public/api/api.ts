@@ -4,7 +4,11 @@ import {
 	ActionPostsRequestFail,
 	ActionPostsRequestSuccess,
 } from '../actions/actionFeed';
-import { ActionProfileGetFriendsSuccess } from '../actions/actionFriends';
+import {
+	ActionProfileGetFriendsSuccess,
+	ActionProfileGetSubscribersSuccess,
+	ActionProfileGetUsersSuccess,
+} from '../actions/actionFriends';
 import { ActionUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
 	ActionProfileGetHeaderFail,
@@ -171,6 +175,36 @@ class API {
 				this.sendAction(
 					new ActionProfileGetFriendsSuccess({
 						friends: response.data,
+					}),
+				);
+		}
+	}
+
+	async requestSubscribers(profileId: number) {
+		const response = await ajax.getSubscribers(profileId);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					break;
+				}
+				this.sendAction(
+					new ActionProfileGetSubscribersSuccess({
+						subscribers: response.data,
+					}),
+				);
+		}
+	}
+
+	async requestUsers() {
+		const response = await ajax.getProfiles();
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					break;
+				}
+				this.sendAction(
+					new ActionProfileGetUsersSuccess({
+						users: response.data,
 					}),
 				);
 		}
