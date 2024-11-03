@@ -23,7 +23,6 @@ import {
 	Root,
 	Content,
 } from '../../components';
-import { IBaseComponent } from '../../components/BaseComponent';
 import config, { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
@@ -105,7 +104,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	updateMenu(data: IMenuConfig): void {
-		console.log('update');
 		this._configHome.menu = data;
 		const menu = this._components.menu;
 		if (!menu) {
@@ -138,7 +136,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	protected get _homeComponents(): ComponentsHome {
-		console.log('_homeComponents call:', this);
 		return this._components;
 	}
 
@@ -166,9 +163,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		content.removeInner();
 	}
 
-	protected _updateContent(parent: IBaseComponent) {
-		console.log('homeView.updateContent()');
-		console.log('parent:', parent);
+	protected _updateContent() {
 		this._clearContent();
 		this._renderContent();
 	}
