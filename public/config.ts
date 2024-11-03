@@ -212,6 +212,7 @@ const chatComponentConfig: IChatConfig = {
 	companionAvatar: '',
 	companionName: '',
 	lastDateOnline: '',
+	backButtonHref: PAGE_LINKS.messages,
 };
 
 const chatConfig: ViewChatConfig = {
