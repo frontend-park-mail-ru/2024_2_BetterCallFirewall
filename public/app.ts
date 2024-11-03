@@ -281,6 +281,9 @@ class App {
 		);
 		this._stores.createPost.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
 		this._stores.createPost.subscribe(ACTION_FEED_TYPES.postCreateFail);
+		this._stores.createPost.subscribe(
+			ACTION_CREATE_POST_TYPES.goToCreatePost,
+		);
 
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.updateProfileEdit,
