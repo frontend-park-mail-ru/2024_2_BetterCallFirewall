@@ -1,3 +1,4 @@
+import { ACTION_FRIENDS_TYPES } from '../../actions/actionFriends';
 import { Root } from '../../components';
 import { Friends, FriendsConfig } from '../../components/Friends/Friends';
 import { ChangeFriends } from '../../stores/storeFriends';
@@ -22,8 +23,13 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 	handleChange(change: ChangeFriends): void {
 		super.handleChange(change);
 		switch (change.type) {
-			default:
+			case ACTION_FRIENDS_TYPES.getFriendsSuccess:
+				this.updateViewFriends(change.data);
 		}
+	}
+
+	updateViewFriends(data: ViewFriendsConfig) {
+		this._configFriends = Object.assign(this._configFriends, data);
 	}
 
 	render(): void {

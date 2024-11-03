@@ -1,3 +1,4 @@
+import { IFriendConfig } from '../components/Friend/Friend';
 import { IProfileConfig } from '../components/Profile/Profile';
 import { PostResponse, toPostConfig } from './post';
 
@@ -30,4 +31,16 @@ export const toProfileConfig = (
 		),
 	};
 	return Object.assign(config, profileData);
+};
+
+export const toFriendConfig = (
+	profileResponse: ShortProfileResponse,
+): IFriendConfig => {
+	const newConfig: IFriendConfig = {
+		id: profileResponse.id,
+		key: `friend-${profileResponse.id}`,
+		name: `${profileResponse.first_name} ${profileResponse.last_name}`,
+		avatar: profileResponse.avatar,
+	};
+	return newConfig;
 };

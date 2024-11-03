@@ -2,7 +2,7 @@ import { STATUS } from '../api/api';
 import app from '../app';
 import { HeaderResponse } from '../models/header';
 import { PostResponse } from '../models/post';
-import { FullProfileResponse } from '../models/profile';
+import { FullProfileResponse, ShortProfileResponse } from '../models/profile';
 
 type AjaxPromiseConfig = {
 	request: Request;
@@ -139,18 +139,27 @@ class Ajax {
 		return headerResponse;
 	}
 
-	async getCurrentUserId(): Promise<number> {
-		try {
-			const response = await fetch('/api/currentUserId');
-			if (!response.ok) {
-				throw new Error(`Error: ${response.status}`);
+	async getFriends(
+		profileId: number,
+	): Promise<AjaxResponse<ShortProfileResponse[]>> {
+		let url = app.config.URL.friends;
+		url = url.replace('{id}', `${profileId}`);
+		const request = this._getRequest(url);
+		const response = await this._response(request);
+		let friendsResponse: AjaxResponse<ShortProfileResponse[]> = {
+			status: response.status,
+			success: false,
+		};
+		switch (friendsResponse.status) {
+			case STATUS.ok: {
+				const body = (await response.json()) as FetchResponse<
+					ShortProfileResponse[]
+				>;
+				console.log('body:', body);
+				friendsResponse = Object.assign(friendsResponse, body);
 			}
-			const data = await response.json();
-			return data.userId;
-		} catch (error) {
-			console.error('Ошибка при получении Id профиля:', error);
-			throw error;
 		}
+		return friendsResponse;
 	}
 
 	/**

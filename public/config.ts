@@ -300,6 +300,7 @@ const friendsConfig: ViewFriendsConfig = {
 		headerText: 'Друзья',
 		friendsConfig: Array.from({ length: 10 }, () => {
 			return {
+				id: 0,
 				key: 'friend',
 				avatar: '../../img/avatar.png',
 				name: 'Asap Rocky',
@@ -323,6 +324,7 @@ const URL: URLInterface = DEBUG
 			profile: ROOT + '/api/profile',
 			profileYourOwn: ROOT + '/api/profile',
 			header: ROOT + '/api/profile/header',
+			friends: ROOT + '/api/profile/{id}/friends',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -332,6 +334,7 @@ const URL: URLInterface = DEBUG
 			profile: ROOT + '/api/v1/profile',
 			profileYourOwn: ROOT + '/api/v1/profile',
 			header: ROOT + '/api/v1/profile/header',
+			friends: ROOT + '/api/v1/profile/{id}/friends',
 		};
 
 const config: AppConfig = {

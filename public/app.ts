@@ -36,14 +36,21 @@ import { StoreHome } from './stores/storeHome';
 import { StoreFriends } from './stores/storeFriends';
 import { ACTION_FORM_TYPES } from './actions/actionForm';
 import { ACTION_FEED_TYPES } from './actions/actionFeed';
-import { ViewCreatePost, ViewCreatePostConfig } from './views/createPost/viewCreatePost';
+import {
+	ViewCreatePost,
+	ViewCreatePostConfig,
+} from './views/createPost/viewCreatePost';
 import { StoreCreatePost } from './stores/storeCreatePost';
 import { ACTION_CREATE_POST_TYPES } from './actions/actionCreatePost';
 
 import { ACTION_USER_TYPES } from './actions/actionUser';
-import { ViewProfileEdit, ViewProfileEditConfig } from './views/profileEdit/viewProfileEdit';
+import {
+	ViewProfileEdit,
+	ViewProfileEditConfig,
+} from './views/profileEdit/viewProfileEdit';
 import { StoreProfileEdit } from './stores/storeProfileEditForm';
 import { ACTION_PROFILE_EDIT_TYPES } from './actions/actionProfileEdit';
+import { ACTION_FRIENDS_TYPES } from './actions/actionFriends';
 
 export const PAGES = {
 	home: 'home',
@@ -59,6 +66,7 @@ export interface URLInterface {
 	profile: string;
 	profileYourOwn: string;
 	header: string;
+	friends: string;
 }
 
 export interface AppConfig {
@@ -122,9 +130,18 @@ class App {
 			this._config.signupConfig,
 			this._root,
 		);
-		const createPostView = new ViewCreatePost(this._config.createPostConfig, this._root);
-		const profileEditView = new ViewProfileEdit(this._config.profileEditConfig, this._root);
-		const messagesView = new ViewMessages(this._config.messagesConfig, this._root);
+		const createPostView = new ViewCreatePost(
+			this._config.createPostConfig,
+			this._root,
+		);
+		const profileEditView = new ViewProfileEdit(
+			this._config.profileEditConfig,
+			this._root,
+		);
+		const messagesView = new ViewMessages(
+			this._config.messagesConfig,
+			this._root,
+		);
 		const chatView = new ViewChat(this._config.chatConfig, this._root);
 		const routerConfig: RouterConfig = [
 			{
@@ -236,16 +253,21 @@ class App {
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.getHeader);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.getHeaderSuccess);
 
+		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriendsSuccess);
+
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.goToMessages);
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.updateMessages);
 
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.goToChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.updateChat);
 
-		this._stores.createPost.subscribe(ACTION_CREATE_POST_TYPES.updateCreatePost);
+		this._stores.createPost.subscribe(
+			ACTION_CREATE_POST_TYPES.updateCreatePost,
+		);
 
-		this._stores.profileEdit.subscribe(ACTION_PROFILE_EDIT_TYPES.updateProfileEdit);
-
+		this._stores.profileEdit.subscribe(
+			ACTION_PROFILE_EDIT_TYPES.updateProfileEdit,
+		);
 
 		loginView.register(this._stores.login);
 

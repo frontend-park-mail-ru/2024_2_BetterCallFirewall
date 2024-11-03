@@ -4,6 +4,7 @@ import {
 	ActionPostsRequestFail,
 	ActionPostsRequestSuccess,
 } from '../actions/actionFeed';
+import { ActionProfileGetFriendsSuccess } from '../actions/actionFriends';
 import { ActionUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
 	ActionProfileGetHeaderFail,
@@ -157,6 +158,21 @@ class API {
 		}
 		if (!app.inited) {
 			this.sendAction(new ActionAppInit());
+		}
+	}
+
+	async requestFriends(profileId: number) {
+		const response = await ajax.getFriends(profileId);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					break;
+				}
+				this.sendAction(
+					new ActionProfileGetFriendsSuccess({
+						friends: response.data,
+					}),
+				);
 		}
 	}
 }
