@@ -5,6 +5,7 @@ import BaseComponent, {
 
 export interface IInputConfig extends IBaseComponentConfig {
 	name?: string;
+	placeholder?: string;
 	text?: string;
 	accept?: string;
 	extra?: string;
