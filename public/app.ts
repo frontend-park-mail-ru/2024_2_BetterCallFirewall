@@ -102,7 +102,10 @@ class App {
 			this._config.profileConfig,
 			this._root,
 		);
-		const friendView = new ViewFriends(this._config.homeConfig, this._root);
+		const friendView = new ViewFriends(
+			this._config.friendsConfig,
+			this._root,
+		);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
 		const signupView = new ViewSignup(
 			this._config.signupConfig,
