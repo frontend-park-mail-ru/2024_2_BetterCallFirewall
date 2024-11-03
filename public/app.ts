@@ -217,6 +217,7 @@ class App {
 		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 		this._stores.app.subscribe(ACTION_PROFILE_TYPES.getHeaderFail);
 		this._stores.app.subscribe(ACTION_CHAT_TYPES.goToChat);
+		this._stores.app.subscribe(ACTION_CREATE_POST_TYPES.goToCreatePost);
 
 		this._stores.home.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.menuLinkClick);

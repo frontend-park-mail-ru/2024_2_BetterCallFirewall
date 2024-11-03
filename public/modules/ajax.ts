@@ -309,9 +309,9 @@ class Ajax {
 			method: 'post',
 			credentials: 'include',
 			body: data,
-			headers: {
-				'Content-Type': 'multipart/form-data',
-			},
+			// headers: {
+			// 	'Content-Type': 'multipart/form-data',
+			// },
 		});
 	}
 

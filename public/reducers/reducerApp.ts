@@ -1,6 +1,7 @@
 import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
 import { ACTION_CHAT_TYPES } from '../actions/actionChat';
+import { ACTION_CREATE_POST_TYPES } from '../actions/actionCreatePost';
 import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
 import {
 	ACTION_MENU_TYPES,
@@ -39,6 +40,9 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 				break;
 			case ACTION_CHAT_TYPES.goToChat:
 				router.goToPage(PAGE_LINKS.chat);
+				break;
+			case ACTION_CREATE_POST_TYPES.goToCreatePost:
+				router.goToPage(PAGE_LINKS.createPost);
 				break;
 		}
 	}
