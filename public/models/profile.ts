@@ -1,5 +1,6 @@
 import { IFriendConfig } from '../components/Friend/Friend';
 import { IProfileConfig } from '../components/Profile/Profile';
+import { PAGE_LINKS } from '../config';
 import parseImage from '../modules/parseImage';
 import { PostResponse, toPostConfig } from './post';
 
@@ -30,6 +31,7 @@ export const toProfileConfig = (
 		posts: profileResponse.posts?.map((postResponse) =>
 			toPostConfig(postResponse),
 		),
+		createPostHref: PAGE_LINKS.createPost,
 	};
 	return Object.assign(config, profileData);
 };

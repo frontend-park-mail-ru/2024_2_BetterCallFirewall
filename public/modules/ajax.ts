@@ -53,7 +53,7 @@ class Ajax {
 	async getPosts(
 		queryParams?: QueryParams,
 	): Promise<AjaxResponse<PostResponse[]>> {
-		const request = this._getRequest(app.config.URL.post, queryParams);
+		const request = this._getRequest(app.config.URL.feed, queryParams);
 		const response = await this._response(request);
 		console.log('response:', response);
 		let postsResponse: AjaxResponse<PostResponse[]> = {
@@ -76,6 +76,21 @@ class Ajax {
 		}
 		console.log('postsResponse:', postsResponse);
 		return postsResponse;
+	}
+
+	async createPost(formData: FormData): Promise<AjaxResponse<PostResponse>> {
+		const request = this._sendFormRequest(app.config.URL.feed, formData);
+		const response = await this._response(request);
+		const postResponse: AjaxResponse<PostResponse> = {
+			status: response.status,
+			success: false,
+		};
+		try {
+			const body = await response.json();
+			return Object.assign(postResponse, body);
+		} catch {
+			return postResponse;
+		}
 	}
 
 	async getProfile(
@@ -159,6 +174,40 @@ class Ajax {
 		return this._getShortProfileResponse(app.config.URL.profiles);
 	}
 
+	async getProfileSubscriptions(
+		profileId: number,
+	): Promise<AjaxResponse<ShortProfileResponse[]>> {
+		let url = app.config.URL.profileSubscriptions;
+		url = url.replace('{id}', `${profileId}`);
+		return this._getShortProfileResponse(url);
+	}
+
+	async subscribeToProfile(profileId: number): Promise<AjaxResponse<object>> {
+		let url = app.config.URL.subscribeToProfile;
+		url = url.replace('{id}', `${profileId}`);
+		return this._postObjectResponse(url);
+	}
+
+	async acceptFriend(profileId: number): Promise<AjaxResponse<object>> {
+		let url = app.config.URL.acceptFriend;
+		url = url.replace('{id}', `${profileId}`);
+		return this._postObjectResponse(url);
+	}
+
+	async unsubscribeFromProfile(
+		profileId: number,
+	): Promise<AjaxResponse<object>> {
+		let url = app.config.URL.unsubscribeFromProfile;
+		url = url.replace('{id}', `${profileId}`);
+		return this._postObjectResponse(url);
+	}
+
+	async removeFriend(profileId: number): Promise<AjaxResponse<object>> {
+		let url = app.config.URL.removeFriend;
+		url = url.replace('{id}', `${profileId}`);
+		return this._postObjectResponse(url);
+	}
+
 	/**
 	 * Sending data form data
 	 *
@@ -218,6 +267,21 @@ class Ajax {
 			}
 		}
 		return shortProfileResponse;
+	}
+
+	private async _postObjectResponse(
+		url: string,
+	): Promise<AjaxResponse<object>> {
+		const request = this._postRequest(url, {});
+		const response = await this._response(request);
+		try {
+			const body = await response.json();
+			const ajaxResponse: AjaxResponse<object> = Object.assign({}, body);
+			ajaxResponse.status = response.status;
+			return ajaxResponse;
+		} catch {
+			return { status: response.status, success: false };
+		}
 	}
 
 	private _getRequest(baseUrl: string, queryParams?: QueryParams) {
