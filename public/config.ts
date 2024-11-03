@@ -189,6 +189,15 @@ const createPostConfig: ViewCreatePostConfig = {
 				validator: Validator.validatePost,
 			},
 		},
+		inputs: {
+			image: {
+				key: 'image',
+				type: 'file',
+				accept: 'image/*',
+				// extra: 'multiple',
+				validator: Validator.validateImg,
+			},
+		},
 		button: {
 			key: 'submitButton',
 			text: 'Опубликовать',
@@ -235,7 +244,7 @@ const profileEditConfig: ViewProfileEditConfig = {
 				accept: 'image/*',
 				// extra: 'multiple',
 				validator: Validator.validateImg,
-			}
+			},
 		},
 		button: {
 			key: 'profileEditButton',
