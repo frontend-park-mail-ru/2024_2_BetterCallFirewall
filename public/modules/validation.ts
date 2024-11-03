@@ -28,7 +28,7 @@ export default class Validator {
 	 * @returns {string} - returns error
 	 */
 	static validateConfirmation(confirm: HTMLInputElement): string {
-		const confirmValue = this.shieldingData(confirm.value);
+		const confirmValue = Validator.shieldingData(confirm.value);
 		if (!confirmValue) {
 			return 'Пароль не может быть пустым';
 		}
@@ -49,7 +49,7 @@ export default class Validator {
 	 * @returns {String} - return error
 	 */
 	static validatePassword(password: HTMLInputElement): string {
-		const passwordValue: string = this.shieldingData(password.value);
+		const passwordValue: string = Validator.shieldingData(password.value);
 		if (!passwordValue) {
 			return 'Пароль не может быть пустым';
 		}
@@ -63,7 +63,7 @@ export default class Validator {
 	}
 
 	static validatePost(post: HTMLTextAreaElement): string {
-		const postValue: string = this.shieldingData(post.value);
+		const postValue: string = Validator.shieldingData(post.value);
 		if (postValue.length > 2000) {
 			return 'Пост не должен превышать 2000 символов';
 		}
@@ -78,7 +78,7 @@ export default class Validator {
 	 */
 	static validateEmail(email: HTMLInputElement): string {
 		const emailRegex: RegExp = /^[\w-.]+@([\w-]+\.)\w{2,4}$/;
-		const emailValue: string = this.shieldingData(email.value.trim());
+		const emailValue: string = Validator.shieldingData(email.value.trim());
 		if (!emailValue) {
 			return 'Email не может быть пустым';
 		}
@@ -97,7 +97,7 @@ export default class Validator {
 	 * @returns {String} - return error
 	 */
 	static validateName(name: HTMLInputElement): string {
-		const nameValue: string = this.shieldingData(name.value.trim());
+		const nameValue: string = Validator.shieldingData(name.value.trim());
 		if (!nameValue) {
 			return 'Поле не может быть пустым';
 		}
