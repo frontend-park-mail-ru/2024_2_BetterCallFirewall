@@ -23,7 +23,7 @@ export const reducerFriends = (
 	switch (action.type) {
 		case ACTION_FRIENDS_TYPES.getUsersSuccess: {
 			const actionData = action.data as ActionProfileGetUsersSuccessData;
-			newState.friends.friendsConfig = actionData.users.map((user) =>
+			newState.users.friendsConfig = actionData.users.map((user) =>
 				toFriendConfig(user),
 			);
 			return newState;
@@ -31,7 +31,7 @@ export const reducerFriends = (
 		case ACTION_FRIENDS_TYPES.getSubscribersSuccess: {
 			const actionData =
 				action.data as ActionProfileGetSubscribersSuccessData;
-			newState.friends.friendsConfig = actionData.subscribers.map(
+			newState.subcribers.friendsConfig = actionData.subscribers.map(
 				(subscriber) => toFriendConfig(subscriber),
 			);
 			return newState;
