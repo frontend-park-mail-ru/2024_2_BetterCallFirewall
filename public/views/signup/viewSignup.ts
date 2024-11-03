@@ -100,7 +100,6 @@ const loginFormSubmit = (
 				return;
 			}
 			if (response && response.ok) {
-				// app.router.goToPage(PAGE_LINKS.feed);
 				dispatcher.getAction(new ActionSignupClickSuccess());
 				dispatcher.getAction(new ActionProfileGetHeader());
 			} else if (response) {

@@ -296,6 +296,19 @@ const chatConfig: ViewChatConfig = {
 
 const friendsConfig: ViewFriendsConfig = {
 	...homeConfig,
+	friends: {
+		key: 'friends',
+		headerText: 'Друзья',
+		friendsConfig: Array.from({ length: 10 }, () => {
+			return {
+				key: 'friend',
+				avatar: '../../img/avatar.png',
+				name: 'Asap Rocky',
+				description: 'Canadian singer, songwriter and actor.',
+				isFriend: true,
+			};
+		}),
+	},
 };
 
 export const ROOT: string = DEBUG
