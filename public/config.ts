@@ -13,7 +13,7 @@ import { ViewProfileConfig } from './views/profile/viewProfile';
 import { ViewCreatePostConfig } from './views/createPost/viewCreatePost';
 import { ViewProfileEditConfig } from './views/profileEdit/viewProfileEdit';
 
-const DEBUG: boolean = true;
+const DEBUG: boolean = false;
 
 export const PAGE_LINKS = {
 	feed: '/feed',
@@ -176,30 +176,29 @@ const loginConfig: ILoginFormConfig = {
 };
 
 const createPostConfig: ViewCreatePostConfig = {
-    ...homeConfig,
-    createPostForm: {
-        key: 'createPostForm',
-        textAreas: {
-            text: {
-                key: 'text',
-                type: 'textarea',
-                text: 'Текст поста',
-                name: 'text', 
-                validator: Validator.validatePost
-            }
-        },
-        button: {
-            key: 'submitButton',
-            text: 'Опубликовать'
-        }
-    }
+	...homeConfig,
+	createPostForm: {
+		key: 'createPostForm',
+		textAreas: {
+			text: {
+				key: 'text',
+				type: 'textarea',
+				text: 'Текст поста',
+				name: 'text',
+				validator: Validator.validatePost,
+			},
+		},
+		button: {
+			key: 'submitButton',
+			text: 'Опубликовать',
+		},
+	},
 };
-
 
 const profileEditConfig: ViewProfileEditConfig = {
 	...homeConfig,
 	profileEditForm: {
-        key: 'profileEditForm',
+		key: 'profileEditForm',
 		inputs: {
 			firstName: {
 				key: 'firstName',
@@ -234,7 +233,7 @@ const profileEditConfig: ViewProfileEditConfig = {
 			key: 'profileEditButton',
 			text: 'Сохранить',
 		},
-	}
+	},
 };
 
 const feedConfig: ViewFeedConfig = {
