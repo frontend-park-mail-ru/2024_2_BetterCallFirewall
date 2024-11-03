@@ -91,12 +91,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 
 	private _addProfileHandlers(data: IProfileConfig) {
 		if (!data.currentUser) {
-			const profile = this._components.profile;
-			if (!profile) {
-				throw new Error(
-					'component Profile does no exist on ViewProfile',
-				);
-			}
+			const profile = this.profile;
 			profile.addSendFriendRequestButton();
 			profile.addWriteMessageLink();
 			profile.addProfileEditLink();

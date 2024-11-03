@@ -129,7 +129,7 @@ export class Profile extends BaseComponent {
 
 	addProfileEditLink() {
 		const profileEditLink = document.createElement('a');
-		profileEditLink.classList.add('.profile-edit');
+		profileEditLink.classList.add('profile-edit');
 		profileEditLink.href = PAGE_LINKS.profileEdit;
 		profileEditLink.textContent = 'Редактировать профиль';
 		this._htmlElement
