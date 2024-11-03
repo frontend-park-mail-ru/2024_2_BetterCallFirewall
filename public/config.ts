@@ -192,6 +192,7 @@ const createPostConfig: ViewCreatePostConfig = {
 		inputs: {
 			image: {
 				key: 'image',
+				name: 'file',
 				type: 'file',
 				accept: 'image/*',
 				// extra: 'multiple',

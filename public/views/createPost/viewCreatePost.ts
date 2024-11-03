@@ -83,6 +83,8 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 				event.preventDefault();
 				const formData = this._createPostForm.formData;
 				console.log('formData:', formData);
+				console.log(formData.get('text'));
+				console.log(formData.get('file'));
 				api.createPost(formData);
 			},
 		);
