@@ -1,4 +1,9 @@
 import { ActionChatGoToChat } from '../../actions/actionChat';
+import {
+	ACTION_MESSAGES_TYPES,
+	ActionMessagesRequest,
+} from '../../actions/actionMessages';
+import api from '../../api/api';
 import { Root } from '../../components';
 import { IMessageConfig, Message } from '../../components/Message/Message';
 import { PAGE_LINKS } from '../../config';
@@ -34,6 +39,9 @@ export class ViewMessages extends ViewHome implements IViewHome {
 	handleChange(change: ChangeMessages): void {
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_MESSAGES_TYPES.requestMessages:
+				api.getMessages();
+				break;
 			default:
 				this.updateViewMessages(change.data);
 		}
@@ -41,9 +49,7 @@ export class ViewMessages extends ViewHome implements IViewHome {
 
 	render(): void {
 		this._render();
-		// dispatcher.getAction(
-		// 	new ActionUpdateMessages(this._configMessages.messages),
-		// );
+		this.sendAction(new ActionMessagesRequest());
 	}
 
 	updateViewMessages(data: ViewMessagesConfig): void {
@@ -58,16 +64,6 @@ export class ViewMessages extends ViewHome implements IViewHome {
 	}
 
 	protected _renderMessages(): void {
-		// this._configMessages.messages = {
-		// 	authorId: 0,
-		// 	key: 'message',
-		// 	avatar: '../../img/avatar.png',
-		// 	name: 'Asap Rocky',
-		// 	lastMessage: 'Lets do it.',
-		// 	date: '12:34',
-		// 	unreadedCount: 3,
-		// }; // tmp
-
 		const content = this.content;
 
 		// Тестовые сообщения

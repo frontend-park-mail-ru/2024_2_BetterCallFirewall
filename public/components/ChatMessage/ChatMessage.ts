@@ -5,9 +5,10 @@ import BaseComponent, {
 
 export interface IChatMessageConfig extends IBaseComponentConfig {
 	userId: number;
-    messageAvatar: string;
-    messageName: string;
-    messageText: string;
+	messageAvatar: string;
+	messageName: string;
+	messageText: string;
+	createdAt: string;
 }
 
 export interface IChatMessage extends BaseComponent {}
@@ -30,7 +31,7 @@ export class ChatMessage extends BaseComponent implements IChatMessage {
 		this._templateContext = { ...this.config };
 	}
 
-    show(parent: HTMLElement) {
+	show(parent: HTMLElement) {
 		parent.appendChild(this.htmlElement);
 	}
 }

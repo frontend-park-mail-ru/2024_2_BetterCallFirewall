@@ -88,11 +88,12 @@ export class ViewChat extends ViewHome implements IViewChat {
 	}
 
 	protected _renderChatMessages(): void {
-		const chatContent = this._chat.htmlElement.querySelector('.chat__content');
+		const chatContent =
+			this._chat.htmlElement.querySelector('.chat__content');
 		if (!chatContent) {
 			throw new Error('chat content not found');
 		}
-	
+
 		// Тестовые сообщения
 		for (let i = 0; i < 15; i++) {
 			const message = new ChatMessage(
@@ -102,13 +103,13 @@ export class ViewChat extends ViewHome implements IViewChat {
 					messageAvatar: '../../img/avatar.png',
 					messageName: 'Asap Rocky',
 					messageText: 'Привет! Как дела?',
+					createdAt: '19:00',
 				},
-				this._chat
+				this._chat,
 			);
 			message.render(false);
 			chatContent.appendChild(message.htmlElement);
 		}
-
 	}
 
 	private _addHandlers() {
