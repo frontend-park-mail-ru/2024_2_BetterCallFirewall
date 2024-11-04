@@ -1,4 +1,5 @@
-import { ChatResponse } from '../models/chat';
+import { IChatConfig } from '../components/Chat/Chat';
+import { MessageResponse } from '../models/message';
 import { Action, ActionType } from './action';
 
 export const ACTION_CHAT_TYPES = {
@@ -19,7 +20,7 @@ export class ActionUpdateChat implements Action {
 }
 
 export interface ActionChatGoToChatData {
-	userId: number;
+	chatConfig: IChatConfig;
 }
 
 export class ActionChatGoToChat implements Action {
@@ -38,15 +39,15 @@ export class ActionChatRequest implements Action {
 }
 
 export interface ActionChatRequestSuccessData {
-	chatResponse: ChatResponse;
+	messagesResponse: MessageResponse[];
 }
 
 export class ActionChatRequestSuccess implements Action {
 	type: ActionType = ACTION_CHAT_TYPES.requestChatSuccess;
 	data: ActionChatRequestSuccessData;
 
-	constructor(chatResponse: ChatResponse) {
-		this.data = { chatResponse };
+	constructor(messagesResponse: MessageResponse[]) {
+		this.data = { messagesResponse };
 	}
 }
 

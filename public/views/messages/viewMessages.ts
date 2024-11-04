@@ -89,10 +89,20 @@ export class ViewMessages extends ViewHome implements IViewHome {
 	protected _addMessageHandlers(message: Message): void {
 		message.addHandler(message.htmlElement, 'click', (event) => {
 			event.preventDefault();
+			const config = message.config;
 			this.sendAction(
-				new ActionChatGoToChat({ userId: message.authorId }),
+				new ActionChatGoToChat({
+					chatConfig: {
+						key: `chat-${config.authorId}`,
+						userId: config.authorId,
+						companionAvatar: config.avatar,
+						companionName: config.name,
+						lastDateOnline: '-1',
+						backButtonHref: PAGE_LINKS.messages,
+						messages: [],
+					},
+				}),
 			);
-			// this.sendAction(new ActionMenuLinkClick({ href: message.href }));
 		});
 	}
 }

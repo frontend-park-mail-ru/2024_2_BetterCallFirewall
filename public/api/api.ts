@@ -360,8 +360,8 @@ class API {
 		}
 	}
 
-	async getChat(profileId: number) {
-		const response = await ajax.getChat(profileId);
+	async getChatMessages(profileId: number) {
+		const response = await ajax.getChatMessages(profileId);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
