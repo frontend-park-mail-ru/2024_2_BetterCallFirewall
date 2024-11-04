@@ -4,9 +4,11 @@ import {
 	ActionUpdateChat,
 } from '../../actions/actionChat';
 import { ActionMenuLinkClick } from '../../actions/actionMenu';
+import app from '../../app';
 import { Root } from '../../components';
 import { Chat, IChatConfig } from '../../components/Chat/Chat';
 import dispatcher from '../../dispatcher/dispatcher';
+import { MessageSend } from '../../models/message';
 import { ChangeChat } from '../../stores/storeChat';
 import {
 	ComponentsHome,
@@ -68,16 +70,6 @@ export class ViewChat extends ViewHome implements IViewChat {
 	}
 
 	protected _renderChat(): void {
-		// this._configChat.chat = {
-		// 	...this._configChat.chat,
-		// 	...{
-		// 		key: 'chat',
-		// 		companionAvatar: '../../img/avatar.png',
-		// 		companionName: 'Asap Rocky',
-		// 		lastDateOnline: '18:00',
-		// 	},
-		// }; // tmp
-
 		const content = this.content;
 		const chat = new Chat(this._configChat.chat, content);
 		chat.render();
@@ -93,6 +85,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 
 	private _addHandlers() {
 		this._addBackButtonHandler();
+		this._addSendButtonHandler();
 	}
 
 	private _addBackButtonHandler() {
@@ -104,6 +97,19 @@ export class ViewChat extends ViewHome implements IViewChat {
 					href: this._configChat.chat.backButtonHref,
 				}),
 			);
+		});
+	}
+
+	private _addSendButtonHandler() {
+		const form = this._chat.form;
+		this._chat.addHandler(form, 'submit', (event) => {
+			event.preventDefault();
+			const message: MessageSend = {
+				content: this._chat.text,
+				receiver: this._chat.config.userId,
+			};
+			app.websocket.sendMessage(message);
+			// this.sendAction(new ActionMesssagesSendMessage(message));
 		});
 	}
 

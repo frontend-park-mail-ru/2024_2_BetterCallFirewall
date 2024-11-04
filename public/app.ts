@@ -393,6 +393,10 @@ class App {
 		this._inited = value;
 	}
 
+	get websocket(): WebsocketClient {
+		return this._websocket;
+	}
+
 	init() {
 		dispatcher.getAction(new ActionProfileGetHeader());
 	}
