@@ -2,6 +2,7 @@ import { STATUS } from '../api/api';
 import app from '../app';
 import { ChatResponse } from '../models/chat';
 import { HeaderResponse } from '../models/header';
+import { MessageResponse } from '../models/message';
 import { PostResponse } from '../models/post';
 import { FullProfileResponse, ShortProfileResponse } from '../models/profile';
 
@@ -281,24 +282,15 @@ class Ajax {
 	 * Запрос списка чатов
 	 */
 	async getMessages(): Promise<AjaxResponse<ChatResponse[]>> {
-		// const request = this._getRequest(app.config.URL.messages);
-		// const response = await this._response(request);
-		// try {
-		// 	const body = await response.json();
-		// 	const messagesResponse: AjaxResponse<ChatResponse[]> =
-		// 		Object.assign({}, body);
-		// 	messagesResponse.status = response.status;
-		// 	return messagesResponse;
-		// } catch {
-		// 	return {
-		// 		status: response.status,
-		// 		success: false,
-		// 	};
-		// }
 		return this._genericRequest(app.config.URL.messages, 'get');
 	}
 
-	async getChat(profileId: number): Promise<AjaxResponse<ChatResponse>> {
+	/**
+	 * Запрос чата
+	 */
+	async getChatMessages(
+		profileId: number,
+	): Promise<AjaxResponse<MessageResponse[]>> {
 		return this._genericRequest(
 			replaceId(app.config.URL.chat, profileId),
 			'get',
