@@ -243,22 +243,6 @@ const profileEditConfig: ViewProfileEditConfig = {
 				name: 'email',
 				validator: Validator.validateEmail,
 			},
-			password: {
-				key: 'password',
-				type: 'password',
-				placeholder: 'Пароль',
-				name: 'password',
-				validator: Validator.validatePassword,
-			},
-			avatar: {
-				key: 'avatar',
-				name: 'file',
-				type: 'file',
-				accept: 'image/*',
-				placeholder: 'Прикрепить аватар',
-				// extra: 'multiple',
-				validator: Validator.validateImg,
-			},
 		},
 
 		button: {
