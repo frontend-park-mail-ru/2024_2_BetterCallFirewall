@@ -1,7 +1,6 @@
 import { Action } from '../actions/action';
 import {
 	ACTION_PROFILE_TYPES,
-	ActionProfileGetHeaderSuccessData,
 	ActionProfileGetYourOwnProfileSuccessData,
 	ActionProfileRequestSuccessData,
 	ActionUpdateProfileData,
@@ -24,11 +23,11 @@ export const reducerProfile = (
 	const newState = deepClone(state);
 	let actionData;
 	switch (action?.type) {
-		case ACTION_PROFILE_TYPES.getHeaderSuccess: {
-			const actionData = action.data as ActionProfileGetHeaderSuccessData;
-			newState.path = `/${actionData.headerResponse.author_id}`;
-			return newState;
-		}
+		// case ACTION_PROFILE_TYPES.getHeaderSuccess: {
+		// 	const actionData = action.data as ActionProfileGetHeaderSuccessData;
+		// 	newState.path = `/${actionData.headerResponse.author_id}`;
+		// 	return newState;
+		// }
 		case ACTION_PROFILE_EDIT_TYPES.requestSuccess: {
 			actionData = action.data as ActionProfileEditRequestSuccessData;
 			const profileConfig = toProfileConfig(
