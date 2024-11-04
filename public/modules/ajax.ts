@@ -212,17 +212,10 @@ class Ajax {
 		const request = this._sendFormRequest(url, formData);
 		const response = await this._response(request);
 		
-		let formResponse: AjaxResponse<FormResponse> = {
+		const formResponse: AjaxResponse<FormResponse> = {
 			status: response.status,
 			success: false,
 		};
-		
-		try {
-			const body = await response.json() as FetchResponse<FormResponse>;
-			formResponse = Object.assign(formResponse, body);
-		} catch {
-			formResponse.message = 'Ошибка при обработке ответа';
-		}
 		
 		return formResponse;
 	}
