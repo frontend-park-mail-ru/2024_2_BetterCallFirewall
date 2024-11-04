@@ -30,5 +30,6 @@ export const toPostConfig = (postResponse: PostResponse): IPostConfig => {
 		img: parseImage(postResponse.post_content.file),
 		date: parseTime(postResponse.post_content.created_at),
 		hasDeleteButton: false,
+		hasEditButton: false,
 	};
 };

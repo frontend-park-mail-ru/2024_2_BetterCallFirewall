@@ -42,7 +42,10 @@ export const toProfileConfig = (
 		isSubscription: profileResponse.is_subscription,
 	};
 	if (profileData.isAuthor) {
-		profileData.posts?.forEach((post) => (post.hasDeleteButton = true));
+		profileData.posts?.forEach((post) => {
+			post.hasDeleteButton = true;
+			post.hasEditButton = true;
+		});
 	}
 	return Object.assign(config, profileData);
 };

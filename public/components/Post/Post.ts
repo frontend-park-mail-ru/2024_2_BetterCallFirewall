@@ -12,6 +12,7 @@ export interface IPostConfig extends IBaseComponentConfig {
 	img?: string;
 	date: string;
 	hasDeleteButton: boolean;
+	hasEditButton: boolean;
 }
 
 export interface IPost extends IBaseComponent {}
