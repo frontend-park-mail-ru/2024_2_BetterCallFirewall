@@ -13,7 +13,7 @@ export interface IProfileConfig extends IBaseComponentConfig {
 	description?: string;
 	friendsCount?: number;
 	groupsCount?: number;
-	img?: string;
+	img: string;
 	currentUser?: boolean;
 	posts?: IPostConfig[];
 	createPostHref: string;
@@ -69,6 +69,16 @@ export class Profile extends BaseComponent {
 		) as HTMLElement;
 		if (!html) {
 			throw new Error('profileEditLink not found');
+		}
+		return html;
+	}
+
+	get writeMessageLink(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'.write-message',
+		) as HTMLElement;
+		if (!html) {
+			throw new Error('writeMessageLink not found');
 		}
 		return html;
 	}
