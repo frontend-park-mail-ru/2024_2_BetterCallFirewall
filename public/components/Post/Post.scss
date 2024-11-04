@@ -17,7 +17,7 @@
         flex-direction: row;
         align-items: center;
         justify-content: left;
-        padding-left: .3rem;
+        padding-left: .7rem;
         padding-right: 1.5rem;
 
         &-text {
@@ -35,8 +35,22 @@
     }
     &__content {
         padding: 1rem;
+        display: flex;
+        flex-direction: column;
         &-text {
+            padding-left: .2rem;
+            margin-bottom: .8rem;
             white-space: pre-line;
+        }
+        &-image {
+            border-radius: 10rem;
+            img {
+                border-radius: 1rem;
+                width: 100%;
+                height: auto;
+            }
+            width: 100%;
+            height: auto;
         }
     }
     &__header-avatar {
