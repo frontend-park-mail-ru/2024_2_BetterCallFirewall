@@ -70,4 +70,22 @@ export class Chat extends BaseComponent implements IChat {
 		super._prerender();
 		this._templateContext = { ...this.config };
 	}
+
+	protected addHandlers() {
+		const form = this.htmlElement.querySelector('.chat__bottom') as HTMLFormElement;
+		const textArea = this.htmlElement.querySelector('.sender__input') as HTMLTextAreaElement;
+		if (textArea) {
+			textArea.addEventListener(
+				'keydown',
+				function (event: KeyboardEvent) {
+					if (event.key === 'Enter') {
+						event.preventDefault();
+						if (form) {
+							form.submit();
+						}
+					}
+				},
+			);
+		}
+	}
 }

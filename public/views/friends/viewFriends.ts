@@ -133,8 +133,6 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					},
 				);
 			}
-			// person.addHandler()
-			// this.updateViewFriends(this._configFriends);
 		});
 	}
 }
