@@ -63,12 +63,27 @@
     &__header-edit {
         height: 1.9rem;
         width: 1.9rem;
+        margin-right: .8rem;
         svg {
             &:hover path {
                 stroke: var(--main-color); 
             }
             &:active path{
                 stroke: var(--main-text-color);
+            }
+        }
+    }
+    &__header-delete {
+        height: 2rem;
+        width: 2rem;
+        svg {
+            &:hover path {
+                stroke: var(--main-color); 
+                fill: var(--main-color); 
+            }
+            &:active path{
+                stroke: var(--main-text-color);
+                fill: var(--main-text-color); 
             }
         }
     }
