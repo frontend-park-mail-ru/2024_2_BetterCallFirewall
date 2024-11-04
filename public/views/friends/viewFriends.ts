@@ -3,7 +3,10 @@ import {
 	ACTION_FRIENDS_TYPES,
 	ActionProfileGetFriends,
 } from '../../actions/actionFriends';
-import { ACTION_MENU_TYPES } from '../../actions/actionMenu';
+import {
+	ACTION_MENU_TYPES,
+	ActionMenuLinkClick,
+} from '../../actions/actionMenu';
 import api from '../../api/api';
 import { Root } from '../../components';
 import { IFriendConfig } from '../../components/Friend/Friend';
@@ -133,6 +136,12 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					},
 				);
 			}
+			person.addHandler(person.profileLink, 'click', (event) => {
+				event.preventDefault();
+				this.sendAction(
+					new ActionMenuLinkClick({ href: `/${person.config.id}` }),
+				);
+			});
 		});
 	}
 }

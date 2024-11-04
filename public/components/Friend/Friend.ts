@@ -15,7 +15,7 @@ export interface IFriendConfig extends IBaseComponentConfig {
 export interface IFriend extends BaseComponent {}
 
 export class Friend extends BaseComponent implements IFriend {
-	protected _config: IFriendConfig | null;
+	protected _config: IFriendConfig;
 	protected isUnknown: boolean = false;
 	/**
 	 * Instance of friend
@@ -33,6 +33,10 @@ export class Friend extends BaseComponent implements IFriend {
 		) {
 			this.isUnknown = true;
 		}
+	}
+
+	get config(): IFriendConfig {
+		return this._config;
 	}
 
 	render(show: boolean = true): string {
@@ -81,6 +85,13 @@ export class Friend extends BaseComponent implements IFriend {
 		) as HTMLElement;
 		if (!html) {
 			throw new Error('subscribeFriendButton not found');
+		}
+		return html;
+	}
+	get profileLink(): HTMLElement {
+		const html = this.htmlElement.querySelector('.link') as HTMLElement;
+		if (!html) {
+			throw new Error('profileLink not found');
 		}
 		return html;
 	}
