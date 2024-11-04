@@ -283,6 +283,10 @@ const profileComponentConfig: IProfileConfig = {
 	groupsCount: -1,
 	img: '',
 	createPostHref: PAGE_LINKS.createPost,
+	isAuthor: false,
+	isFriend: false,
+	isSubscriber: false,
+	isSubscription: false,
 };
 
 const profileConfig: ViewProfileConfig = {

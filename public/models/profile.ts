@@ -15,6 +15,10 @@ export interface FullProfileResponse extends ShortProfileResponse {
 	bio: string;
 	pics?: string[];
 	posts?: PostResponse[];
+	is_author: boolean;
+	is_friend: boolean;
+	is_subscriber: boolean;
+	is_subscription: boolean;
 }
 
 export const toProfileConfig = (
@@ -32,6 +36,10 @@ export const toProfileConfig = (
 			toPostConfig(postResponse),
 		),
 		createPostHref: PAGE_LINKS.createPost,
+		isAuthor: profileResponse.is_author,
+		isFriend: profileResponse.is_friend,
+		isSubscriber: profileResponse.is_subscriber,
+		isSubscription: profileResponse.is_subscription,
 	};
 	return Object.assign(config, profileData);
 };
