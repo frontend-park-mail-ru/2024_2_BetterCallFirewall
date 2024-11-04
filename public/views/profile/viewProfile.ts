@@ -125,13 +125,17 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	}
 
 	private _addPostHandlers(post: Post) {
-		post.addHandler(post.editButton, 'click', (event) => {
-			event.preventDefault();
-			this.sendAction(new ActionPostEditGoTo(post.config));
-		});
-		post.addHandler(post.deleteButton, 'click', (event) => {
-			event.preventDefault();
-			api.deletePost(post.config.id);
-		});
+		if (post.config.hasEditButton) {
+			post.addHandler(post.editButton, 'click', (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionPostEditGoTo(post.config));
+			});
+		}
+		if (post.config.hasDeleteButton) {
+			post.addHandler(post.deleteButton, 'click', (event) => {
+				event.preventDefault();
+				api.deletePost(post.config.id);
+			});
+		}
 	}
 }
