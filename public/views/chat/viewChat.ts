@@ -54,7 +54,6 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._render();
 		dispatcher.getAction(new ActionUpdateChat());
 		this._scrollToBottom();
-		this._addHandlers();
 	}
 
 	updateViewChat(data: ViewChatConfig): void {
@@ -65,18 +64,19 @@ export class ViewChat extends ViewHome implements IViewChat {
 	protected _render(): void {
 		super._render();
 		this._renderChat();
+		this._addHandlers();
 	}
 
 	protected _renderChat(): void {
-		this._configChat.chat = {
-			...this._configChat.chat,
-			...{
-				key: 'chat',
-				companionAvatar: '../../img/avatar.png',
-				companionName: 'Asap Rocky',
-				lastDateOnline: '18:00',
-			},
-		}; // tmp
+		// this._configChat.chat = {
+		// 	...this._configChat.chat,
+		// 	...{
+		// 		key: 'chat',
+		// 		companionAvatar: '../../img/avatar.png',
+		// 		companionName: 'Asap Rocky',
+		// 		lastDateOnline: '18:00',
+		// 	},
+		// }; // tmp
 
 		const content = this.content;
 		const chat = new Chat(this._configChat.chat, content);
