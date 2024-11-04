@@ -1,4 +1,3 @@
-import { PAGE_LINKS } from '../../config';
 import BaseComponent, {
 	IBaseComponent,
 	IBaseComponentConfig,
@@ -114,33 +113,5 @@ export class Profile extends BaseComponent {
 		this._templateContext = {
 			...this._config,
 		};
-	}
-
-	addSendFriendRequestButton() {
-		const friendButton = document.createElement('button');
-		friendButton.classList.add('buton-action', 'button-no-decorations');
-		friendButton.textContent = 'Добавить в друзья';
-		this._htmlElement
-			?.querySelector('.profile__actions')
-			?.appendChild(friendButton);
-	}
-
-	addWriteMessageLink() {
-		const writeMessageLink = document.createElement('a');
-		writeMessageLink.href = '#';
-		writeMessageLink.textContent = 'Написать сообщение';
-		this._htmlElement
-			?.querySelector('.profile__actions')
-			?.appendChild(writeMessageLink);
-	}
-
-	addProfileEditLink() {
-		const profileEditLink = document.createElement('a');
-		profileEditLink.classList.add('profile-edit');
-		profileEditLink.href = PAGE_LINKS.profileEdit;
-		profileEditLink.textContent = 'Редактировать профиль';
-		this._htmlElement
-			?.querySelector('.profile__actions')
-			?.appendChild(profileEditLink);
 	}
 }
