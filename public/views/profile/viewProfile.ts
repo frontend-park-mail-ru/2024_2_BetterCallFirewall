@@ -1,4 +1,5 @@
 import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
+import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionUpdateProfile,
@@ -124,7 +125,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	private _addPostHandlers(post: Post) {
 		post.addHandler(post.editButton, 'click', (event) => {
 			event.preventDefault();
-			this.sendAction(new ActionProfileEditGoTo());
+			this.sendAction(new ActionPostEditGoTo());
 		});
 	}
 }
