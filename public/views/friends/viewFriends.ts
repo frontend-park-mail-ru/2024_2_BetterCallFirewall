@@ -120,6 +120,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					api.subscribeToProfile(personConfig.id);
 				});
 			}
+			this.updateViewFriends(this._configFriends);
 		});
 	}
 }
