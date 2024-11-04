@@ -77,7 +77,11 @@ body {
 }
 
 .avatar {
-    border-radius: 10rem; 
+    border-radius: 10rem;
+    overflow: hidden;
+    img {
+        object-fit: cover;
+    }
 }
 
 hr {
