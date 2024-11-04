@@ -323,9 +323,14 @@ const friendsConfig: ViewFriendsConfig = {
 		headerText: 'Друзья',
 		friendsConfig: [],
 	},
-	subcribers: {
+	subscribers: {
 		key: 'subscribers',
 		headerText: 'Подписчики',
+		friendsConfig: [],
+	},
+	subscriptions: {
+		key: 'subscriptions',
+		headerText: 'Подписки',
 		friendsConfig: [],
 	},
 	users: {
