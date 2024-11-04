@@ -197,12 +197,12 @@ class App {
 				view: friendView,
 			},
 			{
-				path: PAGE_LINKS.profile,
-				view: profileView,
-			},
-			{
 				path: PAGE_LINKS.postEdit,
 				view: postEditView,
+			},
+			{
+				path: PAGE_LINKS.profile, // Должен быть последним
+				view: profileView,
 			},
 		];
 		this._router = new Router(feedView, routerConfig);
