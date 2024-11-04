@@ -309,7 +309,16 @@ const chatComponentConfig: IChatConfig = {
 	companionName: '',
 	lastDateOnline: '',
 	backButtonHref: PAGE_LINKS.messages,
-	messages: [],
+	messages: Array.from({ length: 15 }, (v, k) => {
+		return {
+			userId: k,
+			key: `chatMessage-${k}`,
+			messageAvatar: '../../img/avatar.png',
+			messageName: 'Asap Rocky',
+			messageText: 'Привет! Как дела?',
+			createdAt: '19:00',
+		};
+	}),
 };
 
 const chatConfig: ViewChatConfig = {
