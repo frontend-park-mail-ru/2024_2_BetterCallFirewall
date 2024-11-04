@@ -6,7 +6,7 @@ import {
 import { ACTION_MENU_TYPES } from '../../actions/actionMenu';
 import api from '../../api/api';
 import { Root } from '../../components';
-import { Friend, IFriendConfig } from '../../components/Friend/Friend';
+import { IFriendConfig } from '../../components/Friend/Friend';
 import { Friends, FriendsConfig } from '../../components/Friends/Friends';
 import { ChangeFriends } from '../../stores/storeFriends';
 import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
