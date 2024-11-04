@@ -47,3 +47,7 @@ export class Input extends BaseComponent implements IInput {
 		this._templateContext = this.config;
 	}
 }
+
+Handlebars.registerHelper('eq', function (arg1, arg2) {
+    return arg1 === arg2;
+});

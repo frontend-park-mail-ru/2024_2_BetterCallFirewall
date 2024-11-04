@@ -58,6 +58,7 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 	protected _render(): void {
 		super._render();
 		this._renderProfileEditForm();
+		this._addHandlers();
 	}
 
 	protected _renderProfileEditForm(): void {
@@ -68,5 +69,17 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 		);
 		profileEditForm.render();
 		this._components.profileEditForm = profileEditForm;
+	}
+
+	private _addHandlers() {
+		this.content.addHandler(
+			document.querySelector('.form__upload') as HTMLElement,
+			'click',
+			() => {
+				if (document.getElementById('file')) {
+					document.getElementById('file')?.click();
+				}
+			}
+		);
 	}
 }
