@@ -374,6 +374,8 @@ export const ROOT: string = DEBUG
 	? 'http://127.0.0.1:8000'
 	: 'http://185.241.194.197:8080';
 
+const ROOT_WS = ROOT.replace('http', 'ws');
+
 const apiv1 = '/api/v1';
 
 const URL: URLInterface = DEBUG
@@ -394,6 +396,8 @@ const URL: URLInterface = DEBUG
 			removeFriend: '',
 			profileSubscriptions: '',
 			post: '',
+			messages: '',
+			chatWS: '',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -413,6 +417,8 @@ const URL: URLInterface = DEBUG
 			removeFriend: ROOT + '/api/v1/profile/{id}/friend/remove',
 			profileSubscriptions: ROOT + apiv1 + '/profile/{id}/subscriptions',
 			post: ROOT + apiv1 + '/feed/{id}',
+			messages: ROOT + apiv1 + '/chat',
+			chatWS: ROOT_WS + '/messages/chat',
 		};
 
 const config: AppConfig = {

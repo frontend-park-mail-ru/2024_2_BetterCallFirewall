@@ -1,5 +1,6 @@
 import { STATUS } from '../api/api';
 import app from '../app';
+import { ChatResponse } from '../models/chat';
 import { HeaderResponse } from '../models/header';
 import { PostResponse } from '../models/post';
 import { FullProfileResponse, ShortProfileResponse } from '../models/profile';
@@ -273,6 +274,26 @@ class Ajax {
 	}
 
 	/**
+	 * Запрос списка чатов
+	 */
+	async getMessages(): Promise<AjaxResponse<ChatResponse[]>> {
+		const request = this._getRequest(app.config.URL.messages);
+		const response = await this._response(request);
+		try {
+			const body = await response.json();
+			const messagesResponse: AjaxResponse<ChatResponse[]> =
+				Object.assign({}, body);
+			messagesResponse.status = response.status;
+			return messagesResponse;
+		} catch {
+			return {
+				status: response.status,
+				success: false,
+			};
+		}
+	}
+
+	/**
 	 * Sending data form data
 	 *
 	 * @param {string} url
@@ -421,10 +442,16 @@ class Ajax {
 		return this._jsonRequest(baseUrl, data, 'post');
 	}
 
+	/**
+	 * delete запрос
+	 */
 	private _deleteRequest(baseUrl: string) {
 		return this._jsonRequest(baseUrl, {}, 'delete');
 	}
 
+	/**
+	 * Запрос, содержащий jsons
+	 */
 	private _jsonRequest(baseUrl: string, body: object, method: string) {
 		return new Request(baseUrl, {
 			method: method,

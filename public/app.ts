@@ -81,6 +81,8 @@ export interface URLInterface {
 	profileSubscriptions: string;
 	header: string;
 	post: string;
+	messages: string;
+	chatWS: string;
 }
 
 export interface AppConfig {
@@ -297,6 +299,13 @@ class App {
 
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.goToMessages);
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.updateMessages);
+		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.requestMessages);
+		this._stores.messages.subscribe(
+			ACTION_MESSAGES_TYPES.requestMessagesSuccess,
+		);
+		this._stores.messages.subscribe(
+			ACTION_MESSAGES_TYPES.requestMessagesFail,
+		);
 
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.goToChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.updateChat);

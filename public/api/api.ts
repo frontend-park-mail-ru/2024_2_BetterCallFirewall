@@ -21,6 +21,10 @@ import {
 } from '../actions/actionFriends';
 import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
+	actionMessagesRequestFail,
+	ActionMessagesRequestSuccess,
+} from '../actions/actionMessages';
+import {
 	ActionPostEditRequestFail,
 	ActionPostEditRequestSuccess,
 } from '../actions/actionPostEdit';
@@ -332,6 +336,23 @@ class API {
 				break;
 			default:
 				this.sendAction(new ActionProfileEditRequestFail());
+		}
+	}
+
+	async getMessages() {
+		const response = await ajax.getMessages();
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					this.sendAction(new actionMessagesRequestFail());
+					break;
+				}
+				this.sendAction(
+					new ActionMessagesRequestSuccess(response.data),
+				);
+				break;
+			default:
+				this.sendAction(new actionMessagesRequestFail());
 		}
 	}
 }
