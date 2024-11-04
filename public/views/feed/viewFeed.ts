@@ -93,10 +93,12 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	private _addPostHandlers(post: Post) {
-		post.addHandler(post.editButton, 'click', (event) => {
-			event.preventDefault();
-			this.sendAction(new ActionPostEditGoTo(post.config));
-		});
+		if (post.config.hasEditButton) {
+			post.addHandler(post.editButton, 'click', (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionPostEditGoTo(post.config));
+			});
+		}
 	}
 
 	private _addHandlers() {
