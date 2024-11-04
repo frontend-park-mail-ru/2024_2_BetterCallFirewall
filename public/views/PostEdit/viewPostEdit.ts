@@ -68,18 +68,18 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 
 	protected _render(): void {
 		super._render();
-		this._renderProfileEditForm();
+		this._renderPostEditForm();
 		this._addHandlers();
 	}
 
-	protected _renderProfileEditForm(): void {
+	protected _renderPostEditForm(): void {
 		const content = this.content;
-		const profileEditForm = new PostEditForm(
+		const postEditForm = new PostEditForm(
 			this._configPostEdit.postEditForm,
 			content,
 		);
-		profileEditForm.render();
-		this._components.profileEditForm = profileEditForm;
+		postEditForm.render();
+		this._components.postEditForm = postEditForm;
 	}
 
 	private get _postEditForm(): PostEditForm {
