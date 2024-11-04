@@ -5,8 +5,10 @@ import { MessageResponse } from '../models/message';
 
 export default class WebsocketClient {
 	private _socket: WebSocket;
+	private _url: string;
 
 	constructor(url: string) {
+		this._url = url;
 		this._socket = new WebSocket(url);
 
 		this._socket.onopen = this._onOpen;
@@ -39,5 +41,8 @@ export default class WebsocketClient {
 
 	private _onClose(event: CloseEvent) {
 		console.log('WS close:', event);
+		setTimeout(() => {
+			this._socket = new WebSocket(this._url);
+		}, 5000);
 	}
 }
