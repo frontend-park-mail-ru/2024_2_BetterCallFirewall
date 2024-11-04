@@ -4,7 +4,6 @@
         flex-direction: row;
         align-items: center;
         padding: 1.7rem 2rem;
-    }
         &-img  {
             img {
                 height: 12rem;
@@ -22,6 +21,7 @@
             padding-bottom: .5rem;
             box-sizing: border-box;
         }
+    }
     &__name {
         display: flex;
         flex-direction: row;
