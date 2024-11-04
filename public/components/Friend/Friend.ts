@@ -16,7 +16,7 @@ export interface IFriend extends BaseComponent {}
 
 export class Friend extends BaseComponent implements IFriend {
 	protected _config: IFriendConfig | null;
-
+	protected isUnknown: boolean = false;
 	/**
 	 * Instance of friend
 	 *
@@ -26,6 +26,9 @@ export class Friend extends BaseComponent implements IFriend {
 	constructor(config: IFriendConfig, parent: IBaseComponent) {
 		super(config, parent);
 		this._config = config;
+		if (!this._config.isFriend && !this._config.isSubscriber && !this._config.isSubscription) {
+			this.isUnknown = true;
+		}
 	}
 
 	render(show: boolean = true): string {
@@ -35,7 +38,10 @@ export class Friend extends BaseComponent implements IFriend {
 
 	protected _prerender(): void {
 		super._prerender();
-		this._templateContext = { ...this.config };
+		this._templateContext = { 
+			...this.config,
+			isUnknown: this.isUnknown,
+		 };
 	}
 
 	get removeFriendButton(): HTMLElement {
