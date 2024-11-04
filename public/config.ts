@@ -236,12 +236,14 @@ const profileEditConfig: ViewProfileEditConfig = {
 				name: 'text',
 				validator: Validator.validateName,
 			},
-			email: {
-				key: 'email',
-				type: 'text',
-				placeholder: 'Email',
-				name: 'email',
-				validator: Validator.validateEmail,
+			avatar: {
+				key: 'avatar',
+				name: 'file',
+				type: 'file',
+				accept: 'image/*',
+				placeholder: 'Прикрепить аватар',
+				// extra: 'multiple',
+				validator: Validator.validateImg,
 			},
 		},
 
@@ -351,6 +353,7 @@ const postEditFormConfig: IPostEditFormConfig = {
 			name: 'file',
 			type: 'file',
 			accept: 'image/*',
+			placeholder: 'Изменить картинку',
 			// extra: 'multiple',
 			validator: Validator.validateImg,
 		},
