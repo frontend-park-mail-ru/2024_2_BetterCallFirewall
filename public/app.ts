@@ -57,6 +57,7 @@ import {
 } from './views/PostEdit/viewPostEdit';
 import { ACTION_POST_EDIT_TYPES } from './actions/actionPostEdit';
 import { StorePostEdit } from './stores/storePostEdit';
+import WebsocketClient from './modules/websocket';
 
 export const PAGES = {
 	home: 'home',
@@ -125,6 +126,7 @@ class App {
 	private _root: Root;
 	private _stores: AppStores;
 	private _inited: boolean = false;
+	private _websocket: WebsocketClient;
 
 	/**
 	 * Instance of application
@@ -134,6 +136,8 @@ class App {
 	constructor(config: AppConfig) {
 		this._config = config;
 		this._root = new Root();
+
+		this._websocket = new WebsocketClient(this._config.URL.chatWS);
 
 		const feedView = new ViewFeed(this._config.feedConfig, this._root);
 		const profileView = new ViewProfile(

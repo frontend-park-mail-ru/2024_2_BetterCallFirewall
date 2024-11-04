@@ -430,7 +430,7 @@ const URL: URLInterface = DEBUG
 			post: ROOT + apiv1 + '/feed/{id}',
 			messages: ROOT + apiv1 + 'messages/chats',
 			chat: ROOT + apiv1 + '/messages/chat/{id}',
-			chatWS: ROOT_WS + '/messages/chat',
+			chatWS: ROOT_WS + apiv1 + '/ws',
 		};
 
 const config: AppConfig = {
