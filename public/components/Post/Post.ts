@@ -32,6 +32,16 @@ export class Post extends BaseComponent implements IPost {
 		this._config = config;
 	}
 
+	get editButton(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'.post__header-edit',
+		) as HTMLElement;
+		if (!html) {
+			throw new Error('editButton not found');
+		}
+		return html;
+	}
+
 	render(show: boolean = true): string {
 		this._prerender();
 		return this._render('Post.hbs', show);

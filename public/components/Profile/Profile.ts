@@ -3,9 +3,9 @@ import BaseComponent, {
 	IBaseComponent,
 	IBaseComponentConfig,
 } from '../BaseComponent';
-import { IPost, IPostConfig, Post } from '../Post/Post';
+import { IPostConfig, Post } from '../Post/Post';
 
-type Posts = IPost[];
+type Posts = Post[];
 
 export interface IProfileConfig extends IBaseComponentConfig {
 	id: number;
@@ -23,7 +23,7 @@ export interface IProfileConfig extends IBaseComponentConfig {
 
 export class Profile extends BaseComponent {
 	protected override _config: IProfileConfig | null;
-	private posts: Posts = [];
+	private _posts: Posts = [];
 
 	constructor(config: IProfileConfig, parent: IBaseComponent) {
 		super(config, parent);
@@ -71,6 +71,10 @@ export class Profile extends BaseComponent {
 		return html;
 	}
 
+	get posts(): Post[] {
+		return this._posts;
+	}
+
 	render(show: boolean = true): string {
 		this._prerender();
 		this._render('Profile.hbs', show);
@@ -81,7 +85,7 @@ export class Profile extends BaseComponent {
 		if (postsItems) {
 			this.config.posts?.forEach((config) => {
 				const post = new Post(config, this);
-				this.posts.push(post);
+				this._posts.push(post);
 				post.render(false);
 				post.appendToHTML(postsItems);
 			});
@@ -94,12 +98,12 @@ export class Profile extends BaseComponent {
 
 	remove(): void {
 		super.remove();
-		this.posts = [];
+		this._posts = [];
 	}
 
 	removeForUpdate(): void {
 		super.removeForUpdate();
-		this.posts = [];
+		this._posts = [];
 	}
 
 	protected _prerender(): void {
