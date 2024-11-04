@@ -16,7 +16,6 @@ export interface IFriend extends BaseComponent {}
 
 export class Friend extends BaseComponent implements IFriend {
 	protected _config: IFriendConfig | null;
-
 	/**
 	 * Instance of friend
 	 *
@@ -35,7 +34,9 @@ export class Friend extends BaseComponent implements IFriend {
 
 	protected _prerender(): void {
 		super._prerender();
-		this._templateContext = { ...this.config };
+		this._templateContext = { 
+			...this.config,
+		 };
 	}
 
 	get removeFriendButton(): HTMLElement {
