@@ -117,7 +117,6 @@ export abstract class BaseForm extends BaseComponent implements IBaseForm {
 			const textArea = new TextArea(config, this);
 			this._items[key] = textArea;
 			this._textAreas.push(textArea);
-			console.log('text areas config', this._textAreas);
 		});
 		const button = new FormButton(this._configButton, this);
 		this._items.button = button;

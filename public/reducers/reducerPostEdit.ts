@@ -26,6 +26,7 @@ export const reducerPostEdit = (
 			if (textAreas) {
 				textAreas.text.text = actionData.postConfig.text;
 			}
+			newState.postId = actionData.postConfig.id;
 			break;
 		}
 		case ACTION_FEED_TYPES.postCreateFail:
