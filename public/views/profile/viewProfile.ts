@@ -102,17 +102,19 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	}
 
 	private _addProfileHandlers() {
-		const createPostLink = this.profile.createPostLink;
-		this.content.addHandler(createPostLink, 'click', (event) => {
-			event.preventDefault();
-			this.sendAction(new ActionCreatePostGoTo());
-		});
-
-		const profileEditLink = this.profile.profileEditLink;
-		this.content.addHandler(profileEditLink, 'click', (event) => {
-			event.preventDefault();
-			this.sendAction(new ActionProfileEditGoTo());
-		});
+		const profile = this.profile;
+		if (profile.config.isAuthor) {
+			const createPostLink = this.profile.createPostLink;
+			this.content.addHandler(createPostLink, 'click', (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionCreatePostGoTo());
+			});
+			const profileEditLink = this.profile.profileEditLink;
+			this.content.addHandler(profileEditLink, 'click', (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionProfileEditGoTo());
+			});
+		}
 
 		this.profile.posts.forEach((post) => this._addPostHandlers(post));
 	}

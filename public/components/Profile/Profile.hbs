@@ -29,7 +29,9 @@
     <div class="profile__content">
         <div class="profile__posts-header">
             <h2>Posts</h2>
+            {{#if {{this.isAuthor}}}}
             <a class="header__link" href="{{this.createPostHref}}">Создать пост</a>
+            {{/if}}
             </div>
         <div class="profile__posts">
         </div>
