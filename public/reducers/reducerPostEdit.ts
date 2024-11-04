@@ -22,7 +22,10 @@ export const reducerPostEdit = (
 	switch (action.type) {
 		case ACTION_POST_EDIT_TYPES.goToPostEdit: {
 			const actionData = action.data as ActionPostEditGoToData;
-			newState.postId = actionData.postId;
+			const textAreas = newState.postEditForm.textAreas;
+			if (textAreas) {
+				textAreas.text.text = actionData.postConfig.text;
+			}
 			break;
 		}
 		case ACTION_FEED_TYPES.postCreateFail:

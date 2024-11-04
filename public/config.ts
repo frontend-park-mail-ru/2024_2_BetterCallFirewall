@@ -186,7 +186,8 @@ const createPostConfig: ViewCreatePostConfig = {
 			text: {
 				key: 'text',
 				type: 'textarea',
-				text: 'Текст поста',
+				header: 'Текст поста',
+				text: '',
 				name: 'text',
 				validator: Validator.validatePost,
 			},
@@ -340,7 +341,8 @@ const postEditFormConfig: IPostEditFormConfig = {
 		text: {
 			key: 'text',
 			type: 'textarea',
-			text: 'Текст поста',
+			header: 'Текст поста',
+			text: '',
 			name: 'text',
 			validator: Validator.validatePost,
 		},
