@@ -1,5 +1,6 @@
 import { IPostConfig } from '../components';
 import parseImage from '../modules/parseImage';
+import parseTime from '../modules/parseTime';
 
 interface Header {
 	authorId: number;
@@ -27,6 +28,6 @@ export const toPostConfig = (postResponse: PostResponse): IPostConfig => {
 		title: postResponse.header.author,
 		text: postResponse.post_content.text,
 		img: parseImage(postResponse.post_content.file),
-		date: postResponse.post_content.created_at,
+		date: parseTime(postResponse.post_content.created_at),
 	};
 };
