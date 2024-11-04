@@ -9,16 +9,16 @@ export interface ShortProfileResponse {
 	first_name: string;
 	last_name: string;
 	avatar: string;
+	is_author: boolean;
+	is_friend: boolean;
+	is_subscriber: boolean;
+	is_subscription: boolean;
 }
 
 export interface FullProfileResponse extends ShortProfileResponse {
 	bio: string;
 	pics?: string[];
 	posts?: PostResponse[];
-	is_author: boolean;
-	is_friend: boolean;
-	is_subscriber: boolean;
-	is_subscription: boolean;
 }
 
 export const toProfileConfig = (
@@ -58,6 +58,9 @@ export const toFriendConfig = (
 		key: `friend-${profileResponse.id}`,
 		name: `${profileResponse.first_name} ${profileResponse.last_name}`,
 		avatar: parseImage(profileResponse.avatar),
+		isFriend: profileResponse.is_friend,
+		isSubscriber: profileResponse.is_subscriber,
+		isSubscription: profileResponse.is_subscription,
 	};
 	return newConfig;
 };

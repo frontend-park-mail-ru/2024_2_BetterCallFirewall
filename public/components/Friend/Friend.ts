@@ -7,8 +7,9 @@ export interface IFriendConfig extends IBaseComponentConfig {
 	id: number;
 	avatar: string;
 	name: string;
-	// description: string;
-	// isFriend: boolean;
+	isFriend: boolean;
+	isSubscriber: boolean;
+	isSubscription: boolean;
 }
 
 export interface IFriend extends BaseComponent {}
