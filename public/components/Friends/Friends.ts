@@ -11,6 +11,7 @@ export interface FriendsConfig extends IBaseComponentConfig {
 
 export class Friends extends BaseComponent {
 	protected _config: FriendsConfig;
+	private _people: Friend[] = [];
 
 	constructor(config: FriendsConfig, parent: IBaseComponent) {
 		super(config, parent);
@@ -28,12 +29,17 @@ export class Friends extends BaseComponent {
 		}
 		this._config.friendsConfig.forEach((config) => {
 			const friend = new Friend(config, this);
+			this._people.push(friend);
 			friend.render(false);
 			friend.appendToHTML(contentHtml);
 		});
 		return this.htmlElement.outerHTML;
 	}
 
+	get listPeople(): Friend[] {
+		return this._people;
+	}
+	
 	protected _prerender(): void {
 		super._prerender();
 		this._templateContext = { ...this.config };
