@@ -29,3 +29,14 @@
         color: var(--main-text-color);
     }
 }
+
+#file {
+    display: inline-block;
+    cursor: pointer;
+    background-color: var(--main-bg-color);
+    color: white;
+}
+
+input[type="file"] {
+    display: none;
+}

@@ -81,8 +81,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		switch (change.type) {
 			case ACTION_LOGIN_TYPES.loginClickSuccess:
 			case ACTION_PROFILE_TYPES.getHeader:
-				// api.requestHeader();
-				this.updateViewHome(change.data);
+				api.requestHeader();
 				break;
 			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_MENU_TYPES.menuLinkClick:
