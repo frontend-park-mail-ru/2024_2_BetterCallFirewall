@@ -233,7 +233,7 @@ const profileEditConfig: ViewProfileEditConfig = {
 				key: 'description',
 				type: 'text',
 				placeholder: 'Описание',
-				name: 'text',
+				name: 'bio',
 				validator: Validator.validateName,
 			},
 			avatar: {

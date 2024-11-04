@@ -7,6 +7,14 @@ import {
 	ActionPostsRequestSuccess,
 } from '../actions/actionFeed';
 import {
+	actionFriendsAcceptFail,
+	ActionFriendsAcceptSuccess,
+	actionFriendsRemoveFail,
+	ActionFriendsRemoveSuccess,
+	ActionFriendsSubscribeFail,
+	ActionFriendsSubscribeSuccess,
+	actionFriendsUnsubscribeFail,
+	ActionFriendsUnsubscribeSuccess,
 	ActionProfileGetFriendsSuccess,
 	ActionProfileGetSubscribersSuccess,
 	ActionProfileGetUsersSuccess,
@@ -219,6 +227,50 @@ class API {
 						users: response.data,
 					}),
 				);
+		}
+	}
+
+	async subscribeToProfile(profileId: number) {
+		const response = await ajax.subscribeToProfile(profileId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionFriendsSubscribeSuccess());
+				break;
+			default:
+				this.sendAction(new ActionFriendsSubscribeFail());
+		}
+	}
+
+	async unsubscribeToProfile(profileId: number) {
+		const response = await ajax.unsubscribeFromProfile(profileId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionFriendsUnsubscribeSuccess());
+				break;
+			default:
+				this.sendAction(new actionFriendsUnsubscribeFail());
+		}
+	}
+
+	async acceptFriend(profileId: number) {
+		const response = await ajax.acceptFriend(profileId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionFriendsAcceptSuccess());
+				break;
+			default:
+				this.sendAction(new actionFriendsAcceptFail());
+		}
+	}
+
+	async removeFriend(profileId: number) {
+		const response = await ajax.removeFriend(profileId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionFriendsRemoveSuccess());
+				break;
+			default:
+				this.sendAction(new actionFriendsRemoveFail());
 		}
 	}
 

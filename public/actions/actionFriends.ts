@@ -9,6 +9,14 @@ export const ACTION_FRIENDS_TYPES = {
 	getSubscribersFail: 'actionFriendsGetSubscribersFail',
 	getUsersSuccess: 'actionFriendsGetUsersSuccess',
 	getUsersFail: 'actionFriendsGetUsersFail',
+	subscribeSuccess: 'actionFriendsSubscribeSuccess',
+	subscribeFail: 'actionFriendsSubscribeFail',
+	unsubscribeSuccess: 'actionFriendsUnsubscribeSuccess',
+	unsubscribeFail: 'actionFriendsUnsubscribeFail',
+	acceptSuccess: 'actionFriendsAcceptSuccess',
+	acceptFail: 'actionFriendsAcceptFail',
+	removeSuccess: 'actionFriendsRemoveSuccess',
+	removeFail: 'actionFriendsRemoveFail',
 };
 
 export class ActionProfileGetFriends implements Action {
@@ -61,4 +69,44 @@ export class ActionProfileGetUsersSuccess implements Action {
 		this.type = ACTION_FRIENDS_TYPES.getUsersSuccess;
 		this.data = data;
 	}
+}
+
+export class ActionFriendsSubscribeSuccess implements Action {
+	type: ActionType = ACTION_FRIENDS_TYPES.subscribeSuccess;
+	data: object = {};
+}
+
+export class ActionFriendsSubscribeFail implements Action {
+	type: ActionType = ACTION_FRIENDS_TYPES.subscribeFail;
+	data: object = {};
+}
+
+export class ActionFriendsUnsubscribeSuccess implements Action {
+	type: ActionType = ACTION_FRIENDS_TYPES.unsubscribeSuccess;
+	data: object = {};
+}
+
+export class actionFriendsUnsubscribeFail implements Action {
+	type: ActionType = ACTION_FRIENDS_TYPES.unsubscribeFail;
+	data: object = {};
+}
+
+export class ActionFriendsAcceptSuccess implements Action {
+	type: ActionType = ACTION_FRIENDS_TYPES.acceptSuccess;
+	data: object = {};
+}
+
+export class actionFriendsAcceptFail implements Action {
+	type: ActionType = ACTION_FRIENDS_TYPES.acceptFail;
+	data: object = {};
+}
+
+export class ActionFriendsRemoveSuccess implements Action {
+	type: ActionType = ACTION_FRIENDS_TYPES.removeSuccess;
+	data: object = {};
+}
+
+export class actionFriendsRemoveFail implements Action {
+	type: ActionType = ACTION_FRIENDS_TYPES.removeFail;
+	data: object = {};
 }
