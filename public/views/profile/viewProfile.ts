@@ -1,3 +1,4 @@
+import { ActionChatGoToChat } from '../../actions/actionChat';
 import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
@@ -14,6 +15,7 @@ import api from '../../api/api';
 import app from '../../app';
 import { Post, Root } from '../../components';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
+import { PAGE_LINKS } from '../../config';
 import { ChangeProfile } from '../../stores/storeProfile';
 import {
 	ComponentsHome,
@@ -118,6 +120,26 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 			this.content.addHandler(profileEditLink, 'click', (event) => {
 				event.preventDefault();
 				this.sendAction(new ActionProfileEditGoTo());
+			});
+		}
+
+		if (!profile.config.isAuthor) {
+			profile.addHandler(profile.writeMessageLink, 'click', (event) => {
+				event.preventDefault();
+				const config = profile.config;
+				this.sendAction(
+					new ActionChatGoToChat({
+						chatConfig: {
+							key: `chat-${config.id}`,
+							userId: config.id,
+							companionAvatar: config.img,
+							companionName: `${config.firstName} ${config.secondName}`,
+							lastDateOnline: '-1',
+							backButtonHref: PAGE_LINKS.messages,
+							messages: [],
+						},
+					}),
+				);
 			});
 		}
 
