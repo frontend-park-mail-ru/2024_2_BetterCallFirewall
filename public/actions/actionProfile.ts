@@ -6,6 +6,7 @@ import { Action, ActionType } from './action';
 export const ACTION_PROFILE_TYPES = {
 	goToProfile: 'goToProfile',
 	updateProfile: 'updateProfile',
+	profileRequest: 'actionProfileRequest',
 	profileRequestSuccess: 'profileRequestSuccess',
 	profileRequestFail: 'profileRequestFail',
 	getYourOwnProfile: 'getYourOwnProfile',
@@ -14,6 +15,8 @@ export const ACTION_PROFILE_TYPES = {
 	getHeader: 'actionProfileGetHeader',
 	getHeaderSuccess: 'getHeaderSuccess',
 	getHeaderFail: 'getHeaderFail',
+	deletePostSuccess: 'actionProfileDeletePostSuccess',
+	deletePostFail: 'actionProfileDeletePostFail',
 };
 
 export interface ActionUpdateProfileData extends IProfileConfig {}
@@ -25,6 +28,11 @@ export class ActionUpdateProfile implements Action {
 		this.type = ACTION_PROFILE_TYPES.updateProfile;
 		this.data = data;
 	}
+}
+
+export class ActionProfileRequest implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.profileRequest;
+	data: object = {};
 }
 
 export interface ActionProfileRequestSuccessData {
@@ -131,4 +139,14 @@ export class ActionProfileGetHeaderFail implements Action {
 		this.type = ACTION_PROFILE_TYPES.getHeaderFail;
 		this.data = data;
 	}
+}
+
+export class ActionProfileDeletePostSuccess implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.deletePostSuccess;
+	data: object = {};
+}
+
+export class ActionProfileDeletePostFail implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.deletePostFail;
+	data: object = {};
 }

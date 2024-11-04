@@ -29,6 +29,7 @@ export const reducerProfile = (
 				newState.profile,
 				actionData.profileResponse,
 			);
+			newState.path = `/${actionData.profileResponse.id}`;
 			newState.profile = Object.assign(newState.profile, profileConfig);
 			return newState;
 		}
@@ -42,6 +43,7 @@ export const reducerProfile = (
 				newState.profile,
 				actionData.profileResponse,
 			);
+			newState.path = `/${actionData.profileResponse.id}`;
 			newState.profile = Object.assign(newState.profile, profileConfig);
 			return newState;
 		}
@@ -52,18 +54,10 @@ export const reducerProfile = (
 				newState.profile,
 				actionData.profile,
 			);
+			newState.path = `/${actionData.profile.id}`;
 			newState.profile = Object.assign(newState.profile, profileConfig);
 			return newState;
 		}
-		// case ACTION_PROFILE_TYPES.getHeaderSuccess: {
-		// 	const actionData = action.data as ActionProfileGetHeaderSuccessData;
-		// 	const profileConfig = headerResponseToProfileConfig(
-		// 		newState.profile,
-		// 		actionData.headerResponse,
-		// 	);
-		// 	newState.profile = Object.assign(newState.profile, profileConfig);
-		// 	return newState;
-		// }
 		case ACTION_PROFILE_TYPES.profileRequestFail:
 		case ACTION_PROFILE_TYPES.goToProfile:
 		case ACTION_PROFILE_TYPES.getYourOwnProfileFail:

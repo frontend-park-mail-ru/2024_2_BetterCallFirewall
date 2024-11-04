@@ -23,6 +23,8 @@ import {
 	ActionProfileGetYourOwnProfileSuccess,
 	ActionProfileRequestFail,
 	ActionProfileRequestSuccess,
+	ActionProfileDeletePostFail,
+	ActionProfileDeletePostSuccess,
 } from '../actions/actionProfile';
 import {
 	ActionProfileEditRequestFail,
@@ -251,6 +253,17 @@ class API {
 				break;
 			default:
 				this.sendAction(new ActionPostEditRequestFail());
+		}
+	}
+
+	async deletePost(postId: number) {
+		const response = await ajax.deletePost(postId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionProfileDeletePostSuccess());
+				break;
+			default:
+				this.sendAction(new ActionProfileDeletePostFail());
 		}
 	}
 

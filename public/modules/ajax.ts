@@ -102,6 +102,15 @@ class Ajax {
 	}
 
 	/**
+	 * Удалить пост
+	 */
+	async deletePost(postId: number): Promise<AjaxResponse<object>> {
+		const url = app.config.URL.post.replace('{id}', `${postId}`);
+		const request = this._deleteRequest(url);
+		return await this._objectResponse(request);
+	}
+
+	/**
 	 * Получить профиль
 	 */
 	async getProfile(
@@ -148,6 +157,9 @@ class Ajax {
 		return profileResponse;
 	}
 
+	/**
+	 * Редактировать профиль
+	 */
 	async editProfile(
 		formData: FormData,
 	): Promise<AjaxResponse<FullProfileResponse>> {
@@ -347,13 +359,9 @@ class Ajax {
 		return profileResponse;
 	}
 
-	/**
-	 * post запрос и ответ в виде object
-	 */
-	private async _postObjectResponse(
-		url: string,
+	private async _objectResponse(
+		request: Request,
 	): Promise<AjaxResponse<object>> {
-		const request = this._postRequest(url, {});
 		const response = await this._response(request);
 		try {
 			const body = await response.json();
@@ -363,6 +371,16 @@ class Ajax {
 		} catch {
 			return { status: response.status, success: false };
 		}
+	}
+
+	/**
+	 * post запрос и ответ в виде object
+	 */
+	private async _postObjectResponse(
+		url: string,
+	): Promise<AjaxResponse<object>> {
+		const request = this._postRequest(url, {});
+		return await this._objectResponse(request);
 	}
 
 	/**
@@ -400,10 +418,18 @@ class Ajax {
 	 * post запрос (json)
 	 */
 	private _postRequest(baseUrl: string, data: object) {
+		return this._jsonRequest(baseUrl, data, 'post');
+	}
+
+	private _deleteRequest(baseUrl: string) {
+		return this._jsonRequest(baseUrl, {}, 'delete');
+	}
+
+	private _jsonRequest(baseUrl: string, body: object, method: string) {
 		return new Request(baseUrl, {
-			method: 'post',
+			method: method,
 			credentials: 'include',
-			body: JSON.stringify(data),
+			body: JSON.stringify(body),
 			headers: {
 				'Content-Type': 'application/json:charset=UTF-8',
 			},

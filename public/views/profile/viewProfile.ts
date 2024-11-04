@@ -2,6 +2,7 @@ import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
+	ActionProfileRequest,
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
 import {
@@ -10,7 +11,6 @@ import {
 	ActionProfileEditUpdate,
 } from '../../actions/actionProfileEdit';
 import api from '../../api/api';
-import app from '../../app';
 import { Post, Root } from '../../components';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
 import { ChangeProfile } from '../../stores/storeProfile';
@@ -55,6 +55,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		console.log('ViewProfile: change:', change);
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_PROFILE_TYPES.profileRequest:
+				api.requestProfile(this._configProfile.path);
+				break;
 			case ACTION_PROFILE_TYPES.getYourOwnProfile:
 				api.requestYourOwnProfile();
 				break;
@@ -79,7 +82,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	render(): void {
 		this._render();
 		this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
-		api.requestProfile(app.router.path);
+		this.sendAction(new ActionProfileRequest());
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {
@@ -123,6 +126,10 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		post.addHandler(post.editButton, 'click', (event) => {
 			event.preventDefault();
 			this.sendAction(new ActionPostEditGoTo(post.config));
+		});
+		post.addHandler(post.deleteButton, 'click', (event) => {
+			event.preventDefault();
+			api.deletePost(post.config.id);
 		});
 	}
 }

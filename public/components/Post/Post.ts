@@ -11,6 +11,7 @@ export interface IPostConfig extends IBaseComponentConfig {
 	text: string;
 	img?: string;
 	date: string;
+	hasDeleteButton: boolean;
 }
 
 export interface IPost extends IBaseComponent {}
@@ -42,6 +43,16 @@ export class Post extends BaseComponent implements IPost {
 		) as HTMLElement;
 		if (!html) {
 			throw new Error('editButton not found');
+		}
+		return html;
+	}
+
+	get deleteButton(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'.post__header-delete',
+		) as HTMLElement;
+		if (!html) {
+			throw new Error('deleteButton not found');
 		}
 		return html;
 	}
