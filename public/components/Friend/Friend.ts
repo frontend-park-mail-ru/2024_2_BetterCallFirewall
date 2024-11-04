@@ -16,7 +16,10 @@ export interface IFriend extends BaseComponent {}
 
 export class Friend extends BaseComponent implements IFriend {
 	protected _config: IFriendConfig | null;
+<<<<<<< HEAD
 	protected isUnknown: boolean = false;
+=======
+>>>>>>> dev
 	/**
 	 * Instance of friend
 	 *

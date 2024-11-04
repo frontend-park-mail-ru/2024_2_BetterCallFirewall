@@ -309,6 +309,16 @@ const chatComponentConfig: IChatConfig = {
 	companionName: '',
 	lastDateOnline: '',
 	backButtonHref: PAGE_LINKS.messages,
+	messages: Array.from({ length: 15 }, (v, k) => {
+		return {
+			userId: k,
+			key: `chatMessage-${k}`,
+			messageAvatar: '../../img/avatar.png',
+			messageName: 'Asap Rocky',
+			messageText: 'Привет! Как дела?',
+			createdAt: '19:00',
+		};
+	}),
 };
 
 const chatConfig: ViewChatConfig = {
@@ -323,7 +333,7 @@ const friendsConfig: ViewFriendsConfig = {
 		headerText: 'Друзья',
 		friendsConfig: [],
 	},
-	subcribers: {
+	subscribers: {
 		key: 'subscribers',
 		headerText: 'Подписчики',
 		friendsConfig: [],
@@ -397,6 +407,7 @@ const URL: URLInterface = DEBUG
 			profileSubscriptions: '',
 			post: '',
 			messages: '',
+			chat: '',
 			chatWS: '',
 		}
 	: {
@@ -417,7 +428,8 @@ const URL: URLInterface = DEBUG
 			removeFriend: ROOT + '/api/v1/profile/{id}/friend/remove',
 			profileSubscriptions: ROOT + apiv1 + '/profile/{id}/subscriptions',
 			post: ROOT + apiv1 + '/feed/{id}',
-			messages: ROOT + apiv1 + '/chat',
+			messages: ROOT + apiv1 + 'messages/chats',
+			chat: ROOT + apiv1 + '/messages/chat/{id}',
 			chatWS: ROOT_WS + '/messages/chat',
 		};
 

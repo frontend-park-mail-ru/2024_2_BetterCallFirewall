@@ -13,7 +13,7 @@ import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
 export interface ViewFriendsConfig extends HomeConfig {
 	friends: FriendsConfig;
-	subcribers: FriendsConfig;
+	subscribers: FriendsConfig;
 	users: FriendsConfig;
 }
 
@@ -79,7 +79,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 	private _renderSubscribers() {
 		const content = this.content;
 		const subscribers = new Friends(
-			this._configFriends.subcribers,
+			this._configFriends.subscribers,
 			content,
 		);
 		subscribers.render();
@@ -120,6 +120,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					api.subscribeToProfile(personConfig.id);
 				});
 			}
+			this.updateViewFriends(this._configFriends);
 		});
 	}
 }

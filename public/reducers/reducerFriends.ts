@@ -31,7 +31,7 @@ export const reducerFriends = (
 		case ACTION_FRIENDS_TYPES.getSubscribersSuccess: {
 			const actionData =
 				action.data as ActionProfileGetSubscribersSuccessData;
-			newState.subcribers.friendsConfig = actionData.subscribers.map(
+			newState.subscribers.friendsConfig = actionData.subscribers.map(
 				(subscriber) => toFriendConfig(subscriber),
 			);
 			return newState;

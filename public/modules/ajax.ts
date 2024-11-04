@@ -2,6 +2,7 @@ import { STATUS } from '../api/api';
 import app from '../app';
 import { ChatResponse } from '../models/chat';
 import { HeaderResponse } from '../models/header';
+import { MessageResponse } from '../models/message';
 import { PostResponse } from '../models/post';
 import { FullProfileResponse, ShortProfileResponse } from '../models/profile';
 
@@ -30,6 +31,10 @@ export interface AjaxResponse<T> extends FetchResponse<T> {
 }
 
 export type QueryParams = Record<string, string>;
+
+const replaceId = (url: string, id: number): string => {
+	return url.replace('{id}', `${id}`);
+};
 
 class Ajax {
 	/**
@@ -277,20 +282,19 @@ class Ajax {
 	 * Запрос списка чатов
 	 */
 	async getMessages(): Promise<AjaxResponse<ChatResponse[]>> {
-		const request = this._getRequest(app.config.URL.messages);
-		const response = await this._response(request);
-		try {
-			const body = await response.json();
-			const messagesResponse: AjaxResponse<ChatResponse[]> =
-				Object.assign({}, body);
-			messagesResponse.status = response.status;
-			return messagesResponse;
-		} catch {
-			return {
-				status: response.status,
-				success: false,
-			};
-		}
+		return this._genericRequest(app.config.URL.messages, 'get');
+	}
+
+	/**
+	 * Запрос чата
+	 */
+	async getChatMessages(
+		profileId: number,
+	): Promise<AjaxResponse<MessageResponse[]>> {
+		return this._genericRequest(
+			replaceId(app.config.URL.chat, profileId),
+			'get',
+		);
 	}
 
 	/**
@@ -328,6 +332,23 @@ class Ajax {
 			.then((response) => response.json())
 			.then((data) => config.callback(data, null))
 			.catch((error) => config.callback(null, error));
+	}
+
+	private async _genericRequest<T>(
+		baseUrl: string,
+		method: string,
+		data?: object,
+	): Promise<AjaxResponse<T>> {
+		const request = this._jsonRequest(baseUrl, method, data);
+		const response = await this._response(request);
+		try {
+			const body = await response.json();
+			const ajaxResponse: AjaxResponse<T> = Object.assign({}, body);
+			ajaxResponse.status = response.status;
+			return ajaxResponse;
+		} catch {
+			return { status: response.status, success: false };
+		}
 	}
 
 	/**
@@ -439,24 +460,24 @@ class Ajax {
 	 * post запрос (json)
 	 */
 	private _postRequest(baseUrl: string, data: object) {
-		return this._jsonRequest(baseUrl, data, 'post');
+		return this._jsonRequest(baseUrl, 'post', data);
 	}
 
 	/**
 	 * delete запрос
 	 */
 	private _deleteRequest(baseUrl: string) {
-		return this._jsonRequest(baseUrl, {}, 'delete');
+		return this._jsonRequest(baseUrl, 'delete');
 	}
 
 	/**
 	 * Запрос, содержащий jsons
 	 */
-	private _jsonRequest(baseUrl: string, body: object, method: string) {
+	private _jsonRequest(baseUrl: string, method: string, body?: object) {
 		return new Request(baseUrl, {
 			method: method,
 			credentials: 'include',
-			body: JSON.stringify(body),
+			body: body ? JSON.stringify(body) : undefined,
 			headers: {
 				'Content-Type': 'application/json:charset=UTF-8',
 			},

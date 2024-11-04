@@ -1,8 +1,11 @@
-import { ACTION_CHAT_TYPES, ActionUpdateChat } from '../../actions/actionChat';
+import {
+	ACTION_CHAT_TYPES,
+	ActionChatRequest,
+	ActionUpdateChat,
+} from '../../actions/actionChat';
 import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import { Root } from '../../components';
 import { Chat, IChatConfig } from '../../components/Chat/Chat';
-import { ChatMessage } from '../../components/ChatMessage/ChatMessage';
 import dispatcher from '../../dispatcher/dispatcher';
 import { ChangeChat } from '../../stores/storeChat';
 import {
@@ -38,7 +41,9 @@ export class ViewChat extends ViewHome implements IViewChat {
 		switch (change.type) {
 			case ACTION_CHAT_TYPES.goToChat:
 				this.render();
+				this.sendAction(new ActionChatRequest());
 				break;
+			case ACTION_CHAT_TYPES.requestChatSuccess:
 			case ACTION_CHAT_TYPES.updateChat:
 				this.updateViewChat(change.data);
 				break;
@@ -49,7 +54,6 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._render();
 		dispatcher.getAction(new ActionUpdateChat());
 		this._scrollToBottom();
-		this._addHandlers();
 	}
 
 	updateViewChat(data: ViewChatConfig): void {
@@ -60,19 +64,19 @@ export class ViewChat extends ViewHome implements IViewChat {
 	protected _render(): void {
 		super._render();
 		this._renderChat();
-		this._renderChatMessages();
+		this._addHandlers();
 	}
 
 	protected _renderChat(): void {
-		this._configChat.chat = {
-			...this._configChat.chat,
-			...{
-				key: 'chat',
-				companionAvatar: '../../img/avatar.png',
-				companionName: 'Asap Rocky',
-				lastDateOnline: '18:00',
-			},
-		}; // tmp
+		// this._configChat.chat = {
+		// 	...this._configChat.chat,
+		// 	...{
+		// 		key: 'chat',
+		// 		companionAvatar: '../../img/avatar.png',
+		// 		companionName: 'Asap Rocky',
+		// 		lastDateOnline: '18:00',
+		// 	},
+		// }; // tmp
 
 		const content = this.content;
 		const chat = new Chat(this._configChat.chat, content);
@@ -84,31 +88,6 @@ export class ViewChat extends ViewHome implements IViewChat {
 		const chatContainer = document.querySelector('.chat__content');
 		if (chatContainer) {
 			chatContainer.scrollTop = chatContainer.scrollHeight;
-		}
-	}
-
-	protected _renderChatMessages(): void {
-		const chatContent =
-			this._chat.htmlElement.querySelector('.chat__content');
-		if (!chatContent) {
-			throw new Error('chat content not found');
-		}
-
-		// Тестовые сообщения
-		for (let i = 0; i < 15; i++) {
-			const message = new ChatMessage(
-				{
-					userId: 0,
-					key: 'chatMessage',
-					messageAvatar: '../../img/avatar.png',
-					messageName: 'Asap Rocky',
-					messageText: 'Привет! Как дела?',
-					createdAt: '19:00',
-				},
-				this._chat,
-			);
-			message.render(false);
-			chatContent.appendChild(message.htmlElement);
 		}
 	}
 

@@ -82,6 +82,7 @@ export interface URLInterface {
 	header: string;
 	post: string;
 	messages: string;
+	chat: string;
 	chatWS: string;
 }
 
@@ -309,6 +310,9 @@ class App {
 
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.goToChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.updateChat);
+		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChat);
+		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChatSuccess);
+		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChatFail);
 
 		this._stores.createPost.subscribe(
 			ACTION_CREATE_POST_TYPES.updateCreatePost,
