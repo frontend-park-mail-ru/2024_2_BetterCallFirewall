@@ -114,12 +114,12 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					api.unsubscribeToProfile(personConfig.id);
 				});
 			}
-			else {
-				person.addHandler(person.subscribeFriendButton, 'click', (event) => {
-					event.preventDefault();
-					api.subscribeToProfile(personConfig.id);
-				});
-			}
+			// else {
+			// 	person.addHandler(person.subscribeFriendButton, 'click', (event) => {
+			// 		event.preventDefault();
+			// 		api.subscribeToProfile(personConfig.id);
+			// 	});
+			// }
 			this.updateViewFriends(this._configFriends);
 		});
 	}
