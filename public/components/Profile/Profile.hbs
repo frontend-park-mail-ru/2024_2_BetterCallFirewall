@@ -15,7 +15,9 @@
             </div> --}}
             <div class="profile__actions">
                 {{#unless this.isFriend}}
+                {{#unless this.isAuthor}}
                 <button class="button-action button-no-decorations">Добавить в друзья</button>
+                {{/unless}}
                 {{/unless}}
                 {{#unless this.isAuthor}}
                 <a href="" class="write-message">Написать сообщение</a>
