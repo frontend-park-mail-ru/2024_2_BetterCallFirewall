@@ -336,6 +336,25 @@ const friendsConfig: ViewFriendsConfig = {
 
 const postEditFormConfig: IPostEditFormConfig = {
 	key: 'postEditForm',
+	textAreas: {
+		text: {
+			key: 'text',
+			type: 'textarea',
+			text: 'Текст поста',
+			name: 'text',
+			validator: Validator.validatePost,
+		},
+	},
+	inputs: {
+		image: {
+			key: 'image',
+			name: 'file',
+			type: 'file',
+			accept: 'image/*',
+			// extra: 'multiple',
+			validator: Validator.validateImg,
+		},
+	},
 	button: {
 		key: 'submitButton',
 		text: 'Сохранить пост',
