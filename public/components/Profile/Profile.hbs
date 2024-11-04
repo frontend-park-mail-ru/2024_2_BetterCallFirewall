@@ -14,9 +14,9 @@
                 <a href=""><span>Groups: {{groupsCount}}</span></a>
             </div> --}}
             <div class="profile__actions">
-                {{#if this.isFriend}}
+                {{#unless this.isFriend}}
                 <button class="button-action button-no-decorations">Добавить в друзья</button>
-                {{/if}}
+                {{/unless}}
                 {{#unless this.isAuthor}}
                 <a href="" class="write-message">Написать сообщение</a>
                 {{/unless}}
