@@ -99,7 +99,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 			const message = new ChatMessage(
 				{
 					userId: i,
-					key: 'chatMessage',
+					key: `chatMessage-${i}`,
 					messageAvatar: '../../img/avatar.png',
 					messageName: 'Asap Rocky',
 					messageText: 'Привет! Как дела?',

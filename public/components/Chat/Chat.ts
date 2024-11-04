@@ -2,7 +2,7 @@ import BaseComponent, {
 	IBaseComponent,
 	IBaseComponentConfig,
 } from '../BaseComponent';
-import { IChatMessageConfig } from '../ChatMessage/ChatMessage';
+import { ChatMessage, IChatMessageConfig } from '../ChatMessage/ChatMessage';
 
 export interface IChatConfig extends IBaseComponentConfig {
 	userId: number;
@@ -17,6 +17,7 @@ export interface IChat extends BaseComponent {}
 
 export class Chat extends BaseComponent implements IChat {
 	protected _config: IChatConfig | null;
+	private _messages: ChatMessage[] = [];
 
 	/**
 	 * Instance of chat
@@ -39,9 +40,30 @@ export class Chat extends BaseComponent implements IChat {
 		return html;
 	}
 
+	get chatContentHTML(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'.chat__content',
+		) as HTMLElement;
+		if (!html) {
+			throw new Error('chatContent not found');
+		}
+		return html;
+	}
+
 	render(show: boolean = true): string {
 		this._prerender();
-		return this._render('Chat.hbs', show);
+		this._render('Chat.hbs', show);
+		const chatContent = this.chatContentHTML;
+		const messages = this._config?.messages.map((config) => {
+			const message = new ChatMessage(config, this);
+			message.render(false);
+			message.appendToHTML(chatContent);
+			return message;
+		});
+		if (messages) {
+			this._messages = messages;
+		}
+		return this.htmlElement.outerHTML;
 	}
 
 	protected _prerender(): void {
