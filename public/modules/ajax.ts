@@ -295,13 +295,12 @@ class Ajax {
 		// 		success: false,
 		// 	};
 		// }
-		return this._genericRequest(app.config.URL.messages, {}, 'get');
+		return this._genericRequest(app.config.URL.messages, 'get');
 	}
 
 	async getChat(profileId: number): Promise<AjaxResponse<ChatResponse>> {
 		return this._genericRequest(
 			replaceId(app.config.URL.chat, profileId),
-			{},
 			'get',
 		);
 	}
@@ -345,10 +344,10 @@ class Ajax {
 
 	private async _genericRequest<T>(
 		baseUrl: string,
-		data: object,
 		method: string,
+		data?: object,
 	): Promise<AjaxResponse<T>> {
-		const request = this._jsonRequest(baseUrl, data, method);
+		const request = this._jsonRequest(baseUrl, method, data);
 		const response = await this._response(request);
 		try {
 			const body = await response.json();
@@ -469,14 +468,14 @@ class Ajax {
 	 * post запрос (json)
 	 */
 	private _postRequest(baseUrl: string, data: object) {
-		return this._jsonRequest(baseUrl, data, 'post');
+		return this._jsonRequest(baseUrl, 'post', data);
 	}
 
 	/**
 	 * delete запрос
 	 */
 	private _deleteRequest(baseUrl: string) {
-		return this._jsonRequest(baseUrl, {}, 'delete');
+		return this._jsonRequest(baseUrl, 'delete');
 	}
 
 	/**
