@@ -6,6 +6,7 @@ import {
 import { ACTION_MENU_TYPES } from '../../actions/actionMenu';
 import api from '../../api/api';
 import { Root } from '../../components';
+import { IFriendConfig } from '../../components/Friend/Friend';
 import { Friends, FriendsConfig } from '../../components/Friends/Friends';
 import { ChangeFriends } from '../../stores/storeFriends';
 import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
@@ -72,6 +73,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		const content = this.content;
 		const friends = new Friends(this._configFriends.friends, content);
 		friends.render();
+		this._addFriendsHandlers(friends);
 	}
 
 	private _renderSubscribers() {
@@ -81,11 +83,43 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 			content,
 		);
 		subscribers.render();
+		this._addFriendsHandlers(subscribers);
 	}
 
 	private _renderUsers() {
 		const content = this.content;
 		const users = new Friends(this._configFriends.users, content);
 		users.render();
+		this._addFriendsHandlers(users);
+	}
+
+	private _addFriendsHandlers(people: Friends) {
+		people.listPeople.forEach((person) => {
+			const personConfig = person.config as IFriendConfig;
+			if (personConfig.isFriend) {
+				person.addHandler(person.removeFriendButton, 'click', (event) => {
+					event.preventDefault();
+					api.removeFriend(personConfig.id);
+				});
+			}
+			else if (personConfig.isSubscriber) {
+				person.addHandler(person.acceptFriendButton, 'click', (event) => {
+					event.preventDefault();
+					api.acceptFriend(personConfig.id);
+				});
+			}
+			else if (personConfig.isSubscription) {
+				person.addHandler(person.unsubscribeFriendButton, 'click', (event) => {
+					event.preventDefault();
+					api.unsubscribeToProfile(personConfig.id);
+				});
+			}
+			else {
+				person.addHandler(person.subscribeFriendButton, 'click', (event) => {
+					event.preventDefault();
+					api.subscribeToProfile(personConfig.id);
+				});
+			}
+		});
 	}
 }
