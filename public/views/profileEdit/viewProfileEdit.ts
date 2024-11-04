@@ -1,4 +1,6 @@
+import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import { ACTION_PROFILE_EDIT_TYPES } from '../../actions/actionProfileEdit';
+import api from '../../api/api';
 import { Root } from '../../components';
 import {
 	ProfileEditForm,
@@ -35,12 +37,20 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 
 	handleChange(change: ChangeProfileEdit): void {
 		super.handleChange(change);
-		this._configProfileEdit = Object.assign(
-			this._configProfileEdit,
-			change.data,
-		);
 		switch (change.type) {
+			case ACTION_PROFILE_EDIT_TYPES.requestFail:
+				this.updateViewProfileEdit(change.data);
+				break;
+			case ACTION_PROFILE_EDIT_TYPES.requestSuccess:
+				this.sendAction(
+					new ActionMenuLinkClick({ href: this._profileLinkHref }),
+				);
+				break;
 			case ACTION_PROFILE_EDIT_TYPES.goToProfileEdit:
+				this._configProfileEdit = Object.assign(
+					this._configProfileEdit,
+					change.data,
+				);
 				this.render();
 				break;
 		}
@@ -71,7 +81,16 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 		this._components.profileEditForm = profileEditForm;
 	}
 
+	private get _profileEditForm(): ProfileEditForm {
+		const form = this._components.profileEditForm;
+		if (!form) {
+			throw new Error('profileEditForm not found');
+		}
+		return form;
+	}
+
 	private _addHandlers() {
+		// Убрать
 		this.content.addHandler(
 			document.querySelector('.form__upload') as HTMLElement,
 			'click',
@@ -79,7 +98,14 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 				if (document.getElementById('file')) {
 					document.getElementById('file')?.click();
 				}
-			}
+			},
 		);
+
+		const form = this._profileEditForm;
+		form.addHandler(form.htmlElement, 'submit', (event) => {
+			event.preventDefault();
+			const formData = form.formData;
+			api.editProfile(formData);
+		});
 	}
 }

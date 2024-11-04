@@ -148,6 +148,17 @@ class Ajax {
 		return profileResponse;
 	}
 
+	async editProfile(
+		formData: FormData,
+	): Promise<AjaxResponse<FullProfileResponse>> {
+		const request = this._formRequest(
+			app.config.URL.profile,
+			formData,
+			'put',
+		);
+		return this._fullProfileResponse(request);
+	}
+
 	/**
 	 * Получить хэдер
 	 */
@@ -311,6 +322,29 @@ class Ajax {
 			}
 		}
 		return shortProfileResponse;
+	}
+
+	/**
+	 * Ответ в виде FullProfileResponse
+	 */
+	private async _fullProfileResponse(
+		request: Request,
+	): Promise<AjaxResponse<FullProfileResponse>> {
+		const response = await this._response(request);
+		let profileResponse: AjaxResponse<FullProfileResponse> = {
+			status: response.status,
+			success: false,
+		};
+		switch (profileResponse.status) {
+			case STATUS.ok: {
+				const body =
+					(await response.json()) as FetchResponse<FullProfileResponse>;
+				console.log('body:', body);
+				profileResponse = Object.assign(profileResponse, body);
+			}
+		}
+		console.log('profileResponse:', profileResponse);
+		return profileResponse;
 	}
 
 	/**

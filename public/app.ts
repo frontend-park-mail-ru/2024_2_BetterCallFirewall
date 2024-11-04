@@ -238,6 +238,7 @@ class App {
 		this._stores.app.subscribe(ACTION_PROFILE_EDIT_TYPES.goToProfileEdit);
 		this._stores.app.subscribe(ACTION_POST_EDIT_TYPES.goToPostEdit);
 		this._stores.app.subscribe(ACTION_POST_EDIT_TYPES.requestSuccess);
+		this._stores.app.subscribe(ACTION_PROFILE_EDIT_TYPES.requestSuccess);
 
 		this._stores.home.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.menuLinkClick);
@@ -282,6 +283,9 @@ class App {
 		);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.getHeader);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.getHeaderSuccess);
+		this._stores.profile.subscribe(
+			ACTION_PROFILE_EDIT_TYPES.requestSuccess,
+		);
 
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriendsSuccess);
@@ -310,6 +314,12 @@ class App {
 		);
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.goToProfileEdit,
+		);
+		this._stores.profileEdit.subscribe(
+			ACTION_PROFILE_EDIT_TYPES.requestSuccess,
+		);
+		this._stores.profileEdit.subscribe(
+			ACTION_PROFILE_EDIT_TYPES.requestFail,
 		);
 
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.goToPostEdit);

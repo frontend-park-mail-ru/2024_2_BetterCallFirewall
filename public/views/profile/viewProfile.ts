@@ -5,6 +5,7 @@ import {
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
 import {
+	ACTION_PROFILE_EDIT_TYPES,
 	ActionProfileEditGoTo,
 	ActionProfileEditUpdate,
 } from '../../actions/actionProfileEdit';
@@ -57,6 +58,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 			case ACTION_PROFILE_TYPES.getYourOwnProfile:
 				api.requestYourOwnProfile();
 				break;
+			case ACTION_PROFILE_EDIT_TYPES.requestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestFail:
 				this.sendAction(

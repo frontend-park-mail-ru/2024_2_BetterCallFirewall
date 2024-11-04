@@ -5,6 +5,10 @@ import {
 	ActionProfileRequestSuccessData,
 	ActionUpdateProfileData,
 } from '../actions/actionProfile';
+import {
+	ACTION_PROFILE_EDIT_TYPES,
+	ActionProfileEditRequestSuccessData,
+} from '../actions/actionProfileEdit';
 import config from '../config';
 import { toProfileConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
@@ -19,6 +23,15 @@ export const reducerProfile = (
 	const newState = deepClone(state);
 	let actionData;
 	switch (action?.type) {
+		case ACTION_PROFILE_EDIT_TYPES.requestSuccess: {
+			actionData = action.data as ActionProfileEditRequestSuccessData;
+			const profileConfig = toProfileConfig(
+				newState.profile,
+				actionData.profileResponse,
+			);
+			newState.profile = Object.assign(newState.profile, profileConfig);
+			return newState;
+		}
 		case ACTION_PROFILE_TYPES.updateProfile:
 			actionData = action.data as ActionUpdateProfileData;
 			newState.profile = Object.assign(newState.profile, actionData);
