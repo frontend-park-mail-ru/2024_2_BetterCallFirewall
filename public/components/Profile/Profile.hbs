@@ -14,7 +14,13 @@
                 <a href=""><span>Groups: {{groupsCount}}</span></a>
             </div> --}}
             <div class="profile__actions">
-                
+                {{#if this.isFriend}}
+                <button class="button-action button-no-decorations">Добавить в друзья</button>
+                {{/if}}
+                <a href="" class="write-message">Написать сообщение</a>
+                {{#if this.isAuthor}}
+                <a href="{{this.createPostHref}}" class="profile-edit">Редактировать профиль</a>
+                {{/if}}
             </div>
         </div>
         <div class="profile__edit"></div>
@@ -23,7 +29,9 @@
     <div class="profile__content">
         <div class="profile__posts-header">
             <h2>Posts</h2>
+            {{#if this.isAuthor}}
             <a class="header__link" href="{{this.createPostHref}}">Создать пост</a>
+            {{/if}}
             </div>
         <div class="profile__posts">
         </div>

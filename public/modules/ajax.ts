@@ -50,6 +50,9 @@ class Ajax {
 		});
 	}
 
+	/**
+	 * Получить посты
+	 */
 	async getPosts(
 		queryParams?: QueryParams,
 	): Promise<AjaxResponse<PostResponse[]>> {
@@ -78,21 +81,29 @@ class Ajax {
 		return postsResponse;
 	}
 
+	/**
+	 * Создать пост
+	 */
 	async createPost(formData: FormData): Promise<AjaxResponse<PostResponse>> {
-		const request = this._sendFormRequest(app.config.URL.feed, formData);
-		const response = await this._response(request);
-		const postResponse: AjaxResponse<PostResponse> = {
-			status: response.status,
-			success: false,
-		};
-		try {
-			const body = await response.json();
-			return Object.assign(postResponse, body);
-		} catch {
-			return postResponse;
-		}
+		const request = this._postFormRequest(app.config.URL.feed, formData);
+		return this._postResponse(request);
 	}
 
+	/**
+	 * Отредактировать пост
+	 */
+	async editPost(
+		formData: FormData,
+		postId: number,
+	): Promise<AjaxResponse<PostResponse>> {
+		const url = app.config.URL.post.replace('{id}', `${postId}`);
+		const request = this._putFormRequest(url, formData);
+		return this._postResponse(request);
+	}
+
+	/**
+	 * Получить профиль
+	 */
 	async getProfile(
 		profilePath: string,
 	): Promise<AjaxResponse<FullProfileResponse>> {
@@ -114,6 +125,9 @@ class Ajax {
 		return profileResponse;
 	}
 
+	/**
+	 * Получить свой профиль
+	 */
 	async getYourOwnProfile(): Promise<AjaxResponse<FullProfileResponse>> {
 		const request = this._getRequest(app.config.URL.profileYourOwn);
 		const response = await this._response(request);
@@ -134,6 +148,20 @@ class Ajax {
 		return profileResponse;
 	}
 
+	async editProfile(
+		formData: FormData,
+	): Promise<AjaxResponse<FullProfileResponse>> {
+		const request = this._formRequest(
+			app.config.URL.profile,
+			formData,
+			'put',
+		);
+		return this._fullProfileResponse(request);
+	}
+
+	/**
+	 * Получить хэдер
+	 */
 	async getHeader(): Promise<AjaxResponse<HeaderResponse>> {
 		const request = this._getRequest(app.config.URL.header);
 		const response = await this._response(request);
@@ -154,6 +182,9 @@ class Ajax {
 		return headerResponse;
 	}
 
+	/**
+	 * Получить друзей
+	 */
 	async getFriends(
 		profileId: number,
 	): Promise<AjaxResponse<ShortProfileResponse[]>> {
@@ -162,6 +193,9 @@ class Ajax {
 		return this._getShortProfileResponse(url);
 	}
 
+	/**
+	 * Получить подписчиков на профиль
+	 */
 	async getSubscribers(
 		profileId: number,
 	): Promise<AjaxResponse<ShortProfileResponse[]>> {
@@ -170,10 +204,16 @@ class Ajax {
 		return this._getShortProfileResponse(url);
 	}
 
+	/**
+	 * Получить все профили, кроме своего
+	 */
 	async getProfiles(): Promise<AjaxResponse<ShortProfileResponse[]>> {
 		return this._getShortProfileResponse(app.config.URL.profiles);
 	}
 
+	/**
+	 * Получить подписки профиля
+	 */
 	async getProfileSubscriptions(
 		profileId: number,
 	): Promise<AjaxResponse<ShortProfileResponse[]>> {
@@ -182,18 +222,27 @@ class Ajax {
 		return this._getShortProfileResponse(url);
 	}
 
+	/**
+	 * Подписаться на профиль (отправить запрос на дружбу)
+	 */
 	async subscribeToProfile(profileId: number): Promise<AjaxResponse<object>> {
 		let url = app.config.URL.subscribeToProfile;
 		url = url.replace('{id}', `${profileId}`);
 		return this._postObjectResponse(url);
 	}
 
+	/**
+	 * Принять в друзья
+	 */
 	async acceptFriend(profileId: number): Promise<AjaxResponse<object>> {
 		let url = app.config.URL.acceptFriend;
 		url = url.replace('{id}', `${profileId}`);
 		return this._postObjectResponse(url);
 	}
 
+	/**
+	 * Отписаться от профиля
+	 */
 	async unsubscribeFromProfile(
 		profileId: number,
 	): Promise<AjaxResponse<object>> {
@@ -202,6 +251,9 @@ class Ajax {
 		return this._postObjectResponse(url);
 	}
 
+	/**
+	 * Удалить из друзей
+	 */
 	async removeFriend(profileId: number): Promise<AjaxResponse<object>> {
 		let url = app.config.URL.removeFriend;
 		url = url.replace('{id}', `${profileId}`);
@@ -245,6 +297,9 @@ class Ajax {
 			.catch((error) => config.callback(null, error));
 	}
 
+	/**
+	 * get запрос и ответ в виде ShortProfileResponse
+	 */
 	private async _getShortProfileResponse(
 		baseUrl: string,
 	): Promise<AjaxResponse<ShortProfileResponse[]>> {
@@ -269,6 +324,32 @@ class Ajax {
 		return shortProfileResponse;
 	}
 
+	/**
+	 * Ответ в виде FullProfileResponse
+	 */
+	private async _fullProfileResponse(
+		request: Request,
+	): Promise<AjaxResponse<FullProfileResponse>> {
+		const response = await this._response(request);
+		let profileResponse: AjaxResponse<FullProfileResponse> = {
+			status: response.status,
+			success: false,
+		};
+		switch (profileResponse.status) {
+			case STATUS.ok: {
+				const body =
+					(await response.json()) as FetchResponse<FullProfileResponse>;
+				console.log('body:', body);
+				profileResponse = Object.assign(profileResponse, body);
+			}
+		}
+		console.log('profileResponse:', profileResponse);
+		return profileResponse;
+	}
+
+	/**
+	 * post запрос и ответ в виде object
+	 */
 	private async _postObjectResponse(
 		url: string,
 	): Promise<AjaxResponse<object>> {
@@ -284,6 +365,28 @@ class Ajax {
 		}
 	}
 
+	/**
+	 * Ответ в виде PostResponse
+	 */
+	private async _postResponse(
+		request: Request,
+	): Promise<AjaxResponse<PostResponse>> {
+		const response = await this._response(request);
+		const postResponse: AjaxResponse<PostResponse> = {
+			status: response.status,
+			success: false,
+		};
+		try {
+			const body = await response.json();
+			return Object.assign(postResponse, body);
+		} catch {
+			return postResponse;
+		}
+	}
+
+	/**
+	 * get запрос
+	 */
 	private _getRequest(baseUrl: string, queryParams?: QueryParams) {
 		const params = new URLSearchParams(queryParams);
 		const url = queryParams ? `${baseUrl}?${params}` : `${baseUrl}`;
@@ -293,6 +396,9 @@ class Ajax {
 		});
 	}
 
+	/**
+	 * post запрос (json)
+	 */
 	private _postRequest(baseUrl: string, data: object) {
 		return new Request(baseUrl, {
 			method: 'post',
@@ -304,14 +410,34 @@ class Ajax {
 		});
 	}
 
-	private _sendFormRequest(baseUrl: string, data: FormData) {
+	/**
+	 * put запрос отдачи формы
+	 */
+	private _putFormRequest(baseUrl: string, data: FormData) {
+		return this._formRequest(baseUrl, data, 'put');
+	}
+
+	/**
+	 * post запрос отдачи формы
+	 */
+	private _postFormRequest(baseUrl: string, data: FormData) {
+		return this._formRequest(baseUrl, data, 'post');
+	}
+
+	/**
+	 * Запрос отдачи формы
+	 */
+	private _formRequest(baseUrl: string, data: FormData, method: string) {
 		return new Request(baseUrl, {
-			method: 'post',
+			method: method,
 			credentials: 'include',
 			body: data,
 		});
 	}
 
+	/**
+	 * Получение ответа
+	 */
 	private async _response(request: Request): Promise<Response> {
 		return await fetch(request);
 	}

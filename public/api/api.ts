@@ -13,6 +13,10 @@ import {
 } from '../actions/actionFriends';
 import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
+	ActionPostEditRequestFail,
+	ActionPostEditRequestSuccess,
+} from '../actions/actionPostEdit';
+import {
 	ActionProfileGetHeaderFail,
 	ActionProfileGetHeaderSuccess,
 	ActionProfileGetYourOwnProfileFail,
@@ -20,6 +24,10 @@ import {
 	ActionProfileRequestFail,
 	ActionProfileRequestSuccess,
 } from '../actions/actionProfile';
+import {
+	ActionProfileEditRequestFail,
+	ActionProfileEditRequestSuccess,
+} from '../actions/actionProfileEdit';
 import { ActionUserUnauthorized } from '../actions/actionUser';
 import app from '../app';
 import dispatcher from '../dispatcher/dispatcher';
@@ -225,6 +233,40 @@ class API {
 				break;
 			default:
 				this.sendAction(new actionFeedPostCreateFail());
+		}
+	}
+
+	async editPost(formData: FormData, postId: number) {
+		const response = await ajax.editPost(formData, postId);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					return;
+				}
+				this.sendAction(
+					new ActionPostEditRequestSuccess({
+						postResponse: response.data,
+					}),
+				);
+				break;
+			default:
+				this.sendAction(new ActionPostEditRequestFail());
+		}
+	}
+
+	async editProfile(formData: FormData) {
+		const response = await ajax.editProfile(formData);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					return;
+				}
+				this.sendAction(
+					new ActionProfileEditRequestSuccess(response.data),
+				);
+				break;
+			default:
+				this.sendAction(new ActionProfileEditRequestFail());
 		}
 	}
 }

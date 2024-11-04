@@ -1,15 +1,17 @@
 import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
+import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
 import {
+	ACTION_PROFILE_EDIT_TYPES,
 	ActionProfileEditGoTo,
 	ActionProfileEditUpdate,
 } from '../../actions/actionProfileEdit';
 import api from '../../api/api';
 import app from '../../app';
-import { Root } from '../../components';
+import { Post, Root } from '../../components';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
 import { ChangeProfile } from '../../stores/storeProfile';
 import {
@@ -56,6 +58,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 			case ACTION_PROFILE_TYPES.getYourOwnProfile:
 				api.requestYourOwnProfile();
 				break;
+			case ACTION_PROFILE_EDIT_TYPES.requestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestFail:
 				this.sendAction(
@@ -95,27 +98,31 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		profile.render();
 		this._components.profile = profile;
 
-		this._addProfileHandlers(this._configProfile.profile);
+		this._addProfileHandlers();
 	}
 
-	private _addProfileHandlers(data: IProfileConfig) {
-		if (!data.currentUser) {
-			const profile = this.profile;
-			profile.addSendFriendRequestButton();
-			profile.addWriteMessageLink();
-			profile.addProfileEditLink();
+	private _addProfileHandlers() {
+		const profile = this.profile;
+		if (profile.config.isAuthor) {
+			const createPostLink = this.profile.createPostLink;
+			this.content.addHandler(createPostLink, 'click', (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionCreatePostGoTo());
+			});
+			const profileEditLink = this.profile.profileEditLink;
+			this.content.addHandler(profileEditLink, 'click', (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionProfileEditGoTo());
+			});
 		}
 
-		const createPostLink = this.profile.createPostLink;
-		this.content.addHandler(createPostLink, 'click', (event) => {
-			event.preventDefault();
-			this.sendAction(new ActionCreatePostGoTo());
-		});
+		this.profile.posts.forEach((post) => this._addPostHandlers(post));
+	}
 
-		const profileEditLink = this.profile.profileEditLink;
-		this.content.addHandler(profileEditLink, 'click', (event) => {
+	private _addPostHandlers(post: Post) {
+		post.addHandler(post.editButton, 'click', (event) => {
 			event.preventDefault();
-			this.sendAction(new ActionProfileEditGoTo());
+			this.sendAction(new ActionPostEditGoTo(post.config));
 		});
 	}
 }

@@ -1,14 +1,9 @@
-import {
-	ACTION_FEED_TYPES,
-	ActionPostsRequestFail,
-	ActionPostsRequestSuccess,
-} from '../../actions/actionFeed';
+import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
 import { ACTION_LOGIN_TYPES } from '../../actions/actionLogin';
+import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import { ACTION_SIGNUP_TYPES } from '../../actions/actionSignup';
-import { ActionUserUnauthorized } from '../../actions/actionUser';
 import api from '../../api/api';
 import { IPostConfig, Post, Root } from '../../components';
-import ajax, { QueryParams } from '../../modules/ajax';
 import { ChangeFeed } from '../../stores/storeFeed';
 import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
@@ -61,7 +56,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 
 		if (this._isNearBottom()) {
 			api.requestPosts(this.lastPostId);
-			// this._requestPosts();
 		}
 	}
 
@@ -94,42 +88,15 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		this._configFeed.posts.forEach((postData) => {
 			const post = new Post(postData, content);
 			post.render();
+			this._addPostHandlers(post);
 		});
 	}
 
-	/**
-	 * Выполняет запрос постов и добавляет их
-	 */
-	private async _requestPosts(): Promise<void> {
-		const id = this.lastPostId;
-		const params: QueryParams = {};
-		if (id >= 0) {
-			params.id = id.toString();
-		}
-		const response = await ajax.getPosts(params);
-		switch (response.status) {
-			case 200:
-				if (!response.data) {
-					break;
-				}
-				this.sendAction(new ActionPostsRequestSuccess(response.data));
-				break;
-			case 401:
-				this.sendAction(new ActionUserUnauthorized());
-				this.sendAction(
-					new ActionPostsRequestFail({
-						status: response.status,
-					}),
-				);
-				break;
-			case 204:
-				this.sendAction(
-					new ActionPostsRequestFail({
-						status: response.status,
-						message: response.message,
-					}),
-				);
-		}
+	private _addPostHandlers(post: Post) {
+		post.addHandler(post.editButton, 'click', (event) => {
+			event.preventDefault();
+			this.sendAction(new ActionPostEditGoTo(post.config));
+		});
 	}
 
 	private _addHandlers() {
@@ -142,7 +109,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			if (!pending) {
 				pending = true;
 				await api.requestPosts(this.lastPostId);
-				// await this._requestPosts();
 				pending = false;
 			}
 		};

@@ -5,6 +5,7 @@ import BaseComponent, {
 
 export interface ITextAreaConfig extends IBaseComponentConfig {
 	name: string;
+	header: string;
 	text: string;
 	type: string;
 	validator?: (name: HTMLTextAreaElement) => string;
@@ -25,7 +26,7 @@ export class TextArea extends BaseComponent implements ITextArea {
 
 	render(show: boolean = true): string {
 		this._prerender();
-		const result =this._render('TextArea.hbs', show);
+		const result = this._render('TextArea.hbs', show);
 		return result;
 	}
 
@@ -33,5 +34,4 @@ export class TextArea extends BaseComponent implements ITextArea {
 		super._prerender();
 		this._templateContext = this.config;
 	}
-
 }

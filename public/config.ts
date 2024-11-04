@@ -186,7 +186,8 @@ const createPostConfig: ViewCreatePostConfig = {
 			text: {
 				key: 'text',
 				type: 'textarea',
-				text: 'Текст поста',
+				header: 'Текст поста',
+				text: '',
 				name: 'text',
 				validator: Validator.validatePost,
 			},
@@ -197,6 +198,7 @@ const createPostConfig: ViewCreatePostConfig = {
 				name: 'file',
 				type: 'file',
 				accept: 'image/*',
+				placeholder: 'Прикрепить картинку',
 				// extra: 'multiple',
 				validator: Validator.validateImg,
 			},
@@ -241,21 +243,6 @@ const profileEditConfig: ViewProfileEditConfig = {
 				name: 'email',
 				validator: Validator.validateEmail,
 			},
-			password: {
-				key: 'password',
-				type: 'password',
-				placeholder: 'Пароль',
-				name: 'password',
-				validator: Validator.validatePassword,
-			},
-			avatar: {
-				key: 'avatar',
-				name: 'file',
-				type: 'file',
-				accept: 'image/*',
-				// extra: 'multiple',
-				validator: Validator.validateImg,
-			},
 		},
 
 		button: {
@@ -280,6 +267,10 @@ const profileComponentConfig: IProfileConfig = {
 	groupsCount: -1,
 	img: '',
 	createPostHref: PAGE_LINKS.createPost,
+	isAuthor: false,
+	isFriend: false,
+	isSubscriber: false,
+	isSubscription: false,
 };
 
 const profileConfig: ViewProfileConfig = {
@@ -344,6 +335,26 @@ const friendsConfig: ViewFriendsConfig = {
 
 const postEditFormConfig: IPostEditFormConfig = {
 	key: 'postEditForm',
+	textAreas: {
+		text: {
+			key: 'text',
+			type: 'textarea',
+			header: 'Текст поста',
+			text: '',
+			name: 'text',
+			validator: Validator.validatePost,
+		},
+	},
+	inputs: {
+		image: {
+			key: 'image',
+			name: 'file',
+			type: 'file',
+			accept: 'image/*',
+			// extra: 'multiple',
+			validator: Validator.validateImg,
+		},
+	},
 	button: {
 		key: 'submitButton',
 		text: 'Сохранить пост',
@@ -353,6 +364,7 @@ const postEditFormConfig: IPostEditFormConfig = {
 const editPostConfig: ViewPostEditConfig = {
 	...homeConfig,
 	postEditForm: postEditFormConfig,
+	postId: -1,
 };
 
 export const ROOT: string = DEBUG

@@ -23,6 +23,7 @@ export interface IBaseForm extends IBaseComponent {
 	get configInputsItems(): ConfigInputsItems;
 	get configTextAreaItems(): ConfigTextAreaItems;
 	get items(): Items;
+	get form(): HTMLElement;
 }
 
 export abstract class BaseForm extends BaseComponent implements IBaseForm {
@@ -48,9 +49,12 @@ export abstract class BaseForm extends BaseComponent implements IBaseForm {
 		}
 		if (config.textAreas) {
 			this._configTextAreas = config.textAreas;
-
 		}
 		this._configButton = config.button;
+	}
+
+	get formData(): FormData {
+		return new FormData(this.form as HTMLFormElement);
 	}
 
 	/**
@@ -63,7 +67,9 @@ export abstract class BaseForm extends BaseComponent implements IBaseForm {
 	}
 
 	get configTextAreaItems(): ConfigTextAreaItems {
-		return this._configTextAreas ? Object.entries(this._configTextAreas) : [];
+		return this._configTextAreas
+			? Object.entries(this._configTextAreas)
+			: [];
 	}
 
 	/**
@@ -111,7 +117,6 @@ export abstract class BaseForm extends BaseComponent implements IBaseForm {
 			const textArea = new TextArea(config, this);
 			this._items[key] = textArea;
 			this._textAreas.push(textArea);
-			console.log('text areas config', this._textAreas);
 		});
 		const button = new FormButton(this._configButton, this);
 		this._items.button = button;
@@ -120,8 +125,12 @@ export abstract class BaseForm extends BaseComponent implements IBaseForm {
 			key: this._config?.key,
 			inputs: this._inputs.map((input) => input.render(false)),
 			button: button.render(false),
-			textAreas: this._textAreas.map((textArea) => textArea.render(false)),
-			error: this._config?.error
+			textAreas: this._textAreas.map((textArea) =>
+				textArea.render(false),
+			),
+			error: this._config?.error,
 		};
 	}
+
+	abstract get form(): HTMLElement;
 }
