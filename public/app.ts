@@ -311,12 +311,16 @@ class App {
 		this._stores.messages.subscribe(
 			ACTION_MESSAGES_TYPES.requestMessagesFail,
 		);
+		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.sendMessage);
+		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.newMessage);
 
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.goToChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.updateChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChatSuccess);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChatFail);
+		this._stores.chat.subscribe(ACTION_MESSAGES_TYPES.sendMessage);
+		this._stores.chat.subscribe(ACTION_MESSAGES_TYPES.newMessage);
 
 		this._stores.createPost.subscribe(
 			ACTION_CREATE_POST_TYPES.updateCreatePost,
