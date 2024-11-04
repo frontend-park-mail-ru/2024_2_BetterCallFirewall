@@ -32,6 +32,7 @@ export const reducerProfileEdit = (
 			if (inputs) {
 				inputs.firstName.text = actionData.inputs.firstName;
 				inputs.secondName.text = actionData.inputs.lastName;
+				inputs.description.text = actionData.inputs.description;
 			}
 			return newState;
 		}
