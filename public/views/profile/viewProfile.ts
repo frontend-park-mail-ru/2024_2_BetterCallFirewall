@@ -98,17 +98,10 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		profile.render();
 		this._components.profile = profile;
 
-		this._addProfileHandlers(this._configProfile.profile);
+		this._addProfileHandlers();
 	}
 
-	private _addProfileHandlers(data: IProfileConfig) {
-		if (!data.currentUser) {
-			const profile = this.profile;
-			profile.addSendFriendRequestButton();
-			profile.addWriteMessageLink();
-			profile.addProfileEditLink();
-		}
-
+	private _addProfileHandlers() {
 		const createPostLink = this.profile.createPostLink;
 		this.content.addHandler(createPostLink, 'click', (event) => {
 			event.preventDefault();

@@ -16,9 +16,12 @@ export interface IProfileConfig extends IBaseComponentConfig {
 	groupsCount?: number;
 	img?: string;
 	currentUser?: boolean;
-	isFriend?: boolean;
 	posts?: IPostConfig[];
 	createPostHref: string;
+	isAuthor: boolean;
+	isFriend: boolean;
+	isSubscriber: boolean;
+	isSubscription: boolean;
 }
 
 export class Profile extends BaseComponent {
