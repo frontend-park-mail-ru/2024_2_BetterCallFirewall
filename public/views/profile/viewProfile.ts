@@ -11,6 +11,7 @@ import {
 	ActionProfileEditUpdate,
 } from '../../actions/actionProfileEdit';
 import api from '../../api/api';
+import app from '../../app';
 import { Post, Root } from '../../components';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
 import { ChangeProfile } from '../../stores/storeProfile';
@@ -56,7 +57,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_PROFILE_TYPES.profileRequest:
-				api.requestProfile(this._configProfile.path);
+				api.requestProfile(app.router.path);
 				break;
 			case ACTION_PROFILE_TYPES.getYourOwnProfile:
 				api.requestYourOwnProfile();
