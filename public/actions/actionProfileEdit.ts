@@ -12,6 +12,7 @@ export interface ActionProfileEditUpdateData {
 	inputs: {
 		firstName?: string;
 		lastName?: string;
+		description?: string;
 	};
 }
 

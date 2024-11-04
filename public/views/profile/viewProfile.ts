@@ -70,6 +70,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 						inputs: {
 							firstName: change.data.profile.firstName,
 							lastName: change.data.profile.secondName,
+							description: change.data.profile.description,
 						},
 					}),
 				);
