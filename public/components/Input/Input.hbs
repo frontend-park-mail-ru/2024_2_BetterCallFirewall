@@ -1,8 +1,9 @@
 <div class="form__input" data-key="{{this.key}}">
-    <label for="{{this.name}}">{{this.placeholder}}</label>
-    <input type="{{this.type}}" value="{{this.text}}" id="{{this.name}}" name="{{this.name}}" placeholder="{{this.placeholder}}" accept="{{this.accept}}" {{this.extra}}>
     {{#if (eq this.type 'file')}}
-        <span class="form__upload">Выберите файл</span>
+        <label for="{{this.name}}" class="form__upload">{{this.placeholder}}</label>
+    {{else}}
+        <label for="{{this.name}}">{{this.placeholder}}</label>
     {{/if}}
+    <input type="{{this.type}}" value="{{this.text}}" id="{{this.name}}" name="{{this.name}}" placeholder="{{this.placeholder}}" accept="{{this.accept}}" {{this.extra}}>
     <span class="form__input-error"></span>
 </div>
