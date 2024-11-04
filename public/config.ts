@@ -248,7 +248,7 @@ const profileEditConfig: ViewProfileEditConfig = {
 				name: 'file',
 				type: 'file',
 				accept: 'image/*',
-				placeholder: 'Аватар',
+				placeholder: 'Прикрепить аватар',
 				// extra: 'multiple',
 				validator: Validator.validateImg,
 			},
