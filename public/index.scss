@@ -35,6 +35,7 @@ html {
     --main-color: #1DC67F;
     --main-text-color: #FFFFFF;
     --button-color: #25AD74;
+    --negative-color: #e33d3d;
 }
 
 body {
@@ -199,12 +200,26 @@ h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
 }
 
-.buton-action {
+.button-action {
     border-radius: 4rem;
     border: 1px solid var(--main-color);
     padding: .6rem;
     color: var(--main-color);
-    background-color: var(--main-bg-color);
+    background-color: none;
+    &:hover {
+        background-color: var(--hover-bg-color);
+    }
+    &:active {
+        background-color: var(--main-bg-color);
+    }
+}
+
+.button-action-negative {
+    border-radius: 4rem;
+    border: 1px solid var(--negative-color);
+    padding: .6rem;
+    color: var(--negative-color);
+    background-color: none;
     &:hover {
         background-color: var(--hover-bg-color);
     }

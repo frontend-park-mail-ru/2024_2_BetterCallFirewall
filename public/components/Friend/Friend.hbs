@@ -10,11 +10,14 @@
     <div class="friend__state item__state">
         {{#if this.isFriend}}
             <button class="remove-friend button-action-negative button-no-decorations" href="">Удалить из друзей</button>
-        {{else if this.isSubscriber}}
+        {{/if}}
+        {{#if this.isSubscriber}}
             <button class="accept-friend button-action button-no-decorations" href="">Подтвердить заявку в друзья</button>
-        {{else if this.isSubscription}}
-            <button class="unsubscribe-friend button-action button-no-decorations" href="">Отменить заявку в друзья</button>
-        {{else}}
+        {{/if}}
+        {{#if this.isSubscription}}
+            <button class="unsubscribe-friend button-action-negative button-no-decorations" href="">Отменить заявку в друзья</button>
+        {{/if}}
+        {{#if this.isUnknown}}
             <button class="subscribe-friend button button-no-decorations" href="">Добавить в друзья</button>
         {{/if}}
     </div>

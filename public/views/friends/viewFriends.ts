@@ -6,7 +6,7 @@ import {
 import { ACTION_MENU_TYPES } from '../../actions/actionMenu';
 import api from '../../api/api';
 import { Root } from '../../components';
-import { IFriendConfig } from '../../components/Friend/Friend';
+import { Friend, IFriendConfig } from '../../components/Friend/Friend';
 import { Friends, FriendsConfig } from '../../components/Friends/Friends';
 import { ChangeFriends } from '../../stores/storeFriends';
 import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
@@ -15,7 +15,6 @@ export interface ViewFriendsConfig extends HomeConfig {
 	friends: FriendsConfig;
 	subscribers: FriendsConfig;
 	users: FriendsConfig;
-	subscriptions: FriendsConfig;
 }
 
 export interface IViewFriends extends IViewHome {
@@ -68,7 +67,6 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		this._renderFriends();
 		this._renderSubscribers();
 		this._renderUsers();
-		this._renderSubscriptions();
 	}
 
 	private _renderFriends(): void {
@@ -86,13 +84,6 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		);
 		subscribers.render();
 		this._addFriendsHandlers(subscribers);
-	}
-
-	private _renderSubscriptions() {
-		const content = this.content;
-		const subscriptions = new Friends(this._configFriends.subscriptions, content);
-		subscriptions.render();
-		this._addFriendsHandlers(subscriptions);
 	}
 
 	private _renderUsers() {
