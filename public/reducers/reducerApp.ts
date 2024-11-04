@@ -7,6 +7,7 @@ import {
 	ACTION_MENU_TYPES,
 	ActionMenuLinkClickData,
 } from '../actions/actionMenu';
+import { ACTION_POST_EDIT_TYPES } from '../actions/actionPostEdit';
 import { ACTION_PROFILE_EDIT_TYPES } from '../actions/actionProfileEdit';
 import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
 import { ACTION_USER_TYPES } from '../actions/actionUser';
@@ -47,6 +48,9 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 				break;
 			case ACTION_PROFILE_EDIT_TYPES.goToProfileEdit:
 				router.goToPage(PAGE_LINKS.profileEdit);
+				break;
+			case ACTION_POST_EDIT_TYPES.goToPostEdit:
+				router.goToPage(PAGE_LINKS.postEdit);
 				break;
 		}
 	}
