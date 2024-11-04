@@ -482,11 +482,11 @@ class Ajax {
 	/**
 	 * Запрос, содержащий jsons
 	 */
-	private _jsonRequest(baseUrl: string, body: object, method: string) {
+	private _jsonRequest(baseUrl: string, method: string, body?: object) {
 		return new Request(baseUrl, {
 			method: method,
 			credentials: 'include',
-			body: JSON.stringify(body),
+			body: body ? JSON.stringify(body) : undefined,
 			headers: {
 				'Content-Type': 'application/json:charset=UTF-8',
 			},
