@@ -34,9 +34,9 @@ export class Friend extends BaseComponent implements IFriend {
 
 	protected _prerender(): void {
 		super._prerender();
-		this._templateContext = { 
+		this._templateContext = {
 			...this.config,
-		 };
+		};
 	}
 
 	get removeFriendButton(): HTMLElement {
@@ -74,5 +74,5 @@ export class Friend extends BaseComponent implements IFriend {
 			throw new Error('subscribeFriendButton not found');
 		}
 		return html;
-	}	
+	}
 }

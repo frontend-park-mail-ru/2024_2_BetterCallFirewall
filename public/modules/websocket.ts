@@ -1,5 +1,7 @@
 import { Action } from '../actions/action';
+import { ActionMessagesNewMessage } from '../actions/actionMessages';
 import dispatcher from '../dispatcher/dispatcher';
+import { MessageResponse } from '../models/message';
 
 export default class WebsocketClient {
 	private _socket: WebSocket;
@@ -25,15 +27,17 @@ export default class WebsocketClient {
 		console.log('WS open:', event);
 	}
 
-	private _onMessage(event: Event) {
-		console.log('WS message:', event);
+	private _onMessage(event: MessageEvent) {
+		console.log('WS message:', event.data);
+		const message: MessageResponse = JSON.parse(event.data);
+		this._sendAction(new ActionMessagesNewMessage(message));
 	}
 
 	private _onError(event: Event) {
 		console.log('WS error:', event);
 	}
 
-	private _onClose(event: Event) {
+	private _onClose(event: CloseEvent) {
 		console.log('WS close:', event);
 	}
 }
