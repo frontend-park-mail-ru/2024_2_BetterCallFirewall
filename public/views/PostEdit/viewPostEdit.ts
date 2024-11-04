@@ -93,7 +93,7 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 	private _addHandlers() {
 		this.content.addHandler(
 			this._postEditForm.htmlElement,
-			'click',
+			'submit',
 			(event) => {
 				event.preventDefault();
 				const formData = this._postEditForm.formData;

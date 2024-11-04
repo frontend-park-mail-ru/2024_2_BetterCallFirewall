@@ -96,7 +96,7 @@ class Ajax {
 		formData: FormData,
 		postId: number,
 	): Promise<AjaxResponse<PostResponse>> {
-		const url = app.config.URL.feed.replace('{id}', `${postId}`);
+		const url = app.config.URL.post.replace('{id}', `${postId}`);
 		const request = this._putFormRequest(url, formData);
 		return this._postResponse(request);
 	}
