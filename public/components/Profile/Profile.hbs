@@ -17,7 +17,9 @@
                 {{#if this.isFriend}}
                 <button class="button-action button-no-decorations">Добавить в друзья</button>
                 {{/if}}
+                {{#if !this.isAuthor}}
                 <a href="" class="write-message">Написать сообщение</a>
+                {{/if}}
                 {{#if this.isAuthor}}
                 <a href="{{this.createPostHref}}" class="profile-edit">Редактировать профиль</a>
                 {{/if}}
