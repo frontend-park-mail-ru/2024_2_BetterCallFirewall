@@ -1,6 +1,10 @@
 import { Action } from '../actions/action';
 import { ActionAppInit } from '../actions/actionApp';
 import {
+	ActionChatRequestFail,
+	ActionChatRequestSuccess,
+} from '../actions/actionChat';
+import {
 	actionFeedPostCreateFail,
 	ActionFeedPostCreateSuccess,
 	ActionPostsRequestFail,
@@ -353,6 +357,21 @@ class API {
 				break;
 			default:
 				this.sendAction(new actionMessagesRequestFail());
+		}
+	}
+
+	async getChat(profileId: number) {
+		const response = await ajax.getChat(profileId);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					this.sendAction(new ActionChatRequestFail());
+					break;
+				}
+				this.sendAction(new ActionChatRequestSuccess(response.data));
+				break;
+			default:
+				this.sendAction(new ActionChatRequestFail());
 		}
 	}
 }

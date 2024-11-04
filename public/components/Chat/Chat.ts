@@ -2,6 +2,7 @@ import BaseComponent, {
 	IBaseComponent,
 	IBaseComponentConfig,
 } from '../BaseComponent';
+import { IChatMessageConfig } from '../ChatMessage/ChatMessage';
 
 export interface IChatConfig extends IBaseComponentConfig {
 	userId: number;
@@ -9,6 +10,7 @@ export interface IChatConfig extends IBaseComponentConfig {
 	companionName: string;
 	lastDateOnline: string;
 	backButtonHref: string;
+	messages: IChatMessageConfig[];
 }
 
 export interface IChat extends BaseComponent {}

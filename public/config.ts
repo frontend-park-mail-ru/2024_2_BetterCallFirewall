@@ -309,6 +309,7 @@ const chatComponentConfig: IChatConfig = {
 	companionName: '',
 	lastDateOnline: '',
 	backButtonHref: PAGE_LINKS.messages,
+	messages: [],
 };
 
 const chatConfig: ViewChatConfig = {
@@ -397,6 +398,7 @@ const URL: URLInterface = DEBUG
 			profileSubscriptions: '',
 			post: '',
 			messages: '',
+			chat: '',
 			chatWS: '',
 		}
 	: {
@@ -417,7 +419,8 @@ const URL: URLInterface = DEBUG
 			removeFriend: ROOT + '/api/v1/profile/{id}/friend/remove',
 			profileSubscriptions: ROOT + apiv1 + '/profile/{id}/subscriptions',
 			post: ROOT + apiv1 + '/feed/{id}',
-			messages: ROOT + apiv1 + '/chat',
+			messages: ROOT + apiv1 + 'messages/chats',
+			chat: ROOT + apiv1 + '/messages/chat/{id}',
 			chatWS: ROOT_WS + '/messages/chat',
 		};
 

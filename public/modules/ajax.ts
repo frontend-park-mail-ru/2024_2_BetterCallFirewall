@@ -31,6 +31,10 @@ export interface AjaxResponse<T> extends FetchResponse<T> {
 
 export type QueryParams = Record<string, string>;
 
+const replaceId = (url: string, id: number): string => {
+	return url.replace('{id}', `${id}`);
+};
+
 class Ajax {
 	/**
 	 * Post request with data and raising callback
@@ -277,20 +281,29 @@ class Ajax {
 	 * Запрос списка чатов
 	 */
 	async getMessages(): Promise<AjaxResponse<ChatResponse[]>> {
-		const request = this._getRequest(app.config.URL.messages);
-		const response = await this._response(request);
-		try {
-			const body = await response.json();
-			const messagesResponse: AjaxResponse<ChatResponse[]> =
-				Object.assign({}, body);
-			messagesResponse.status = response.status;
-			return messagesResponse;
-		} catch {
-			return {
-				status: response.status,
-				success: false,
-			};
-		}
+		// const request = this._getRequest(app.config.URL.messages);
+		// const response = await this._response(request);
+		// try {
+		// 	const body = await response.json();
+		// 	const messagesResponse: AjaxResponse<ChatResponse[]> =
+		// 		Object.assign({}, body);
+		// 	messagesResponse.status = response.status;
+		// 	return messagesResponse;
+		// } catch {
+		// 	return {
+		// 		status: response.status,
+		// 		success: false,
+		// 	};
+		// }
+		return this._genericRequest(app.config.URL.messages, {}, 'get');
+	}
+
+	async getChat(profileId: number): Promise<AjaxResponse<ChatResponse>> {
+		return this._genericRequest(
+			replaceId(app.config.URL.chat, profileId),
+			{},
+			'get',
+		);
 	}
 
 	/**
@@ -328,6 +341,23 @@ class Ajax {
 			.then((response) => response.json())
 			.then((data) => config.callback(data, null))
 			.catch((error) => config.callback(null, error));
+	}
+
+	private async _genericRequest<T>(
+		baseUrl: string,
+		data: object,
+		method: string,
+	): Promise<AjaxResponse<T>> {
+		const request = this._jsonRequest(baseUrl, data, method);
+		const response = await this._response(request);
+		try {
+			const body = await response.json();
+			const ajaxResponse: AjaxResponse<T> = Object.assign({}, body);
+			ajaxResponse.status = response.status;
+			return ajaxResponse;
+		} catch {
+			return { status: response.status, success: false };
+		}
 	}
 
 	/**

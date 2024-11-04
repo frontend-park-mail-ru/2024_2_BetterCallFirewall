@@ -98,7 +98,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 		for (let i = 0; i < 15; i++) {
 			const message = new ChatMessage(
 				{
-					userId: 0,
+					userId: i,
 					key: 'chatMessage',
 					messageAvatar: '../../img/avatar.png',
 					messageName: 'Asap Rocky',
