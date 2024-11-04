@@ -229,6 +229,13 @@ const profileEditConfig: ViewProfileEditConfig = {
 				name: 'last_name',
 				validator: Validator.validateName,
 			},
+			description: {
+				key: 'description',
+				type: 'text',
+				placeholder: 'Описание',
+				name: 'text',
+				validator: Validator.validateName,
+			},
 			email: {
 				key: 'email',
 				type: 'text',
@@ -253,6 +260,7 @@ const profileEditConfig: ViewProfileEditConfig = {
 				validator: Validator.validateImg,
 			},
 		},
+
 		button: {
 			key: 'profileEditButton',
 			text: 'Сохранить',
