@@ -1,7 +1,6 @@
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
 import { ACTION_LOGIN_TYPES } from '../../actions/actionLogin';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
-import { ActionProfileEditGoTo } from '../../actions/actionProfileEdit';
 import { ACTION_SIGNUP_TYPES } from '../../actions/actionSignup';
 import api from '../../api/api';
 import { IPostConfig, Post, Root } from '../../components';
@@ -96,7 +95,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	private _addPostHandlers(post: Post) {
 		post.addHandler(post.editButton, 'click', (event) => {
 			event.preventDefault();
-			this.sendAction(new ActionPostEditGoTo());
+			this.sendAction(new ActionPostEditGoTo(post.config.id));
 		});
 	}
 
@@ -110,7 +109,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			if (!pending) {
 				pending = true;
 				await api.requestPosts(this.lastPostId);
-				// await this._requestPosts();
 				pending = false;
 			}
 		};

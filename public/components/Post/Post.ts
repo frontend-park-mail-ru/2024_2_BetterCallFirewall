@@ -19,7 +19,7 @@ export interface IPost extends IBaseComponent {}
  * Class of post
  */
 export class Post extends BaseComponent implements IPost {
-	protected _config: IPostConfig | null;
+	protected _config: IPostConfig;
 
 	/**
 	 * Instance of post
@@ -30,6 +30,10 @@ export class Post extends BaseComponent implements IPost {
 	constructor(config: IPostConfig, parent: IBaseComponent | null) {
 		super(config, parent);
 		this._config = config;
+	}
+
+	get config(): IPostConfig {
+		return this._config;
 	}
 
 	get editButton(): HTMLElement {

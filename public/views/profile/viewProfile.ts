@@ -125,7 +125,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	private _addPostHandlers(post: Post) {
 		post.addHandler(post.editButton, 'click', (event) => {
 			event.preventDefault();
-			this.sendAction(new ActionPostEditGoTo());
+			this.sendAction(new ActionPostEditGoTo(post.config.id));
 		});
 	}
 }

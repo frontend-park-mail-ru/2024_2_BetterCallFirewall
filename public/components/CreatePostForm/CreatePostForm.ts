@@ -21,10 +21,6 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 		throw new Error('form not found');
 	}
 
-	get formData(): FormData {
-		return new FormData(this.form as HTMLFormElement);
-	}
-
 	get submitButton(): HTMLElement {
 		const html = this.htmlElement.querySelector(
 			'.form__button',

@@ -1,6 +1,11 @@
+import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import { ACTION_POST_EDIT_TYPES } from '../../actions/actionPostEdit';
+import api from '../../api/api';
 import { Root } from '../../components';
-import { IPostEditFormConfig, PostEditForm } from '../../components/PostEditForm/PostEditForm';
+import {
+	IPostEditFormConfig,
+	PostEditForm,
+} from '../../components/PostEditForm/PostEditForm';
 import { ChangePostEdit } from '../../stores/storePostEdit';
 import {
 	ComponentsHome,
@@ -15,6 +20,7 @@ export type ComponentsPostEdit = {
 
 export interface ViewPostEditConfig extends HomeConfig {
 	postEditForm: IPostEditFormConfig;
+	postId: number;
 }
 
 export interface IViewPostEdit extends IViewHome {
@@ -32,12 +38,20 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 
 	handleChange(change: ChangePostEdit): void {
 		super.handleChange(change);
-		this._configPostEdit = Object.assign(
-			this._configPostEdit,
-			change.data,
-		);
 		switch (change.type) {
+			case ACTION_POST_EDIT_TYPES.requestSuccess:
+				this.sendAction(
+					new ActionMenuLinkClick({ href: this._profileLinkHref }),
+				);
+				break;
+			case ACTION_POST_EDIT_TYPES.requestFail:
+				this.updateViewProfileEdit(change.data);
+				break;
 			case ACTION_POST_EDIT_TYPES.goToPostEdit:
+				this._configPostEdit = Object.assign(
+					this._configPostEdit,
+					change.data,
+				);
 				this.render();
 				break;
 		}
@@ -55,6 +69,7 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 	protected _render(): void {
 		super._render();
 		this._renderProfileEditForm();
+		this._addHandlers();
 	}
 
 	protected _renderProfileEditForm(): void {
@@ -65,5 +80,25 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 		);
 		profileEditForm.render();
 		this._components.profileEditForm = profileEditForm;
+	}
+
+	private get _postEditForm(): PostEditForm {
+		const form = this._components.postEditForm;
+		if (!form) {
+			throw new Error('postEditForm not found');
+		}
+		return form;
+	}
+
+	private _addHandlers() {
+		this.content.addHandler(
+			this._postEditForm.htmlElement,
+			'click',
+			(event) => {
+				event.preventDefault();
+				const formData = this._postEditForm.formData;
+				api.editPost(formData, this._configPostEdit.postId);
+			},
+		);
 	}
 }

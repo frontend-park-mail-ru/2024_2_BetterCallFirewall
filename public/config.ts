@@ -345,6 +345,7 @@ const postEditFormConfig: IPostEditFormConfig = {
 const editPostConfig: ViewPostEditConfig = {
 	...homeConfig,
 	postEditForm: postEditFormConfig,
+	postId: -1,
 };
 
 export const ROOT: string = DEBUG

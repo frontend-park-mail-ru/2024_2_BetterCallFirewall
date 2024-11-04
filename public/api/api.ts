@@ -227,6 +227,18 @@ class API {
 				this.sendAction(new actionFeedPostCreateFail());
 		}
 	}
+
+	async editPost(formData: FormData, postId: number) {
+		const response = await ajax.editPost(formData, postId);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					return;
+				}
+				break;
+			default:
+		}
+	}
 }
 
 export default new API();
