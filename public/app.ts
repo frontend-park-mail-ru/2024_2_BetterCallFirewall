@@ -82,6 +82,7 @@ export interface URLInterface {
 	header: string;
 	post: string;
 	messages: string;
+	chat: string;
 	chatWS: string;
 }
 
