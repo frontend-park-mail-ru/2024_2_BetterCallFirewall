@@ -94,14 +94,14 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 	}
 
 	private _addFriendsHandlers(people: Friends) {
-		// people.listPeople.forEach((person) => {
-			// const personConfig = person.config as IFriendConfig;
-			// if (personConfig.isFriend) {
-			// 	person.addHandler(person.removeFriendButton, 'click', (event) => {
-			// 		event.preventDefault();
-			// 		api.removeFriend(personConfig.id);
-			// 	});
-			// }
+		people.listPeople.forEach((person) => {
+			const personConfig = person.config as IFriendConfig;
+			if (personConfig.isFriend) {
+				person.addHandler(person.removeFriendButton, 'click', (event) => {
+					event.preventDefault();
+					api.removeFriend(personConfig.id);
+				});
+			}
 			// else if (personConfig.isSubscriber) {
 			// 	person.addHandler(person.acceptFriendButton, 'click', (event) => {
 			// 		event.preventDefault();
@@ -120,7 +120,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 			// 		api.subscribeToProfile(personConfig.id);
 			// 	});
 			// }
-			// this.updateViewFriends(this._configFriends);
-		// });
+			this.updateViewFriends(this._configFriends);
+		});
 	}
 }
