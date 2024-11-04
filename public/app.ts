@@ -51,6 +51,12 @@ import {
 import { StoreProfileEdit } from './stores/storeProfileEditForm';
 import { ACTION_PROFILE_EDIT_TYPES } from './actions/actionProfileEdit';
 import { ACTION_FRIENDS_TYPES } from './actions/actionFriends';
+import {
+	ViewPostEdit,
+	ViewPostEditConfig,
+} from './views/PostEdit/viewPostEdit';
+import { ACTION_POST_EDIT_TYPES } from './actions/actionPostEdit';
+import { StorePostEdit } from './stores/storePostEdit';
 
 export const PAGES = {
 	home: 'home',
@@ -89,6 +95,7 @@ export interface AppConfig {
 	chatConfig: ViewChatConfig;
 	friendsConfig: ViewFriendsConfig;
 	createPostConfig: ViewCreatePostConfig;
+	editPostConfig: ViewPostEditConfig;
 }
 
 export interface AppStores {
@@ -103,6 +110,7 @@ export interface AppStores {
 	friends: StoreFriends;
 	createPost: StoreCreatePost;
 	profileEdit: StoreProfileEdit;
+	postEdit: StorePostEdit;
 }
 
 /**
@@ -151,6 +159,10 @@ class App {
 			this._root,
 		);
 		const chatView = new ViewChat(this._config.chatConfig, this._root);
+		const postEditView = new ViewPostEdit(
+			this._config.editPostConfig,
+			this._root,
+		);
 		const routerConfig: RouterConfig = [
 			{
 				path: PAGE_LINKS.feed,
@@ -188,6 +200,10 @@ class App {
 				path: PAGE_LINKS.profile,
 				view: profileView,
 			},
+			{
+				path: PAGE_LINKS.postEdit,
+				view: postEditView,
+			},
 		];
 		this._router = new Router(feedView, routerConfig);
 
@@ -204,6 +220,7 @@ class App {
 			chat: new StoreChat(storeHome),
 			createPost: new StoreCreatePost(storeHome),
 			profileEdit: new StoreProfileEdit(storeHome),
+			postEdit: new StorePostEdit(storeHome),
 		};
 
 		this._stores.app.subscribe(ACTION_APP_TYPES.actionAppInit);
@@ -219,6 +236,7 @@ class App {
 		this._stores.app.subscribe(ACTION_CHAT_TYPES.goToChat);
 		this._stores.app.subscribe(ACTION_CREATE_POST_TYPES.goToCreatePost);
 		this._stores.app.subscribe(ACTION_PROFILE_EDIT_TYPES.goToProfileEdit);
+		this._stores.app.subscribe(ACTION_POST_EDIT_TYPES.goToPostEdit);
 
 		this._stores.home.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.menuLinkClick);
@@ -293,6 +311,8 @@ class App {
 			ACTION_PROFILE_EDIT_TYPES.goToProfileEdit,
 		);
 
+		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.goToPostEdit);
+
 		loginView.register(this._stores.login);
 
 		signupView.register(this._stores.signup);
@@ -317,6 +337,9 @@ class App {
 
 		friendView.register(this._stores.home);
 		friendView.register(this._stores.friends);
+
+		postEditView.register(this._stores.home);
+		postEditView.register(this._stores.postEdit);
 	}
 
 	get router(): Router {

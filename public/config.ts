@@ -12,6 +12,8 @@ import { HomeConfig } from './views/home/viewHome';
 import { ViewProfileConfig } from './views/profile/viewProfile';
 import { ViewCreatePostConfig } from './views/createPost/viewCreatePost';
 import { ViewProfileEditConfig } from './views/profileEdit/viewProfileEdit';
+import { ViewPostEditConfig } from './views/PostEdit/viewPostEdit';
+import { IPostEditFormConfig } from './components/PostEditForm/PostEditForm';
 
 const DEBUG: boolean = false;
 
@@ -24,8 +26,8 @@ export const PAGE_LINKS = {
 	friends: '/friends',
 	createPost: '/create-post',
 	profileEdit: '/profile-edit',
-	profile: '/([\\w-]+)', // ????
-	// profile: '/', // ????
+	profile: '/([\\w-]+)',
+	postEdit: '/post-edit',
 };
 
 const homeConfig: HomeConfig = {
@@ -332,6 +334,19 @@ const friendsConfig: ViewFriendsConfig = {
 	},
 };
 
+const postEditFormConfig: IPostEditFormConfig = {
+	key: 'postEditForm',
+	button: {
+		key: 'submitButton',
+		text: 'Сохранить пост',
+	},
+};
+
+const editPostConfig: ViewPostEditConfig = {
+	...homeConfig,
+	postEditForm: postEditFormConfig,
+};
+
 export const ROOT: string = DEBUG
 	? 'http://127.0.0.1:8000'
 	: 'http://185.241.194.197:8080';
@@ -389,6 +404,7 @@ const config: AppConfig = {
 	messagesConfig,
 	chatConfig,
 	friendsConfig,
+	editPostConfig,
 };
 
 export default config;
