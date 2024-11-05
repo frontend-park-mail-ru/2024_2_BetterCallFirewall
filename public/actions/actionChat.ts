@@ -1,5 +1,5 @@
 import { IChatConfig } from '../components/Chat/Chat';
-import { MessageResponse } from '../models/message';
+import { MessageResponse, MessageSend } from '../models/message';
 import { Action, ActionType } from './action';
 
 export const ACTION_CHAT_TYPES = {
@@ -8,6 +8,7 @@ export const ACTION_CHAT_TYPES = {
 	requestChat: 'ActionChatRequest',
 	requestChatSuccess: 'ActionChatRequestSuccess',
 	requestChatFail: 'ActionChatRequestFail',
+	sendMessage: 'ActionChatSendMessage',
 };
 
 export class ActionUpdateChat implements Action {
@@ -62,4 +63,17 @@ export class ActionChatRequestSuccess implements Action {
 export class ActionChatRequestFail implements Action {
 	type: ActionType = ACTION_CHAT_TYPES.requestChatFail;
 	data: object = {};
+}
+
+export interface ActionChatSendMessageData {
+	message: MessageSend;
+}
+
+export class ActionChatSendMessage implements Action {
+	type: ActionType = ACTION_CHAT_TYPES.sendMessage;
+	data: ActionChatSendMessageData;
+
+	constructor(message: MessageSend) {
+		this.data = { message };
+	}
 }

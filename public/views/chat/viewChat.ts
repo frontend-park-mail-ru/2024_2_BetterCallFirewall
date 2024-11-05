@@ -1,11 +1,11 @@
 import {
 	ACTION_CHAT_TYPES,
 	ActionChatRequest,
+	ActionChatSendMessage,
 	ActionUpdateChat,
 } from '../../actions/actionChat';
 import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import { ACTION_MESSAGES_TYPES } from '../../actions/actionMessages';
-import app from '../../app';
 import { Root } from '../../components';
 import { Chat, IChatConfig } from '../../components/Chat/Chat';
 import dispatcher from '../../dispatcher/dispatcher';
@@ -49,6 +49,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 					new ActionChatRequest(this._configChat.chat.companionId),
 				);
 				break;
+			case ACTION_CHAT_TYPES.sendMessage:
 			case ACTION_MESSAGES_TYPES.newMessage:
 			case ACTION_CHAT_TYPES.requestChatSuccess:
 			case ACTION_CHAT_TYPES.updateChat:
@@ -113,7 +114,8 @@ export class ViewChat extends ViewHome implements IViewChat {
 				content: this._chat.text,
 				receiver: this._chat.config.companionId,
 			};
-			app.websocket.sendMessage(message);
+			this.sendAction(new ActionChatSendMessage(message));
+			// app.websocket.sendMessage(message);
 		});
 	}
 
