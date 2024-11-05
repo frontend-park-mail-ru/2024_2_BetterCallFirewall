@@ -281,21 +281,7 @@ const profileConfig: ViewProfileConfig = {
 	path: '/',
 };
 
-const messagesComponentConfig: IMessageConfig[] = Array.from(
-	{ length: 10 },
-	() => {
-		return {
-			authorId: -1,
-			key: 'messages',
-			avatar: '',
-			name: '',
-			lastMessage: '',
-			date: '',
-			unreadedCount: -1,
-			href: PAGE_LINKS.chat,
-		};
-	},
-);
+const messagesComponentConfig: IMessageConfig[] = [];
 
 const messagesConfig: ViewMessagesConfig = {
 	...homeConfig,
@@ -309,16 +295,7 @@ const chatComponentConfig: IChatConfig = {
 	companionName: '',
 	lastDateOnline: '',
 	backButtonHref: PAGE_LINKS.messages,
-	messages: Array.from({ length: 15 }, (v, k) => {
-		return {
-			userId: k,
-			key: `chatMessage-${k}`,
-			messageAvatar: '../../img/avatar.png',
-			messageName: 'Asap Rocky',
-			messageText: 'Привет! Как дела?',
-			createdAt: '19:00',
-		};
-	}),
+	messages: [],
 };
 
 const chatConfig: ViewChatConfig = {
