@@ -1,4 +1,5 @@
 import { Action, ActionType } from '../actions/action';
+import app from '../app';
 import { Router } from '../router/router';
 import { Store } from '../stores/store';
 
@@ -21,6 +22,7 @@ export class Dispatcher {
 				store.handleAction(action);
 			});
 		}
+		app.websocket.handleAction(action);
 	}
 
 	addListener(store: Store, actionType: ActionType) {
