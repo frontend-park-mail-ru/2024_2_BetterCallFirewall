@@ -74,8 +74,9 @@
         width: 80%;
         img {
             height: 2.5rem;
-            width: auto;
+            width: 2.5rem;
             margin-right: .6rem;
+            object-fit: cover;
         }
     }
 
