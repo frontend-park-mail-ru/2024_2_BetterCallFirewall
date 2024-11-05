@@ -7,6 +7,7 @@ export interface IMenuLinkConfig extends IBaseComponentConfig {
 	text: string;
 	href: string;
 	icon: string;
+	active?: boolean;
 }
 
 export interface IMenuLink extends IBaseComponent {}

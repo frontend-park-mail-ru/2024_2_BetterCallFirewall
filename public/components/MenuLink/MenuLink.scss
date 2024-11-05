@@ -37,6 +37,16 @@
     }
 }
 
+.link-active {
+    background-color: var(--main-bg-color);
+    .menu-link__item {
+        color: var(--main-text-color);
+    }
+    .menu-link__logo svg {
+        fill: var(--main-text-color);
+    }
+}
+
 .logo {
     &__profile {
         width: 1.4rem;
