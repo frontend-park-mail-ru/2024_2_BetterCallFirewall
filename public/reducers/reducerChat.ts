@@ -34,7 +34,7 @@ export const reducerChat = (
 			const messageResponse: MessageResponse = {
 				sender: newState.main.header.profile.id,
 				content: actionData.message.content,
-				created_at: parseTime(new Date().toString()),
+				created_at: parseTime(new Date().toISOString()),
 			};
 			newState.chat.messages.push(
 				toChatMessageConfig(newState.chat, messageResponse),
