@@ -172,7 +172,7 @@ export default class Validator {
 					case 'password':
 						error = Validator.validatePassword(value);
 						break;
-					case 'passwordAgain':
+					case 'password_again':
 						error = Validator.validateConfirmation(value);
 						break;
 					case 'text':

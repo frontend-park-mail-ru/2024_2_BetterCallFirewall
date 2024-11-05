@@ -5,7 +5,6 @@ import {
 	ActionLoginToSignupClick,
 } from '../../actions/actionLogin';
 import {
-	IInputConfig,
 	ILoginFormConfig,
 	LoginForm,
 	Root,
