@@ -7,7 +7,7 @@ import { MessageResponse } from './message';
 
 export interface ChatResponse {
 	last_message: MessageResponse;
-	last_sent_message: string;
+	last_date: string;
 	receiver: HeaderResponse;
 }
 
@@ -18,7 +18,7 @@ export const toMessageConfig = (chatResponse: ChatResponse): IMessageConfig => {
 		avatar: parseImage(chatResponse.receiver.avatar),
 		name: `${chatResponse.receiver.author}`,
 		lastMessage: chatResponse.last_message.content,
-		date: parseTime(chatResponse.last_sent_message),
+		date: parseTime(chatResponse.last_date),
 		unreadedCount: -1,
 		href: PAGE_LINKS.chat,
 	};
