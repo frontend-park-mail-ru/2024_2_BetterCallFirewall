@@ -428,7 +428,7 @@ const URL: URLInterface = DEBUG
 			removeFriend: ROOT + '/api/v1/profile/{id}/friend/remove',
 			profileSubscriptions: ROOT + apiv1 + '/profile/{id}/subscriptions',
 			post: ROOT + apiv1 + '/feed/{id}',
-			messages: ROOT + apiv1 + 'messages/chats',
+			messages: ROOT + apiv1 + '/messages/chats',
 			chat: ROOT + apiv1 + '/messages/chat/{id}',
 			chatWS: ROOT_WS + apiv1 + '/ws',
 		};

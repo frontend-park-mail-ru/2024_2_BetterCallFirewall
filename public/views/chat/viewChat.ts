@@ -4,6 +4,7 @@ import {
 	ActionUpdateChat,
 } from '../../actions/actionChat';
 import { ActionMenuLinkClick } from '../../actions/actionMenu';
+import { ACTION_MESSAGES_TYPES } from '../../actions/actionMessages';
 import app from '../../app';
 import { Root } from '../../components';
 import { Chat, IChatConfig } from '../../components/Chat/Chat';
@@ -45,6 +46,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 				this.render();
 				this.sendAction(new ActionChatRequest());
 				break;
+			case ACTION_MESSAGES_TYPES.newMessage:
 			case ACTION_CHAT_TYPES.requestChatSuccess:
 			case ACTION_CHAT_TYPES.updateChat:
 				this.updateViewChat(change.data);
@@ -109,7 +111,6 @@ export class ViewChat extends ViewHome implements IViewChat {
 				receiver: this._chat.config.userId,
 			};
 			app.websocket.sendMessage(message);
-			// this.sendAction(new ActionMesssagesSendMessage(message));
 		});
 	}
 
