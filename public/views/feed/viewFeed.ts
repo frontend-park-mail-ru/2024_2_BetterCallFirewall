@@ -140,7 +140,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 					func();
 					options.isThrottled = true;
 					setTimeout(() => {
-						options.isThrottled = false;
+						// options.isThrottled = false;
 					}, delay);
 				}
 			};
