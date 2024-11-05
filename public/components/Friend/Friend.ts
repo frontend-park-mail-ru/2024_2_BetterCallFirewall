@@ -15,7 +15,7 @@ export interface IFriendConfig extends IBaseComponentConfig {
 export interface IFriend extends BaseComponent {}
 
 export class Friend extends BaseComponent implements IFriend {
-	protected _config: IFriendConfig | null;
+	protected _config: IFriendConfig;
 	protected isUnknown: boolean = false;
 	/**
 	 * Instance of friend
@@ -26,9 +26,17 @@ export class Friend extends BaseComponent implements IFriend {
 	constructor(config: IFriendConfig, parent: IBaseComponent) {
 		super(config, parent);
 		this._config = config;
-		if (!this._config.isFriend && !this._config.isSubscriber && !this._config.isSubscription) {
+		if (
+			!this._config.isFriend &&
+			!this._config.isSubscriber &&
+			!this._config.isSubscription
+		) {
 			this.isUnknown = true;
 		}
+	}
+
+	get config(): IFriendConfig {
+		return this._config;
 	}
 
 	render(show: boolean = true): string {
@@ -38,10 +46,10 @@ export class Friend extends BaseComponent implements IFriend {
 
 	protected _prerender(): void {
 		super._prerender();
-		this._templateContext = { 
+		this._templateContext = {
 			...this.config,
 			isUnknown: this.isUnknown,
-		 };
+		};
 	}
 
 	get removeFriendButton(): HTMLElement {
@@ -79,5 +87,12 @@ export class Friend extends BaseComponent implements IFriend {
 			throw new Error('subscribeFriendButton not found');
 		}
 		return html;
-	}	
+	}
+	get profileLink(): HTMLElement {
+		const html = this.htmlElement.querySelector('.link') as HTMLElement;
+		if (!html) {
+			throw new Error('profileLink not found');
+		}
+		return html;
+	}
 }

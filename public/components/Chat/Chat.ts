@@ -16,7 +16,7 @@ export interface IChatConfig extends IBaseComponentConfig {
 export interface IChat extends BaseComponent {}
 
 export class Chat extends BaseComponent implements IChat {
-	protected _config: IChatConfig | null;
+	protected _config: IChatConfig;
 	private _messages: ChatMessage[] = [];
 
 	/**
@@ -28,6 +28,10 @@ export class Chat extends BaseComponent implements IChat {
 	constructor(config: IChatConfig, parent: IBaseComponent) {
 		super(config, parent);
 		this._config = config;
+	}
+
+	get config(): IChatConfig {
+		return this._config;
 	}
 
 	get backButtonHTML(): HTMLElement {
@@ -48,6 +52,24 @@ export class Chat extends BaseComponent implements IChat {
 			throw new Error('chatContent not found');
 		}
 		return html;
+	}
+
+	get form(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'form.sender',
+		) as HTMLElement;
+		if (!html) {
+			throw new Error('form not found');
+		}
+		return html;
+	}
+
+	get text(): string {
+		const textarea = this.form.querySelector('textarea');
+		if (!textarea) {
+			throw new Error('textarea not found');
+		}
+		return textarea.value ? textarea.value : '';
 	}
 
 	render(show: boolean = true): string {
@@ -72,8 +94,12 @@ export class Chat extends BaseComponent implements IChat {
 	}
 
 	protected addHandlers() {
-		const form = this.htmlElement.querySelector('.chat__bottom') as HTMLFormElement;
-		const textArea = this.htmlElement.querySelector('.sender__input') as HTMLTextAreaElement;
+		const form = this.htmlElement.querySelector(
+			'.chat__bottom',
+		) as HTMLFormElement;
+		const textArea = this.htmlElement.querySelector(
+			'.sender__input',
+		) as HTMLTextAreaElement;
 		if (textArea) {
 			textArea.addEventListener(
 				'keydown',

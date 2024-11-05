@@ -39,6 +39,11 @@ export class Friends extends BaseComponent {
 	get listPeople(): Friend[] {
 		return this._people;
 	}
+
+	remove(): void {
+		super.remove();
+		this._people = [];
+	}
 	
 	protected _prerender(): void {
 		super._prerender();

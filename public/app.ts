@@ -57,6 +57,7 @@ import {
 } from './views/PostEdit/viewPostEdit';
 import { ACTION_POST_EDIT_TYPES } from './actions/actionPostEdit';
 import { StorePostEdit } from './stores/storePostEdit';
+import WebsocketClient from './modules/websocket';
 
 export const PAGES = {
 	home: 'home',
@@ -125,6 +126,7 @@ class App {
 	private _root: Root;
 	private _stores: AppStores;
 	private _inited: boolean = false;
+	private _websocket: WebsocketClient;
 
 	/**
 	 * Instance of application
@@ -134,6 +136,8 @@ class App {
 	constructor(config: AppConfig) {
 		this._config = config;
 		this._root = new Root();
+
+		this._websocket = new WebsocketClient(this._config.URL.chatWS);
 
 		const feedView = new ViewFeed(this._config.feedConfig, this._root);
 		const profileView = new ViewProfile(
@@ -307,12 +311,16 @@ class App {
 		this._stores.messages.subscribe(
 			ACTION_MESSAGES_TYPES.requestMessagesFail,
 		);
+		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.sendMessage);
+		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.newMessage);
 
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.goToChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.updateChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChatSuccess);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChatFail);
+		this._stores.chat.subscribe(ACTION_MESSAGES_TYPES.sendMessage);
+		this._stores.chat.subscribe(ACTION_MESSAGES_TYPES.newMessage);
 
 		this._stores.createPost.subscribe(
 			ACTION_CREATE_POST_TYPES.updateCreatePost,
@@ -387,6 +395,10 @@ class App {
 
 	set inited(value: boolean) {
 		this._inited = value;
+	}
+
+	get websocket(): WebsocketClient {
+		return this._websocket;
 	}
 
 	init() {

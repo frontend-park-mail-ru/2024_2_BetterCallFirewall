@@ -1,5 +1,6 @@
 import { IMessageConfig } from '../components/Message/Message';
 import { ChatResponse } from '../models/chat';
+import { MessageResponse, MessageSend } from '../models/message';
 import { Action, ActionType } from './action';
 
 export const ACTION_MESSAGES_TYPES = {
@@ -8,6 +9,8 @@ export const ACTION_MESSAGES_TYPES = {
 	requestMessages: 'actionMessagesRequest',
 	requestMessagesSuccess: 'actionMessagesRequestSuccess',
 	requestMessagesFail: 'actionMessagesRequestFail',
+	newMessage: 'actionMessagesNewMessage',
+	sendMessage: 'actionMessagesSendMessage',
 };
 
 export interface ActionUpdateMessagesData extends IMessageConfig {}
@@ -56,4 +59,30 @@ export class ActionMessagesRequestSuccess implements Action {
 export class actionMessagesRequestFail implements Action {
 	type: ActionType = ACTION_MESSAGES_TYPES.requestMessagesFail;
 	data: object = {};
+}
+
+export interface ActionMessagesNewMessageData {
+	messageResponse: MessageResponse;
+}
+
+export class ActionMessagesNewMessage implements Action {
+	type: ActionType = ACTION_MESSAGES_TYPES.newMessage;
+	data: ActionMessagesNewMessageData;
+
+	constructor(messageResponse: MessageResponse) {
+		this.data = { messageResponse };
+	}
+}
+
+export interface ActionMesssagesSendMessageData {
+	message: MessageSend;
+}
+
+export class ActionMesssagesSendMessage implements Action {
+	type: ActionType = ACTION_MESSAGES_TYPES.sendMessage;
+	data: ActionMesssagesSendMessageData;
+
+	constructor(message: MessageSend) {
+		this.data = { message };
+	}
 }

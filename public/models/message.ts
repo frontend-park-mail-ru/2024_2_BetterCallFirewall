@@ -2,6 +2,11 @@ import { IChatConfig } from '../components/Chat/Chat';
 import { IChatMessageConfig } from '../components/ChatMessage/ChatMessage';
 import parseTime from '../modules/parseTime';
 
+export interface MessageSend {
+	content: string;
+	receiver: number;
+}
+
 export interface MessageResponse {
 	sender: number;
 	content: string;
