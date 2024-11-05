@@ -136,11 +136,16 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			options: Options,
 		) => {
 			return () => {
+				console.log('scroll');
 				if (!options.isThrottled) {
+					console.log('not throttled');
 					func();
 					options.isThrottled = true;
+					console.log('options:', options);
 					setTimeout(() => {
-						// options.isThrottled = false;
+						console.log('setTimeout');
+						options.isThrottled = false;
+						console.log('options:', options);
 					}, delay);
 				}
 			};
