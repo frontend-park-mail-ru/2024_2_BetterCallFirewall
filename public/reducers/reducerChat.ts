@@ -13,7 +13,6 @@ import { IChatConfig } from '../components/Chat/Chat';
 import config from '../config';
 import { MessageResponse, toChatMessageConfig } from '../models/message';
 import deepClone from '../modules/deepClone';
-import parseTime from '../modules/parseTime';
 import { ViewChatConfig } from '../views/chat/viewChat';
 
 const initialChatState: IChatConfig = deepClone(config.chatConfig.chat);
@@ -34,7 +33,7 @@ export const reducerChat = (
 			const messageResponse: MessageResponse = {
 				sender: newState.main.header.profile.id,
 				content: actionData.message.content,
-				created_at: parseTime(new Date().toISOString()),
+				created_at: new Date().toISOString(),
 			};
 			newState.chat.messages.push(
 				toChatMessageConfig(newState.chat, messageResponse),
@@ -46,17 +45,22 @@ export const reducerChat = (
 			newState.chat.messages.push(
 				toChatMessageConfig(newState.chat, actionData.messageResponse),
 			);
-			alert(
-				`Новое сообщение: ${actionData.messageResponse.content} от ${actionData.messageResponse.sender}`,
-			); // tmp
+			// alert(
+			// 	`Новое сообщение: ${actionData.messageResponse.content} от ${actionData.messageResponse.sender}`,
+			// ); // tmp
 			return newState;
 		}
 		case ACTION_CHAT_TYPES.requestChatSuccess: {
 			const actionData = action.data as ActionChatRequestSuccessData;
-			newState.chat.messages = actionData.messagesResponse.map(
-				(messageResponse) => {
-					return toChatMessageConfig(newState.chat, messageResponse);
-				},
+			newState.chat.messages = newState.chat.messages.concat(
+				actionData.messagesResponse
+					.map((messageResponse) => {
+						return toChatMessageConfig(
+							newState.chat,
+							messageResponse,
+						);
+					})
+					.reverse(),
 			);
 			return newState;
 		}

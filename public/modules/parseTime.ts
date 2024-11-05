@@ -8,8 +8,6 @@ const options: Intl.DateTimeFormatOptions = {
 };
 
 const parseTime = (isoDate: string) => {
-	console.log('parseTime:', isoDate);
-	debugger;
 	const date = new Date(isoDate);
 	return date.toLocaleString('ru-RU', options);
 };
