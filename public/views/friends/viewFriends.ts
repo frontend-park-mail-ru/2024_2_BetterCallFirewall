@@ -56,7 +56,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					this._configFriends.main.header.profile.id,
 				);
 				api.requestUsers();
-				api.requestSubscriptions(this._configFriends.main.header.profile.id);
+				// api.requestSubscriptions(this._configFriends.main.header.profile.id);
 				break;
 		}
 	}
@@ -75,7 +75,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		this._renderFriends();
 		this._renderSubscribers();
 		this._renderUsers();
-		this._renderSubscriptions();
+		// this._renderSubscriptions();
 	}
 
 	private _renderFriends(): void {
@@ -95,15 +95,15 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		this._addFriendsHandlers(subscribers);
 	}
 
-	private _renderSubscriptions() {
-		const content = this.content;
-		const subscriptions = new Friends(
-			this._configFriends.subscriptions,
-			content,
-		);
-		subscriptions.render();
-		this._addFriendsHandlers(subscriptions);
-	}
+	// private _renderSubscriptions() {
+	// 	const content = this.content;
+	// 	const subscriptions = new Friends(
+	// 		this._configFriends.subscriptions,
+	// 		content,
+	// 	);
+	// 	subscriptions.render();
+	// 	this._addFriendsHandlers(subscriptions);
+	// }
 
 	private _renderUsers() {
 		const content = this.content;
