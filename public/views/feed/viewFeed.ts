@@ -117,7 +117,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 				if (!limited) {
 					limited = true;
 					func();
-					const limit = 2000;
+					const limit = 1000;
 					setTimeout(() => {
 						limited = false;
 					}, limit);
