@@ -45,17 +45,22 @@ export const reducerChat = (
 			newState.chat.messages.push(
 				toChatMessageConfig(newState.chat, actionData.messageResponse),
 			);
-			alert(
-				`Новое сообщение: ${actionData.messageResponse.content} от ${actionData.messageResponse.sender}`,
-			); // tmp
+			// alert(
+			// 	`Новое сообщение: ${actionData.messageResponse.content} от ${actionData.messageResponse.sender}`,
+			// ); // tmp
 			return newState;
 		}
 		case ACTION_CHAT_TYPES.requestChatSuccess: {
 			const actionData = action.data as ActionChatRequestSuccessData;
-			newState.chat.messages = actionData.messagesResponse.map(
-				(messageResponse) => {
-					return toChatMessageConfig(newState.chat, messageResponse);
-				},
+			newState.chat.messages = newState.chat.messages.concat(
+				actionData.messagesResponse
+					.map((messageResponse) => {
+						return toChatMessageConfig(
+							newState.chat,
+							messageResponse,
+						);
+					})
+					.reverse(),
 			);
 			return newState;
 		}
