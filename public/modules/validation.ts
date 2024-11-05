@@ -12,17 +12,14 @@ export default class Validator {
 	}
 
 	static shieldingData(data: string): string {
-		data.replace(/&/g, '&amp;')
+		return data.replace(/&/g, '&amp;')
 			.replace(/</g, '&lt;')
 			.replace(/>/g, '&gt;')
 			.replace(/"/g, '&quot;')
 			.replace(/'/g, '&#039;');
-
-		return data;
 	}
 
-	static validateImg(img: HTMLInputElement): string {
-		const file = img.files?.[0];
+	static validateImg(file: File): string {
 		if (!file) {
 			return 'Файл не выбран';
 		}
@@ -47,8 +44,8 @@ export default class Validator {
 	 * @param {HTMLInputElement} confirm - Confirmation of password
 	 * @returns {string} - returns error
 	 */
-	static validateConfirmation(confirm: HTMLInputElement): string {
-		const confirmValue = Validator.shieldingData(confirm.value);
+	static validateConfirmation(confirm: string): string {
+		const confirmValue = Validator.shieldingData(confirm);
 		if (!confirmValue) {
 			return 'Пароль не может быть пустым';
 		}
@@ -68,8 +65,8 @@ export default class Validator {
 	 * @param {HTMLElement} password
 	 * @returns {String} - return error
 	 */
-	static validatePassword(password: HTMLInputElement): string {
-		const passwordValue: string = Validator.shieldingData(password.value);
+	static validatePassword(password: string): string {
+		const passwordValue: string = Validator.shieldingData(password);
 		if (!passwordValue) {
 			return 'Пароль не может быть пустым';
 		}
@@ -82,8 +79,8 @@ export default class Validator {
 		return '';
 	}
 
-	static validatePost(post: HTMLTextAreaElement): string {
-		const postValue: string = Validator.shieldingData(post.value);
+	static validatePost(post: string): string {
+		const postValue: string = Validator.shieldingData(post);
 		if (postValue.length > 2000) {
 			return 'Пост не должен превышать 2000 символов';
 		}
@@ -96,9 +93,9 @@ export default class Validator {
 	 * @param {HTMLElement} email
 	 * @returns {String} - return error
 	 */
-	static validateEmail(email: HTMLInputElement): string {
+	static validateEmail(email: string): string {
 		const emailRegex: RegExp = /^[\w-.]+@([\w-]+\.)\w{2,4}$/;
-		const emailValue: string = Validator.shieldingData(email.value.trim());
+		const emailValue: string = Validator.shieldingData(email);
 		if (!emailValue) {
 			return 'Email не может быть пустым';
 		}
@@ -116,8 +113,8 @@ export default class Validator {
 	 * @param {HTMLElement} name
 	 * @returns {String} - return error
 	 */
-	static validateName(name: HTMLInputElement): string {
-		const nameValue: string = Validator.shieldingData(name.value.trim());
+	static validateName(name: string): string {
+		const nameValue: string = Validator.shieldingData(name);
 		if (!nameValue) {
 			return 'Поле не может быть пустым';
 		}
@@ -155,40 +152,58 @@ export default class Validator {
 		return Object.entries(config);
 	}
 
-	/**
-	 * Validation based on config
-	 *
-	 * @param {Object} config
-	 * @param {HTMLElement} form
-	 * @returns {Object|null} - correct data
-	 */
-	validateForm(
-		config: Record<string, IInputConfig>,
-		form: HTMLElement,
-	): Record<string, string> | null {
-		const data: Record<string, string> = {};
-		let isValid: boolean = true;
+	validateForm(formData: FormData, form: HTMLElement) {
 		this.errorsDelete(form.parentNode as HTMLElement);
+		let hasErrors = false;
 
-		const inputs = this.configItems(config);
-		inputs.forEach(([, value]) => {
-			const input: HTMLInputElement = form.querySelector(
-				`#${value.name}`,
-			) as HTMLInputElement;
-			data[input.name] = input.value.trim();
-
-			const validator: (name: HTMLInputElement) => string =
-				value.validator;
-			const error: string = validator(input);
-			if (error) {
-				isValid = false;
+		for (const [key, value] of formData.entries()) {
+			let updatedValue = value;
+			let error: string = '';
+			if (typeof value === 'string') {
+				updatedValue = value.trim();
+				switch (key) {
+					case 'first_name':
+					case 'last_name':
+						error = Validator.validateName(value);
+						break;
+					case 'email':
+						error = Validator.validateEmail(value);
+						break;
+					case 'password':
+						error = Validator.validatePassword(value);
+						break;
+					case 'password_again':
+						error = Validator.validateConfirmation(value);
+						break;
+					case 'text':
+						error = Validator.validatePost(value);
+						break;
+				}
 			}
-			this.printError(input.parentNode as HTMLInputElement, error);
-		});
 
-		if (!isValid) {
+			if (value instanceof File) {
+				switch (key) {
+					case 'img':
+					case 'avatar':
+						error = Validator.validateImg(value);
+						break;
+				}
+				error = Validator.validateImg(value);
+			}
+			if (error) {
+				this.printError(form.querySelector(`[name="${key}"]`)?.parentElement as HTMLInputElement, error);
+				console.log('error:  ', key);
+				hasErrors = true;
+				error = '';
+			} else {
+				formData.delete(key);
+				formData.append(key, updatedValue);
+			}
+		}
+
+		if (hasErrors) {
 			return null;
 		}
-		return data;
+		return formData;
 	}
 }

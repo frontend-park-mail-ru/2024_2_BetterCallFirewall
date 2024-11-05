@@ -306,17 +306,24 @@ class Ajax {
 	 */
 	sendForm(
 		url: string,
-		formData: Record<string, string>,
+		formData: FormData,
 		callback: (response: Response | null, error?: Error) => void,
 	) {
+		const formDataObject: Record<string, string> = {};
+		formData.forEach((value, key) => {
+			if (typeof value === 'string') {
+				formDataObject[key] = value;
+			}
+		});
 		const request = new Request(url, {
 			method: 'POST',
-			body: JSON.stringify(formData),
+			body: JSON.stringify(formDataObject),
+			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json:charset=UTF-8',
 			},
-			credentials: 'include',
 		});
+		
 		fetch(request)
 			.then((response) => callback(response))
 			.catch((error) => callback(null, error));

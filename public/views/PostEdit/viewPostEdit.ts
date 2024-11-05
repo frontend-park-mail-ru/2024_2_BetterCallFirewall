@@ -6,6 +6,7 @@ import {
 	IPostEditFormConfig,
 	PostEditForm,
 } from '../../components/PostEditForm/PostEditForm';
+import Validator from '../../modules/validation';
 import { ChangePostEdit } from '../../stores/storePostEdit';
 import {
 	ComponentsHome,
@@ -96,8 +97,11 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 			'submit',
 			(event) => {
 				event.preventDefault();
-				const formData = this._postEditForm.formData;
-				api.editPost(formData, this._configPostEdit.postId);
+				const validator = new Validator();
+				const formData = validator.validateForm(this._postEditForm.formData, this._postEditForm.form);
+				if (formData) {
+					api.editPost(formData, this._configPostEdit.postId);
+				}
 			},
 		);
 	}

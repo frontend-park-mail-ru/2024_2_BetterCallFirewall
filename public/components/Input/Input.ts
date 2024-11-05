@@ -10,7 +10,6 @@ export interface IInputConfig extends IBaseComponentConfig {
 	accept?: string;
 	extra?: string;
 	type: string;
-	validator: (name: HTMLInputElement) => string;
 }
 
 export interface IInput extends IBaseComponent {}

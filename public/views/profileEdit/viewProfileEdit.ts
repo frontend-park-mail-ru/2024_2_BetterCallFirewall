@@ -6,6 +6,7 @@ import {
 	ProfileEditForm,
 	IProfileEditFormConfig,
 } from '../../components/ProfileEditForm/ProfileEditForm';
+import Validator from '../../modules/validation';
 import { ChangeProfileEdit } from '../../stores/storeProfileEditForm';
 import {
 	ComponentsHome,
@@ -93,8 +94,11 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 		const form = this._profileEditForm;
 		form.addHandler(form.htmlElement, 'submit', (event) => {
 			event.preventDefault();
-			const formData = form.formData;
-			api.editProfile(formData);
+			const validator = new Validator();
+			const formData = validator.validateForm(this._profileEditForm.formData, this._profileEditForm.form);
+			if (formData) {
+				api.editProfile(formData);
+			}
 		});
 	}
 }
