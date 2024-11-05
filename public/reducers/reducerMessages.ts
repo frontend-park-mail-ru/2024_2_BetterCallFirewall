@@ -1,6 +1,7 @@
 import { Action } from '../actions/action';
 import {
 	ACTION_MESSAGES_TYPES,
+	ActionMessagesNewMessageData,
 	ActionMessagesRequestSuccessData,
 	ActionUpdateMessagesData,
 } from '../actions/actionMessages';
@@ -27,7 +28,22 @@ export const reducerMessages = (
 		return state;
 	}
 	const newState = deepClone(state);
-	switch (action?.type) {
+	switch (action.type) {
+		case ACTION_MESSAGES_TYPES.newMessage: {
+			const actionData = action.data as ActionMessagesNewMessageData;
+			newState.messages = newState.messages.map((messageConfig) => {
+				if (
+					messageConfig.authorId === actionData.messageResponse.sender
+				) {
+					messageConfig.lastMessage =
+						actionData.messageResponse.content;
+					messageConfig.date = actionData.messageResponse.created_at;
+					return messageConfig;
+				}
+				return messageConfig;
+			});
+			return newState;
+		}
 		case ACTION_MESSAGES_TYPES.requestMessagesSuccess: {
 			const actionData = action.data as ActionMessagesRequestSuccessData;
 			newState.messages = actionData.chatsResponse.map((chatRespone) => {
