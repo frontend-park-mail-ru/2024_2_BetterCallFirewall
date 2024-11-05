@@ -144,6 +144,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 				fetchPosts();
 			}
 		};
-		this.content.addHandler(document, 'scroll', throttle(handler, 1000));
+		const throttledHandler = throttle(handler, 1000);
+		this.content.addHandler(document, 'scroll', throttledHandler);
 	}
 }
