@@ -46,7 +46,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 			case ACTION_CHAT_TYPES.goToChat:
 				this.render();
 				this.sendAction(
-					new ActionChatRequest(this._configChat.chat.userId),
+					new ActionChatRequest(this._configChat.chat.companionId),
 				);
 				break;
 			case ACTION_MESSAGES_TYPES.newMessage:
@@ -111,7 +111,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 			event.preventDefault();
 			const message: MessageSend = {
 				content: this._chat.text,
-				receiver: this._chat.config.userId,
+				receiver: this._chat.config.companionId,
 			};
 			app.websocket.sendMessage(message);
 		});

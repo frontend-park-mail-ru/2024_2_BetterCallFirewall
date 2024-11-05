@@ -25,6 +25,7 @@ export const headerResponseToHeaderConfig = (
 ): IHeaderConfig => {
 	const newHeaderConfig = deepClone(headerConfig);
 	newHeaderConfig.profile.id = headerResponse.author_id;
+	newHeaderConfig.profile.name = headerResponse.author;
 	newHeaderConfig.profile.avatar = parseImage(headerResponse.avatar);
 	return newHeaderConfig;
 };

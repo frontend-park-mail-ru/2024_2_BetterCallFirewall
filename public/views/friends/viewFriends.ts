@@ -53,7 +53,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 			case ACTION_FRIENDS_TYPES.getUsersSuccess:
 			case ACTION_FRIENDS_TYPES.getSubscribersSuccess:
 			case ACTION_FRIENDS_TYPES.getFriendsSuccess:
-				case ACTION_FRIENDS_TYPES.getSubscriptionsSuccess:
+			case ACTION_FRIENDS_TYPES.getSubscriptionsSuccess:
 				this.updateViewFriends(change.data);
 				break;
 			case ACTION_FRIENDS_TYPES.getFriends:
@@ -63,7 +63,9 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					this._configFriends.main.header.profile.id,
 				);
 				api.requestUsers();
-				api.requestSubscriptions(this._configFriends.main.header.profile.id);
+				api.requestSubscriptions(
+					this._configFriends.main.header.profile.id,
+				);
 				break;
 		}
 	}
@@ -172,12 +174,17 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					new ActionChatGoToChat({
 						chatConfig: {
 							key: `chat-${config.id}`,
-							userId: config.id,
+							companionId: config.id,
 							companionAvatar: config.avatar,
 							companionName: `${config.name}`,
 							lastDateOnline: '-1',
 							backButtonHref: PAGE_LINKS.messages,
 							messages: [],
+							myId: this._configFriends.main.header.profile.id,
+							myName: this._configFriends.main.header.profile
+								.name,
+							myAvatar:
+								this._configFriends.main.header.profile.avatar,
 						},
 					}),
 				);
