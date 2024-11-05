@@ -152,6 +152,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			const throttledHandler = throttle(handler, 1000);
 			return throttledHandler;
 		};
-		this.content.addHandler(document, 'scroll', throttledHandler());
+		const h = throttledHandler();
+		this.content.addHandler(document, 'scroll', h);
 	}
 }
