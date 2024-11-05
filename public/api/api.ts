@@ -1,6 +1,8 @@
 import { Action } from '../actions/action';
 import { ActionAppInit } from '../actions/actionApp';
 import {
+	ACTION_CHAT_TYPES,
+	ActionChatRequestData,
 	ActionChatRequestFail,
 	ActionChatRequestSuccess,
 } from '../actions/actionChat';
@@ -66,6 +68,9 @@ class API {
 		switch (action.type) {
 			case ACTION_MESSAGES_TYPES.requestMessages:
 				this.getMessages();
+				break;
+			case ACTION_CHAT_TYPES.requestChat:
+				this.getChatMessages((action.data as ActionChatRequestData).id);
 				break;
 		}
 	}

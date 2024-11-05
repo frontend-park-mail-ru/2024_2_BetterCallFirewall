@@ -33,9 +33,17 @@ export class ActionChatGoToChat implements Action {
 	}
 }
 
+export interface ActionChatRequestData {
+	id: number;
+}
+
 export class ActionChatRequest implements Action {
 	type: ActionType = ACTION_CHAT_TYPES.requestChat;
-	data: object = {};
+	data: ActionChatRequestData;
+
+	constructor(id: number) {
+		this.data = { id };
+	}
 }
 
 export interface ActionChatRequestSuccessData {
