@@ -119,14 +119,17 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			if (limited) {
 				return () => {};
 			}
+			console.log('intervalLimit: limited:', limited);
 			const limit = 1000;
 			limited = true;
 			setTimeout(() => {
+				console.log('timeout');
 				limited = false;
 			}, limit);
 			return func;
 		};
 		const handler = () => {
+			console.log('request: limited:', limited);
 			if (this._isNearBottom()) {
 				fetchPosts();
 			}
