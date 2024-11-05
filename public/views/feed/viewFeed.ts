@@ -111,40 +111,24 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 				pending = false;
 			}
 		};
-		// let limited = false;
-		// const intervalLimit = (func: () => void): (() => void) => {
-		// 	console.log('intervalLimit: limited:', limited);
-		// 	return () => {
-		// 		if (!limited) {
-		// 			limited = true;
-		// 			func();
-		// 			const limit = 2000;
-		// 			setTimeout(() => {
-		// 				console.log('timeout');
-		// 				limited = false;
-		// 			}, limit);
-		// 		}
-		// 	};
-		// };
-		let isThrottled = false;
-		const throttle = (func: () => void, delay: number) => {
+		let limited = false;
+		const intervalLimit = (func: () => void): (() => void) => {
 			return () => {
-				if (!isThrottled) {
+				if (!limited) {
+					limited = true;
 					func();
-					isThrottled = true;
+					const limit = 2000;
 					setTimeout(() => {
-						isThrottled = false;
-					}, delay);
+						limited = false;
+					}, limit);
 				}
 			};
 		};
 		const handler = () => {
-			console.log('request:');
 			if (this._isNearBottom()) {
 				fetchPosts();
 			}
 		};
-		const throttledHandler = throttle(handler, 1000);
-		this.content.addHandler(document, 'scroll', throttledHandler);
+		this.content.addHandler(document, 'scroll', intervalLimit(handler));
 	}
 }

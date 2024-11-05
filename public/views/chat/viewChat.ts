@@ -112,13 +112,13 @@ export class ViewChat extends ViewHome implements IViewChat {
 	private _addSendButtonHandler() {
 		const form = this._chat.form;
 		this._chat.addHandler(form, 'submit', (event) => {
+			console.log('submit');
 			event.preventDefault();
 			const message: MessageSend = {
 				content: this._chat.text,
 				receiver: this._chat.config.companionId,
 			};
 			this.sendAction(new ActionChatSendMessage(message));
-			// app.websocket.sendMessage(message);
 		});
 	}
 
