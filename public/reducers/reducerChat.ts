@@ -4,6 +4,10 @@ import {
 	ActionChatGoToChatData,
 	ActionChatRequestSuccessData,
 } from '../actions/actionChat';
+import {
+	ACTION_MESSAGES_TYPES,
+	ActionMessagesNewMessageData,
+} from '../actions/actionMessages';
 import { IChatConfig } from '../components/Chat/Chat';
 import config from '../config';
 import { toChatMessageConfig } from '../models/message';
@@ -23,6 +27,14 @@ export const reducerChat = (
 ) => {
 	const newState = deepClone(state);
 	switch (action?.type) {
+		case ACTION_MESSAGES_TYPES.newMessage: {
+			const actionData = action.data as ActionMessagesNewMessageData;
+			newState.chat.messages.push(
+				toChatMessageConfig(newState.chat, actionData.messageResponse),
+			);
+			alert(`Новое сообщение: ${actionData.messageResponse}`); // tmp
+			return newState;
+		}
 		case ACTION_CHAT_TYPES.requestChatSuccess: {
 			const actionData = action.data as ActionChatRequestSuccessData;
 			newState.chat.messages = actionData.messagesResponse.map(
