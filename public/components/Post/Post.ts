@@ -1,3 +1,5 @@
+import { ActionMenuLinkClick } from '../../actions/actionMenu';
+import dispatcher from '../../dispatcher/dispatcher';
 import BaseComponent, {
 	IBaseComponent,
 	IBaseComponentConfig,
@@ -61,6 +63,17 @@ export class Post extends BaseComponent implements IPost {
 	render(show: boolean = true): string {
 		this._prerender();
 		return this._render('Post.hbs', show);
+		this.addHandlers();
+	}
+
+	private addHandlers() {
+		const profileLink = this.htmlElement.querySelector('.header-text') as HTMLElement;
+		if (profileLink) {
+			this.addHandler(profileLink, 'click', (event) => {
+				event.preventDefault();
+				dispatcher.getAction(new ActionMenuLinkClick({ href: `/${this.config.id}` }));
+			});
+		}
 	}
 
 	update(data: IPostConfig): void {
