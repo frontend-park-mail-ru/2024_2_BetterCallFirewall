@@ -95,4 +95,13 @@ export class Friend extends BaseComponent implements IFriend {
 		}
 		return html;
 	}
+	get writeMessageLink(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'.friend__link',
+		) as HTMLElement;
+		if (!html) {
+			throw new Error('writeMessageLink not found');
+		}
+		return html;
+	}
 }

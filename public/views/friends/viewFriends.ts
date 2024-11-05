@@ -1,4 +1,5 @@
 import { ACTION_APP_TYPES } from '../../actions/actionApp';
+import { ActionChatGoToChat } from '../../actions/actionChat';
 import {
 	ACTION_FRIENDS_TYPES,
 	ActionProfileGetFriends,
@@ -11,6 +12,7 @@ import api from '../../api/api';
 import { Root } from '../../components';
 import { IFriendConfig } from '../../components/Friend/Friend';
 import { Friends, FriendsConfig } from '../../components/Friends/Friends';
+import { PAGE_LINKS } from '../../config';
 import { ChangeFriends } from '../../stores/storeFriends';
 import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
@@ -140,6 +142,23 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 				event.preventDefault();
 				this.sendAction(
 					new ActionMenuLinkClick({ href: `/${person.config.id}` }),
+				);
+			});
+			person.addHandler(person.writeMessageLink, 'click', (event) => {
+				event.preventDefault();
+				const config = person.config;
+				this.sendAction(
+					new ActionChatGoToChat({
+						chatConfig: {
+							key: `chat-${config.id}`,
+							userId: config.id,
+							companionAvatar: config.avatar,
+							companionName: `${config.name}`,
+							lastDateOnline: '-1',
+							backButtonHref: PAGE_LINKS.messages,
+							messages: [],
+						},
+					}),
 				);
 			});
 		});
