@@ -109,6 +109,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					(event) => {
 						event.preventDefault();
 						api.removeFriend(personConfig.id);
+						this.sendAction(new ActionProfileGetFriends());
 					},
 				);
 			} else if (personConfig.isSubscriber) {
@@ -118,6 +119,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					(event) => {
 						event.preventDefault();
 						api.acceptFriend(personConfig.id);
+						this.sendAction(new ActionProfileGetFriends());
 					},
 				);
 			} else if (personConfig.isSubscription) {
@@ -127,6 +129,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					(event) => {
 						event.preventDefault();
 						api.unsubscribeToProfile(personConfig.id);
+						this.sendAction(new ActionProfileGetFriends());
 					},
 				);
 			} else {
@@ -136,6 +139,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					(event) => {
 						event.preventDefault();
 						api.subscribeToProfile(personConfig.id);
+						this.sendAction(new ActionProfileGetFriends());
 					},
 				);
 			}
