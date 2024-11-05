@@ -6,6 +6,8 @@ import {
 	ActionProfileGetSubscriptionsSuccessData,
 	ActionProfileGetUsersSuccessData,
 } from '../actions/actionFriends';
+import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
+import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
 import config from '../config';
 import { toFriendConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
@@ -55,6 +57,9 @@ export const reducerFriends = (
 			);
 			return newState;
 		}
+		case ACTION_LOGIN_TYPES.loginClickSuccess:
+        case ACTION_SIGNUP_TYPES.signupClickSuccess:
+            return deepClone(initialState);
 		default:
 			return state;
 	}
