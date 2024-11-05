@@ -223,6 +223,21 @@ class API {
 		}
 	}
 
+	async requestSubscriptions(profileId: number) {
+		const response = await ajax.getProfileSubscriptions(profileId);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					break;
+				}
+				this.sendAction(
+					new ActionProfileGetSubscribersSuccess({
+						subscribers: response.data,
+					}),
+				);
+		}
+	}
+
 	async requestUsers() {
 		const response = await ajax.getProfiles();
 		switch (response.status) {

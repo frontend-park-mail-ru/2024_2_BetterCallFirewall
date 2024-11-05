@@ -55,6 +55,8 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					this._configFriends.main.header.profile.id,
 				);
 				api.requestUsers();
+				api.requestSubscriptions(this._configFriends.main.header.profile.id);
+				console.log('Check handleChange');
 				break;
 		}
 	}
