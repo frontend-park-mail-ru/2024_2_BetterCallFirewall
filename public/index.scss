@@ -36,6 +36,7 @@ html {
     --main-text-color: #FFFFFF;
     --button-color: #25AD74;
     --negative-color: #e33d3d;
+    --date-color: #7a7a7a;
 }
 
 body {
@@ -241,4 +242,9 @@ input, textarea {
 
 input::placeholder, textarea::placeholder {
     font-family: Helvetica, Arial, sans-serif;
+}
+
+.date {
+    font-size: .6rem;
+    color: var(--date-color);
 }
