@@ -126,27 +126,13 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		// 		}
 		// 	};
 		// };
-		interface Options {
-			isThrottled: boolean;
-		}
-		const options = { isThrottled: false };
-		const throttle = (
-			func: () => void,
-			delay: number,
-			options: Options,
-		) => {
+		const throttle = (func: () => void, delay: number) => {
+			let lastCall = 0;
 			return () => {
-				console.log('scroll');
-				if (!options.isThrottled) {
-					console.log('not throttled');
+				const now = Date.now();
+				if (now - lastCall > delay) {
+					lastCall = now;
 					func();
-					options.isThrottled = true;
-					console.log('options:', options);
-					setTimeout(() => {
-						console.log('setTimeout');
-						options.isThrottled = false;
-						console.log('options:', options);
-					}, delay);
 				}
 			};
 		};
@@ -156,7 +142,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 				fetchPosts();
 			}
 		};
-		const throttledHandler = throttle(handler, 1000, options);
+		const throttledHandler = throttle(handler, 1000);
 		this.content.addHandler(document, 'scroll', throttledHandler);
 	}
 }
