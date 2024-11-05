@@ -55,7 +55,7 @@ export class ViewMessages extends ViewHome implements IViewHome {
 
 	updateViewMessages(data: ViewMessagesConfig): void {
 		this.updateViewHome(data);
-		this._configMessages = data;
+		this._configMessages = Object.assign(this._configMessages, data);
 		this._render();
 	}
 
