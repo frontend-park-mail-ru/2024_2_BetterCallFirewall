@@ -70,9 +70,11 @@ class API {
 			case ACTION_MESSAGES_TYPES.requestMessages:
 				this.getMessages();
 				break;
-			case ACTION_CHAT_TYPES.requestChat:
-				this.getChatMessages((action.data as ActionChatRequestData).id);
+			case ACTION_CHAT_TYPES.requestChat: {
+				const actionData = action.data as ActionChatRequestData;
+				this.getChatMessages(actionData.id, actionData.lastTime);
 				break;
+			}
 		}
 	}
 
@@ -390,8 +392,8 @@ class API {
 		}
 	}
 
-	async getChatMessages(profileId: number) {
-		const response = await ajax.getChatMessages(profileId);
+	async getChatMessages(profileId: number, lastTime?: string) {
+		const response = await ajax.getChatMessages(profileId, lastTime);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {

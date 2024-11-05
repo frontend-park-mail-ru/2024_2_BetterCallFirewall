@@ -36,6 +36,14 @@ const replaceId = (url: string, id: number): string => {
 	return url.replace('{id}', `${id}`);
 };
 
+const pasteQueryParams = (baseUrl: string, params: QueryParams) => {
+	let url = baseUrl;
+	Object.entries(params).forEach(([key, value]) => {
+		url += `?${key}=${value}`;
+	});
+	return url;
+};
+
 class Ajax {
 	/**
 	 * Post request with data and raising callback
@@ -64,7 +72,6 @@ class Ajax {
 	): Promise<AjaxResponse<PostResponse[]>> {
 		const request = this._getRequest(app.config.URL.feed, queryParams);
 		const response = await this._response(request);
-		console.log('response:', response);
 		let postsResponse: AjaxResponse<PostResponse[]> = {
 			status: response.status,
 			success: false,
@@ -79,11 +86,9 @@ class Ajax {
 				const body = (await response.json()) as FetchResponse<
 					PostResponse[]
 				>;
-				console.log('body:', body);
 				postsResponse = Object.assign(postsResponse, body);
 			}
 		}
-		console.log('postsResponse:', postsResponse);
 		return postsResponse;
 	}
 
@@ -132,11 +137,9 @@ class Ajax {
 			case STATUS.ok: {
 				const body =
 					(await response.json()) as FetchResponse<FullProfileResponse>;
-				console.log('body:', body);
 				profileResponse = Object.assign(profileResponse, body);
 			}
 		}
-		console.log('profileResponse:', profileResponse);
 		return profileResponse;
 	}
 
@@ -154,12 +157,10 @@ class Ajax {
 			case STATUS.ok: {
 				const body =
 					(await response.json()) as FetchResponse<FullProfileResponse>;
-				console.log('body:', body);
 				profileResponse = Object.assign(profileResponse, body);
 				break;
 			}
 		}
-		console.log('profileResponse:', profileResponse);
 		return profileResponse;
 	}
 
@@ -191,12 +192,10 @@ class Ajax {
 			case STATUS.ok: {
 				const body =
 					(await response.json()) as FetchResponse<HeaderResponse>;
-				console.log('body:', body);
 				headerResponse = Object.assign(headerResponse, body);
 				break;
 			}
 		}
-		console.log('headerResponse:', headerResponse);
 		return headerResponse;
 	}
 
@@ -290,11 +289,12 @@ class Ajax {
 	 */
 	async getChatMessages(
 		profileId: number,
+		lastTime?: string,
 	): Promise<AjaxResponse<MessageResponse[]>> {
-		return this._genericRequest(
-			replaceId(app.config.URL.chat, profileId),
-			'get',
-		);
+		const url = lastTime
+			? pasteQueryParams(app.config.URL.chat, { lastTime })
+			: app.config.URL.chat;
+		return this._genericRequest(replaceId(url, profileId), 'get');
 	}
 
 	/**
@@ -323,7 +323,7 @@ class Ajax {
 				'Content-Type': 'application/json:charset=UTF-8',
 			},
 		});
-		
+
 		fetch(request)
 			.then((response) => callback(response))
 			.catch((error) => callback(null, error));
@@ -375,7 +375,6 @@ class Ajax {
 				const body = (await response.json()) as FetchResponse<
 					ShortProfileResponse[]
 				>;
-				console.log('body:', body);
 				shortProfileResponse = Object.assign(
 					shortProfileResponse,
 					body,
@@ -400,11 +399,9 @@ class Ajax {
 			case STATUS.ok: {
 				const body =
 					(await response.json()) as FetchResponse<FullProfileResponse>;
-				console.log('body:', body);
 				profileResponse = Object.assign(profileResponse, body);
 			}
 		}
-		console.log('profileResponse:', profileResponse);
 		return profileResponse;
 	}
 
