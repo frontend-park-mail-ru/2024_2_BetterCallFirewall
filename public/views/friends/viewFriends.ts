@@ -4,12 +4,10 @@ import {
 	ACTION_FRIENDS_TYPES,
 	ActionProfileGetFriends,
 } from '../../actions/actionFriends';
-import { ACTION_LOGIN_TYPES } from '../../actions/actionLogin';
 import {
 	ACTION_MENU_TYPES,
 	ActionMenuLinkClick,
 } from '../../actions/actionMenu';
-import { ACTION_SIGNUP_TYPES } from '../../actions/actionSignup';
 import api from '../../api/api';
 import { Root } from '../../components';
 import { IFriendConfig } from '../../components/Friend/Friend';
