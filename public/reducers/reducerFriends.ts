@@ -3,6 +3,7 @@ import {
 	ACTION_FRIENDS_TYPES,
 	ActionProfileGetFriendsSuccessData,
 	ActionProfileGetSubscribersSuccessData,
+	ActionProfileGetSubscriptionsSuccessData,
 	ActionProfileGetUsersSuccessData,
 } from '../actions/actionFriends';
 import config from '../config';
@@ -41,6 +42,14 @@ export const reducerFriends = (
 				action.data as ActionProfileGetFriendsSuccessData;
 			newState.friends.friendsConfig = actionData.friends.map((friend) =>
 				toFriendConfig(friend),
+			);
+			return newState;
+		}
+		case ACTION_FRIENDS_TYPES.getSubscriptionsSuccess: {
+			const actionData =
+				action.data as ActionProfileGetSubscriptionsSuccessData;
+			newState.subscriptions.friendsConfig = actionData.subscriptions.map((subscription) =>
+				toFriendConfig(subscription),
 			);
 			return newState;
 		}
