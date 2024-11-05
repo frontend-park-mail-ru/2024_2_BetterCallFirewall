@@ -66,7 +66,7 @@ export class ViewLogin extends BaseView {
 		loginForm.addHandler(loginForm.form, 'submit', (event: Event) => {
 			event.preventDefault();
 			if (this._config.inputs) {
-				loginFormSubmit(loginForm, this._config.inputs);
+				loginFormSubmit(loginForm);
 			}
 		});
 
@@ -87,10 +87,9 @@ export class ViewLogin extends BaseView {
 
 const loginFormSubmit = (
 	loginForm: LoginForm,
-	inputs: Record<string, IInputConfig>,
 ) => {
 	const validator = new Validator();
-	const data = validator.validateForm(inputs, loginForm.form);
+	const data = validator.validateForm(loginForm.formData, loginForm.form);
 	if (data) {
 		ajax.sendForm(config.URL.login, data, async (response, error) => {
 			if (error) {

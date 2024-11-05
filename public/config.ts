@@ -3,7 +3,6 @@ import { ILoginFormConfig, ISignupFormConfig } from './components';
 import { IChatConfig } from './components/Chat/Chat';
 import { IMessageConfig } from './components/Message/Message';
 import { IProfileConfig } from './components/Profile/Profile';
-import Validator from './modules/validation';
 import { ViewChatConfig } from './views/chat/viewChat';
 import { ViewMessagesConfig } from './views/messages/viewMessages';
 import { ViewFeedConfig } from './views/feed/viewFeed';
@@ -108,35 +107,30 @@ const signupConfig: ISignupFormConfig = {
 			type: 'text',
 			placeholder: 'Имя',
 			name: 'first_name',
-			validator: Validator.validateName,
 		},
 		secondName: {
 			key: 'secondName',
 			type: 'text',
 			placeholder: 'Фамилия',
 			name: 'last_name',
-			validator: Validator.validateName,
 		},
 		email: {
 			key: 'email',
 			type: 'text',
 			placeholder: 'Email',
 			name: 'email',
-			validator: Validator.validateEmail,
 		},
 		password: {
 			key: 'password',
 			type: 'password',
 			placeholder: 'Пароль',
 			name: 'password',
-			validator: Validator.validatePassword,
 		},
 		passwordAgain: {
 			key: 'passwordAgain',
 			type: 'password',
 			placeholder: 'Повторите пароль',
 			name: 'password_again',
-			validator: Validator.validateConfirmation,
 		},
 	},
 	button: {
@@ -158,14 +152,12 @@ const loginConfig: ILoginFormConfig = {
 			type: 'text',
 			placeholder: 'Email',
 			name: 'email',
-			validator: Validator.validateEmail,
 		},
 		password: {
 			key: 'password',
 			type: 'password',
 			placeholder: 'Пароль',
 			name: 'password',
-			validator: Validator.validatePassword,
 		},
 	},
 	button: {
@@ -190,7 +182,6 @@ const createPostConfig: ViewCreatePostConfig = {
 				header: 'Текст поста',
 				text: '',
 				name: 'text',
-				validator: Validator.validatePost,
 			},
 		},
 		inputs: {
@@ -201,7 +192,6 @@ const createPostConfig: ViewCreatePostConfig = {
 				accept: 'image/*',
 				placeholder: 'Прикрепить картинку',
 				// extra: 'multiple',
-				validator: Validator.validateImg,
 			},
 		},
 		button: {
@@ -221,21 +211,18 @@ const profileEditConfig: ViewProfileEditConfig = {
 				type: 'text',
 				placeholder: 'Имя',
 				name: 'first_name',
-				validator: Validator.validateName,
 			},
 			secondName: {
 				key: 'secondName',
 				type: 'text',
 				placeholder: 'Фамилия',
 				name: 'last_name',
-				validator: Validator.validateName,
 			},
 			description: {
 				key: 'description',
 				type: 'text',
 				placeholder: 'Описание',
 				name: 'bio',
-				validator: Validator.validateName,
 			},
 			avatar: {
 				key: 'avatar',
@@ -244,7 +231,6 @@ const profileEditConfig: ViewProfileEditConfig = {
 				accept: 'image/*',
 				placeholder: 'Изменить аватар',
 				// extra: 'multiple',
-				validator: Validator.validateImg,
 			},
 		},
 
@@ -340,7 +326,6 @@ const postEditFormConfig: IPostEditFormConfig = {
 			header: 'Текст поста',
 			text: '',
 			name: 'text',
-			validator: Validator.validatePost,
 		},
 	},
 	inputs: {
@@ -351,7 +336,6 @@ const postEditFormConfig: IPostEditFormConfig = {
 			accept: 'image/*',
 			placeholder: 'Изменить картинку',
 			// extra: 'multiple',
-			validator: Validator.validateImg,
 		},
 	},
 	button: {
