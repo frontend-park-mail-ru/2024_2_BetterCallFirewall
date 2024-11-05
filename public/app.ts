@@ -297,11 +297,13 @@ class App {
 
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.subscribeSuccess);
+		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.removeSuccess);
+		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.unsubscribeSuccess);
+		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.acceptSuccess);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriendsSuccess);
-		this._stores.friends.subscribe(
-			ACTION_FRIENDS_TYPES.getSubscribersSuccess,
-		);
+		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getSubscribersSuccess,);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getUsersSuccess);
+		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getSubscriptionsSuccess);
 
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.goToMessages);
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.updateMessages);
