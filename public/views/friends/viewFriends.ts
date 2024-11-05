@@ -72,6 +72,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 			case ACTION_LOGIN_TYPES.loginClickSuccess:
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 				this._configFriends = change.data;
+				this.sendAction(new ActionProfileGetFriends());
 				break;
 		}
 	}
