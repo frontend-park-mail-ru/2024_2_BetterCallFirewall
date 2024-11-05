@@ -90,17 +90,6 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 	}
 
 	private _addHandlers() {
-		// Убрать
-		this.content.addHandler(
-			document.querySelector('.form__upload') as HTMLElement,
-			'click',
-			() => {
-				if (document.getElementById('file')) {
-					document.getElementById('file')?.click();
-				}
-			},
-		);
-
 		const form = this._profileEditForm;
 		form.addHandler(form.htmlElement, 'submit', (event) => {
 			event.preventDefault();
