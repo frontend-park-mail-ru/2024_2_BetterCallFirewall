@@ -126,8 +126,15 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		// 		}
 		// 	};
 		// };
+		interface Options {
+			isThrottled: boolean;
+		}
 		const options = { isThrottled: false };
-		const throttle = (func: () => void, delay: number) => {
+		const throttle = (
+			func: () => void,
+			delay: number,
+			options: Options,
+		) => {
 			return () => {
 				if (!options.isThrottled) {
 					func();
@@ -144,7 +151,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 				fetchPosts();
 			}
 		};
-		const throttledHandler = throttle(handler, 1000);
+		const throttledHandler = throttle(handler, 1000, options);
 		this.content.addHandler(document, 'scroll', throttledHandler);
 	}
 }
