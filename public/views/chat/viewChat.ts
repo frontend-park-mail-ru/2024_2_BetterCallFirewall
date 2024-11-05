@@ -92,6 +92,9 @@ export class ViewChat extends ViewHome implements IViewChat {
 	private _addHandlers() {
 		this._addBackButtonHandler();
 		this._addSendButtonHandler();
+		this._chat.addHandler(this._chat.settingsButton, 'click', (event) =>
+			event.preventDefault(),
+		);
 	}
 
 	private _addBackButtonHandler() {
