@@ -126,8 +126,8 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		// 		}
 		// 	};
 		// };
+		let isThrottled = false;
 		const throttle = (func: () => void, delay: number) => {
-			let isThrottled = false;
 			return () => {
 				if (!isThrottled) {
 					func();
