@@ -36,14 +36,15 @@ export class ActionChatGoToChat implements Action {
 
 export interface ActionChatRequestData {
 	id: number;
+	lastTime?: string;
 }
 
 export class ActionChatRequest implements Action {
 	type: ActionType = ACTION_CHAT_TYPES.requestChat;
 	data: ActionChatRequestData;
 
-	constructor(id: number) {
-		this.data = { id };
+	constructor(id: number, lastTime?: string) {
+		this.data = { id, lastTime };
 	}
 }
 

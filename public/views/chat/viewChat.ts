@@ -83,7 +83,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 	}
 
 	private _scrollToBottom(): void {
-		const chatContainer = document.querySelector('.chat__content');
+		const chatContainer = this._chat.chatContentHTML;
 		if (chatContainer) {
 			chatContainer.scrollTop = chatContainer.scrollHeight;
 		}
@@ -135,6 +135,32 @@ export class ViewChat extends ViewHome implements IViewChat {
 				this.sendAction(new ActionChatSendMessage(message));
 			}
 		});
+	}
+
+	private _addScrollHandler() {
+		const chatContent = this._chat.chatContentHTML;
+		const content = this.content;
+
+		let debounceTimeout: NodeJS.Timeout;
+
+		const handleScroll = () => {
+			clearTimeout(debounceTimeout);
+			debounceTimeout = setTimeout(() => {
+				if (
+					chatContent.scrollTop + chatContent.clientHeight >=
+					chatContent.scrollHeight
+				) {
+					this.sendAction(
+						new ActionChatRequest(
+							this._chat.config.companionId,
+							this._chat.config.messages[0].createdAt,
+						),
+					);
+				}
+			}, 200); // 200 миллисекунд интервал
+		};
+
+		content.addHandler(chatContent, 'scroll', handleScroll);
 	}
 
 	private get _chat(): Chat {
