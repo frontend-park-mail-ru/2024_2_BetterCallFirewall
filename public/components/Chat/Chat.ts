@@ -98,6 +98,7 @@ export class Chat extends BaseComponent implements IChat {
 		if (messages) {
 			this._messages = messages;
 		}
+		this.addHandlers();
 		return this.htmlElement.outerHTML;
 	}
 
