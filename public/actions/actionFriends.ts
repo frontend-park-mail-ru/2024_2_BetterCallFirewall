@@ -7,6 +7,7 @@ export const ACTION_FRIENDS_TYPES = {
 	getFriendsFail: 'actionFriendsGetFriendsFail',
 	getSubscribersSuccess: 'actionFriendsGetSubscribersSuccess',
 	getSubscribersFail: 'actionFriendsGetSubscribersFail',
+	getSubscriptionsSuccess: 'actionFriendsGetSubscriptionsSuccess',
 	getUsersSuccess: 'actionFriendsGetUsersSuccess',
 	getUsersFail: 'actionFriendsGetUsersFail',
 	subscribeSuccess: 'actionFriendsSubscribeSuccess',
@@ -53,6 +54,20 @@ export class ActionProfileGetSubscribersSuccess implements Action {
 
 	constructor(data: ActionProfileGetSubscribersSuccessData) {
 		this.type = ACTION_FRIENDS_TYPES.getSubscribersSuccess;
+		this.data = data;
+	}
+}
+
+export interface ActionProfileGetSubscriptionsSuccessData {
+	subscriptions: ShortProfileResponse[];
+}
+
+export class ActionProfileGetSubscriptionsSuccess implements Action {
+	type: ActionType;
+	data: ActionProfileGetSubscriptionsSuccessData;
+
+	constructor(data: ActionProfileGetSubscriptionsSuccessData) {
+		this.type = ACTION_FRIENDS_TYPES.getSubscriptionsSuccess;
 		this.data = data;
 	}
 }

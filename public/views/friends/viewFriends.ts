@@ -20,6 +20,7 @@ export interface ViewFriendsConfig extends HomeConfig {
 	friends: FriendsConfig;
 	subscribers: FriendsConfig;
 	users: FriendsConfig;
+	subscriptions: FriendsConfig;
 }
 
 export interface IViewFriends extends IViewHome {
@@ -44,6 +45,9 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 				this.sendAction(new ActionProfileGetFriends());
 				break;
 			case ACTION_FRIENDS_TYPES.subscribeSuccess:
+			case ACTION_FRIENDS_TYPES.removeSuccess:
+			case ACTION_FRIENDS_TYPES.unsubscribeSuccess:
+			case ACTION_FRIENDS_TYPES.acceptSuccess:
 				this.sendAction(new ActionProfileGetFriends());
 				break;
 			case ACTION_FRIENDS_TYPES.getUsersSuccess:
@@ -58,6 +62,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					this._configFriends.main.header.profile.id,
 				);
 				api.requestUsers();
+				api.requestSubscriptions(this._configFriends.main.header.profile.id);
 				break;
 		}
 	}
@@ -76,6 +81,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		this._renderFriends();
 		this._renderSubscribers();
 		this._renderUsers();
+		this._renderSubscribtions();
 	}
 
 	private _renderFriends(): void {
@@ -93,6 +99,16 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		);
 		subscribers.render();
 		this._addFriendsHandlers(subscribers);
+	}
+
+	private _renderSubscribtions() {
+		const content = this.content;
+		const subscriptions = new Friends(
+			this._configFriends.subscriptions,
+			content,
+		);
+		subscriptions.render();
+		this._addFriendsHandlers(subscriptions);
 	}
 
 	private _renderUsers() {

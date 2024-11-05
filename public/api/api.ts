@@ -21,6 +21,7 @@ import {
 	ActionFriendsUnsubscribeSuccess,
 	ActionProfileGetFriendsSuccess,
 	ActionProfileGetSubscribersSuccess,
+	ActionProfileGetSubscriptionsSuccess,
 	ActionProfileGetUsersSuccess,
 } from '../actions/actionFriends';
 import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
@@ -233,6 +234,21 @@ class API {
 				this.sendAction(
 					new ActionProfileGetUsersSuccess({
 						users: response.data,
+					}),
+				);
+		}
+	}
+
+	async requestSubscriptions(profileId: number) {
+		const response = await ajax.getProfileSubscriptions(profileId);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					break;
+				}
+				this.sendAction(
+					new ActionProfileGetSubscriptionsSuccess({
+						subscriptions: response.data,
 					}),
 				);
 		}
