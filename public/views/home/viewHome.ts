@@ -216,8 +216,8 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 
 	private _renderMenu() {
 		this._components.menu = new Menu(this._configHome.menu, this._root);
-		this._updateActiveMenuLinks();
 		this._components.menu.render();
+		this._updateActiveMenuLinks();
 		this._addMenuHandlers();
 	}
 
