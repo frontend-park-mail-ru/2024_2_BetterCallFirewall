@@ -13,7 +13,6 @@ import { IChatConfig } from '../components/Chat/Chat';
 import config from '../config';
 import { MessageResponse, toChatMessageConfig } from '../models/message';
 import deepClone from '../modules/deepClone';
-import parseTime from '../modules/parseTime';
 import { ViewChatConfig } from '../views/chat/viewChat';
 
 const initialChatState: IChatConfig = deepClone(config.chatConfig.chat);
@@ -34,7 +33,7 @@ export const reducerChat = (
 			const messageResponse: MessageResponse = {
 				sender: newState.main.header.profile.id,
 				content: actionData.message.content,
-				created_at: parseTime(new Date().toISOString()),
+				created_at: new Date().toISOString(),
 			};
 			newState.chat.messages.push(
 				toChatMessageConfig(newState.chat, messageResponse),
