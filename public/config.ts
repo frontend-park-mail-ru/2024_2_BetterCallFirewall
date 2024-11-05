@@ -289,7 +289,7 @@ const messagesConfig: ViewMessagesConfig = {
 	messages: messagesComponentConfig,
 };
 
-const chatComponentConfig: IChatConfig = {
+const emptyChatComponentConfig: IChatConfig = {
 	companionId: -1,
 	key: 'chat',
 	companionAvatar: '',
@@ -304,7 +304,7 @@ const chatComponentConfig: IChatConfig = {
 
 const chatConfig: ViewChatConfig = {
 	...homeConfig,
-	chat: chatComponentConfig,
+	chat: emptyChatComponentConfig,
 };
 
 const friendsConfig: ViewFriendsConfig = {

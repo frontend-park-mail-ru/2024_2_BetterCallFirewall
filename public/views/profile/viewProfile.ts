@@ -137,6 +137,11 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 							lastDateOnline: '-1',
 							backButtonHref: PAGE_LINKS.messages,
 							messages: [],
+							myId: this._configProfile.main.header.profile.id,
+							myName: this._configProfile.main.header.profile
+								.name,
+							myAvatar:
+								this._configProfile.main.header.profile.avatar,
 						},
 					}),
 				);

@@ -53,7 +53,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 			case ACTION_FRIENDS_TYPES.getUsersSuccess:
 			case ACTION_FRIENDS_TYPES.getSubscribersSuccess:
 			case ACTION_FRIENDS_TYPES.getFriendsSuccess:
-				case ACTION_FRIENDS_TYPES.getSubscriptionsSuccess:
+			case ACTION_FRIENDS_TYPES.getSubscriptionsSuccess:
 				this.updateViewFriends(change.data);
 				break;
 			case ACTION_FRIENDS_TYPES.getFriends:
@@ -180,6 +180,11 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 							lastDateOnline: '-1',
 							backButtonHref: PAGE_LINKS.messages,
 							messages: [],
+							myId: this._configFriends.main.header.profile.id,
+							myName: this._configFriends.main.header.profile
+								.name,
+							myAvatar:
+								this._configFriends.main.header.profile.avatar,
 						},
 					}),
 				);
