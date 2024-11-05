@@ -38,12 +38,12 @@
 }
 
 .menu-link.link-active {
-    background-color: var(--main-bg-color);
+    background-color: var(--second-bg-color);
     .menu-link__item {
-        color: var(--main-text-color);
+        color: var(--main-color);
     }
     .menu-link__logo svg {
-        fill: var(--main-text-color);
+        fill: var(--main-color);
     }
 }
 
