@@ -106,9 +106,9 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 				person.addHandler(
 					person.removeFriendButton,
 					'click',
-					(event) => {
+					async (event) => {
 						event.preventDefault();
-						api.removeFriend(personConfig.id);
+						await api.removeFriend(personConfig.id);
 						this.sendAction(new ActionProfileGetFriends());
 					},
 				);
@@ -116,9 +116,9 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 				person.addHandler(
 					person.acceptFriendButton,
 					'click',
-					(event) => {
+					async (event) => {
 						event.preventDefault();
-						api.acceptFriend(personConfig.id);
+						await api.acceptFriend(personConfig.id);
 						this.sendAction(new ActionProfileGetFriends());
 					},
 				);
@@ -126,9 +126,9 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 				person.addHandler(
 					person.unsubscribeFriendButton,
 					'click',
-					(event) => {
+					async (event) => {
 						event.preventDefault();
-						api.unsubscribeToProfile(personConfig.id);
+						await api.unsubscribeToProfile(personConfig.id);
 						this.sendAction(new ActionProfileGetFriends());
 					},
 				);
@@ -136,9 +136,9 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 				person.addHandler(
 					person.subscribeFriendButton,
 					'click',
-					(event) => {
+					async (event) => {
 						event.preventDefault();
-						api.subscribeToProfile(personConfig.id);
+						await api.subscribeToProfile(personConfig.id);
 						this.sendAction(new ActionProfileGetFriends());
 					},
 				);
