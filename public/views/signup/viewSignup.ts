@@ -9,7 +9,6 @@ import {
 	ISignupFormConfig,
 	SignupForm,
 	Root,
-	IInputConfig,
 } from '../../components';
 import config from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
@@ -66,7 +65,7 @@ export class ViewSignup extends BaseView {
 		signupForm.addHandler(signupForm.form, 'submit', (event: Event) => {
 			event.preventDefault();
 			if (this._config.inputs) {
-				loginFormSubmit(signupForm, this._config.inputs);
+				loginFormSubmit(signupForm);
 			}
 		});
 
@@ -87,10 +86,9 @@ export class ViewSignup extends BaseView {
 
 const loginFormSubmit = (
 	signupForm: SignupForm,
-	inputs: Record<string, IInputConfig>,
 ) => {
 	const validator = new Validator();
-	const data = validator.validateForm(inputs, signupForm.form);
+	const data = validator.validateForm(signupForm.formData, signupForm.form);
 	if (data) {
 		ajax.sendForm(config.URL.signup, data, async (response, error) => {
 			if (error) {
