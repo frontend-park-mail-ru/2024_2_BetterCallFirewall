@@ -32,7 +32,9 @@ export const reducerChat = (
 			newState.chat.messages.push(
 				toChatMessageConfig(newState.chat, actionData.messageResponse),
 			);
-			alert(`Новое сообщение: ${actionData.messageResponse}`); // tmp
+			alert(
+				`Новое сообщение: ${actionData.messageResponse.content} от ${actionData.messageResponse.sender}`,
+			); // tmp
 			return newState;
 		}
 		case ACTION_CHAT_TYPES.requestChatSuccess: {
