@@ -286,7 +286,7 @@ class Ajax {
 	}
 
 	/**
-	 * Запрос чата
+	 * Запрос сообщений в чате
 	 */
 	async getChatMessages(
 		profileId: number,

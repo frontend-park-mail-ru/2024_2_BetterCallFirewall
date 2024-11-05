@@ -1,9 +1,5 @@
 import { ActionChatGoToChat } from '../../actions/actionChat';
-import {
-	ACTION_MESSAGES_TYPES,
-	ActionMessagesRequest,
-} from '../../actions/actionMessages';
-import api from '../../api/api';
+import { ActionMessagesRequest } from '../../actions/actionMessages';
 import { Root } from '../../components';
 import { IMessageConfig, Message } from '../../components/Message/Message';
 import { PAGE_LINKS } from '../../config';
@@ -40,9 +36,6 @@ export class ViewMessages extends ViewHome implements IViewHome {
 		console.log('ViewMessages:', change);
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_MESSAGES_TYPES.requestMessages:
-				api.getMessages();
-				break;
 			default:
 				this.updateViewMessages(change.data);
 		}

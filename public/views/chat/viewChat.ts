@@ -45,7 +45,9 @@ export class ViewChat extends ViewHome implements IViewChat {
 		switch (change.type) {
 			case ACTION_CHAT_TYPES.goToChat:
 				this.render();
-				this.sendAction(new ActionChatRequest());
+				this.sendAction(
+					new ActionChatRequest(this._configChat.chat.userId),
+				);
 				break;
 			case ACTION_MESSAGES_TYPES.newMessage:
 			case ACTION_CHAT_TYPES.requestChatSuccess:

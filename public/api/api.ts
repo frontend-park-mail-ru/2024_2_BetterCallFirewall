@@ -1,6 +1,8 @@
 import { Action } from '../actions/action';
 import { ActionAppInit } from '../actions/actionApp';
 import {
+	ACTION_CHAT_TYPES,
+	ActionChatRequestData,
 	ActionChatRequestFail,
 	ActionChatRequestSuccess,
 } from '../actions/actionChat';
@@ -26,6 +28,7 @@ import {
 } from '../actions/actionFriends';
 import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
+	ACTION_MESSAGES_TYPES,
 	actionMessagesRequestFail,
 	ActionMessagesRequestSuccess,
 } from '../actions/actionMessages';
@@ -62,6 +65,17 @@ export const STATUS = {
 };
 
 class API {
+	handleAction(action: Action) {
+		switch (action.type) {
+			case ACTION_MESSAGES_TYPES.requestMessages:
+				this.getMessages();
+				break;
+			case ACTION_CHAT_TYPES.requestChat:
+				this.getChatMessages((action.data as ActionChatRequestData).id);
+				break;
+		}
+	}
+
 	sendAction(action: Action) {
 		dispatcher.getAction(action);
 	}

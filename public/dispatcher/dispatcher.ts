@@ -1,4 +1,5 @@
 import { Action, ActionType } from '../actions/action';
+import api from '../api/api';
 import app from '../app';
 import { Router } from '../router/router';
 import { Store } from '../stores/store';
@@ -22,6 +23,7 @@ export class Dispatcher {
 				store.handleAction(action);
 			});
 		}
+		api.handleAction(action);
 		app.websocket.handleAction(action);
 	}
 
