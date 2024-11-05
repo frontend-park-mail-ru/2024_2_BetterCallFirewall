@@ -1,5 +1,3 @@
-import { ActionMenuLinkClick } from '../../actions/actionMenu';
-import dispatcher from '../../dispatcher/dispatcher';
 import BaseComponent, {
 	IBaseComponent,
 	IBaseComponentConfig,

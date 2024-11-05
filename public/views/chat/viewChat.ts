@@ -146,8 +146,9 @@ export class ViewChat extends ViewHome implements IViewChat {
 		if (chat && companionId && companionLink) {
 			chat.addHandler(companionLink, 'click', (event) => {
 				event.preventDefault();
-				console.log(companionId);
-				new ActionMenuLinkClick({ href: `/${companionId}` });
+				this.sendAction(
+					new ActionMenuLinkClick({ href: `/${companionId}` })
+				);
 			});
 		}
 
