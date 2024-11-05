@@ -40,6 +40,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 	}
 
 	handleChange(change: ChangeChat): void {
+		console.log('ViewChat:', change);
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_CHAT_TYPES.goToChat:

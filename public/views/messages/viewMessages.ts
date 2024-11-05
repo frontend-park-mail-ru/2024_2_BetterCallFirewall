@@ -37,6 +37,7 @@ export class ViewMessages extends ViewHome implements IViewHome {
 	}
 
 	handleChange(change: ChangeMessages): void {
+		console.log('ViewMessages:', change);
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_MESSAGES_TYPES.requestMessages:
@@ -65,25 +66,11 @@ export class ViewMessages extends ViewHome implements IViewHome {
 
 	protected _renderMessages(): void {
 		const content = this.content;
-
-		// Тестовые сообщения
-		for (let i = 0; i < 10; i++) {
-			const message = new Message(
-				{
-					authorId: 0,
-					key: 'message',
-					avatar: '../../img/avatar.png',
-					name: 'Asap Rocky',
-					lastMessage: 'Lets do it.',
-					date: '12:34',
-					unreadedCount: 3,
-					href: PAGE_LINKS.chat,
-				},
-				content,
-			);
+		this._configMessages.messages.forEach((messageConfig) => {
+			const message = new Message(messageConfig, content);
 			message.render();
 			this._addMessageHandlers(message);
-		}
+		});
 	}
 
 	protected _addMessageHandlers(message: Message): void {
