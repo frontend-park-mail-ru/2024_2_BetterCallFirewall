@@ -52,16 +52,12 @@ export const reducerChat = (
 		}
 		case ACTION_CHAT_TYPES.requestChatSuccess: {
 			const actionData = action.data as ActionChatRequestSuccessData;
-			newState.chat.messages = newState.chat.messages.concat(
-				actionData.messagesResponse
-					.map((messageResponse) => {
-						return toChatMessageConfig(
-							newState.chat,
-							messageResponse,
-						);
-					})
-					.reverse(),
-			);
+			const newMessages = actionData.messagesResponse
+				.map((messageResponse) => {
+					return toChatMessageConfig(newState.chat, messageResponse);
+				})
+				.reverse();
+			newState.chat.messages = newMessages.concat(newState.chat.messages);
 			return newState;
 		}
 		case ACTION_CHAT_TYPES.updateChat:

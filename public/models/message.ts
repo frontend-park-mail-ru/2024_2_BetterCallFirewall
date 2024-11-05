@@ -27,6 +27,7 @@ export const toChatMessageConfig = (
 		messageName: isCompanion ? chatConfig.companionName : chatConfig.myName,
 		messageText: messageResponse.content,
 		createdAt: parseTime(messageResponse.created_at),
+		createdAtISO: messageResponse.created_at,
 		isAuthor: !isCompanion,
 	};
 };
