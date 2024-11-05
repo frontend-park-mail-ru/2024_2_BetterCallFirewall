@@ -62,8 +62,8 @@ export class Post extends BaseComponent implements IPost {
 
 	render(show: boolean = true): string {
 		this._prerender();
-		return this._render('Post.hbs', show);
 		this.addHandlers();
+		return this._render('Post.hbs', show);
 	}
 
 	private addHandlers() {
