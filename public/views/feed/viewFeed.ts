@@ -126,6 +126,10 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		// 		}
 		// 	};
 		// };
+		const times = {
+			now: 0,
+			lastCall: 0,
+		};
 		const throttle = (func: () => void, delay: number) => {
 			let lastCall = 0;
 			return () => {
@@ -144,7 +148,10 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 				fetchPosts();
 			}
 		};
-		const throttledHandler = throttle(handler, 1000);
-		this.content.addHandler(document, 'scroll', throttledHandler);
+		const throttledHandler = () => {
+			const throttledHandler = throttle(handler, 1000);
+			return throttledHandler;
+		};
+		this.content.addHandler(document, 'scroll', throttledHandler());
 	}
 }
