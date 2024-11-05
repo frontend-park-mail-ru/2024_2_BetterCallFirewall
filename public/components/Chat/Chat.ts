@@ -109,7 +109,7 @@ export class Chat extends BaseComponent implements IChat {
 
 	protected addHandlers() {
 		const form = this.htmlElement.querySelector(
-			'.chat__bottom',
+			'.chat__send',
 		) as HTMLFormElement;
 		const textArea = this.htmlElement.querySelector(
 			'.sender__input',
