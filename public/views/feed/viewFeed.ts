@@ -130,7 +130,9 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			let lastCall = 0;
 			return () => {
 				const now = Date.now();
+				console.log('scroll: now:', now, 'lastCall:', lastCall);
 				if (now - lastCall > delay) {
+					console.log('call');
 					lastCall = now;
 					func();
 				}
