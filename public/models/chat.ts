@@ -2,21 +2,21 @@ import { IMessageConfig } from '../components/Message/Message';
 import { PAGE_LINKS } from '../config';
 import parseImage from '../modules/parseImage';
 import parseTime from '../modules/parseTime';
+import { HeaderResponse } from './header';
 import { MessageResponse } from './message';
-import { ShortProfileResponse } from './profile';
 
 export interface ChatResponse {
 	last_message: MessageResponse;
 	last_sent_message: string;
-	receiver: ShortProfileResponse;
+	receiver: HeaderResponse;
 }
 
 export const toMessageConfig = (chatResponse: ChatResponse): IMessageConfig => {
 	return {
-		key: `message-${chatResponse.receiver.id}`,
-		authorId: chatResponse.receiver.id,
+		key: `message-${chatResponse.receiver.author_id}`,
+		authorId: chatResponse.receiver.author_id,
 		avatar: parseImage(chatResponse.receiver.avatar),
-		name: `${chatResponse.receiver.first_name} ${chatResponse.receiver.last_name}`,
+		name: `${chatResponse.receiver.author}`,
 		lastMessage: chatResponse.last_message.content,
 		date: parseTime(chatResponse.last_sent_message),
 		unreadedCount: -1,
