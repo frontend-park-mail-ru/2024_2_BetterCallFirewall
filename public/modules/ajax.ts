@@ -275,7 +275,7 @@ class Ajax {
 	async removeFriend(profileId: number): Promise<AjaxResponse<object>> {
 		let url = app.config.URL.removeFriend;
 		url = url.replace('{id}', `${profileId}`);
-		return this._postObjectResponse(url);
+		return this._deleteObjectResponse(url);
 	}
 
 	/**
@@ -422,6 +422,16 @@ class Ajax {
 		url: string,
 	): Promise<AjaxResponse<object>> {
 		const request = this._postRequest(url, {});
+		return await this._objectResponse(request);
+	}
+
+	/**
+	 * delete запрос и ответ в виде object
+	 */
+	private async _deleteObjectResponse(
+		url: string,
+	): Promise<AjaxResponse<object>> {
+		const request = this._deleteRequest(url);
 		return await this._objectResponse(request);
 	}
 
