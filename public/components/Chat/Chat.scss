@@ -45,7 +45,7 @@
     &__details {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: center; // потом space-between
     }
 
     &__settings {
