@@ -11,6 +11,7 @@ import {
 	ICreatePostFormConfig,
 } from '../../components/CreatePostForm/CreatePostForm';
 import dispatcher from '../../dispatcher/dispatcher';
+import Validator from '../../modules/validation';
 import { ChangeCreatePost } from '../../stores/storeCreatePost';
 import {
 	ComponentsHome,
@@ -96,8 +97,11 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 			'submit',
 			(event) => {
 				event.preventDefault();
-				const formData = this._createPostForm.formData;
-				api.createPost(formData);
+				const validator = new Validator();
+				const formData = validator.validateForm(this._createPostForm.formData, this._createPostForm.form);
+				if (formData) {
+					api.createPost(formData);
+				}
 			},
 		);
 	}
