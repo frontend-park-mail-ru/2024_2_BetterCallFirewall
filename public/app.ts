@@ -296,6 +296,7 @@ class App {
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.profileRequest);
 
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);
+		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.subscribeSuccess);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriendsSuccess);
 		this._stores.friends.subscribe(
 			ACTION_FRIENDS_TYPES.getSubscribersSuccess,

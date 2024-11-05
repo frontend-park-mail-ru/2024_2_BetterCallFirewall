@@ -43,6 +43,9 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 				this.render();
 				this.sendAction(new ActionProfileGetFriends());
 				break;
+			case ACTION_FRIENDS_TYPES.subscribeSuccess:
+				this.sendAction(new ActionProfileGetFriends());
+				break;
 			case ACTION_FRIENDS_TYPES.getUsersSuccess:
 			case ACTION_FRIENDS_TYPES.getSubscribersSuccess:
 			case ACTION_FRIENDS_TYPES.getFriendsSuccess:
@@ -106,40 +109,36 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 				person.addHandler(
 					person.removeFriendButton,
 					'click',
-					async (event) => {
+					(event) => {
 						event.preventDefault();
-						await api.removeFriend(personConfig.id);
-						this.sendAction(new ActionProfileGetFriends());
+						api.removeFriend(personConfig.id);
 					},
 				);
 			} else if (personConfig.isSubscriber) {
 				person.addHandler(
 					person.acceptFriendButton,
 					'click',
-					async (event) => {
+					(event) => {
 						event.preventDefault();
-						await api.acceptFriend(personConfig.id);
-						this.sendAction(new ActionProfileGetFriends());
+						api.acceptFriend(personConfig.id);
 					},
 				);
 			} else if (personConfig.isSubscription) {
 				person.addHandler(
 					person.unsubscribeFriendButton,
 					'click',
-					async (event) => {
+					(event) => {
 						event.preventDefault();
-						await api.unsubscribeToProfile(personConfig.id);
-						this.sendAction(new ActionProfileGetFriends());
+						api.unsubscribeToProfile(personConfig.id);
 					},
 				);
 			} else {
 				person.addHandler(
 					person.subscribeFriendButton,
 					'click',
-					async (event) => {
+					(event) => {
 						event.preventDefault();
-						await api.subscribeToProfile(personConfig.id);
-						this.sendAction(new ActionProfileGetFriends());
+						api.subscribeToProfile(personConfig.id);
 					},
 				);
 			}
