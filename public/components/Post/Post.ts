@@ -63,18 +63,7 @@ export class Post extends BaseComponent implements IPost {
 	render(show: boolean = true): string {
 		this._prerender();
 		const renderResult = this._render('Post.hbs', show);
-		this.addHandlers();
 		return renderResult;
-	}
-
-	private addHandlers() {
-		const profileLink = this.htmlElement.querySelector('.header-text') as HTMLElement;
-		if (profileLink) {
-			this.addHandler(profileLink, 'click', (event) => {
-				event.preventDefault();
-				dispatcher.getAction(new ActionMenuLinkClick({ href: `/${this.config.id}` }));
-			});
-		}
 	}
 
 	update(data: IPostConfig): void {

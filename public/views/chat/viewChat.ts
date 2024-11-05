@@ -93,6 +93,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._addBackButtonHandler();
 		this._addSendButtonHandler();
 		this._addEnterSendHandler();
+		this._addCompanionLink();
 		this._addScrollHandler();
 		this._chat.addHandler(this._chat.settingsButton, 'click', (event) =>
 			event.preventDefault(),
@@ -136,6 +137,19 @@ export class ViewChat extends ViewHome implements IViewChat {
 				this.sendAction(new ActionChatSendMessage(message));
 			}
 		});
+	}
+
+	private _addCompanionLink() {
+		const chat = this._components.chat;
+		const companionLink = chat?.htmlElement?.querySelector('.chat__companion') as HTMLElement;
+		const companionId = this._components.chat?.config.companionId;
+		if (chat && companionId && companionLink) {
+			chat.addHandler(companionLink, 'click', (event) => {
+				event.preventDefault();
+				new ActionMenuLinkClick({ href: `/${companionId}` });
+			});
+		}
+
 	}
 
 	private _addScrollHandler() {
