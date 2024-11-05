@@ -93,6 +93,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._addBackButtonHandler();
 		this._addSendButtonHandler();
 		this._addEnterSendHandler();
+		this._addScrollHandler();
 		this._chat.addHandler(this._chat.settingsButton, 'click', (event) =>
 			event.preventDefault(),
 		);
@@ -157,7 +158,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 						),
 					);
 				}
-			}, 200); // 200 миллисекунд интервал
+			}, 200);
 		};
 
 		content.addHandler(chatContent, 'scroll', handleScroll);
