@@ -92,6 +92,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 	private _addHandlers() {
 		this._addBackButtonHandler();
 		this._addSendButtonHandler();
+		this._addEnterSendHandler();
 		this._chat.addHandler(this._chat.settingsButton, 'click', (event) =>
 			event.preventDefault(),
 		);
@@ -119,6 +120,20 @@ export class ViewChat extends ViewHome implements IViewChat {
 				receiver: this._chat.config.companionId,
 			};
 			this.sendAction(new ActionChatSendMessage(message));
+		});
+	}
+
+	private _addEnterSendHandler() {
+		this._chat.addHandler(this._chat.textarea, 'keydown', (event) => {
+			const keyboardEvent = event as KeyboardEvent;
+			if (keyboardEvent.key === 'Enter') {
+				event.preventDefault();
+				const message: MessageSend = {
+					content: this._chat.text,
+					receiver: this._chat.config.companionId,
+				};
+				this.sendAction(new ActionChatSendMessage(message));
+			}
 		});
 	}
 
