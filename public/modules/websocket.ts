@@ -1,5 +1,7 @@
 import { Action } from '../actions/action';
+import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
 import { ActionMessagesNewMessage } from '../actions/actionMessages';
+import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
 import dispatcher from '../dispatcher/dispatcher';
 import { MessageResponse } from '../models/message';
 
@@ -17,8 +19,20 @@ export default class WebsocketClient {
 		this._socket.onclose = this._onClose.bind(this);
 	}
 
+	handleAction(action: Action) {
+		switch (action.type) {
+			case ACTION_LOGIN_TYPES.loginClickSuccess:
+			case ACTION_SIGNUP_TYPES.signupClickSuccess:
+				this._reconnect();
+		}
+	}
+
 	sendMessage(message: object) {
 		this._socket.send(JSON.stringify(message));
+	}
+
+	private _reconnect() {
+		this._socket = new WebSocket(this._url);
 	}
 
 	private _sendAction(action: Action) {
