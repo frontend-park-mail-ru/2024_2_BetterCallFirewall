@@ -117,16 +117,17 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		let limited = false;
 		const intervalLimit = (func: () => void): (() => void) => {
 			console.log('intervalLimit: limited:', limited);
-			if (limited) {
-				return () => {};
-			}
-			const limit = 5000;
-			limited = true;
-			setTimeout(() => {
-				console.log('timeout');
-				limited = false;
-			}, limit);
-			return func;
+			return () => {
+				if (!limited) {
+					const limit = 5000;
+					limited = true;
+					setTimeout(() => {
+						console.log('timeout');
+						limited = false;
+					}, limit);
+					return func;
+				}
+			};
 		};
 		const handler = () => {
 			console.log('request: limited:', limited);
