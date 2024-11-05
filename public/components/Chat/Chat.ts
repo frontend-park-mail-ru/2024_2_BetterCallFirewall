@@ -115,17 +115,13 @@ export class Chat extends BaseComponent implements IChat {
 			'.sender__input',
 		) as HTMLTextAreaElement;
 		if (textArea) {
-			textArea.addEventListener(
-				'keydown',
-				function (event: KeyboardEvent) {
-					if (event.key === 'Enter') {
-						event.preventDefault();
-						if (form) {
-							form.submit();
-						}
-					}
-				},
-			);
+			textArea.addEventListener('keydown', (event: KeyboardEvent) => {
+				console.log(event.key);
+				if (event.key === 'Enter') {
+					event.preventDefault();
+					(this.form as HTMLFormElement).submit();
+				}
+			});
 		}
 	}
 }
