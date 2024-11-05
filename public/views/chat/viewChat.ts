@@ -154,7 +154,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 					this.sendAction(
 						new ActionChatRequest(
 							this._chat.config.companionId,
-							this._chat.config.messages[0].createdAt,
+							this._chat.config.messages[0].createdAtISO,
 						),
 					);
 				}
