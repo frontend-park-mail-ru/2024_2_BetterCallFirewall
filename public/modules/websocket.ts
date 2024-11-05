@@ -5,14 +5,16 @@ import { MessageResponse } from '../models/message';
 
 export default class WebsocketClient {
 	private _socket: WebSocket;
+	private _url: string;
 
 	constructor(url: string) {
+		this._url = url;
 		this._socket = new WebSocket(url);
 
-		this._socket.onopen = this._onOpen;
-		this._socket.onmessage = this._onMessage;
-		this._socket.onerror = this._onError;
-		this._socket.onclose = this._onClose;
+		this._socket.onopen = this._onOpen.bind(this);
+		this._socket.onmessage = this._onMessage.bind(this);
+		this._socket.onerror = this._onError.bind(this);
+		this._socket.onclose = this._onClose.bind(this);
 	}
 
 	sendMessage(message: object) {
@@ -39,5 +41,8 @@ export default class WebsocketClient {
 
 	private _onClose(event: CloseEvent) {
 		console.log('WS close:', event);
+		setTimeout(() => {
+			this._socket = new WebSocket(this._url);
+		}, 5000);
 	}
 }
