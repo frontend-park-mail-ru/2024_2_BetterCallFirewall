@@ -17,12 +17,16 @@ export const toChatMessageConfig = (
 	chatConfig: IChatConfig,
 	messageResponse: MessageResponse,
 ): IChatMessageConfig => {
+	const isCompanion = messageResponse.sender === chatConfig.companionId;
 	return {
 		key: `chat-message-${messageResponse.sender}`,
-		userId: messageResponse.sender,
-		messageAvatar: chatConfig.companionAvatar,
-		messageName: chatConfig.companionName,
+		userId: isCompanion ? messageResponse.sender : chatConfig.companionId,
+		messageAvatar: isCompanion
+			? chatConfig.companionAvatar
+			: chatConfig.myAvatar,
+		messageName: isCompanion ? chatConfig.companionName : chatConfig.myName,
 		messageText: messageResponse.content,
 		createdAt: parseTime(messageResponse.created_at),
+		isAuthor: !isCompanion,
 	};
 };

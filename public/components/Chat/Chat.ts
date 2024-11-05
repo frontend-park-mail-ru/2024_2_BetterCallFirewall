@@ -5,12 +5,15 @@ import BaseComponent, {
 import { ChatMessage, IChatMessageConfig } from '../ChatMessage/ChatMessage';
 
 export interface IChatConfig extends IBaseComponentConfig {
-	userId: number;
+	companionId: number;
 	companionAvatar: string;
 	companionName: string;
 	lastDateOnline: string;
 	backButtonHref: string;
 	messages: IChatMessageConfig[];
+	myId: number;
+	myName: string;
+	myAvatar: string;
 }
 
 export interface IChat extends BaseComponent {}

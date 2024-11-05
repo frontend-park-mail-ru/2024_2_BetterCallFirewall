@@ -62,7 +62,9 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					this._configFriends.main.header.profile.id,
 				);
 				api.requestUsers();
-				api.requestSubscriptions(this._configFriends.main.header.profile.id);
+				api.requestSubscriptions(
+					this._configFriends.main.header.profile.id,
+				);
 				break;
 		}
 	}
@@ -171,7 +173,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					new ActionChatGoToChat({
 						chatConfig: {
 							key: `chat-${config.id}`,
-							userId: config.id,
+							companionId: config.id,
 							companionAvatar: config.avatar,
 							companionName: `${config.name}`,
 							lastDateOnline: '-1',

@@ -84,6 +84,7 @@ const homeConfig: HomeConfig = {
 			key: 'header',
 			profile: {
 				id: -1,
+				name: '',
 				avatar: 'img/avatar.png',
 			},
 		},
@@ -289,13 +290,16 @@ const messagesConfig: ViewMessagesConfig = {
 };
 
 const chatComponentConfig: IChatConfig = {
-	userId: -1,
+	companionId: -1,
 	key: 'chat',
 	companionAvatar: '',
 	companionName: '',
 	lastDateOnline: '',
 	backButtonHref: PAGE_LINKS.messages,
 	messages: [],
+	myId: -1,
+	myName: '',
+	myAvatar: '',
 };
 
 const chatConfig: ViewChatConfig = {

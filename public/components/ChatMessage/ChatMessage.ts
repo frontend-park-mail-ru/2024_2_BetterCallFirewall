@@ -9,6 +9,7 @@ export interface IChatMessageConfig extends IBaseComponentConfig {
 	messageName: string;
 	messageText: string;
 	createdAt: string;
+	isAuthor: boolean;
 }
 
 export interface IChatMessage extends BaseComponent {}
