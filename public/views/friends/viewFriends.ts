@@ -81,8 +81,8 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		super._render();
 		this._renderFriends();
 		this._renderSubscribers();
-		this._renderUsers();
 		this._renderSubscribtions();
+		this._renderUsers();
 	}
 
 	private _renderFriends(): void {
