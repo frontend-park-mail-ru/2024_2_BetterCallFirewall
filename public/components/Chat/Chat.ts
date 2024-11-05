@@ -77,6 +77,16 @@ export class Chat extends BaseComponent implements IChat {
 		return html;
 	}
 
+	get textarea(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'.sender__input',
+		) as HTMLElement;
+		if (!html) {
+			throw new Error('textarea not found');
+		}
+		return html;
+	}
+
 	get text(): string {
 		const textarea = this.form.querySelector('textarea');
 		if (!textarea) {
@@ -98,30 +108,11 @@ export class Chat extends BaseComponent implements IChat {
 		if (messages) {
 			this._messages = messages;
 		}
-		this.addHandlers();
 		return this.htmlElement.outerHTML;
 	}
 
 	protected _prerender(): void {
 		super._prerender();
 		this._templateContext = { ...this.config };
-	}
-
-	protected addHandlers() {
-		const form = this.htmlElement.querySelector(
-			'.chat__send',
-		) as HTMLFormElement;
-		const textArea = this.htmlElement.querySelector(
-			'.sender__input',
-		) as HTMLTextAreaElement;
-		if (textArea) {
-			textArea.addEventListener('keydown', (event: KeyboardEvent) => {
-				console.log(event.key);
-				if (event.key === 'Enter') {
-					event.preventDefault();
-					(this.form as HTMLFormElement).submit();
-				}
-			});
-		}
 	}
 }
