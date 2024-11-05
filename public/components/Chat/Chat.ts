@@ -57,6 +57,16 @@ export class Chat extends BaseComponent implements IChat {
 		return html;
 	}
 
+	get settingsButton(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'.chat__settings-button',
+		) as HTMLElement;
+		if (!html) {
+			throw new Error('settingsButton not found');
+		}
+		return html;
+	}
+
 	get form(): HTMLElement {
 		const html = this.htmlElement.querySelector(
 			'form.sender',

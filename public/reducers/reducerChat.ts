@@ -29,7 +29,7 @@ export const reducerChat = (
 ) => {
 	const newState = deepClone(state);
 	switch (action?.type) {
-		case ACTION_MESSAGES_TYPES.sendMessage: {
+		case ACTION_CHAT_TYPES.sendMessage: {
 			const actionData = action.data as ActionChatSendMessageData;
 			const messageResponse: MessageResponse = {
 				sender: newState.main.header.profile.id,
