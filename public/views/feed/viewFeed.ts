@@ -9,7 +9,6 @@ import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
 export interface ViewFeedConfig extends HomeConfig {
 	posts: IPostConfig[];
-	// errorMessage: string;
 }
 
 export interface IViewFeed extends IViewHome {}
@@ -30,7 +29,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			case ACTION_LOGIN_TYPES.loginClickSuccess:
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 				if (!this._configFeed.posts.length) {
-					// this._requestPosts();
 					api.requestPosts(this.lastPostId);
 				}
 				update = false;
@@ -40,7 +38,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 				update = false; // Чтобы посты сначала отрендерились, а потом шел запрос с последним id
 				if (!this._configFeed.posts.length) {
 					api.requestPosts(this.lastPostId);
-					// this._requestPosts();
 				}
 				break;
 		}
@@ -114,27 +111,39 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 				pending = false;
 			}
 		};
-		let limited = false;
-		const intervalLimit = (func: () => void): (() => void) => {
-			console.log('intervalLimit: limited:', limited);
+		// let limited = false;
+		// const intervalLimit = (func: () => void): (() => void) => {
+		// 	console.log('intervalLimit: limited:', limited);
+		// 	return () => {
+		// 		if (!limited) {
+		// 			limited = true;
+		// 			func();
+		// 			const limit = 2000;
+		// 			setTimeout(() => {
+		// 				console.log('timeout');
+		// 				limited = false;
+		// 			}, limit);
+		// 		}
+		// 	};
+		// };
+		const throttle = (func: () => void, delay: number) => {
+			let isThrottled = false;
 			return () => {
-				if (!limited) {
-					limited = true;
+				if (!isThrottled) {
 					func();
-					const limit = 2000;
+					isThrottled = true;
 					setTimeout(() => {
-						console.log('timeout');
-						limited = false;
-					}, limit);
+						isThrottled = false;
+					}, delay);
 				}
 			};
 		};
 		const handler = () => {
-			console.log('request: limited:', limited);
+			console.log('request:');
 			if (this._isNearBottom()) {
 				fetchPosts();
 			}
 		};
-		this.content.addHandler(document, 'scroll', intervalLimit(handler));
+		this.content.addHandler(document, 'scroll', throttle(handler, 1000));
 	}
 }

@@ -82,7 +82,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 			case ACTION_PROFILE_TYPES.getHeaderSuccess:
 			case ACTION_MENU_TYPES.updateProfileLinkHref:
 				this.updateViewHome(change.data);
-				// this.sendAction(new ActionMenuUpdateProfileLinkHref());
 				break;
 			case ACTION_LOGIN_TYPES.loginClickSuccess:
 			case ACTION_PROFILE_TYPES.getHeader:
@@ -93,7 +92,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 				this._configHome = change.data;
 				this.render();
 				break;
-			default: // Потом расписать конкретные события и убрать default чтобы не было двойного обновления в унаследованных классах
+			default:
 				this.updateViewHome(change.data);
 		}
 	}
