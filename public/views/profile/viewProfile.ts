@@ -82,6 +82,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				}
 				break;
 			case ACTION_PROFILE_TYPES.deletePostSuccess:
+				console.log("delete post success");
 				this.sendAction(new ActionProfileGetYourOwnProfile());
 				break;
 		}
