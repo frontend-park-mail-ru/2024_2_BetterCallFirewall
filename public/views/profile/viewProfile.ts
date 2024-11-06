@@ -3,7 +3,6 @@ import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
-	ActionProfileGetYourOwnProfile,
 	ActionProfileRequest,
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
