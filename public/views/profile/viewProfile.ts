@@ -3,6 +3,7 @@ import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
+	ActionProfileGetYourOwnProfile,
 	ActionProfileRequest,
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
@@ -79,6 +80,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				if (this.active) {
 					this.updateViewProfile(change.data);
 				}
+				break;
+			case ACTION_PROFILE_TYPES.deletePostSuccess:
+				this.sendAction(new ActionProfileGetYourOwnProfile());
 				break;
 		}
 	}
