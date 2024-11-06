@@ -4,11 +4,7 @@ import {
 	ActionLoginClickSuccess,
 	ActionLoginToSignupClick,
 } from '../../actions/actionLogin';
-import {
-	ILoginFormConfig,
-	LoginForm,
-	Root,
-} from '../../components';
+import { ILoginFormConfig, LoginForm, Root } from '../../components';
 import config from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
@@ -84,9 +80,7 @@ export class ViewLogin extends BaseView {
 	}
 }
 
-const loginFormSubmit = (
-	loginForm: LoginForm,
-) => {
+const loginFormSubmit = (loginForm: LoginForm) => {
 	const validator = new Validator();
 	const data = validator.validateForm(loginForm.formData, loginForm.form);
 	if (data) {
@@ -102,13 +96,15 @@ const loginFormSubmit = (
 			} else if (response) {
 				const data = await response.json();
 				if (data.message === 'wrong email or password') {
-					dispatcher.getAction(
-						new ActionFormError('Неверная почта или пароль'),
-					);
+					loginForm.printError('Неверная почта или пароль');
+					// dispatcher.getAction(
+					//  new ActionFormError('Неверная почта или пароль'),
+					// );
 				} else {
-					dispatcher.getAction(
-						new ActionFormError('Что-то пошло не так'),
-					);
+					loginForm.printError('Что-то пошло не так');
+					// dispatcher.getAction(
+					//  new ActionFormError('Что-то пошло не так'),
+					// );
 				}
 			}
 		});

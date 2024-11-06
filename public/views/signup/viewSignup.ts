@@ -5,11 +5,7 @@ import {
 	ActionSignupClickSuccess,
 	ActionSignupToLoginClick,
 } from '../../actions/actionSignup';
-import {
-	ISignupFormConfig,
-	SignupForm,
-	Root,
-} from '../../components';
+import { ISignupFormConfig, SignupForm, Root } from '../../components';
 import config from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 // import dispatcher from '../../dispatcher/dispatcher';
@@ -84,9 +80,7 @@ export class ViewSignup extends BaseView {
 	}
 }
 
-const loginFormSubmit = (
-	signupForm: SignupForm,
-) => {
+const loginFormSubmit = (signupForm: SignupForm) => {
 	const validator = new Validator();
 	const data = validator.validateForm(signupForm.formData, signupForm.form);
 	if (data) {
@@ -102,14 +96,20 @@ const loginFormSubmit = (
 				dispatcher.getAction(new ActionProfileGetHeader());
 			} else if (response) {
 				const data = await response.json();
-				if (data.message === 'wrong email or password') {
-					dispatcher.getAction(
-						new ActionFormError('Неверная почта или пароль'),
+				if (data.message === 'user already exists') {
+					signupForm.printError(
+						'Пользователь с таким email уже существует',
 					);
+				} else if (data.message === 'wrong email or password') {
+					signupForm.printError('Неправильный email или пароль');
+					// dispatcher.getAction(
+					//  new ActionFormError('Неверная почта или пароль'),
+					// );
 				} else {
-					dispatcher.getAction(
-						new ActionFormError('Что-то пошло не так'),
-					);
+					signupForm.printError('Что-то пошло не так');
+					// dispatcher.getAction(
+					//  new ActionFormError('Что-то пошло не так'),
+					// );
 				}
 			}
 		});
