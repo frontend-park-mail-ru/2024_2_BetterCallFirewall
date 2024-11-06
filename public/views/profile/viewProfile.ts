@@ -86,7 +86,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				this.updateViewProfile(change.data);
 				// this.sendAction(new ActionProfileGetYourOwnProfile());
 				this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
-				// this.sendAction(new ActionProfileRequest());
+				this.sendAction(new ActionProfileRequest());
 				break;
 		}
 	}
