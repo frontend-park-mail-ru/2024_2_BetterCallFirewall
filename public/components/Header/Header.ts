@@ -49,6 +49,16 @@ export class Header extends BaseComponent implements IHeader {
 		throw new Error('logout button not found');
 	}
 
+	get profileLink(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'.header__profile',
+		) as HTMLElement;
+		if (html) {
+			return html;
+		}
+		throw new Error('logout button not found');
+	}
+
 	protected _prerender(): void {
 		super._prerender();
 		this._templateContext = { ...this._config };
