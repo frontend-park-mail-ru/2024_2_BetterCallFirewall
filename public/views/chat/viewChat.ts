@@ -95,7 +95,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._addSendButtonHandler();
 		this._addEnterSendHandler();
 		this._addCompanionLink();
-		// this._addScrollHandler();
+		this._addScrollHandler();
 		this._chat.addHandler(this._chat.settingsButton, 'click', (event) =>
 			event.preventDefault(),
 		);
@@ -150,17 +150,18 @@ export class ViewChat extends ViewHome implements IViewChat {
 
 	private _addCompanionLink() {
 		const chat = this._components.chat;
-		const companionLink = chat?.htmlElement?.querySelector('.chat__companion') as HTMLElement;
+		const companionLink = chat?.htmlElement?.querySelector(
+			'.chat__companion',
+		) as HTMLElement;
 		const companionId = this._components.chat?.config.companionId;
 		if (chat && companionId && companionLink) {
 			chat.addHandler(companionLink, 'click', (event) => {
 				event.preventDefault();
 				this.sendAction(
-					new ActionMenuLinkClick({ href: `/${companionId}` })
+					new ActionMenuLinkClick({ href: `/${companionId}` }),
 				);
 			});
 		}
-
 	}
 
 	private _addScrollHandler() {
