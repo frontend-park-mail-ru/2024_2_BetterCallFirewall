@@ -54,7 +54,6 @@ export class ViewChat extends ViewHome implements IViewChat {
 				break;
 			case ACTION_CHAT_TYPES.requestChatSuccess:
 				this.updateViewChat(change.data);
-				// this._chatScrollBottom = 0;
 				this._scrollToOldPosition();
 				break;
 			case ACTION_CHAT_TYPES.sendMessage:

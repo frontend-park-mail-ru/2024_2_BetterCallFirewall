@@ -295,6 +295,7 @@ class App {
 		);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.profileRequest);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.deletePostSuccess);
+		this._stores.profile.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
 
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.subscribeSuccess);

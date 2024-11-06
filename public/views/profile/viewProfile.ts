@@ -1,5 +1,6 @@
 import { ActionChatGoToChat } from '../../actions/actionChat';
 import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
+import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
@@ -64,6 +65,11 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 			case ACTION_PROFILE_TYPES.getYourOwnProfile:
 				api.requestYourOwnProfile();
 				break;
+			case ACTION_FEED_TYPES.postCreateSuccess:
+				if (this.active) {
+					this.updateViewProfile(change.data);
+				}
+				break;
 			case ACTION_PROFILE_EDIT_TYPES.requestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestFail:
@@ -82,8 +88,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				break;
 			case ACTION_PROFILE_TYPES.deletePostSuccess:
 				this.updateViewProfile(change.data);
-				// this.sendAction(new ActionProfileGetYourOwnProfile());
-				this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
+				this.sendAction(
+					new ActionUpdateProfile(this._configProfile.profile),
+				);
 				this.sendAction(new ActionProfileRequest());
 				break;
 		}
