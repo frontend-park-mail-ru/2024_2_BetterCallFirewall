@@ -85,8 +85,8 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				console.log("delete post success");
 				this.updateViewProfile(change.data);
 				this.sendAction(new ActionProfileGetYourOwnProfile());
-				this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
-				this.sendAction(new ActionProfileRequest());
+				// this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
+				// this.sendAction(new ActionProfileRequest());
 				break;
 		}
 	}
