@@ -51,7 +51,7 @@ export class Header extends BaseComponent implements IHeader {
 
 	get profileLink(): HTMLElement {
 		const html = this.htmlElement.querySelector(
-			'.header__profile',
+			'.header-img',
 		) as HTMLElement;
 		if (html) {
 			return html;
