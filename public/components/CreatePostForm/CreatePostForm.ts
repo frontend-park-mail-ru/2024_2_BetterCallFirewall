@@ -50,4 +50,30 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 		this.removeForUpdate();
 		this.render();
 	}
+
+	/**
+	 * Printing error above submit button
+	 * @param {string} error
+	 */
+	printError(error: string) {
+		if (error) {
+			const messageElement =
+				this.htmlElement.querySelector('.form__error');
+			if (!messageElement) {
+				throw new Error('message element not found');
+			}
+			messageElement.textContent = error;
+		}
+	}
+
+	/**
+	 * Clear error above submit button
+	 */
+	clearError() {
+		const messageElement = this.htmlElement.querySelector('.form__error');
+		if (!messageElement) {
+			throw new Error('message element not found');
+		}
+		messageElement.textContent = '';
+	}
 }

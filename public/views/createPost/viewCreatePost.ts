@@ -47,9 +47,9 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 			case ACTION_CREATE_POST_TYPES.goToCreatePost:
 				this.render();
 				break;
-			case ACTION_FEED_TYPES.postCreateSuccess: 
+			case ACTION_FEED_TYPES.postCreateSuccess:
 				this.sendAction(
-					new ActionMenuLinkClick({ href: this._profileLinkHref })
+					new ActionMenuLinkClick({ href: this._profileLinkHref }),
 				);
 				break;
 		}
@@ -98,9 +98,19 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 			(event) => {
 				event.preventDefault();
 				const validator = new Validator();
-				const formData = validator.validateForm(this._createPostForm.formData, this._createPostForm.form);
+				const formData = validator.validateForm(
+					this._createPostForm.formData,
+					this._createPostForm.form,
+				);
 				if (formData) {
-					api.createPost(formData);
+					if (formData.has('text') || formData.has('file')) {
+						api.createPost(formData);
+						this._createPostForm.clearError();
+					} else {
+						this._createPostForm.printError(
+							'Пост не должен быть пустым',
+						);
+					}
 				}
 			},
 		);
