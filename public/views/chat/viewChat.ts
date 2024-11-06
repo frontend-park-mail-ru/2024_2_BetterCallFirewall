@@ -50,7 +50,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 				this.sendAction(
 					new ActionChatRequest(this._configChat.chat.companionId),
 				);
-				// this._chatScrollBottom = 0;
+				this._chatScrollBottom = 0;
 				break;
 			case ACTION_CHAT_TYPES.requestChatSuccess:
 				this.updateViewChat(change.data);
