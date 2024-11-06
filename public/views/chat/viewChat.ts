@@ -33,6 +33,8 @@ export interface IViewChat extends IViewHome {
 export class ViewChat extends ViewHome implements IViewChat {
 	protected _configChat: ViewChatConfig;
 	protected _components: ComponentsChat = {};
+	private _chatScrollTop: number = 0;
+	private _handleScroll: boolean = true;
 
 	constructor(config: ViewChatConfig, root: Root) {
 		super(config, root);
@@ -49,9 +51,12 @@ export class ViewChat extends ViewHome implements IViewChat {
 					new ActionChatRequest(this._configChat.chat.companionId),
 				);
 				break;
+			case ACTION_CHAT_TYPES.requestChatSuccess:
+				this.updateViewChat(change.data);
+				this._scrollToTopMessage();
+				break;
 			case ACTION_CHAT_TYPES.sendMessage:
 			case ACTION_MESSAGES_TYPES.newMessage:
-			case ACTION_CHAT_TYPES.requestChatSuccess:
 			case ACTION_CHAT_TYPES.updateChat:
 				this.updateViewChat(change.data);
 				break;
@@ -171,12 +176,16 @@ export class ViewChat extends ViewHome implements IViewChat {
 		let debounceTimeout: NodeJS.Timeout;
 
 		const handleScroll = () => {
+			if (!this._handleScroll) {
+				return;
+			}
 			clearTimeout(debounceTimeout);
 			debounceTimeout = setTimeout(() => {
 				if (
 					chatContent.scrollTop + chatContent.clientHeight * 2 >
 					chatContent.scrollHeight
 				) {
+					this._chatScrollTop = chatContent.scrollTop;
 					this.sendAction(
 						new ActionChatRequest(
 							this._chat.config.companionId,
@@ -188,6 +197,13 @@ export class ViewChat extends ViewHome implements IViewChat {
 		};
 
 		content.addHandler(chatContent, 'scroll', handleScroll);
+	}
+
+	private _scrollToTopMessage() {
+		const chatContent = this._chat.chatContentHTML;
+		this._handleScroll = false;
+		chatContent.scrollTop = this._chatScrollTop;
+		this._handleScroll = true;
 	}
 
 	private get _chat(): Chat {
