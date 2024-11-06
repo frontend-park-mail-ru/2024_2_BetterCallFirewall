@@ -33,7 +33,7 @@ export interface IViewChat extends IViewHome {
 export class ViewChat extends ViewHome implements IViewChat {
 	protected _configChat: ViewChatConfig;
 	protected _components: ComponentsChat = {};
-	private _chatScrollTop: number = 0;
+	private _chatScrollBottom: number = 0;
 	private _handleScroll: boolean = true;
 
 	constructor(config: ViewChatConfig, root: Root) {
@@ -53,7 +53,8 @@ export class ViewChat extends ViewHome implements IViewChat {
 				break;
 			case ACTION_CHAT_TYPES.requestChatSuccess:
 				this.updateViewChat(change.data);
-				this._scrollToTopMessage();
+				// this._chatScrollBottom = 0;
+				this._scrollToOldPosition();
 				break;
 			case ACTION_CHAT_TYPES.sendMessage:
 			case ACTION_MESSAGES_TYPES.newMessage:
@@ -85,7 +86,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 		const chat = new Chat(this._configChat.chat, content);
 		chat.render();
 		this._components.chat = chat;
-		this._scrollToBottom();
+		// this._scrollToBottom();
 	}
 
 	private _scrollToBottom(): void {
@@ -187,7 +188,8 @@ export class ViewChat extends ViewHome implements IViewChat {
 					chatContent.scrollTop + chatContent.clientHeight * 2 >
 					chatContent.scrollHeight
 				) {
-					this._chatScrollTop = chatContent.scrollTop;
+					this._chatScrollBottom =
+						chatContent.scrollHeight - chatContent.scrollTop;
 					this.sendAction(
 						new ActionChatRequest(
 							this._chat.config.companionId,
@@ -201,10 +203,11 @@ export class ViewChat extends ViewHome implements IViewChat {
 		content.addHandler(chatContent, 'scroll', handleScroll);
 	}
 
-	private _scrollToTopMessage() {
+	private _scrollToOldPosition() {
 		const chatContent = this._chat.chatContentHTML;
 		this._handleScroll = false;
-		chatContent.scrollTop = this._chatScrollTop;
+		chatContent.scrollTop =
+			chatContent.scrollHeight - this._chatScrollBottom;
 		this._handleScroll = true;
 	}
 
