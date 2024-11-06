@@ -13,6 +13,7 @@ import { Root } from '../../components';
 import { IFriendConfig } from '../../components/Friend/Friend';
 import { Friends, FriendsConfig } from '../../components/Friends/Friends';
 import { PAGE_LINKS } from '../../config';
+import deepClone from '../../modules/deepClone';
 import { ChangeFriends } from '../../stores/storeFriends';
 import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
@@ -71,7 +72,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 	}
 
 	updateViewFriends(data: ViewFriendsConfig) {
-		this._configFriends = Object.assign(this._configFriends, data);
+		this._configFriends = deepClone(data);
 		this._render();
 	}
 
