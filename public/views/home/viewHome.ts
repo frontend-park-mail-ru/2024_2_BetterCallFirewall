@@ -92,8 +92,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 				this._configHome = change.data;
 				this.render();
 				break;
-			default:
-				this.updateViewHome(change.data);
 		}
 	}
 
@@ -225,7 +223,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		const curPath = window.location.pathname;
 		const menu = this._components.menu;
 		if (menu) {
-			Object.keys(menu.config.links).forEach(key => {
+			Object.keys(menu.config.links).forEach((key) => {
 				const link = menu.config.links[key];
 				link.active = curPath === link.href;
 			});
