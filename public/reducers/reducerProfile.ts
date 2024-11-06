@@ -61,6 +61,7 @@ export const reducerProfile = (
 		case ACTION_PROFILE_TYPES.profileRequestFail:
 		case ACTION_PROFILE_TYPES.goToProfile:
 		case ACTION_PROFILE_TYPES.getYourOwnProfileFail:
+		case ACTION_PROFILE_TYPES.getYourOwnProfile:
 		default:
 			return state;
 	}

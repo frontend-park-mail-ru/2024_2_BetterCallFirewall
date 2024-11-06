@@ -315,6 +315,14 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 			event.preventDefault();
 			logoutButtonClick();
 		});
+
+		header.addHandler(header.profileLink, 'click', (event) => {
+			event.preventDefault();
+			const profile = header.config as IHeaderConfig;
+			this.sendAction(
+				new ActionMenuLinkClick({ href: `/${profile.profile.id}` }),
+			);
+		});
 	}
 }
 

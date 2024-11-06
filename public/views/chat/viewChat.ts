@@ -80,6 +80,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 		const chat = new Chat(this._configChat.chat, content);
 		chat.render();
 		this._components.chat = chat;
+		this._scrollToBottom();
 	}
 
 	private _scrollToBottom(): void {
@@ -93,7 +94,8 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._addBackButtonHandler();
 		this._addSendButtonHandler();
 		this._addEnterSendHandler();
-		this._addScrollHandler();
+		this._addCompanionLink();
+		// this._addScrollHandler();
 		this._chat.addHandler(this._chat.settingsButton, 'click', (event) =>
 			event.preventDefault(),
 		);
@@ -116,8 +118,12 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._chat.addHandler(form, 'submit', (event) => {
 			console.log('submit');
 			event.preventDefault();
+			const chatText = this._chat.text;
+			if (!chatText) {
+				return;
+			}
 			const message: MessageSend = {
-				content: this._chat.text,
+				content: chatText,
 				receiver: this._chat.config.companionId,
 			};
 			this.sendAction(new ActionChatSendMessage(message));
@@ -129,13 +135,32 @@ export class ViewChat extends ViewHome implements IViewChat {
 			const keyboardEvent = event as KeyboardEvent;
 			if (keyboardEvent.key === 'Enter') {
 				event.preventDefault();
+				const chatText = this._chat.text;
+				if (!chatText) {
+					return;
+				}
 				const message: MessageSend = {
-					content: this._chat.text,
+					content: chatText,
 					receiver: this._chat.config.companionId,
 				};
 				this.sendAction(new ActionChatSendMessage(message));
 			}
 		});
+	}
+
+	private _addCompanionLink() {
+		const chat = this._components.chat;
+		const companionLink = chat?.htmlElement?.querySelector('.chat__companion') as HTMLElement;
+		const companionId = this._components.chat?.config.companionId;
+		if (chat && companionId && companionLink) {
+			chat.addHandler(companionLink, 'click', (event) => {
+				event.preventDefault();
+				this.sendAction(
+					new ActionMenuLinkClick({ href: `/${companionId}` })
+				);
+			});
+		}
+
 	}
 
 	private _addScrollHandler() {
