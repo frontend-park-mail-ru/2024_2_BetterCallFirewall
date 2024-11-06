@@ -167,6 +167,12 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 					new ActionMenuLinkClick({ href: `/${person.config.id}` }),
 				);
 			});
+			person.addHandler(person.profileLinkAvatar, 'click', (event) => {
+				event.preventDefault();
+				this.sendAction(
+					new ActionMenuLinkClick({ href: `/${person.config.id}` }),
+				);
+			});
 			person.addHandler(person.writeMessageLink, 'click', (event) => {
 				event.preventDefault();
 				const config = person.config;

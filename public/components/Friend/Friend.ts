@@ -95,6 +95,13 @@ export class Friend extends BaseComponent implements IFriend {
 		}
 		return html;
 	}
+	get profileLinkAvatar(): HTMLElement {
+		const html = this.htmlElement.querySelector('.friend-avatar') as HTMLElement;
+		if (!html) {
+			throw new Error('profileLink not found');
+		}
+		return html;
+	}
 	get writeMessageLink(): HTMLElement {
 		const html = this.htmlElement.querySelector(
 			'.friend__link',
