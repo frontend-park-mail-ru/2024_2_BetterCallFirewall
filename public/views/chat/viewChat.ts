@@ -80,6 +80,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 		const chat = new Chat(this._configChat.chat, content);
 		chat.render();
 		this._components.chat = chat;
+		this._scrollToBottom();
 	}
 
 	private _scrollToBottom(): void {
