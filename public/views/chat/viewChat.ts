@@ -118,8 +118,12 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._chat.addHandler(form, 'submit', (event) => {
 			console.log('submit');
 			event.preventDefault();
+			const chatText = this._chat.text;
+			if (!chatText) {
+				return;
+			}
 			const message: MessageSend = {
-				content: this._chat.text,
+				content: chatText,
 				receiver: this._chat.config.companionId,
 			};
 			this.sendAction(new ActionChatSendMessage(message));
@@ -131,8 +135,12 @@ export class ViewChat extends ViewHome implements IViewChat {
 			const keyboardEvent = event as KeyboardEvent;
 			if (keyboardEvent.key === 'Enter') {
 				event.preventDefault();
+				const chatText = this._chat.text;
+				if (!chatText) {
+					return;
+				}
 				const message: MessageSend = {
-					content: this._chat.text,
+					content: chatText,
 					receiver: this._chat.config.companionId,
 				};
 				this.sendAction(new ActionChatSendMessage(message));

@@ -92,7 +92,7 @@ export class Chat extends BaseComponent implements IChat {
 		if (!textarea) {
 			throw new Error('textarea not found');
 		}
-		return textarea.value ? textarea.value : '';
+		return textarea.value ? textarea.value.trim() : '';
 	}
 
 	render(show: boolean = true): string {

@@ -81,7 +81,6 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				}
 				break;
 			case ACTION_PROFILE_TYPES.deletePostSuccess:
-				console.log("delete post success");
 				this.updateViewProfile(change.data);
 				// this.sendAction(new ActionProfileGetYourOwnProfile());
 				this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
