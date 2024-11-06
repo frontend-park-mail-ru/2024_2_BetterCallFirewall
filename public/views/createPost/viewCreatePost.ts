@@ -103,7 +103,11 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 					this._createPostForm.form,
 				);
 				if (formData) {
-					if (formData.get('text') || formData.get('file')) {
+					const text = formData.get('text');
+					console.log(text);
+					const file = formData.get('file');
+					console.log(file);
+					if (text || file) {
 						api.createPost(formData);
 						this._createPostForm.clearError();
 					} else {
