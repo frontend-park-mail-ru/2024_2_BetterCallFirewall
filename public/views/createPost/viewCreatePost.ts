@@ -103,12 +103,12 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 					this._createPostForm.form,
 				);
 				if (formData) {
-					if (formData.get('text')) {
+					if (formData.has('text') || formData.has('file')) {
 						api.createPost(formData);
 						this._createPostForm.clearError();
 					} else {
 						this._createPostForm.printError(
-							'Текст не должен быть пустым',
+							'Пост не должен быть пустым',
 						);
 					}
 				}
