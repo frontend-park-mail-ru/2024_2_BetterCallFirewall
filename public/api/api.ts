@@ -71,7 +71,7 @@ class API {
 		switch (action.type) {
 			case ACTION_PROFILE_TYPES.profileRequest:
 				this.requestProfile(
-					(action.data as ActionProfileRequestData).id,
+					(action.data as ActionProfileRequestData).href,
 				);
 				break;
 			case ACTION_MESSAGES_TYPES.requestMessages:
