@@ -184,10 +184,6 @@ class App {
 				view: signupView,
 			},
 			{
-				path: PAGE_LINKS.messages,
-				view: messagesView,
-			},
-			{
 				path: PAGE_LINKS.createPost,
 				view: createPostView,
 			},
@@ -196,8 +192,12 @@ class App {
 				view: profileEditView,
 			},
 			{
-				path: PAGE_LINKS.chat,
+				path: PAGE_LINKS.chat, // chat должен быть перед messages
 				view: chatView,
+			},
+			{
+				path: PAGE_LINKS.messages,
+				view: messagesView,
 			},
 			{
 				path: PAGE_LINKS.friends,
