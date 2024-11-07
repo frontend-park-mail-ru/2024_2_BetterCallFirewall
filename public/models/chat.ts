@@ -11,14 +11,15 @@ export interface ChatResponse {
 }
 
 export const toMessageConfig = (chatResponse: ChatResponse): IMessageConfig => {
+	const id = chatResponse.receiver.author_id;
 	return {
-		key: `message-${chatResponse.receiver.author_id}`,
-		authorId: chatResponse.receiver.author_id,
+		key: `message-${id}`,
+		authorId: id,
 		avatar: parseImage(chatResponse.receiver.avatar),
 		name: `${chatResponse.receiver.author}`,
 		lastMessage: chatResponse.last_message,
 		date: parseTime(chatResponse.last_date),
 		unreadedCount: -1,
-		href: PAGE_LINKS.chat,
+		href: PAGE_LINKS.chat + `/${id}`,
 	};
 };
