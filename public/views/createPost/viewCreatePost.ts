@@ -129,6 +129,8 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
                 if (input.value) {
 					input.value = '';
 					event.preventDefault();
+					label?.classList.remove('active');
+					label.textContent = 'Прикрепить картинку';
 				  }
 			});
 			this.content.addHandler(fileInput, 'change', (event) => {
@@ -138,9 +140,6 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 						label.classList.add('active');
 						label.textContent = 'Картинка выбрана, нажмите, чтобы отменить';
 					}
-                } else {
-                    label?.classList.remove('active');
-					label.textContent = 'Прикрепить картинку';
                 }
 			});
         }
