@@ -179,6 +179,18 @@ app.get('/api/currentUserId', (req, res) => {
 	}
 });
 
+// app.get('/api/profile/header', (req, res) => {
+// 	res.json({
+// 		success: true,
+// 		message: '',
+// 		data: {
+// 			author_id: 1,
+// 			author: 'Darth Vader',
+// 			avatar: '/img/avatar.png',
+// 		},
+// 	});
+// });
+
 app.get('/dist/bundle.js', (req, res) => {
 	res.sendFile(path.join(__dirname, '../dist', 'bundle.js'));
 });
