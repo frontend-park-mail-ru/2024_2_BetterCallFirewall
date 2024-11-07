@@ -86,6 +86,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		this._renderSubscribers();
 		this._renderSubscribtions();
 		this._renderUsers();
+		this._addHandlers();
 	}
 
 	private _renderFriends(): void {
@@ -197,5 +198,24 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 				);
 			});
 		});
+	}
+
+	private _addHandlers() {
+		this._addScrollHandler();
+	}
+
+	private _addScrollHandler() {
+		let debounceTimeout: NodeJS.Timeout;
+		const handler = () => {
+			if (this._isNearBottom()) {
+				clearTimeout(debounceTimeout);
+				debounceTimeout = setTimeout(() => {
+					const users = this._configFriends.users.friendsConfig;
+					api.requestUsers(users[users.length - 1].id);
+				}, 200);
+			}
+		};
+
+		this.content.addHandler(document, 'scroll', handler);
 	}
 }
