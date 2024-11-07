@@ -45,25 +45,6 @@ export class Input extends BaseComponent implements IInput {
 		super._prerender();
 		this._templateContext = this.config;
 	}
-
-	protected _addHandlers(): void {
-        const fileInput = this.htmlElement.querySelector('input[type="file"]') as HTMLElement;
-        if (fileInput) {
-			this.addHandler(fileInput, 'change', (event) => {
-				const input = event.target as HTMLInputElement;
-                const label = this.htmlElement.querySelector('.form__upload');
-                
-                if (input.files && input.files.length > 0) {
-					if (label) {
-						label.classList.add('active');
-						label.textContent = 'Картинка выбрана';
-					}
-                } else {
-                    label?.classList.remove('active');
-                }
-			});
-        }
-    }
 }
 
 Handlebars.registerHelper('eq', function (arg1, arg2) {
