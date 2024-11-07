@@ -39,7 +39,9 @@ const replaceId = (url: string, id: number): string => {
 const insertQueryParams = (baseUrl: string, params: QueryParams) => {
 	let url = baseUrl;
 	Object.entries(params).forEach(([key, value]) => {
-		url += `?${key}=${value}`;
+		if (value) {
+			url += `?${key}=${value}`;
+		}
 	});
 	return url;
 };

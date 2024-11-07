@@ -229,6 +229,12 @@ class API {
 						friends: response.data,
 					}),
 				);
+				break;
+			case STATUS.noMoreContent:
+				this.sendAction(
+					new ActionProfileGetFriendsSuccess({ friends: [] }),
+				);
+				break;
 		}
 	}
 
@@ -244,6 +250,12 @@ class API {
 						subscribers: response.data,
 					}),
 				);
+				break;
+			case STATUS.noMoreContent:
+				this.sendAction(
+					new ActionProfileGetSubscribersSuccess({ subscribers: [] }),
+				);
+				break;
 		}
 	}
 
@@ -274,6 +286,14 @@ class API {
 						subscriptions: response.data,
 					}),
 				);
+				break;
+			case STATUS.noMoreContent:
+				this.sendAction(
+					new ActionProfileGetSubscriptionsSuccess({
+						subscriptions: [],
+					}),
+				);
+				break;
 		}
 	}
 

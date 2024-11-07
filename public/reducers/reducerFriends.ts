@@ -22,6 +22,12 @@ export const reducerFriends = (
 	}
 	const newState = deepClone(state);
 	switch (action.type) {
+		case ACTION_FRIENDS_TYPES.getFriends:
+			newState.friends.friendsConfig = [];
+			newState.subscribers.friendsConfig = [];
+			newState.subscriptions.friendsConfig = [];
+			newState.users.friendsConfig = [];
+			return newState;
 		case ACTION_FRIENDS_TYPES.getUsersSuccess: {
 			const actionData = action.data as ActionProfileGetUsersSuccessData;
 			newState.users.friendsConfig = newState.users.friendsConfig.concat(

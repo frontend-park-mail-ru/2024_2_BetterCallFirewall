@@ -1,4 +1,3 @@
-import { IProfileConfig } from '../components/Profile/Profile';
 import { HeaderResponse } from '../models/header';
 import { FullProfileResponse } from '../models/profile';
 import { Action, ActionType } from './action';
@@ -19,7 +18,7 @@ export const ACTION_PROFILE_TYPES = {
 	deletePostFail: 'actionProfileDeletePostFail',
 };
 
-export interface ActionUpdateProfileData extends IProfileConfig {}
+export interface ActionUpdateProfileData {}
 
 export class ActionUpdateProfile implements Action {
 	type: ActionType;
