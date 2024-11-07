@@ -117,5 +117,24 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 				}
 			},
 		);
+		this._addHandlerInput();
 	}
+
+	private _addHandlerInput(): void {
+        const fileInput = this._createPostForm.fileInput;
+		const label = this._createPostForm.label;
+        if (fileInput) {
+			this.content.addHandler(fileInput, 'change', (event) => {
+				const input = event.target as HTMLInputElement;                
+                if (input.files && input.files.length > 0) {
+					if (label) {
+						label.classList.add('active');
+						label.textContent = 'Картинка выбрана';
+					}
+                } else {
+                    label?.classList.remove('active');
+                }
+			});
+        }
+    }
 }
