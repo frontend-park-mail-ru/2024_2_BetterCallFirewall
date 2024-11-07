@@ -216,11 +216,13 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	private _updateActiveMenuLinks() {
+		console.log('update active link');
 		const curPath = window.location.pathname;
 		const menu = this._components.menu;
 		if (menu) {
 			Object.keys(menu.config.links).forEach((key) => {
 				const link = menu.config.links[key];
+				console.log('link:', link);
 				link.active = curPath === link.href;
 			});
 		}
