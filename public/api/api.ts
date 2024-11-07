@@ -155,9 +155,9 @@ class API {
 		}
 	}
 
-	async requestPosts(lastPostId: number): Promise<void> {
+	async requestPosts(lastPostId?: number): Promise<void> {
 		const params: QueryParams = {};
-		if (lastPostId >= 0) {
+		if (lastPostId) {
 			params.id = `${lastPostId}`;
 		}
 		const response = await ajax.getPosts(params);
