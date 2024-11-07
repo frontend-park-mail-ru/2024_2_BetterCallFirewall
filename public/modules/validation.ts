@@ -8,7 +8,7 @@ export default class Validator {
 	 */
 	errorsDelete(parentElem: HTMLElement): void {
 		const errors: NodeListOf<HTMLElement> =
-			parentElem.querySelectorAll('.error');
+			parentElem.querySelectorAll('.form__input-error');
 		errors.forEach((error) => (error.textContent = ''));
 	}
 
