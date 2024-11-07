@@ -1,5 +1,5 @@
 import { IMessageConfig } from '../components/Message/Message';
-import { PAGE_LINKS } from '../config';
+import { PAGE_URLS } from '../config';
 import parseImage from '../modules/parseImage';
 import parseTime from '../modules/parseTime';
 import { HeaderResponse } from './header';
@@ -20,6 +20,6 @@ export const toMessageConfig = (chatResponse: ChatResponse): IMessageConfig => {
 		lastMessage: chatResponse.last_message,
 		date: parseTime(chatResponse.last_date),
 		unreadedCount: -1,
-		href: PAGE_LINKS.chat + `/${id}`,
+		href: PAGE_URLS.chat + `/${id}`,
 	};
 };
