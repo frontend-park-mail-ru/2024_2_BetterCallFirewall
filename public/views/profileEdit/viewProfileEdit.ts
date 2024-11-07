@@ -100,6 +100,7 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 				api.editProfile(formData);
 			}
 		});
+		this._addHandlerInput();
 	}
 
 
