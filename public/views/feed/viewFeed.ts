@@ -67,12 +67,11 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		this._printMessage();
 	}
 
-	private get lastPostId(): number {
+	private get lastPostId(): number | undefined {
 		const posts = this._configFeed.posts;
 		if (posts.length) {
 			return posts[posts.length - 1].id;
 		}
-		return -1;
 	}
 
 	private _renderPosts(): void {
