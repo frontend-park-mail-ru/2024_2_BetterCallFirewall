@@ -106,7 +106,7 @@ export class ViewSignup extends BaseView {
 
 			  const valid = new Validator();
 			  if (error) {
-				valid.printError(target, error);
+				valid.printError(parentElem as HTMLInputElement, error);
 			  } else {
 				valid.errorsDelete(parentElem);
 			  }
