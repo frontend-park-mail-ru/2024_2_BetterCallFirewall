@@ -2,14 +2,14 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-bottom: .7rem;
+    margin-bottom: .3rem;
     &-error {
         color: red;
         font-size: .9rem;
         margin-top: .3rem;
     }
     &:last-of-type {
-        margin-bottom: 1.5rem;
+        margin-bottom: .8rem;
     }
     label {
         color: var(--main-text-color);
@@ -67,4 +67,11 @@
             border: 2px solid var(--main-color);
         }
     }
+}
+
+.form__img {
+    border-radius: 1rem;
+    width: 20rem;
+    height: auto;
+    margin-top: .3rem;
 }

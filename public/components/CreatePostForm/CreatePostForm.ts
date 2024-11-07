@@ -47,6 +47,14 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 		return html;
 	}
 
+	get img(): HTMLElement {
+		const html = this.htmlElement.querySelector('.form__img') as HTMLElement;
+		if (!html) {
+			throw new Error('label not found');
+		}
+		return html;
+	}
+
 	protected _prerender(): void {
 		super._prerender();
 		this._templateContext = {
