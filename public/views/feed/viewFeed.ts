@@ -9,6 +9,7 @@ import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
 export interface ViewFeedConfig extends HomeConfig {
 	posts: IPostConfig[];
+	errorMessage: string;
 }
 
 export interface IViewFeed extends IViewHome {}
@@ -24,26 +25,20 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	handleChange(change: ChangeFeed): void {
 		console.log('ViewFeed: change:', change);
 		super.handleChange(change);
-		let update = true;
 		switch (change.type) {
 			case ACTION_LOGIN_TYPES.loginClickSuccess:
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 				if (!this._configFeed.posts.length) {
 					api.requestPosts(this.lastPostId);
 				}
-				update = false;
 				break;
 			case ACTION_FEED_TYPES.postsRequestSuccess:
 			case ACTION_FEED_TYPES.postsRequestFail:
 				this.updateViewFeed(change.data);
-				update = false; // Чтобы посты сначала отрендерились, а потом шел запрос с последним id
 				if (!this._configFeed.posts.length) {
 					api.requestPosts(this.lastPostId);
 				}
 				break;
-		}
-		if (update) {
-			this.updateViewFeed(change.data);
 		}
 	}
 
@@ -88,6 +83,16 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			post.render();
 			this._addPostHandlers(post);
 		});
+	}
+
+	private _printMessage() {
+		const content = this._components.content;
+		if (!content) {
+			throw new Error('content does no exist on ViewFeed');
+		}
+		if (this._configFeed.errorMessage) {
+			content.printMessage(this._configFeed.errorMessage);
+		}
 	}
 
 	private _addPostHandlers(post: Post) {
