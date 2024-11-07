@@ -229,6 +229,12 @@ class API {
 						friends: response.data,
 					}),
 				);
+				break;
+			case STATUS.noMoreContent:
+				this.sendAction(
+					new ActionProfileGetFriendsSuccess({ friends: [] }),
+				);
+				break;
 		}
 	}
 
