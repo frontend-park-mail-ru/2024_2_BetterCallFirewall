@@ -14,7 +14,7 @@ import { ViewProfileEditConfig } from './views/profileEdit/viewProfileEdit';
 import { ViewPostEditConfig } from './views/PostEdit/viewPostEdit';
 import { IPostEditFormConfig } from './components/PostEditForm/PostEditForm';
 
-const DEBUG: boolean = false;
+const DEBUG: boolean = true;
 
 export const PAGE_URLS = {
 	feed: '/feed',

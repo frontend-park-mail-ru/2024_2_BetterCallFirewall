@@ -1,12 +1,12 @@
-const CACHE_NAME = 'Vilka';
+const CACHE_NAME = 'Vilka-cache-v5';
 const urlsCache = ['/'];
 
 // Добавляем урлы в кеш
 this.addEventListener('install', (event) => {
-	event.waitUntil(CACHE_NAME).then((cache) => {
+	event.waitUntil(caches.open(CACHE_NAME).then((cache) => {
 		console.log('Кэшируем');
 		return cache.addAll(urlsCache);
-	});
+	}));
 });
 
 // Отработка запросов

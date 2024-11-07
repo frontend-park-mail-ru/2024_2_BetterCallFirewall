@@ -14,8 +14,8 @@ const posts = [
 		},
 		post_content: {
 			text: 'Это текст поста',
-			file: '',
-			created_at: '23.09.2024',
+			file: 'img/lion.jpg',
+			created_at: '2024-11-06T17:04:13.565805Z',
 		},
 	},
 	{
@@ -27,8 +27,8 @@ const posts = [
 		},
 		post_content: {
 			text: 'Это текст другого поста',
-			file: '',
-			created_at: '23.09.2024',
+			file: 'img/cat.jpg',
+			created_at: '2345-22-06T27:05:14.575805Z',
 		},
 	},
 ];
@@ -179,17 +179,17 @@ app.get('/api/currentUserId', (req, res) => {
 	}
 });
 
-// app.get('/api/profile/header', (req, res) => {
-// 	res.json({
-// 		success: true,
-// 		message: '',
-// 		data: {
-// 			author_id: 1,
-// 			author: 'Darth Vader',
-// 			avatar: '/img/avatar.png',
-// 		},
-// 	});
-// });
+app.get('/api/profile/header', (req, res) => {
+	res.json({
+		success: true,
+		message: '',
+		data: {
+			author_id: 1,
+			author: 'Darth Vader',
+			avatar: '/img/avatar.png',
+		},
+	});
+});
 
 app.get('/dist/bundle.js', (req, res) => {
 	res.sendFile(path.join(__dirname, '../dist', 'bundle.js'));
