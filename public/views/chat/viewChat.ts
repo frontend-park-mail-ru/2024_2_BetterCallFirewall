@@ -95,12 +95,12 @@ export class ViewChat extends ViewHome implements IViewChat {
 	private _scrollToBottom(): void {
 		this._chatScrollBottom = 0;
 		this._scrollToOldPosition();
-		const chatContainer = this._chat.chatContentHTML;
-		this._handleScroll = false;
-		if (chatContainer) {
-			chatContainer.scrollTop = chatContainer.scrollHeight;
-		}
-		this._handleScroll = true;
+		// const chatContainer = this._chat.chatContentHTML;
+		// this._handleScroll = false;
+		// if (chatContainer) {
+		// 	chatContainer.scrollTop = chatContainer.scrollHeight;
+		// }
+		// this._handleScroll = true;
 	}
 
 	private _addHandlers() {
