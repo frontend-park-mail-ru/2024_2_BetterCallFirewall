@@ -1,4 +1,5 @@
 import { Action } from '../actions/action';
+import { ACTION_APP_TYPES } from '../actions/actionApp';
 import {
 	ACTION_MENU_TYPES,
 	ActionUpdateProfileLinkHrefData,
@@ -21,6 +22,7 @@ export const reducerMenu = (
 	const newState = deepClone(state);
 	if (action) {
 		switch (action.type) {
+			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_MENU_TYPES.menuLinkClick:
 				Object.keys(newState.links).forEach((key) => {
 					const link = newState.links[key];
