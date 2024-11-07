@@ -45,6 +45,10 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_CREATE_POST_TYPES.goToCreatePost:
+				this._configCreatePost = Object.assign(
+					this._configCreatePost,
+					change.data,
+				);
 				this.render();
 				break;
 			case ACTION_FEED_TYPES.postCreateSuccess:
