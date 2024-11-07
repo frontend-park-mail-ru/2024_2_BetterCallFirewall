@@ -16,18 +16,22 @@ import { IPostEditFormConfig } from './components/PostEditForm/PostEditForm';
 
 const DEBUG: boolean = false;
 
-export const PAGE_LINKS = {
+export const PAGE_URLS = {
 	feed: '/feed',
 	login: '/login',
 	signup: '/signup',
 	messages: '/chat',
-	chat: '/chat/\\d+',
+	chat: '/chat',
 	friends: '/friends',
 	createPost: '/create-post',
 	profileEdit: '/profile-edit',
-	profile: '/([\\w-]+)',
+	profile: '',
 	postEdit: '/post-edit',
 };
+
+export const PAGE_LINKS = { ...PAGE_URLS };
+PAGE_LINKS.chat += '/\\d+';
+PAGE_LINKS.profile += '/([\\w-]+)';
 
 const homeConfig: HomeConfig = {
 	menu: {

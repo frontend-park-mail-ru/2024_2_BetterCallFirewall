@@ -1,7 +1,6 @@
 import { Action } from '../actions/action';
 import {
 	ACTION_CHAT_TYPES,
-	ActionChatGoToChatData,
 	ActionChatRequestSuccessData,
 	ActionChatSendMessageData,
 } from '../actions/actionChat';
@@ -43,6 +42,9 @@ export const reducerChat = (
 				(action.data as ActionProfileRequestSuccessData)
 					.profileResponse,
 			);
+			newState.chat.myId = newState.main.header.profile.id;
+			newState.chat.myName = newState.main.header.profile.name;
+			newState.chat.myAvatar = newState.main.header.profile.avatar;
 			return newState;
 		case ACTION_CHAT_TYPES.sendMessage: {
 			const actionData = action.data as ActionChatSendMessageData;
@@ -79,8 +81,7 @@ export const reducerChat = (
 		case ACTION_CHAT_TYPES.updateChat:
 			return newState;
 		case ACTION_CHAT_TYPES.goToChat: {
-			const actionData = action.data as ActionChatGoToChatData;
-			newState.chat = actionData.chatConfig;
+			newState.chat.messages = [];
 			return newState;
 		}
 		default:
