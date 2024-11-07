@@ -132,6 +132,7 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 					event.preventDefault();
 					label?.classList.remove('active');
 					label.textContent = 'Прикрепить картинку';
+					preview.src = '';
 				}
 			});
 			this.content.addHandler(fileInput, 'change', (event) => {
