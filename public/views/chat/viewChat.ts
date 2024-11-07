@@ -58,11 +58,16 @@ export class ViewChat extends ViewHome implements IViewChat {
 				);
 				break;
 			case ACTION_APP_TYPES.actionAppInit:
-			case ACTION_CHAT_TYPES.goToChat:
+			case ACTION_CHAT_TYPES.goToChat: {
 				this.render();
-				this.sendAction(new ActionProfileRequest(app.router.path));
+				if (app.router.chatId) {
+					this.sendAction(
+						new ActionProfileRequest(`${app.router.chatId}`),
+					);
+				}
 				this._chatScrollBottom = 0;
 				break;
+			}
 			case ACTION_CHAT_TYPES.requestChatSuccess:
 				this.updateViewChat(change.data);
 				this._scrollToOldPosition();

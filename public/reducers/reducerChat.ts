@@ -19,6 +19,8 @@ import { MessageResponse, toChatMessageConfig } from '../models/message';
 import { toChatConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
 import { ViewChatConfig } from '../views/chat/viewChat';
+import { HomeConfig } from '../views/home/viewHome';
+import { reducerHome } from './reducerHome';
 
 const initialChatState: IChatConfig = deepClone(config.chatConfig.chat);
 
@@ -31,7 +33,10 @@ export const reducerChat = (
 	state: ViewChatConfig = initialState,
 	action?: Action,
 ) => {
-	const newState = deepClone(state);
+	const newState = Object.assign(
+		deepClone(state),
+		reducerHome(state, action),
+	);
 	switch (action?.type) {
 		case ACTION_PROFILE_TYPES.profileRequestSuccess:
 			newState.chat = toChatConfig(
