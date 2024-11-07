@@ -87,6 +87,7 @@ export class ViewSignup extends BaseView {
 
 	private InputFieldHandler() {
 		const inputFields = document.querySelectorAll('input, textarea');
+		console.log('input fields handler ', inputFields);
 		inputFields.forEach((input) => {
 			input.addEventListener('input', (event) => {
 			  const target = event.target as HTMLInputElement;
