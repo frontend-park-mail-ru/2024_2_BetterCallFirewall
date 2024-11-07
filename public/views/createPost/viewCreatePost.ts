@@ -129,10 +129,21 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
                 if (input.files && input.files.length > 0) {
 					if (label) {
 						label.classList.add('active');
-						label.textContent = 'Картинка выбрана';
+						label.textContent = 'Картинка выбрана, нажмите, чтобы отменить';
 					}
                 } else {
                     label?.classList.remove('active');
+					label.textContent = 'Прикрепить картинку';
+                }
+			});
+			this.content.addHandler(fileInput, 'click', (event) => {
+				const input = event.target as HTMLInputElement;                
+                if (input.files && input.files.length > 0) {
+					if (label) {
+						input.value = '';
+						label?.classList.remove('active');
+						label.textContent = 'Прикрепить картинку';
+					}
                 }
 			});
         }
