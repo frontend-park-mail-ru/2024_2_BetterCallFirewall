@@ -29,7 +29,7 @@ export const PAGE_URLS = {
 	postEdit: '/post-edit',
 };
 
-export const PAGE_LINKS = PAGE_URLS;
+export const PAGE_LINKS = { ...PAGE_URLS };
 PAGE_LINKS.chat += '/\\d+';
 PAGE_LINKS.profile += '/([\\w-]+)';
 
