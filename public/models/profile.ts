@@ -74,6 +74,6 @@ export const toChatConfig = (
 	const newChatConfig = deepClone(chatConfig);
 	newChatConfig.companionId = response.id;
 	newChatConfig.companionName = `${response.first_name} ${response.last_name}`;
-	newChatConfig.companionAvatar = response.avatar;
+	newChatConfig.companionAvatar = parseImage(response.avatar);
 	return newChatConfig;
 };
