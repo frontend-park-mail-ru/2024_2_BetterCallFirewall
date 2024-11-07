@@ -40,7 +40,6 @@ export interface MainConfig {
 export interface HomeConfig {
 	menu: IMenuConfig;
 	main: MainConfig;
-	errorMessage: string;
 }
 
 export type ComponentsHome = {
@@ -92,8 +91,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 				this._configHome = change.data;
 				this.render();
 				break;
-			default:
-				this.updateViewHome(change.data);
 		}
 	}
 
@@ -204,16 +201,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		);
 	};
 
-	protected _printMessage() {
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does no exist on ViewFeed');
-		}
-		if (this._configHome.errorMessage) {
-			content.printMessage(this._configHome.errorMessage);
-		}
-	}
-
 	private _renderMenu() {
 		this._components.menu = new Menu(this._configHome.menu, this._root);
 		this._components.menu.render();
@@ -225,7 +212,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		const curPath = window.location.pathname;
 		const menu = this._components.menu;
 		if (menu) {
-			Object.keys(menu.config.links).forEach(key => {
+			Object.keys(menu.config.links).forEach((key) => {
 				const link = menu.config.links[key];
 				link.active = curPath === link.href;
 			});

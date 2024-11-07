@@ -33,6 +33,8 @@ export interface IViewChat extends IViewHome {
 export class ViewChat extends ViewHome implements IViewChat {
 	protected _configChat: ViewChatConfig;
 	protected _components: ComponentsChat = {};
+	private _chatScrollBottom: number = 0;
+	private _handleScroll: boolean = true;
 
 	constructor(config: ViewChatConfig, root: Root) {
 		super(config, root);
@@ -48,10 +50,17 @@ export class ViewChat extends ViewHome implements IViewChat {
 				this.sendAction(
 					new ActionChatRequest(this._configChat.chat.companionId),
 				);
+				this._chatScrollBottom = 0;
+				break;
+			case ACTION_CHAT_TYPES.requestChatSuccess:
+				this.updateViewChat(change.data);
+				this._scrollToOldPosition();
 				break;
 			case ACTION_CHAT_TYPES.sendMessage:
+				this.updateViewChat(change.data);
+				this._scrollToBottom();
+				break;
 			case ACTION_MESSAGES_TYPES.newMessage:
-			case ACTION_CHAT_TYPES.requestChatSuccess:
 			case ACTION_CHAT_TYPES.updateChat:
 				this.updateViewChat(change.data);
 				break;
@@ -80,14 +89,18 @@ export class ViewChat extends ViewHome implements IViewChat {
 		const chat = new Chat(this._configChat.chat, content);
 		chat.render();
 		this._components.chat = chat;
-		this._scrollToBottom();
+		// this._scrollToBottom();
 	}
 
 	private _scrollToBottom(): void {
-		const chatContainer = this._chat.chatContentHTML;
-		if (chatContainer) {
-			chatContainer.scrollTop = chatContainer.scrollHeight;
-		}
+		this._chatScrollBottom = 0;
+		this._scrollToOldPosition();
+		// const chatContainer = this._chat.chatContentHTML;
+		// this._handleScroll = false;
+		// if (chatContainer) {
+		// 	chatContainer.scrollTop = chatContainer.scrollHeight;
+		// }
+		// this._handleScroll = true;
 	}
 
 	private _addHandlers() {
@@ -95,7 +108,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._addSendButtonHandler();
 		this._addEnterSendHandler();
 		this._addCompanionLink();
-		// this._addScrollHandler();
+		this._addScrollHandler();
 		this._chat.addHandler(this._chat.settingsButton, 'click', (event) =>
 			event.preventDefault(),
 		);
@@ -150,17 +163,18 @@ export class ViewChat extends ViewHome implements IViewChat {
 
 	private _addCompanionLink() {
 		const chat = this._components.chat;
-		const companionLink = chat?.htmlElement?.querySelector('.chat__companion') as HTMLElement;
+		const companionLink = chat?.htmlElement?.querySelector(
+			'.chat__companion',
+		) as HTMLElement;
 		const companionId = this._components.chat?.config.companionId;
 		if (chat && companionId && companionLink) {
 			chat.addHandler(companionLink, 'click', (event) => {
 				event.preventDefault();
 				this.sendAction(
-					new ActionMenuLinkClick({ href: `/${companionId}` })
+					new ActionMenuLinkClick({ href: `/${companionId}` }),
 				);
 			});
 		}
-
 	}
 
 	private _addScrollHandler() {
@@ -170,12 +184,17 @@ export class ViewChat extends ViewHome implements IViewChat {
 		let debounceTimeout: NodeJS.Timeout;
 
 		const handleScroll = () => {
+			if (!this._handleScroll) {
+				return;
+			}
 			clearTimeout(debounceTimeout);
 			debounceTimeout = setTimeout(() => {
 				if (
-					chatContent.scrollTop + chatContent.clientHeight >=
+					chatContent.scrollTop + chatContent.clientHeight * 2 >
 					chatContent.scrollHeight
 				) {
+					this._chatScrollBottom =
+						chatContent.scrollHeight - chatContent.scrollTop;
 					this.sendAction(
 						new ActionChatRequest(
 							this._chat.config.companionId,
@@ -187,6 +206,14 @@ export class ViewChat extends ViewHome implements IViewChat {
 		};
 
 		content.addHandler(chatContent, 'scroll', handleScroll);
+	}
+
+	private _scrollToOldPosition() {
+		const chatContent = this._chat.chatContentHTML;
+		this._handleScroll = false;
+		chatContent.scrollTop =
+			chatContent.scrollHeight - this._chatScrollBottom;
+		this._handleScroll = true;
 	}
 
 	private get _chat(): Chat {

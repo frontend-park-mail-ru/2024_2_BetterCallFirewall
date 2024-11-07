@@ -33,7 +33,8 @@ export class Content extends Container implements IContent {
 	 */
 	printMessage(message: string) {
 		if (this.message) {
-			return;
+			this.removeMessage();
+			this.message = null;
 		}
 		const messageItem = new ContentMessage(
 			{ key: 'message', text: message },

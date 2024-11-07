@@ -9,6 +9,7 @@ import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
 export interface ViewFeedConfig extends HomeConfig {
 	posts: IPostConfig[];
+	errorMessage: string;
 }
 
 export interface IViewFeed extends IViewHome {}
@@ -24,30 +25,24 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	handleChange(change: ChangeFeed): void {
 		console.log('ViewFeed: change:', change);
 		super.handleChange(change);
-		let update = true;
 		switch (change.type) {
 			case ACTION_LOGIN_TYPES.loginClickSuccess:
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 				if (!this._configFeed.posts.length) {
 					api.requestPosts(this.lastPostId);
 				}
-				update = false;
 				break;
 			case ACTION_FEED_TYPES.postsRequestSuccess:
+			case ACTION_FEED_TYPES.postsRequestFail:
 				this.updateViewFeed(change.data);
-				update = false; // Чтобы посты сначала отрендерились, а потом шел запрос с последним id
 				if (!this._configFeed.posts.length) {
 					api.requestPosts(this.lastPostId);
 				}
 				break;
 		}
-		if (update) {
-			this.updateViewFeed(change.data);
-		}
 	}
 
 	render(): void {
-		console.log('render');
 		this._render();
 		this._addHandlers();
 
@@ -89,6 +84,16 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		});
 	}
 
+	private _printMessage() {
+		const content = this._components.content;
+		if (!content) {
+			throw new Error('content does no exist on ViewFeed');
+		}
+		if (this._configFeed.errorMessage) {
+			content.printMessage(this._configFeed.errorMessage);
+		}
+	}
+
 	private _addPostHandlers(post: Post) {
 		if (post.config.hasEditButton) {
 			post.addHandler(post.editButton, 'click', (event) => {
@@ -103,32 +108,16 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	private _addScrollHandler() {
-		let pending = false;
-		const fetchPosts = async () => {
-			if (!pending) {
-				pending = true;
-				await api.requestPosts(this.lastPostId);
-				pending = false;
-			}
-		};
-		let limited = false;
-		const intervalLimit = (func: () => void): (() => void) => {
-			return () => {
-				if (!limited) {
-					limited = true;
-					func();
-					const limit = 1000;
-					setTimeout(() => {
-						limited = false;
-					}, limit);
-				}
-			};
-		};
+		let debounceTimeout: NodeJS.Timeout;
 		const handler = () => {
 			if (this._isNearBottom()) {
-				fetchPosts();
+				clearTimeout(debounceTimeout);
+				debounceTimeout = setTimeout(() => {
+					api.requestPosts(this.lastPostId);
+				}, 200);
 			}
 		};
-		this.content.addHandler(document, 'scroll', intervalLimit(handler));
+
+		this.content.addHandler(document, 'scroll', handler);
 	}
 }
