@@ -1,7 +1,6 @@
 import { Action } from '../actions/action';
 import {
 	ACTION_CHAT_TYPES,
-	ActionChatGoToChatData,
 	ActionChatRequestSuccessData,
 	ActionChatSendMessageData,
 } from '../actions/actionChat';
@@ -82,8 +81,8 @@ export const reducerChat = (
 		case ACTION_CHAT_TYPES.updateChat:
 			return newState;
 		case ACTION_CHAT_TYPES.goToChat: {
-			const actionData = action.data as ActionChatGoToChatData;
-			newState.chat = actionData.chatConfig;
+			// const actionData = action.data as ActionChatGoToChatData;
+			// newState.chat = actionData.chatConfig;
 			return newState;
 		}
 		default:

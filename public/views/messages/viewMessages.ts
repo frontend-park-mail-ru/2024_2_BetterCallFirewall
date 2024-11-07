@@ -2,7 +2,7 @@ import { ActionChatGoToChat } from '../../actions/actionChat';
 import { ActionMessagesRequest } from '../../actions/actionMessages';
 import { Root } from '../../components';
 import { IMessageConfig, Message } from '../../components/Message/Message';
-import { PAGE_LINKS } from '../../config';
+import { PAGE_URLS } from '../../config';
 import { ChangeMessages } from '../../stores/storeMessages';
 import {
 	ComponentsHome,
@@ -73,19 +73,20 @@ export class ViewMessages extends ViewHome implements IViewHome {
 			const config = message.config;
 			this.sendAction(
 				new ActionChatGoToChat({
-					chatConfig: {
-						key: `chat-${config.authorId}`,
-						companionId: config.authorId,
-						companionAvatar: config.avatar,
-						companionName: config.name,
-						lastDateOnline: '-1',
-						backButtonHref: PAGE_LINKS.messages,
-						messages: [],
-						myId: this._configMessages.main.header.profile.id,
-						myName: this._configMessages.main.header.profile.name,
-						myAvatar:
-							this._configMessages.main.header.profile.avatar,
-					},
+					// chatConfig: {
+					// 	key: `chat-${config.authorId}`,
+					// 	companionId: config.authorId,
+					// 	companionAvatar: config.avatar,
+					// 	companionName: config.name,
+					// 	lastDateOnline: '-1',
+					// 	backButtonHref: PAGE_LINKS.messages,
+					// 	messages: [],
+					// 	myId: this._configMessages.main.header.profile.id,
+					// 	myName: this._configMessages.main.header.profile.name,
+					// 	myAvatar:
+					// 		this._configMessages.main.header.profile.avatar,
+					// },
+					href: PAGE_URLS.chat + `/${config.authorId}`,
 				}),
 			);
 		});

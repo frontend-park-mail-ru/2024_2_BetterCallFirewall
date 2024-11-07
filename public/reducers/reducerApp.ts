@@ -1,6 +1,9 @@
 import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
-import { ACTION_CHAT_TYPES } from '../actions/actionChat';
+import {
+	ACTION_CHAT_TYPES,
+	ActionChatGoToChatData,
+} from '../actions/actionChat';
 import { ACTION_CREATE_POST_TYPES } from '../actions/actionCreatePost';
 import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
 import {
@@ -41,7 +44,7 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 				router.goToPage(PAGE_LINKS.login);
 				break;
 			case ACTION_CHAT_TYPES.goToChat:
-				router.goToPage(PAGE_LINKS.chat);
+				router.goToPage((action.data as ActionChatGoToChatData).href);
 				break;
 			case ACTION_CREATE_POST_TYPES.goToCreatePost:
 				router.goToPage(PAGE_LINKS.createPost);

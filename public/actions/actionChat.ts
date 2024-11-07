@@ -1,4 +1,3 @@
-import { IChatConfig } from '../components/Chat/Chat';
 import { MessageResponse, MessageSend } from '../models/message';
 import { Action, ActionType } from './action';
 
@@ -21,7 +20,8 @@ export class ActionUpdateChat implements Action {
 }
 
 export interface ActionChatGoToChatData {
-	chatConfig: IChatConfig;
+	// chatConfig: IChatConfig;
+	href: string;
 }
 
 export class ActionChatGoToChat implements Action {

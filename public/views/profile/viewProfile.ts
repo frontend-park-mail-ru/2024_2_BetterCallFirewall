@@ -16,7 +16,7 @@ import api from '../../api/api';
 import app from '../../app';
 import { Post, Root } from '../../components';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
-import { PAGE_LINKS } from '../../config';
+import { PAGE_URLS } from '../../config';
 import { ChangeProfile } from '../../stores/storeProfile';
 import {
 	ComponentsHome,
@@ -146,20 +146,21 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				const config = profile.config;
 				this.sendAction(
 					new ActionChatGoToChat({
-						chatConfig: {
-							key: `chat-${config.id}`,
-							companionId: config.id,
-							companionAvatar: config.img,
-							companionName: `${config.firstName} ${config.secondName}`,
-							lastDateOnline: '-1',
-							backButtonHref: PAGE_LINKS.messages,
-							messages: [],
-							myId: this._configProfile.main.header.profile.id,
-							myName: this._configProfile.main.header.profile
-								.name,
-							myAvatar:
-								this._configProfile.main.header.profile.avatar,
-						},
+						// chatConfig: {
+						// 	key: `chat-${config.id}`,
+						// 	companionId: config.id,
+						// 	companionAvatar: config.img,
+						// 	companionName: `${config.firstName} ${config.secondName}`,
+						// 	lastDateOnline: '-1',
+						// 	backButtonHref: PAGE_LINKS.messages,
+						// 	messages: [],
+						// 	myId: this._configProfile.main.header.profile.id,
+						// 	myName: this._configProfile.main.header.profile
+						// 		.name,
+						// 	myAvatar:
+						// 		this._configProfile.main.header.profile.avatar,
+						// },
+						href: PAGE_URLS + `/${config.id}`,
 					}),
 				);
 			});
