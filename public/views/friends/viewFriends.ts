@@ -180,20 +180,6 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 				const config = person.config;
 				this.sendAction(
 					new ActionChatGoToChat({
-						// chatConfig: {
-						// 	key: `chat-${config.id}`,
-						// 	companionId: config.id,
-						// 	companionAvatar: config.avatar,
-						// 	companionName: `${config.name}`,
-						// 	lastDateOnline: '-1',
-						// 	backButtonHref: PAGE_LINKS.messages,
-						// 	messages: [],
-						// 	myId: this._configFriends.main.header.profile.id,
-						// 	myName: this._configFriends.main.header.profile
-						// 		.name,
-						// 	myAvatar:
-						// 		this._configFriends.main.header.profile.avatar,
-						// },
 						href: PAGE_URLS.chat + `/${config.id}`,
 					}),
 				);
