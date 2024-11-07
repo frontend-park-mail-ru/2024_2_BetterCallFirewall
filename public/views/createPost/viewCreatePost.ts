@@ -124,6 +124,13 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
         const fileInput = this._createPostForm.fileInput;
 		const label = this._createPostForm.label;
         if (fileInput) {
+			this.content.addHandler(fileInput, 'click', (event) => {
+				const input = event.target as HTMLInputElement; 
+                if (input.value) {
+					input.value = '';
+					event.preventDefault();
+				  }
+			});
 			this.content.addHandler(fileInput, 'change', (event) => {
 				const input = event.target as HTMLInputElement;                
                 if (input.files && input.files.length > 0) {
@@ -137,17 +144,6 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
                 } else {
                     label?.classList.remove('active');
 					label.textContent = 'Прикрепить картинку';
-                }
-			});
-			this.content.addHandler(fileInput, 'click', (event) => {
-				const input = event.target as HTMLInputElement;                
-                if (input.files && input.files.length > 0) {
-					event.preventDefault();
-					if (label) {
-						input.value = '';
-						label?.classList.remove('active');
-						label.textContent = 'Прикрепить картинку';
-					}
                 }
 			});
         }
