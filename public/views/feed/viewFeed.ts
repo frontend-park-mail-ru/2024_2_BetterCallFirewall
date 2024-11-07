@@ -53,6 +53,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 
 	updateViewFeed(data: ViewFeedConfig) {
 		console.log('update ViewHome:', this);
+		this.updateViewHome(data);
 		this._configFeed = { ...this._configFeed, ...data };
 		this._render();
 		this._addHandlers();
