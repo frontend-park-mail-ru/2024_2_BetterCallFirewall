@@ -1,6 +1,8 @@
+import { IChatConfig } from '../components/Chat/Chat';
 import { IFriendConfig } from '../components/Friend/Friend';
 import { IProfileConfig } from '../components/Profile/Profile';
 import { PAGE_LINKS } from '../config';
+import deepClone from '../modules/deepClone';
 import parseImage from '../modules/parseImage';
 import { PostResponse, toPostConfig } from './post';
 
@@ -63,4 +65,15 @@ export const toFriendConfig = (
 		isSubscription: profileResponse.is_subscription,
 	};
 	return newConfig;
+};
+
+export const toChatConfig = (
+	chatConfig: IChatConfig,
+	response: FullProfileResponse,
+): IChatConfig => {
+	const newChatConfig = deepClone(chatConfig);
+	newChatConfig.companionId = response.id;
+	newChatConfig.companionName = `${response.first_name} ${response.last_name}`;
+	newChatConfig.companionAvatar = response.avatar;
+	return newChatConfig;
 };

@@ -30,9 +30,17 @@ export class ActionUpdateProfile implements Action {
 	}
 }
 
+export interface ActionProfileRequestData {
+	id: string;
+}
+
 export class ActionProfileRequest implements Action {
 	type: ActionType = ACTION_PROFILE_TYPES.profileRequest;
-	data: object = {};
+	data: ActionProfileRequestData;
+
+	constructor(profileId: string) {
+		this.data = { id: profileId };
+	}
 }
 
 export interface ActionProfileRequestSuccessData {

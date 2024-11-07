@@ -91,7 +91,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				this.sendAction(
 					new ActionUpdateProfile(this._configProfile.profile),
 				);
-				this.sendAction(new ActionProfileRequest());
+				this.sendAction(
+					new ActionProfileRequest(this._configProfile.path),
+				);
 				break;
 		}
 	}
@@ -99,7 +101,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	render(): void {
 		this._render();
 		this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
-		this.sendAction(new ActionProfileRequest());
+		this.sendAction(new ActionProfileRequest(this._configProfile.path));
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {
