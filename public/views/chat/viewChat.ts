@@ -1,3 +1,4 @@
+import { ACTION_APP_TYPES } from '../../actions/actionApp';
 import {
 	ACTION_CHAT_TYPES,
 	ActionChatRequest,
@@ -6,6 +7,11 @@ import {
 } from '../../actions/actionChat';
 import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import { ACTION_MESSAGES_TYPES } from '../../actions/actionMessages';
+import {
+	ACTION_PROFILE_TYPES,
+	ActionProfileRequest,
+} from '../../actions/actionProfile';
+import app from '../../app';
 import { Root } from '../../components';
 import { Chat, IChatConfig } from '../../components/Chat/Chat';
 import dispatcher from '../../dispatcher/dispatcher';
@@ -45,11 +51,16 @@ export class ViewChat extends ViewHome implements IViewChat {
 		console.log('ViewChat:', change);
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_CHAT_TYPES.goToChat:
-				this.render();
+			case ACTION_PROFILE_TYPES.profileRequestSuccess:
+				this.updateViewChat(change.data);
 				this.sendAction(
 					new ActionChatRequest(this._configChat.chat.companionId),
 				);
+				break;
+			case ACTION_APP_TYPES.actionAppInit:
+			case ACTION_CHAT_TYPES.goToChat:
+				this.render();
+				this.sendAction(new ActionProfileRequest(app.router.path));
 				this._chatScrollBottom = 0;
 				break;
 			case ACTION_CHAT_TYPES.requestChatSuccess:
@@ -89,18 +100,11 @@ export class ViewChat extends ViewHome implements IViewChat {
 		const chat = new Chat(this._configChat.chat, content);
 		chat.render();
 		this._components.chat = chat;
-		// this._scrollToBottom();
 	}
 
 	private _scrollToBottom(): void {
 		this._chatScrollBottom = 0;
 		this._scrollToOldPosition();
-		// const chatContainer = this._chat.chatContentHTML;
-		// this._handleScroll = false;
-		// if (chatContainer) {
-		// 	chatContainer.scrollTop = chatContainer.scrollHeight;
-		// }
-		// this._handleScroll = true;
 	}
 
 	private _addHandlers() {

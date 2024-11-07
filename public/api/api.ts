@@ -45,6 +45,8 @@ import {
 	ActionProfileRequestSuccess,
 	ActionProfileDeletePostFail,
 	ActionProfileDeletePostSuccess,
+	ACTION_PROFILE_TYPES,
+	ActionProfileRequestData,
 } from '../actions/actionProfile';
 import {
 	ActionProfileEditRequestFail,
@@ -67,6 +69,11 @@ export const STATUS = {
 class API {
 	handleAction(action: Action) {
 		switch (action.type) {
+			case ACTION_PROFILE_TYPES.profileRequest:
+				this.requestProfile(
+					(action.data as ActionProfileRequestData).id,
+				);
+				break;
 			case ACTION_MESSAGES_TYPES.requestMessages:
 				this.getMessages();
 				break;

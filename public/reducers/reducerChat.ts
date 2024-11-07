@@ -9,9 +9,14 @@ import {
 	ACTION_MESSAGES_TYPES,
 	ActionMessagesNewMessageData,
 } from '../actions/actionMessages';
+import {
+	ACTION_PROFILE_TYPES,
+	ActionProfileRequestSuccessData,
+} from '../actions/actionProfile';
 import { IChatConfig } from '../components/Chat/Chat';
 import config from '../config';
 import { MessageResponse, toChatMessageConfig } from '../models/message';
+import { toChatConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
 import { ViewChatConfig } from '../views/chat/viewChat';
 
@@ -28,6 +33,13 @@ export const reducerChat = (
 ) => {
 	const newState = deepClone(state);
 	switch (action?.type) {
+		case ACTION_PROFILE_TYPES.profileRequestSuccess:
+			newState.chat = toChatConfig(
+				newState.chat,
+				(action.data as ActionProfileRequestSuccessData)
+					.profileResponse,
+			);
+			return newState;
 		case ACTION_CHAT_TYPES.sendMessage: {
 			const actionData = action.data as ActionChatSendMessageData;
 			const messageResponse: MessageResponse = {
