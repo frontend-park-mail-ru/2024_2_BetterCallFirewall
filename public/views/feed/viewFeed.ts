@@ -9,7 +9,6 @@ import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
 export interface ViewFeedConfig extends HomeConfig {
 	posts: IPostConfig[];
-	// errorMessage: string;
 }
 
 export interface IViewFeed extends IViewHome {}
@@ -35,9 +34,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			case ACTION_FEED_TYPES.postsRequestSuccess:
 			case ACTION_FEED_TYPES.postsRequestFail:
 				this.updateViewFeed(change.data);
-				// if (!this._configFeed.posts.length) {
-				// 	api.requestPosts(this.lastPostId);
-				// }
 				break;
 		}
 	}
@@ -80,16 +76,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			this._addPostHandlers(post);
 		});
 	}
-
-	// private _printMessage() {
-	// 	const content = this._components.content;
-	// 	if (!content) {
-	// 		throw new Error('content does no exist on ViewFeed');
-	// 	}
-	// 	if (this._configFeed.errorMessage) {
-	// 		content.printMessage(this._configFeed.errorMessage);
-	// 	}
-	// }
 
 	private _addPostHandlers(post: Post) {
 		if (post.config.hasEditButton) {
