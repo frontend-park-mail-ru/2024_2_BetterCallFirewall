@@ -240,8 +240,8 @@ class API {
 		}
 	}
 
-	async requestUsers() {
-		const response = await ajax.getProfiles();
+	async requestUsers(lastId?: number) {
+		const response = await ajax.getProfiles(lastId);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
