@@ -59,6 +59,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 				break;
 			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_CHAT_TYPES.goToChat: {
+				this._configChat = Object.assign(this._configChat, change.data);
 				this.render();
 				if (app.router.chatId) {
 					this.sendAction(
