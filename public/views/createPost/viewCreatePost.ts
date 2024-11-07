@@ -148,6 +148,7 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 						preview.src = e.target?.result as string;
 						preview.style.display = 'block';
 					};
+					reader.readAsDataURL(input.files[0]);
 				}
 			});
 		}
