@@ -1,6 +1,7 @@
 <div class="form__input" data-key="{{this.key}}">
     {{#if (eq this.type 'file')}}
         <label for="{{this.name}}" class="form__upload">{{this.placeholder}}</label>
+        <img class="form__img" alt="">
     {{else}}
         <label for="{{this.name}}">{{this.placeholder}}</label>
     {{/if}}
