@@ -40,6 +40,7 @@ export interface MainConfig {
 export interface HomeConfig {
 	menu: IMenuConfig;
 	main: MainConfig;
+	errorMessage: string;
 }
 
 export type ComponentsHome = {
@@ -95,7 +96,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	updateViewHome(data: HomeConfig) {
-		console.log('ViewHome: update');
+		console.log('ViewHome: update:');
 		this._configHome = data;
 		this._render();
 	}
@@ -200,6 +201,13 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 			window.innerHeight * 2 + window.scrollY > document.body.offsetHeight
 		);
 	};
+
+	protected _printMessage() {
+		console.log('print message:', this);
+		if (this._configHome.errorMessage) {
+			this.content.printMessage(this._configHome.errorMessage);
+		}
+	}
 
 	private _renderMenu() {
 		this._components.menu = new Menu(this._configHome.menu, this._root);

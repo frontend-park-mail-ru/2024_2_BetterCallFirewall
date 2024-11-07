@@ -49,4 +49,13 @@ export class Router {
 	get path(): string {
 		return this._path;
 	}
+
+	get chatId(): number | undefined {
+		const regex = /^\/chat\/(\d+)$/;
+		const match = this.path.match(regex);
+		if (match) {
+			const id = Number(match[1]);
+			return id;
+		}
+	}
 }

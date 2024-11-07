@@ -29,7 +29,7 @@ import {
 import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
 	ACTION_MESSAGES_TYPES,
-	actionMessagesRequestFail,
+	ActionMessagesRequestFail as ActionMessagesRequestFail,
 	ActionMessagesRequestSuccess,
 } from '../actions/actionMessages';
 import {
@@ -45,6 +45,8 @@ import {
 	ActionProfileRequestSuccess,
 	ActionProfileDeletePostFail,
 	ActionProfileDeletePostSuccess,
+	ACTION_PROFILE_TYPES,
+	ActionProfileRequestData,
 } from '../actions/actionProfile';
 import {
 	ActionProfileEditRequestFail,
@@ -67,6 +69,11 @@ export const STATUS = {
 class API {
 	handleAction(action: Action) {
 		switch (action.type) {
+			case ACTION_PROFILE_TYPES.profileRequest:
+				this.requestProfile(
+					(action.data as ActionProfileRequestData).href,
+				);
+				break;
 			case ACTION_MESSAGES_TYPES.requestMessages:
 				this.getMessages();
 				break;
@@ -240,8 +247,8 @@ class API {
 		}
 	}
 
-	async requestUsers() {
-		const response = await ajax.getProfiles();
+	async requestUsers(lastId?: number) {
+		const response = await ajax.getProfiles(lastId);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
@@ -380,15 +387,25 @@ class API {
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
-					this.sendAction(new actionMessagesRequestFail());
+					this.sendAction(
+						new ActionMessagesRequestFail(response.status),
+					);
 					break;
 				}
 				this.sendAction(
 					new ActionMessagesRequestSuccess(response.data),
 				);
 				break;
+			case STATUS.noMoreContent:
+				this.sendAction(
+					new ActionMessagesRequestFail(
+						response.status,
+						'Сообщений нет',
+					),
+				);
+				break;
 			default:
-				this.sendAction(new actionMessagesRequestFail());
+				this.sendAction(new ActionMessagesRequestFail(response.status));
 		}
 	}
 

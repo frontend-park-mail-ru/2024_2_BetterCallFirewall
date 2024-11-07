@@ -13,6 +13,7 @@ import { Root } from '../../components';
 import { IFriendConfig } from '../../components/Friend/Friend';
 import { Friends, FriendsConfig } from '../../components/Friends/Friends';
 import { PAGE_LINKS } from '../../config';
+import deepClone from '../../modules/deepClone';
 import { ChangeFriends } from '../../stores/storeFriends';
 import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
@@ -71,7 +72,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 	}
 
 	updateViewFriends(data: ViewFriendsConfig) {
-		this._configFriends = Object.assign(this._configFriends, data);
+		this._configFriends = deepClone(data);
 		this._render();
 	}
 
@@ -85,6 +86,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		this._renderSubscribers();
 		this._renderSubscribtions();
 		this._renderUsers();
+		this._addHandlers();
 	}
 
 	private _renderFriends(): void {
@@ -196,5 +198,24 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 				);
 			});
 		});
+	}
+
+	private _addHandlers() {
+		this._addScrollHandler();
+	}
+
+	private _addScrollHandler() {
+		let debounceTimeout: NodeJS.Timeout;
+		const handler = () => {
+			if (this._isNearBottom()) {
+				clearTimeout(debounceTimeout);
+				debounceTimeout = setTimeout(() => {
+					const users = this._configFriends.users.friendsConfig;
+					api.requestUsers(users[users.length - 1].id);
+				}, 200);
+			}
+		};
+
+		this.content.addHandler(document, 'scroll', handler);
 	}
 }

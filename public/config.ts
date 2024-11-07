@@ -20,8 +20,8 @@ export const PAGE_LINKS = {
 	feed: '/feed',
 	login: '/login',
 	signup: '/signup',
-	messages: '/messages',
-	chat: '/chat',
+	messages: '/chat',
+	chat: '/chat/\\d+',
 	friends: '/friends',
 	createPost: '/create-post',
 	profileEdit: '/profile-edit',
@@ -96,6 +96,7 @@ const homeConfig: HomeConfig = {
 			className: 'aside',
 		},
 	},
+	errorMessage: '',
 };
 
 const signupConfig: ISignupFormConfig = {
@@ -243,7 +244,6 @@ const profileEditConfig: ViewProfileEditConfig = {
 const feedConfig: ViewFeedConfig = {
 	...homeConfig,
 	posts: [],
-	errorMessage: '',
 };
 
 const profileComponentConfig: IProfileConfig = {

@@ -9,7 +9,6 @@ import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
 
 export interface ViewFeedConfig extends HomeConfig {
 	posts: IPostConfig[];
-	errorMessage: string;
 }
 
 export interface IViewFeed extends IViewHome {}
@@ -35,9 +34,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			case ACTION_FEED_TYPES.postsRequestSuccess:
 			case ACTION_FEED_TYPES.postsRequestFail:
 				this.updateViewFeed(change.data);
-				if (!this._configFeed.posts.length) {
-					api.requestPosts(this.lastPostId);
-				}
 				break;
 		}
 	}
@@ -52,6 +48,8 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	updateViewFeed(data: ViewFeedConfig) {
+		console.log('update ViewHome:', this);
+		this.updateViewHome(data);
 		this._configFeed = { ...this._configFeed, ...data };
 		this._render();
 		this._addHandlers();
@@ -72,26 +70,11 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	private _renderPosts(): void {
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does no exist on ViewFeed');
-		}
-
 		this._configFeed.posts.forEach((postData) => {
-			const post = new Post(postData, content);
+			const post = new Post(postData, this.content);
 			post.render();
 			this._addPostHandlers(post);
 		});
-	}
-
-	private _printMessage() {
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does no exist on ViewFeed');
-		}
-		if (this._configFeed.errorMessage) {
-			content.printMessage(this._configFeed.errorMessage);
-		}
 	}
 
 	private _addPostHandlers(post: Post) {

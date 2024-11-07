@@ -2,6 +2,7 @@ import { Action } from '../actions/action';
 import {
 	ACTION_MESSAGES_TYPES,
 	ActionMessagesNewMessageData,
+	ActionMessagesRequestFailData,
 	ActionMessagesRequestSuccessData,
 	ActionUpdateMessagesData,
 } from '../actions/actionMessages';
@@ -29,6 +30,13 @@ export const reducerMessages = (
 	}
 	const newState = deepClone(state);
 	switch (action.type) {
+		case ACTION_MESSAGES_TYPES.requestMessagesFail: {
+			const actionData = action.data as ActionMessagesRequestFailData;
+			if (actionData.message) {
+				newState.errorMessage = actionData.message;
+			}
+			return newState;
+		}
 		case ACTION_MESSAGES_TYPES.newMessage: {
 			const actionData = action.data as ActionMessagesNewMessageData;
 			newState.messages = newState.messages.map((messageConfig) => {
@@ -55,6 +63,6 @@ export const reducerMessages = (
 			return { ...state, ...(action.data as ActionUpdateMessagesData) };
 		case ACTION_MESSAGES_TYPES.goToMessages:
 		default:
-			return state;
+			return newState;
 	}
 };

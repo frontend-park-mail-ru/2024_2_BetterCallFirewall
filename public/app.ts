@@ -184,10 +184,6 @@ class App {
 				view: signupView,
 			},
 			{
-				path: PAGE_LINKS.messages,
-				view: messagesView,
-			},
-			{
 				path: PAGE_LINKS.createPost,
 				view: createPostView,
 			},
@@ -196,8 +192,12 @@ class App {
 				view: profileEditView,
 			},
 			{
-				path: PAGE_LINKS.chat,
+				path: PAGE_LINKS.chat, // chat должен быть перед messages
 				view: chatView,
+			},
+			{
+				path: PAGE_LINKS.messages,
+				view: messagesView,
 			},
 			{
 				path: PAGE_LINKS.friends,
@@ -328,9 +328,10 @@ class App {
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChatSuccess);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChatFail);
+		this._stores.chat.subscribe(ACTION_CHAT_TYPES.sendMessage);
 		this._stores.chat.subscribe(ACTION_MESSAGES_TYPES.sendMessage);
 		this._stores.chat.subscribe(ACTION_MESSAGES_TYPES.newMessage);
-		this._stores.chat.subscribe(ACTION_CHAT_TYPES.sendMessage);
+		this._stores.chat.subscribe(ACTION_PROFILE_TYPES.profileRequestSuccess);
 
 		this._stores.createPost.subscribe(
 			ACTION_CREATE_POST_TYPES.updateCreatePost,

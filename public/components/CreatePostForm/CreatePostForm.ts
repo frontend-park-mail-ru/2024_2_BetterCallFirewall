@@ -31,6 +31,30 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 		return html;
 	}
 
+	get fileInput(): HTMLElement {
+		const html = this.htmlElement.querySelector('input[type="file"]') as HTMLElement;
+		if (!html) {
+			throw new Error('input file not found');
+		}
+		return html;
+	}
+
+	get label(): HTMLElement {
+		const html = this.htmlElement.querySelector('.form__upload') as HTMLElement;
+		if (!html) {
+			throw new Error('label not found');
+		}
+		return html;
+	}
+
+	get img(): HTMLElement {
+		const html = this.htmlElement.querySelector('.form__img') as HTMLElement;
+		if (!html) {
+			throw new Error('label not found');
+		}
+		return html;
+	}
+
 	protected _prerender(): void {
 		super._prerender();
 		this._templateContext = {
