@@ -10,7 +10,7 @@ import {
 	SignupForm,
 	Root,
 } from '../../components';
-import config from '../../config';
+import config, { validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 // import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
@@ -81,6 +81,36 @@ export class ViewSignup extends BaseView {
 		signupForm.addHandler(titleLinkHTML, 'click', (event) => {
 			event.preventDefault();
 		});
+
+		this.InputFieldHandler();
+	}
+
+	private InputFieldHandler() {
+		const inputFields = document.querySelectorAll('input, textarea');
+		inputFields.forEach((input) => {
+			input.addEventListener('input', (event) => {
+			  const target = event.target as HTMLInputElement;
+			  const parentElem = target.parentElement as HTMLElement;
+			  
+			  const validator = validators[target.name];
+			  let error = '';
+		  
+			  if (validator) {
+				if (target.type === 'file' && target.files && target.files[0]) {
+				  error = validator(target.files[0]);
+				} else {
+				  error = validator(target.value.trim());
+				}
+			  }
+
+			  const valid = new Validator();
+			  if (error) {
+				valid.printError(target, error);
+			  } else {
+				valid.errorsDelete(parentElem);
+			  }
+			});
+		  });
 	}
 }
 
@@ -115,3 +145,5 @@ const loginFormSubmit = (
 		});
 	}
 };
+
+
