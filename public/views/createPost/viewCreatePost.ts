@@ -146,7 +146,6 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 					const reader = new FileReader();
 					reader.onload = function (e) {
 						preview.src = e.target?.result as string;
-						preview.style.display = 'block';
 					};
 					reader.readAsDataURL(input.files[0]);
 				}
