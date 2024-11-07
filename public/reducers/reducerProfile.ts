@@ -1,4 +1,6 @@
 import { Action } from '../actions/action';
+import { ACTION_APP_TYPES } from '../actions/actionApp';
+import { ACTION_MENU_TYPES } from '../actions/actionMenu';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileGetYourOwnProfileSuccessData,
@@ -9,6 +11,7 @@ import {
 	ACTION_PROFILE_EDIT_TYPES,
 	ActionProfileEditRequestSuccessData,
 } from '../actions/actionProfileEdit';
+import app from '../app';
 import config from '../config';
 import { toProfileConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
@@ -23,6 +26,10 @@ export const reducerProfile = (
 	const newState = deepClone(state);
 	let actionData;
 	switch (action?.type) {
+		case ACTION_APP_TYPES.actionAppInit:
+		case ACTION_MENU_TYPES.menuLinkClick:
+			newState.path = app.router.path;
+			return newState;
 		case ACTION_PROFILE_EDIT_TYPES.requestSuccess: {
 			actionData = action.data as ActionProfileEditRequestSuccessData;
 			const profileConfig = toProfileConfig(
