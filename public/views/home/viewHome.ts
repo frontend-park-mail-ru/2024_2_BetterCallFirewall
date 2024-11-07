@@ -40,6 +40,7 @@ export interface MainConfig {
 export interface HomeConfig {
 	menu: IMenuConfig;
 	main: MainConfig;
+	errorMessage: string;
 }
 
 export type ComponentsHome = {
@@ -200,6 +201,16 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 			window.innerHeight * 2 + window.scrollY > document.body.offsetHeight
 		);
 	};
+
+	protected _printMessage() {
+		const content = this._components.content;
+		if (!content) {
+			throw new Error('content does no exist on ViewFeed');
+		}
+		if (this._configHome.errorMessage) {
+			content.printMessage(this._configHome.errorMessage);
+		}
+	}
 
 	private _renderMenu() {
 		this._components.menu = new Menu(this._configHome.menu, this._root);

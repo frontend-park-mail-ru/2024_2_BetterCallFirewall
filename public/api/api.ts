@@ -29,7 +29,7 @@ import {
 import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
 	ACTION_MESSAGES_TYPES,
-	actionMessagesRequestFail,
+	ActionMessagesRequestFail as ActionMessagesRequestFail,
 	ActionMessagesRequestSuccess,
 } from '../actions/actionMessages';
 import {
@@ -380,15 +380,25 @@ class API {
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
-					this.sendAction(new actionMessagesRequestFail());
+					this.sendAction(
+						new ActionMessagesRequestFail(response.status),
+					);
 					break;
 				}
 				this.sendAction(
 					new ActionMessagesRequestSuccess(response.data),
 				);
 				break;
+			case STATUS.noMoreContent:
+				this.sendAction(
+					new ActionMessagesRequestFail(
+						response.status,
+						'Сообщений нет',
+					),
+				);
+				break;
 			default:
-				this.sendAction(new actionMessagesRequestFail());
+				this.sendAction(new ActionMessagesRequestFail(response.status));
 		}
 	}
 
