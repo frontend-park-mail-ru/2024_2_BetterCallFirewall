@@ -43,6 +43,9 @@ export const reducerChat = (
 				(action.data as ActionProfileRequestSuccessData)
 					.profileResponse,
 			);
+			newState.chat.myId = newState.main.header.profile.id;
+			newState.chat.myName = newState.main.header.profile.name;
+			newState.chat.myAvatar = newState.main.header.profile.avatar;
 			return newState;
 		case ACTION_CHAT_TYPES.sendMessage: {
 			const actionData = action.data as ActionChatSendMessageData;
