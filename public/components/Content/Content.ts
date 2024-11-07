@@ -32,7 +32,6 @@ export class Content extends Container implements IContent {
 	 * @param {string} message
 	 */
 	printMessage(message: string) {
-		console.log('Content: printMessage:', message);
 		if (this.message) {
 			this.removeMessage();
 			this.message = null;

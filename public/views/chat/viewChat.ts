@@ -57,6 +57,9 @@ export class ViewChat extends ViewHome implements IViewChat {
 				this._scrollToOldPosition();
 				break;
 			case ACTION_CHAT_TYPES.sendMessage:
+				this.updateViewChat(change.data);
+				this._scrollToBottom();
+				break;
 			case ACTION_MESSAGES_TYPES.newMessage:
 			case ACTION_CHAT_TYPES.updateChat:
 				this.updateViewChat(change.data);
@@ -90,6 +93,8 @@ export class ViewChat extends ViewHome implements IViewChat {
 	}
 
 	private _scrollToBottom(): void {
+		this._chatScrollBottom = 0;
+		this._scrollToOldPosition();
 		const chatContainer = this._chat.chatContentHTML;
 		this._handleScroll = false;
 		if (chatContainer) {

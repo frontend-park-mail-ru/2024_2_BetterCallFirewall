@@ -43,7 +43,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	render(): void {
-		console.log('render');
 		this._render();
 		this._addHandlers();
 
@@ -53,7 +52,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	updateViewFeed(data: ViewFeedConfig) {
-		console.log('FeedView update: data:', data);
 		this._configFeed = { ...this._configFeed, ...data };
 		this._render();
 		this._addHandlers();
