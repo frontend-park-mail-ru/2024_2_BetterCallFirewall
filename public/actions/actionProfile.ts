@@ -31,15 +31,15 @@ export class ActionUpdateProfile implements Action {
 }
 
 export interface ActionProfileRequestData {
-	id: string;
+	href: string;
 }
 
 export class ActionProfileRequest implements Action {
 	type: ActionType = ACTION_PROFILE_TYPES.profileRequest;
 	data: ActionProfileRequestData;
 
-	constructor(profileId: string) {
-		this.data = { id: profileId };
+	constructor(profileHref: string) {
+		this.data = { href: profileHref };
 	}
 }
 
