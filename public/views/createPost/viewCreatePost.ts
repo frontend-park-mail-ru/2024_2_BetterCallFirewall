@@ -134,10 +134,7 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 			this.content.addHandler(fileInput, 'change', (event) => {
 				const input = event.target as HTMLInputElement;                
                 if (input.files && input.files.length > 0) {
-					if (input.value) {
-						event.preventDefault();
-					}
-					else if (label) {
+					if (label) {
 						label.classList.add('active');
 						label.textContent = 'Картинка выбрана, нажмите, чтобы отменить';
 					}
