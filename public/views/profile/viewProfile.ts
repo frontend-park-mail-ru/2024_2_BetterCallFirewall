@@ -60,7 +60,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_PROFILE_TYPES.profileRequest:
-				api.requestProfile(app.router.path);
+				if (this.active) {
+					api.requestProfile(app.router.path);
+				}
 				break;
 			case ACTION_PROFILE_TYPES.getYourOwnProfile:
 				api.requestYourOwnProfile();
