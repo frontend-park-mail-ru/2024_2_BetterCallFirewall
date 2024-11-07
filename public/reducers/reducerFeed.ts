@@ -44,6 +44,7 @@ export const reducerFeed = (
 			}
 			return newState;
 		}
+		case ACTION_FEED_TYPES.postCreateSuccess:
 		case ACTION_LOGIN_TYPES.loginClickSuccess:
 		case ACTION_SIGNUP_TYPES.signupClickSuccess:
 		default:
