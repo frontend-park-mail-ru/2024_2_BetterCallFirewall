@@ -35,9 +35,9 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			case ACTION_FEED_TYPES.postsRequestSuccess:
 			case ACTION_FEED_TYPES.postsRequestFail:
 				this.updateViewFeed(change.data);
-				if (!this._configFeed.posts.length) {
-					api.requestPosts(this.lastPostId);
-				}
+				// if (!this._configFeed.posts.length) {
+				// 	api.requestPosts(this.lastPostId);
+				// }
 				break;
 		}
 	}
@@ -52,6 +52,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	updateViewFeed(data: ViewFeedConfig) {
+		console.log('update ViewHome:', this);
 		this._configFeed = { ...this._configFeed, ...data };
 		this._render();
 		this._addHandlers();
@@ -72,13 +73,8 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	private _renderPosts(): void {
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does no exist on ViewFeed');
-		}
-
 		this._configFeed.posts.forEach((postData) => {
-			const post = new Post(postData, content);
+			const post = new Post(postData, this.content);
 			post.render();
 			this._addPostHandlers(post);
 		});
