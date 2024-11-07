@@ -81,6 +81,7 @@ export const reducerChat = (
 		case ACTION_CHAT_TYPES.updateChat:
 			return newState;
 		case ACTION_CHAT_TYPES.goToChat: {
+			newState.chat.messages = [];
 			// const actionData = action.data as ActionChatGoToChatData;
 			// newState.chat = actionData.chatConfig;
 			return newState;
