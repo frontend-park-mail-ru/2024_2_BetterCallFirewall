@@ -203,7 +203,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	};
 
 	protected _printMessage() {
-		console.log('print message:', this);
 		if (this._configHome.errorMessage) {
 			this.content.printMessage(this._configHome.errorMessage);
 		}

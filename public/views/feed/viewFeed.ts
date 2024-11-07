@@ -25,6 +25,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		console.log('ViewFeed: change:', change);
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_FEED_TYPES.postCreateSuccess:
 			case ACTION_LOGIN_TYPES.loginClickSuccess:
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 				if (!this._configFeed.posts.length) {

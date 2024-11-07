@@ -274,6 +274,7 @@ class App {
 		this._stores.feed.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestSuccess);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestFail);
+		this._stores.feed.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
 
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.goToProfile);
