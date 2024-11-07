@@ -55,6 +55,7 @@ export class ViewMessages extends ViewHome implements IViewHome {
 	protected _render(): void {
 		super._render();
 		this._renderMessages();
+		this._printMessage();
 	}
 
 	protected _renderMessages(): void {

@@ -96,7 +96,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	updateViewHome(data: HomeConfig) {
-		console.log('ViewHome: update');
+		console.log('ViewHome: update:');
 		this._configHome = data;
 		this._render();
 	}
@@ -203,12 +203,8 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	};
 
 	protected _printMessage() {
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does no exist on ViewFeed');
-		}
 		if (this._configHome.errorMessage) {
-			content.printMessage(this._configHome.errorMessage);
+			this.content.printMessage(this._configHome.errorMessage);
 		}
 	}
 
