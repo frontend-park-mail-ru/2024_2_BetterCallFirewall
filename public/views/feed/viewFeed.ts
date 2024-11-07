@@ -34,6 +34,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 				update = false;
 				break;
 			case ACTION_FEED_TYPES.postsRequestSuccess:
+			case ACTION_FEED_TYPES.postsRequestFail:
 				this.updateViewFeed(change.data);
 				update = false; // Чтобы посты сначала отрендерились, а потом шел запрос с последним id
 				if (!this._configFeed.posts.length) {
@@ -115,33 +116,4 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 
 		this.content.addHandler(document, 'scroll', handler);
 	}
-	// private _addScrollHandler() {
-	// 	let pending = false;
-	// 	const fetchPosts = async () => {
-	// 		if (!pending) {
-	// 			pending = true;
-	// 			await api.requestPosts(this.lastPostId);
-	// 			pending = false;
-	// 		}
-	// 	};
-	// 	let limited = false;
-	// 	const intervalLimit = (func: () => void): (() => void) => {
-	// 		return () => {
-	// 			if (!limited) {
-	// 				limited = true;
-	// 				func();
-	// 				const limit = 1000;
-	// 				setTimeout(() => {
-	// 					limited = false;
-	// 				}, limit);
-	// 			}
-	// 		};
-	// 	};
-	// 	const handler = () => {
-	// 		if (this._isNearBottom()) {
-	// 			fetchPosts();
-	// 		}
-	// 	};
-	// 	this.content.addHandler(document, 'scroll', intervalLimit(handler));
-	// }
 }

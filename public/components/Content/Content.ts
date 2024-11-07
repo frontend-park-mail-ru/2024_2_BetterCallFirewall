@@ -32,7 +32,7 @@ export class Content extends Container implements IContent {
 	 * @param {string} message
 	 */
 	printMessage(message: string) {
-		if (this.message) {
+		if (!this.message) {
 			return;
 		}
 		const messageItem = new ContentMessage(
