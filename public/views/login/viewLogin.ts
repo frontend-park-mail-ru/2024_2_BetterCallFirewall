@@ -124,28 +124,29 @@ const loginFormSubmit = (
 ) => {
 	const validator = new Validator();
 	const data = validator.validateForm(loginForm.formData, loginForm.form);
-	if (data) {
-		ajax.sendForm(config.URL.login, data, async (response, error) => {
-			if (error) {
+	if (!data) {
+		return;
+	}
+	ajax.sendForm(config.URL.login, data, async (response, error) => {
+		if (error) {
+			dispatcher.getAction(
+				new ActionFormError('Что-то пошло не так'),
+			);
+			return;
+		}
+		if (response && response.ok) {
+			dispatcher.getAction(new ActionLoginClickSuccess());
+		} else if (response) {
+			const data = await response.json();
+			if (data.message === 'wrong email or password') {
+				dispatcher.getAction(
+					new ActionFormError('Неверная почта или пароль'),
+				);
+			} else {
 				dispatcher.getAction(
 					new ActionFormError('Что-то пошло не так'),
 				);
-				return;
 			}
-			if (response && response.ok) {
-				dispatcher.getAction(new ActionLoginClickSuccess());
-			} else if (response) {
-				const data = await response.json();
-				if (data.message === 'wrong email or password') {
-					dispatcher.getAction(
-						new ActionFormError('Неверная почта или пароль'),
-					);
-				} else {
-					dispatcher.getAction(
-						new ActionFormError('Что-то пошло не так'),
-					);
-				}
-			}
-		});
-	}
+		}
+	});
 };
