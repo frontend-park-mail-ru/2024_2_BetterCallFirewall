@@ -83,6 +83,16 @@ export class Profile extends BaseComponent {
 		return html;
 	}
 
+	get acceptFriendButton(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'.accept-friend',
+		) as HTMLElement;
+		if (!html) {
+			throw new Error('acceptFriendButton not found');
+		}
+		return html;
+	}
+
 	get posts(): Post[] {
 		return this._posts;
 	}

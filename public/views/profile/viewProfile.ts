@@ -1,6 +1,10 @@
 import { ActionChatGoToChat } from '../../actions/actionChat';
 import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
+import {
+	ACTION_FRIENDS_TYPES,
+	ActionFriendsAccept,
+} from '../../actions/actionFriends';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
@@ -62,6 +66,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 			case ACTION_PROFILE_TYPES.getYourOwnProfile:
 				api.requestYourOwnProfile();
 				break;
+			case ACTION_FRIENDS_TYPES.acceptSuccess:
 			case ACTION_FEED_TYPES.postCreateSuccess:
 				if (this.active) {
 					this.updateViewProfile(change.data);
@@ -94,6 +99,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	}
 
 	render(): void {
+		if (!this.active) {
+			return;
+		}
 		this._render();
 		this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
 		this.sendAction(new ActionProfileRequest(app.router.path));
@@ -139,9 +147,16 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				const config = profile.config;
 				this.sendAction(
 					new ActionChatGoToChat({
-						href: PAGE_URLS + `/${config.id}`,
+						href: PAGE_URLS.chat + `/${config.id}`,
 					}),
 				);
+			});
+		}
+
+		if (profile.config.isSubscriber) {
+			profile.addHandler(profile.acceptFriendButton, 'click', (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionFriendsAccept(profile.config.id));
 			});
 		}
 

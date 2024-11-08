@@ -13,6 +13,8 @@ import {
 	ActionPostsRequestSuccess,
 } from '../actions/actionFeed';
 import {
+	ACTION_FRIENDS_TYPES,
+	ActionFriendsAcceptData,
 	actionFriendsAcceptFail,
 	ActionFriendsAcceptSuccess,
 	actionFriendsRemoveFail,
@@ -69,6 +71,9 @@ export const STATUS = {
 class API {
 	handleAction(action: Action) {
 		switch (action.type) {
+			case ACTION_FRIENDS_TYPES.accept:
+				this.acceptFriend((action.data as ActionFriendsAcceptData).id);
+				break;
 			case ACTION_PROFILE_TYPES.profileRequest:
 				this.requestProfile(
 					(action.data as ActionProfileRequestData).href,

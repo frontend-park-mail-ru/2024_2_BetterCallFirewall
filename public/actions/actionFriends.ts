@@ -14,6 +14,7 @@ export const ACTION_FRIENDS_TYPES = {
 	subscribeFail: 'actionFriendsSubscribeFail',
 	unsubscribeSuccess: 'actionFriendsUnsubscribeSuccess',
 	unsubscribeFail: 'actionFriendsUnsubscribeFail',
+	accept: 'actionFriendsAccept',
 	acceptSuccess: 'actionFriendsAcceptSuccess',
 	acceptFail: 'actionFriendsAcceptFail',
 	removeSuccess: 'actionFriendsRemoveSuccess',
@@ -104,6 +105,19 @@ export class ActionFriendsUnsubscribeSuccess implements Action {
 export class actionFriendsUnsubscribeFail implements Action {
 	type: ActionType = ACTION_FRIENDS_TYPES.unsubscribeFail;
 	data: object = {};
+}
+
+export interface ActionFriendsAcceptData {
+	id: number;
+}
+
+export class ActionFriendsAccept implements Action {
+	type: ActionType = ACTION_FRIENDS_TYPES.accept;
+	data: ActionFriendsAcceptData;
+
+	constructor(profileId: number) {
+		this.data = { id: profileId };
+	}
 }
 
 export class ActionFriendsAcceptSuccess implements Action {
