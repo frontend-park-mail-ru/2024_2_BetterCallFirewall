@@ -28,7 +28,6 @@ export const reducerProfile = (
 	switch (action?.type) {
 		case ACTION_APP_TYPES.actionAppInit:
 		case ACTION_MENU_TYPES.menuLinkClick:
-			debugger;
 			newState.path = app.router.path;
 			return newState;
 		case ACTION_PROFILE_EDIT_TYPES.requestSuccess: {
