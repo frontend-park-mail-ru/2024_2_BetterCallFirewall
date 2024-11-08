@@ -170,10 +170,8 @@ export default class Validator {
 				this.printError(form.querySelector(`[name="${key}"]`)?.parentElement as HTMLInputElement, error);
 				console.log('error:  ', key);
 				hasErrors = true;
-				error = '';
 			} else {
-				formData.delete(key);
-				formData.append(key, updatedValue);
+				formData.set(key, updatedValue);
 			}
 		}
 
