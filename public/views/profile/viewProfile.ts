@@ -1,6 +1,10 @@
 import { ActionChatGoToChat } from '../../actions/actionChat';
 import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
+import {
+	ACTION_FRIENDS_TYPES,
+	ActionFriendsAccept,
+} from '../../actions/actionFriends';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
@@ -62,6 +66,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 			case ACTION_PROFILE_TYPES.getYourOwnProfile:
 				api.requestYourOwnProfile();
 				break;
+			case ACTION_FRIENDS_TYPES.acceptSuccess:
 			case ACTION_FEED_TYPES.postCreateSuccess:
 				if (this.active) {
 					this.updateViewProfile(change.data);
@@ -142,6 +147,13 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 						href: PAGE_URLS + `/${config.id}`,
 					}),
 				);
+			});
+		}
+
+		if (profile.config.isSubscriber) {
+			profile.addHandler(profile.acceptFriendButton, 'click', (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionFriendsAccept(profile.config.id));
 			});
 		}
 
