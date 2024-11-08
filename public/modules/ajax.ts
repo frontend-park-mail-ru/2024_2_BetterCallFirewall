@@ -229,9 +229,14 @@ class Ajax {
 	async getProfiles(
 		lastId?: number,
 	): Promise<AjaxResponse<ShortProfileResponse[]>> {
-		const url = insertQueryParams(app.config.URL.profiles, {
-			last_id: `${lastId}`,
-		});
+		let url;
+		if (lastId) {
+			url = insertQueryParams(app.config.URL.profiles, {
+				last_id: `${lastId}`,
+			});
+		} else {
+			url = app.config.URL.profiles;
+		}
 		return this._getShortProfileResponse(url);
 	}
 
