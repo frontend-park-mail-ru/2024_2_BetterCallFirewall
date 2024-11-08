@@ -1,3 +1,4 @@
+import deepClone from '../modules/deepClone';
 import { BaseView } from '../views/view';
 
 type Route = {
@@ -19,9 +20,10 @@ export class Router {
 
 		window.onpopstate = (event) => {
 			this._path = location.pathname;
+			const config = deepClone(event.state);
+			console.log('pop state:', config);
 			this.goToPage(this.path);
-			console.log('pop state:', event.state);
-			this.activeView?.update(event.state);
+			this.activeView?.update(config);
 		};
 	}
 
