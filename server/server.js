@@ -2,7 +2,7 @@ express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 
-const port = 8000;
+const port = 80;
 
 const posts = [
 	{
