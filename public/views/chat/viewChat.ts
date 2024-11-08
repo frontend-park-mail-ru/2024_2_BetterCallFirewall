@@ -111,6 +111,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 
 	addNewMessage(messageConfig?: IChatMessageConfig) {
 		this._chat.addMessage(messageConfig);
+		console.log('scroll:', this._chatScrollBottom);
 		if (this._chatScrollBottom < 100) {
 			this._scrollToBottom();
 		}
