@@ -184,6 +184,10 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	private _addProfileFriendHandlers() {
 		const profile = this.profile;
 		const personConfig = profile.config as IProfileConfig;
+		console.log('isFriend: ', personConfig.isFriend);
+		console.log('isSubscriber: ', personConfig.isSubscriber);
+		console.log('isSubscription: ', personConfig.isSubscription);
+		console.log('isAuthor: ', personConfig.isAuthor);
 			if (personConfig.isFriend) {
 				profile.addHandler(
 					profile.removeFriendButton,
