@@ -31,6 +31,8 @@ export class Router {
 				this._activeView = route.view;
 				this._activeView.active = true;
 
+				window.scrollTo(0, 0);
+
 				history.pushState({}, '', path);
 				return;
 			}
@@ -40,7 +42,6 @@ export class Router {
 		}
 		this._activeView = this._defaultView;
 		this._activeView.active = true;
-		window.scrollTo(0, 0);
 	}
 
 	get activeView(): BaseView | undefined {
