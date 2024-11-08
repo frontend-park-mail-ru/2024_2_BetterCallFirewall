@@ -9,7 +9,9 @@ import {
 import { IMessageConfig } from '../components/Message/Message';
 import config from '../config';
 import { toMessageConfig } from '../models/chat';
+import { toChatMessageConfig } from '../models/message';
 import deepClone from '../modules/deepClone';
+import parseTime from '../modules/parseTime';
 import { ViewMessagesConfig } from '../views/messages/viewMessages';
 
 const initialMessagesState: IMessageConfig[] = deepClone(
@@ -45,7 +47,9 @@ export const reducerMessages = (
 				) {
 					messageConfig.lastMessage =
 						actionData.messageResponse.content;
-					messageConfig.date = actionData.messageResponse.created_at;
+					messageConfig.date = parseTime(
+						actionData.messageResponse.created_at,
+					);
 					return messageConfig;
 				}
 				return messageConfig;
