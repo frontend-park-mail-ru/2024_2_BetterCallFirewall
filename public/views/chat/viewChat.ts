@@ -14,10 +14,7 @@ import {
 import app from '../../app';
 import { Root } from '../../components';
 import { Chat, IChatConfig } from '../../components/Chat/Chat';
-import {
-	ChatMessage,
-	IChatMessageConfig,
-} from '../../components/ChatMessage/ChatMessage';
+import { IChatMessageConfig } from '../../components/ChatMessage/ChatMessage';
 import dispatcher from '../../dispatcher/dispatcher';
 import { MessageSend } from '../../models/message';
 import { ChangeChat } from '../../stores/storeChat';
@@ -113,10 +110,9 @@ export class ViewChat extends ViewHome implements IViewChat {
 	}
 
 	addMessage(messageConfig?: IChatMessageConfig) {
-		if (messageConfig) {
-			const message = new ChatMessage(messageConfig, this._chat);
-			message.render();
-			this._chat.messages.push(message);
+		this._chat.addMessage(messageConfig);
+		if (!this._chatScrollBottom) {
+			this._scrollToBottom();
 		}
 	}
 
@@ -131,6 +127,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 		const chat = new Chat(this._configChat.chat, content);
 		chat.render();
 		this._components.chat = chat;
+		chat.textarea.focus();
 	}
 
 	private _scrollToBottom(): void {
@@ -223,15 +220,9 @@ export class ViewChat extends ViewHome implements IViewChat {
 			}
 			clearTimeout(debounceTimeout);
 			debounceTimeout = setTimeout(() => {
-				console.log('scrollHeight:', chatContent.scrollHeight);
-				console.log('scrollTop:', chatContent.scrollTop);
-				console.log('clientHeight:', chatContent.clientHeight);
 				this._chatScrollBottom =
 					chatContent.scrollHeight - chatContent.scrollTop;
-				if (
-					chatContent.scrollHeight - chatContent.scrollTop <
-					chatContent.clientHeight * 2
-				) {
+				if (chatContent.scrollTop < chatContent.clientHeight * 2) {
 					this.sendAction(
 						new ActionChatRequest(
 							this._chat.config.companionId,

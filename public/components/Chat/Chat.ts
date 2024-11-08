@@ -116,6 +116,15 @@ export class Chat extends BaseComponent implements IChat {
 		return this.htmlElement.outerHTML;
 	}
 
+	addMessage(config?: IChatMessageConfig) {
+		if (config) {
+			const message = new ChatMessage(config, this);
+			message.render(false);
+			message.appendToHTML(this.chatContentHTML);
+			this._messages.push(message);
+		}
+	}
+
 	protected _prerender(): void {
 		super._prerender();
 		this._templateContext = { ...this.config };
