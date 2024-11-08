@@ -20,6 +20,7 @@ export class Router {
 		window.onpopstate = (event) => {
 			this._path = location.pathname;
 			this.goToPage(this.path);
+			console.log('pop state:', event.state);
 			this.activeView?.update(event.state);
 		};
 	}
@@ -31,8 +32,9 @@ export class Router {
 			const match = path.match(regex);
 			if (match) {
 				if (this._activeView) {
-					this._activeView.active = false;
+					console.log('push state:', this._activeView.config);
 					history.pushState(this._activeView.config, '', path);
+					this._activeView.active = false;
 				}
 
 				this._activeView = route.view;
