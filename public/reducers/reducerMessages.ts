@@ -9,7 +9,6 @@ import {
 import { IMessageConfig } from '../components/Message/Message';
 import config from '../config';
 import { toMessageConfig } from '../models/chat';
-import { toChatMessageConfig } from '../models/message';
 import deepClone from '../modules/deepClone';
 import parseTime from '../modules/parseTime';
 import { ViewMessagesConfig } from '../views/messages/viewMessages';

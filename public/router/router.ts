@@ -16,6 +16,11 @@ export class Router {
 	constructor(defaultView: BaseView, config: RouterConfig) {
 		this._defaultView = defaultView;
 		this._config = config;
+
+		window.onpopstate = () => {
+			this._path = location.pathname;
+			this.goToPage(this.path);
+		};
 	}
 
 	goToPage(path: string) {
