@@ -95,9 +95,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				break;
 			case ACTION_PROFILE_TYPES.deletePostSuccess:
 				this.updateViewProfile(change.data);
-				this.sendAction(
-					new ActionUpdateProfile(this._configProfile.profile),
-				);
+				this.sendAction(new ActionUpdateProfile());
 				this.sendAction(new ActionProfileRequest(app.router.path));
 				break;
 		}
@@ -108,7 +106,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 			return;
 		}
 		this._render();
-		this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
+		this.sendAction(new ActionUpdateProfile());
 		this.sendAction(new ActionProfileRequest(app.router.path));
 	}
 

@@ -21,12 +21,8 @@ export const ACTION_PROFILE_TYPES = {
 export interface ActionUpdateProfileData {}
 
 export class ActionUpdateProfile implements Action {
-	type: ActionType;
-	data: ActionUpdateProfileData;
-	constructor(data: ActionUpdateProfileData) {
-		this.type = ACTION_PROFILE_TYPES.updateProfile;
-		this.data = data;
-	}
+	type: ActionType = ACTION_PROFILE_TYPES.updateProfile;
+	data: ActionUpdateProfileData = {};
 }
 
 export interface ActionProfileRequestData {
