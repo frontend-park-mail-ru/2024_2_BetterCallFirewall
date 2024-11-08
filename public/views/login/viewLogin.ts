@@ -4,11 +4,7 @@ import {
 	ActionLoginClickSuccess,
 	ActionLoginToSignupClick,
 } from '../../actions/actionLogin';
-import {
-	ILoginFormConfig,
-	LoginForm,
-	Root,
-} from '../../components';
+import { ILoginFormConfig, LoginForm, Root } from '../../components';
 import config, { validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
@@ -25,7 +21,7 @@ export class ViewLogin extends BaseView {
 		this._config = config;
 	}
 
-	get config() {
+	get config(): ILoginFormConfig {
 		return this._config;
 	}
 
@@ -37,11 +33,11 @@ export class ViewLogin extends BaseView {
 				this.render();
 				break;
 			default:
-				this.update(change.data);
+				this.updateViewLogin(change.data);
 		}
 	}
 
-	update(data: ILoginFormConfig) {
+	updateViewLogin(data: ILoginFormConfig) {
 		this._config = data;
 		this.render();
 	}
@@ -55,6 +51,10 @@ export class ViewLogin extends BaseView {
 		login.render();
 		this._components.login = login;
 		this._addLoginHandlers();
+	}
+
+	update(config: object): void {
+		this.updateViewLogin(config as ILoginFormConfig);
 	}
 
 	private _addLoginHandlers() {
@@ -119,9 +119,7 @@ export class ViewLogin extends BaseView {
 	}
 }
 
-const loginFormSubmit = (
-	loginForm: LoginForm,
-) => {
+const loginFormSubmit = (loginForm: LoginForm) => {
 	const validator = new Validator();
 	const data = validator.validateForm(loginForm.formData, loginForm.form);
 	if (!data) {
@@ -129,9 +127,7 @@ const loginFormSubmit = (
 	}
 	ajax.sendForm(config.URL.login, data, async (response, error) => {
 		if (error) {
-			dispatcher.getAction(
-				new ActionFormError('Что-то пошло не так'),
-			);
+			dispatcher.getAction(new ActionFormError('Что-то пошло не так'));
 			return;
 		}
 		if (response && response.ok) {

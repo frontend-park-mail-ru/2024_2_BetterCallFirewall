@@ -41,6 +41,10 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 		this._configCreatePost = config;
 	}
 
+	get config(): ViewCreatePostConfig {
+		return this._configCreatePost;
+	}
+
 	handleChange(change: ChangeCreatePost): void {
 		super.handleChange(change);
 		switch (change.type) {
@@ -69,6 +73,10 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 	updateViewCreatePost(data: ViewCreatePostConfig): void {
 		this._configCreatePost = data;
 		this._render();
+	}
+
+	update(config: object): void {
+		this.updateViewCreatePost(config as ViewCreatePostConfig);
 	}
 
 	protected _render(): void {

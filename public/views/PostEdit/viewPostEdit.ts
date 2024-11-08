@@ -37,6 +37,10 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 		this._configPostEdit = config;
 	}
 
+	get config(): ViewPostEditConfig {
+		return this._configPostEdit;
+	}
+
 	handleChange(change: ChangePostEdit): void {
 		super.handleChange(change);
 		switch (change.type) {
@@ -65,6 +69,10 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 	updateViewProfileEdit(data: ViewPostEditConfig): void {
 		this._configPostEdit = Object.assign(this._configPostEdit, data);
 		this._render();
+	}
+
+	update(config: object): void {
+		this.updateViewProfileEdit(config as ViewPostEditConfig);
 	}
 
 	protected _render(): void {
@@ -98,13 +106,16 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 			(event) => {
 				event.preventDefault();
 				const validator = new Validator();
-				const formData = validator.validateForm(this._postEditForm.formData, this._postEditForm.form);
+				const formData = validator.validateForm(
+					this._postEditForm.formData,
+					this._postEditForm.form,
+				);
 				if (formData) {
 					api.editPost(formData, this._configPostEdit.postId);
 				}
 			},
 		);
-		
+
 		// this._addHandlerInput();
 	}
 

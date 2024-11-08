@@ -47,6 +47,10 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._configChat = config;
 	}
 
+	get config(): ViewChatConfig {
+		return this._configChat;
+	}
+
 	handleChange(change: ChangeChat): void {
 		console.log('ViewChat:', change);
 		super.handleChange(change);
@@ -93,6 +97,10 @@ export class ViewChat extends ViewHome implements IViewChat {
 	updateViewChat(data: ViewChatConfig): void {
 		this._configChat = { ...this._configChat, ...data };
 		this._render();
+	}
+
+	update(config: object): void {
+		this.updateViewChat(config as ViewChatConfig);
 	}
 
 	protected _render(): void {

@@ -36,6 +36,10 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		this._configFriends = config;
 	}
 
+	get config(): ViewFriendsConfig {
+		return this._configFriends;
+	}
+
 	handleChange(change: ChangeFriends): void {
 		console.log('ViewFriends:', change);
 		super.handleChange(change);
@@ -78,6 +82,10 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 
 	render(): void {
 		this._render();
+	}
+
+	update(config: object): void {
+		this.updateViewFriends(config as ViewFriendsConfig);
 	}
 
 	protected _render(): void {

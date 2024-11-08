@@ -51,6 +51,10 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		this._configProfile = config;
 	}
 
+	get config(): ViewProfileConfig {
+		return this._configProfile;
+	}
+
 	get profile(): Profile {
 		const profile = this._components.profile;
 		if (!profile) {
@@ -110,6 +114,10 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	updateViewProfile(data: ViewProfileConfig): void {
 		this._configProfile = data;
 		this._render();
+	}
+
+	update(config: object): void {
+		this.updateViewProfile(config as ViewProfileConfig);
 	}
 
 	protected _render(): void {

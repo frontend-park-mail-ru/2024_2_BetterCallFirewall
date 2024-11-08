@@ -8,7 +8,6 @@ import {
 import { ISignupFormConfig, SignupForm, Root } from '../../components';
 import config, { validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
-// import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
 import { ChangeSignup } from '../../stores/storeSignup';
@@ -23,7 +22,7 @@ export class ViewSignup extends BaseView {
 		this._config = config;
 	}
 
-	get config() {
+	get config(): ISignupFormConfig {
 		return this._config;
 	}
 
@@ -34,11 +33,11 @@ export class ViewSignup extends BaseView {
 				this.render();
 				break;
 			default:
-				this.update(change.data);
+				this.updateViewSignup(change.data);
 		}
 	}
 
-	update(data: ISignupFormConfig) {
+	updateViewSignup(data: ISignupFormConfig) {
 		this._config = data;
 		this.render();
 	}
@@ -51,6 +50,10 @@ export class ViewSignup extends BaseView {
 		signupForm.render();
 		this._components.signup = signupForm;
 		this._addSignupHandlers();
+	}
+
+	update(config: object): void {
+		this.updateViewSignup(config as ISignupFormConfig);
 	}
 
 	private _addSignupHandlers() {

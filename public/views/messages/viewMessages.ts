@@ -32,6 +32,10 @@ export class ViewMessages extends ViewHome implements IViewHome {
 		this._configMessages = config;
 	}
 
+	get config(): ViewMessagesConfig {
+		return this._configMessages;
+	}
+
 	handleChange(change: ChangeMessages): void {
 		console.log('ViewMessages:', change);
 		super.handleChange(change);
@@ -50,6 +54,10 @@ export class ViewMessages extends ViewHome implements IViewHome {
 		this.updateViewHome(data);
 		this._configMessages = Object.assign(this._configMessages, data);
 		this._render();
+	}
+
+	update(config: object): void {
+		this.updateViewMessages(config as ViewMessagesConfig);
 	}
 
 	protected _render(): void {

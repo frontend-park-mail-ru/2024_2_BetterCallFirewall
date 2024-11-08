@@ -17,9 +17,10 @@ export class Router {
 		this._defaultView = defaultView;
 		this._config = config;
 
-		window.onpopstate = () => {
+		window.onpopstate = (event) => {
 			this._path = location.pathname;
 			this.goToPage(this.path);
+			this.activeView?.update(event.state);
 		};
 	}
 
@@ -31,6 +32,7 @@ export class Router {
 			if (match) {
 				if (this._activeView) {
 					this._activeView.active = false;
+					history.pushState(this._activeView.config, '', path);
 				}
 
 				this._activeView = route.view;
@@ -38,7 +40,6 @@ export class Router {
 
 				window.scrollTo(0, 0);
 
-				history.pushState({}, '', path);
 				return;
 			}
 		}

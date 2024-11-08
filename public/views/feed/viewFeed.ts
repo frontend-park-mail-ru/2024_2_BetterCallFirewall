@@ -22,6 +22,10 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		this._configFeed = config;
 	}
 
+	get config(): ViewFeedConfig {
+		return this._configFeed;
+	}
+
 	handleChange(change: ChangeFeed): void {
 		console.log('ViewFeed: change:', change);
 		super.handleChange(change);
@@ -59,6 +63,10 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		this._configFeed = { ...this._configFeed, ...data };
 		this._render();
 		this._addHandlers();
+	}
+
+	update(config: object): void {
+		this.updateViewFeed(config as ViewFeedConfig);
 	}
 
 	protected _render(): void {
