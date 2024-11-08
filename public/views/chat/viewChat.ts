@@ -83,7 +83,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 				break;
 			case ACTION_MESSAGES_TYPES.newMessage: {
 				const messages = change.data.chat.messages;
-				this.addMessage(messages[messages.length - 1]);
+				this.addNewMessage(messages[messages.length - 1]);
 				// this.updateViewChat(change.data);
 				// this._scrollToOldPosition();
 				break;
@@ -109,9 +109,9 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this.updateViewChat(config as ViewChatConfig);
 	}
 
-	addMessage(messageConfig?: IChatMessageConfig) {
+	addNewMessage(messageConfig?: IChatMessageConfig) {
 		this._chat.addMessage(messageConfig);
-		if (!this._chatScrollBottom) {
+		if (this._chatScrollBottom < 100) {
 			this._scrollToBottom();
 		}
 	}
