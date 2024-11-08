@@ -60,6 +60,7 @@ export const reducerProfile = (
 			newState.profile = Object.assign(newState.profile, profileConfig);
 			return newState;
 		}
+		case ACTION_PROFILE_TYPES.getHeaderSuccess:
 		case ACTION_PROFILE_TYPES.updateProfile:
 		case ACTION_PROFILE_TYPES.profileRequestFail:
 		case ACTION_PROFILE_TYPES.goToProfile:

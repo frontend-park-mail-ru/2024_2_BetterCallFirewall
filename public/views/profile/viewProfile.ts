@@ -111,7 +111,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {
-		this._configProfile = data;
+		this._configProfile = Object.assign(this._configProfile, data);
 		this._render();
 	}
 
