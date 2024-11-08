@@ -105,7 +105,7 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 			},
 		);
 		
-		this._addHandlerInput();
+		// this._addHandlerInput();
 	}
 
 	private _addHandlerInput(): void {
