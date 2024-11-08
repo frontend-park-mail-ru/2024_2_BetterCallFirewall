@@ -3,7 +3,6 @@ import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
 import {
 	ACTION_FRIENDS_TYPES,
-	ActionFriendsAccept,
 } from '../../actions/actionFriends';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
@@ -163,13 +162,6 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 			});
 		}
 
-		if (profile.config.isSubscriber) {
-			profile.addHandler(profile.acceptFriendButton, 'click', (event) => {
-				event.preventDefault();
-				this.sendAction(new ActionFriendsAccept(profile.config.id));
-			});
-		}
-
 		this.profile.posts.forEach((post) => this._addPostHandlers(post));
 		this._addProfileFriendHandlers();
 	}
@@ -219,7 +211,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 						api.unsubscribeToProfile(personConfig.id);
 					},
 				);
-			} else {
+			} else if(!personConfig.isAuthor) {
 				profile.addHandler(
 					profile.subscribeFriendButton,
 					'click',
