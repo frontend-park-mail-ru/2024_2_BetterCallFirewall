@@ -1,3 +1,6 @@
-<a href="{{this.href}}" class="{{this.className}}" data-section="{{this.key}}">
-    <span class="menu-item">{{this.text}}</span>
+<a href="{{this.href}}" class="menu__link link menu-link {{#if this.active}}link-active{{/if}}" data-key="{{this.key}}">
+    <div class="menu-link__logo logo">
+        {{{this.icon}}}
+    </div>
+    <span class="menu-link__item">{{this.text}}</span>
 </a>

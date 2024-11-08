@@ -1,0 +1,26 @@
+<div class="friend item">
+    <div>
+        <a class="link-no-decoration friend-avatar" href="">
+            <img src="{{this.avatar}}" alt="Avatar" class="friend__avatar avatar item__img">
+        </a>
+    </div>
+    <div class="friend__info item__info">
+        <a class="link" href=""><span>{{this.name}}</span></a>
+        <span>{{this.description}}</span>
+        <a class="friend__link" href=""><span>написать сообщение</span></a>
+    </div>
+    <div class="friend__state item__state">
+        {{#if this.isFriend}}
+            <button class="remove-friend button-action-negative button-no-decorations" href="">Удалить из друзей</button>      
+        {{/if}}
+        {{#if this.isSubscriber}}
+            <button class="accept-friend button-action button-no-decorations" href="">Подтвердить заявку в друзья</button>
+        {{/if}}
+        {{#if this.isSubscription}}
+            <button class="unsubscribe-friend button-action-negative button-no-decorations" href="">Отменить заявку в друзья</button>
+        {{/if}}
+        {{#if this.isUnknown}}
+            <button class="subscribe-friend button-action button-no-decorations" href="">Добавить в друзья</button>
+        {{/if}}
+    </div>
+</div>

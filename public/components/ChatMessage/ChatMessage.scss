@@ -1,0 +1,23 @@
+.chat-message {
+    display: flex;
+    margin-bottom: 1rem;
+    &__avatar {
+        margin-right: .5rem;
+        img {
+            width: 2.2rem;
+            height: 2.2rem;
+        }
+    }
+    &__name {
+        padding-top: .1rem;
+        margin-bottom: .1rem;
+    }
+    &__text {
+        line-height: 1.5
+    }
+    &__link {
+        color: var(--main-color);
+        text-decoration: none;
+        margin-right: .5rem;
+    }
+}

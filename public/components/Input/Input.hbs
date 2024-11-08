@@ -1,5 +1,12 @@
-<div class="{{this.className}}" data-section="{{this.section}}">
-    <label for="{{this.name}}">{{this.text}}</label>
-    <input type="{{this.type}}" id="{{this.name}}" name="{{this.name}}" placeholder="{{this.text}}">
-    <span class="error"></span>
+<div class="form__input" data-key="{{this.key}}">
+    {{#if (eq this.type 'file')}}
+        <div class="form__file">
+            <label for="{{this.name}}" class="form__upload">{{this.placeholder}}</label>
+            <img class="form__img" alt="">
+        </div>
+    {{else}}
+        <label for="{{this.name}}">{{this.placeholder}}</label>
+    {{/if}}
+    <input type="{{this.type}}" value="{{this.text}}" id="{{this.name}}" name="{{this.name}}" placeholder="{{this.placeholder}}" accept="{{this.accept}}" {{this.extra}}>
+    <span class="form__input-error"></span>
 </div>

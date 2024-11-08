@@ -1,0 +1,21 @@
+.form__button {
+    background: var(--button-color);
+    border: none;
+    border-radius: 7rem;
+    padding: .9rem 8rem;
+    margin: 0;
+    text-decoration: none;
+    cursor: pointer;
+    font: inherit;
+    color: var(--main-text-color);
+    font-size: 1rem;
+    &:hover {
+        background: #00c77b;
+    }
+    &:active {
+        background: var(--button-color);
+    }
+    &:focus-visible {
+        outline: 1px solid white;
+    }
+}

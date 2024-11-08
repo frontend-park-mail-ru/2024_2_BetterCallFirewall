@@ -1,0 +1,22 @@
+.friend {
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+    max-width: 42rem;
+    min-width: 42rem;
+    &:first-child {
+        margin-top: 2rem;
+    }
+    &__state {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: auto;
+        white-space: nowrap;
+        
+    }
+    &__link {
+        color: var(--main-color)
+    }
+}

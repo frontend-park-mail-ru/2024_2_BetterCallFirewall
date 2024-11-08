@@ -1,13 +1,15 @@
-<div class="cover" data-section="{{this.section}}">
-    <div class="signup">
-        <div class="title-sign"><a href="/feed" class="title-link"><h1>Vilka</h1></a></div>
-        <div class="name-sign"><h2>Вход</h2></div>
-        <div class="form-sign">
-            <form action="auth/login" method="post" class="{{this.className}}" id="{{this.id}}">
+<div class="cover" data-key="{{this.key}}">
+    <div class="sign">
+        <div class="sign__title"><a class="title" href="/feed"><h1>Vilka</h1></a></div>
+        <div class="sign__name"><h2>Вход</h2></div>
+        <div class="sign__form">
+            <form method="post" class="form" id="formLogin">
                 {{#each inputs}}
                     {{{this}}}
                 {{/each}}
-                <span class="error-message"></span>
+                <span class="form__error">
+                    {{{error}}}
+                </span>
                 {{{button}}}
                 {{{toSignupLink}}}
             </form>

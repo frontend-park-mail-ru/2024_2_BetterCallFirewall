@@ -1,0 +1,19 @@
+<a href="{{this.href}}" class="message item link-no-decorations">
+    <div>
+        <img src="{{this.avatar}}" alt="Avatar" class="message__avatar avatar item__img">
+    </div>
+    <div class="message__info item__info">
+        <span>{{this.name}}</span>
+        <span>{{this.lastMessage}}</span>
+    </div>
+    <div class="message__state item__state">
+        <span class="date">{{this.date}}</span>
+        {{#if this.hasUnreadMessages}}
+        <div class="message__count">
+            <span>{{this.unreadedCount}}</span>
+        </div>
+        {{else}}
+        <div></div>
+        {{/if}}
+    </div>
+</a>

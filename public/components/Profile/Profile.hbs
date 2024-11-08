@@ -1,0 +1,51 @@
+<div class="profile">
+    <div class="profile__header">
+        <div class="profile__header-img">
+            <img class="avatar" src="{{img}}" alt="">
+        </div>
+        <div class="profile__header-info">
+            <div class="profile__name">
+                <h1>{{firstName}}</h1>
+                <h1>{{secondName}}</h1>
+            </div>
+            <span>{{description}}</span>
+            {{!-- <div class="profile__community">
+                <a href=""><span>Friends: {{friendsCount}}</span></a>
+                <a href=""><span>Groups: {{groupsCount}}</span></a>
+            </div> --}}
+            <div class="profile__actions">
+                {{#if this.isFriend}}
+                    <button class="remove-friend button-action-negative button-no-decorations" href="">Удалить из друзей</button>      
+                {{/if}}
+                {{#if this.isSubscriber}}
+                    <button class="accept-friend button-action button-no-decorations" href="">Подтвердить заявку в друзья</button>
+                {{/if}}
+                {{#if this.isSubscription}}
+                    <button class="unsubscribe-friend button-action-negative button-no-decorations" href="">Отменить заявку в друзья</button>
+                {{/if}}
+                {{#if this.isUnknown}}
+                    <button class="subscribe-friend button-action button-no-decorations" href="">Добавить в друзья</button>
+                {{/if}}
+
+                {{#unless this.isAuthor}}
+                <a href="" class="write-message">Написать сообщение</a>
+                {{/unless}}
+                {{#if this.isAuthor}}
+                <a href="{{this.createPostHref}}" class="profile-edit">Редактировать профиль</a>
+                {{/if}}
+            </div>
+        </div>
+        <div class="profile__edit"></div>
+    </div>
+    <hr>
+    <div class="profile__content">
+        <div class="profile__posts-header">
+            <h2>Посты</h2>
+            {{#if this.isAuthor}}
+            <a class="header__link" href="{{this.createPostHref}}">Создать пост</a>
+            {{/if}}
+            </div>
+        <div class="profile__posts">
+        </div>
+    </div>
+</div>
