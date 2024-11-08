@@ -71,6 +71,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				break;
 			case ACTION_PROFILE_TYPES.updateProfile:
 			case ACTION_FRIENDS_TYPES.acceptSuccess:
+			case ACTION_FRIENDS_TYPES.subscribeSuccess:
+			case ACTION_FRIENDS_TYPES.removeSuccess:
+			case ACTION_FRIENDS_TYPES.unsubscribeSuccess:
 			case ACTION_FEED_TYPES.postCreateSuccess:
 				if (this.active) {
 					this.updateViewProfile(change.data);
@@ -168,6 +171,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		}
 
 		this.profile.posts.forEach((post) => this._addPostHandlers(post));
+		this._addProfileFriendHandlers();
 	}
 
 	private _addPostHandlers(post: Post) {
@@ -183,5 +187,47 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				api.deletePost(post.config.id);
 			});
 		}
+	}
+
+	private _addProfileFriendHandlers() {
+		const profile = this.profile;
+		const personConfig = profile.config as IProfileConfig;
+			if (personConfig.isFriend) {
+				profile.addHandler(
+					profile.removeFriendButton,
+					'click',
+					(event) => {
+						event.preventDefault();
+						api.removeFriend(personConfig.id);
+					},
+				);
+			} else if (personConfig.isSubscriber) {
+				profile.addHandler(
+					profile.acceptFriendButton,
+					'click',
+					(event) => {
+						event.preventDefault();
+						api.acceptFriend(personConfig.id);
+					},
+				);
+			} else if (personConfig.isSubscription) {
+				profile.addHandler(
+					profile.unsubscribeFriendButton,
+					'click',
+					(event) => {
+						event.preventDefault();
+						api.unsubscribeToProfile(personConfig.id);
+					},
+				);
+			} else {
+				profile.addHandler(
+					profile.subscribeFriendButton,
+					'click',
+					(event) => {
+						event.preventDefault();
+						api.subscribeToProfile(personConfig.id);
+					},
+				);
+			}
 	}
 }

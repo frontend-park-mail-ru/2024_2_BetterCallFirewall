@@ -83,12 +83,39 @@ export class Profile extends BaseComponent {
 		return html;
 	}
 
+	get removeFriendButton(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'button.remove-friend',
+		) as HTMLElement;
+		if (!html) {
+			throw new Error('removeFriendButton not found');
+		}
+		return html;
+	}
 	get acceptFriendButton(): HTMLElement {
 		const html = this.htmlElement.querySelector(
-			'.accept-friend',
+			'button.accept-friend',
 		) as HTMLElement;
 		if (!html) {
 			throw new Error('acceptFriendButton not found');
+		}
+		return html;
+	}
+	get unsubscribeFriendButton(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'button.unsubscribe-friend',
+		) as HTMLElement;
+		if (!html) {
+			throw new Error('unsubscribeFriendButton not found');
+		}
+		return html;
+	}
+	get subscribeFriendButton(): HTMLElement {
+		const html = this.htmlElement.querySelector(
+			'button.subscribe-friend',
+		) as HTMLElement;
+		if (!html) {
+			throw new Error('subscribeFriendButton not found');
 		}
 		return html;
 	}
