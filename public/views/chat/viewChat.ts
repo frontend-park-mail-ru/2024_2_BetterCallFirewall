@@ -14,6 +14,10 @@ import {
 import app from '../../app';
 import { Root } from '../../components';
 import { Chat, IChatConfig } from '../../components/Chat/Chat';
+import {
+	ChatMessage,
+	IChatMessageConfig,
+} from '../../components/ChatMessage/ChatMessage';
 import dispatcher from '../../dispatcher/dispatcher';
 import { MessageSend } from '../../models/message';
 import { ChangeChat } from '../../stores/storeChat';
@@ -80,10 +84,13 @@ export class ViewChat extends ViewHome implements IViewChat {
 				this.updateViewChat(change.data);
 				this._scrollToBottom();
 				break;
-			case ACTION_MESSAGES_TYPES.newMessage:
-				this.updateViewChat(change.data);
-				this._scrollToOldPosition();
+			case ACTION_MESSAGES_TYPES.newMessage: {
+				const messages = change.data.chat.messages;
+				this.addMessage(messages[messages.length - 1]);
+				// this.updateViewChat(change.data);
+				// this._scrollToOldPosition();
 				break;
+			}
 			case ACTION_CHAT_TYPES.updateChat:
 				this.updateViewChat(change.data);
 				break;
@@ -103,6 +110,14 @@ export class ViewChat extends ViewHome implements IViewChat {
 
 	update(config: object): void {
 		this.updateViewChat(config as ViewChatConfig);
+	}
+
+	addMessage(messageConfig?: IChatMessageConfig) {
+		if (messageConfig) {
+			const message = new ChatMessage(messageConfig, this._chat);
+			message.render();
+			this._chat.messages.push(message);
+		}
 	}
 
 	protected _render(): void {
@@ -208,6 +223,9 @@ export class ViewChat extends ViewHome implements IViewChat {
 			}
 			clearTimeout(debounceTimeout);
 			debounceTimeout = setTimeout(() => {
+				console.log('scrollHeight:', chatContent.scrollHeight);
+				console.log('scrollTop:', chatContent.scrollTop);
+				console.log('clientHeight:', chatContent.clientHeight);
 				this._chatScrollBottom =
 					chatContent.scrollHeight - chatContent.scrollTop;
 				if (

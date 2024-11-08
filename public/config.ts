@@ -291,6 +291,7 @@ const emptyChatComponentConfig: IChatConfig = {
 	myId: -1,
 	myName: '',
 	myAvatar: '',
+	text: '',
 };
 
 const chatConfig: ViewChatConfig = {
@@ -424,15 +425,15 @@ const config: AppConfig = {
 };
 
 export const validators: Record<string, (value: string | File) => string> = {
-	'first_name': (value) => Validator.validateName(value as string),
-	'last_name': (value) => Validator.validateName(value as string),
-	'email': (value) => Validator.validateEmail(value as string),
-	'password': (value) => Validator.validatePassword(value as string),
-	'password_again': (value) => Validator.validateConfirmation(value as string),
-	'text': (value) => Validator.validatePost(value as string),
-	'file': (value) => Validator.validateImg(value as File),
-	'bio' : (value) => Validator.validatePost(value as string),
+	first_name: (value) => Validator.validateName(value as string),
+	last_name: (value) => Validator.validateName(value as string),
+	email: (value) => Validator.validateEmail(value as string),
+	password: (value) => Validator.validatePassword(value as string),
+	password_again: (value) => Validator.validateConfirmation(value as string),
+	text: (value) => Validator.validatePost(value as string),
+	file: (value) => Validator.validateImg(value as File),
+	bio: (value) => Validator.validatePost(value as string),
 	// 'avatar': (value) => Validator.validateImg(value as File),
-  };
+};
 
 export default config;

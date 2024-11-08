@@ -14,6 +14,7 @@ export interface IChatConfig extends IBaseComponentConfig {
 	myId: number;
 	myName: string;
 	myAvatar: string;
+	text: string;
 }
 
 export interface IChat extends BaseComponent {}
@@ -93,6 +94,10 @@ export class Chat extends BaseComponent implements IChat {
 			throw new Error('textarea not found');
 		}
 		return textarea.value ? textarea.value.trim() : '';
+	}
+
+	get messages(): ChatMessage[] {
+		return this._messages;
 	}
 
 	render(show: boolean = true): string {
