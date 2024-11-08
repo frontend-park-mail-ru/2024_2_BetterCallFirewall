@@ -157,10 +157,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		return profileLink.href;
 	}
 
-	protected _scrollToTop(): void {
-		window.scrollTo(0, 0);
-	}
-
 	protected _clearContent() {
 		const content = this._components.content;
 		if (!content) {
@@ -184,7 +180,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 			main,
 		);
 		this._components.content.render();
-		this._scrollToTop();
 	}
 
 	protected _render() {

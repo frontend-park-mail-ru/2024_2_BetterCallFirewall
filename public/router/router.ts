@@ -40,6 +40,7 @@ export class Router {
 		}
 		this._activeView = this._defaultView;
 		this._activeView.active = true;
+		window.scrollTo(0, 0);
 	}
 
 	get activeView(): BaseView | undefined {
