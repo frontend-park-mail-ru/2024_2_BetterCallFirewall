@@ -144,7 +144,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				const config = profile.config;
 				this.sendAction(
 					new ActionChatGoToChat({
-						href: PAGE_URLS + `/${config.id}`,
+						href: PAGE_URLS.chat + `/${config.id}`,
 					}),
 				);
 			});
