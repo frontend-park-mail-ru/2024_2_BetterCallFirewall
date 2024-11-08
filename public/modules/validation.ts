@@ -22,8 +22,8 @@ export default class Validator {
 	}
 
 	static validateImg(file: File): string {
-		if (!file) {
-			return 'Файл не выбран';
+		if (!file || !file.name) {
+			return '';
 		}
 
 		const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
