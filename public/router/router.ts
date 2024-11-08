@@ -36,6 +36,8 @@ export class Router {
 				this._activeView = route.view;
 				this._activeView.active = true;
 
+				window.scrollTo(0, 0);
+
 				history.pushState({}, '', path);
 				return;
 			}

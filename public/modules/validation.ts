@@ -13,7 +13,8 @@ export default class Validator {
 	}
 
 	static shieldingData(data: string): string {
-		return data.replace(/&/g, '&amp;')
+		return data
+			.replace(/&/g, '&amp;')
 			.replace(/</g, '&lt;')
 			.replace(/>/g, '&gt;')
 			.replace(/"/g, '&quot;')
@@ -164,14 +165,19 @@ export default class Validator {
 				updatedValue = value.trim();
 			}
 			const validator = validators[key];
-			console.log(key);
-			error = validator(updatedValue);
-			if (error) {
-				this.printError(form.querySelector(`[name="${key}"]`)?.parentElement as HTMLInputElement, error);
-				console.log('error:  ', key);
-				hasErrors = true;
-			} else {
-				formData.set(key, updatedValue);
+			if (validator) {
+				error = validator(updatedValue);
+				if (error) {
+					this.printError(
+						form.querySelector(`[name="${key}"]`)
+							?.parentElement as HTMLInputElement,
+						error,
+					);
+					console.log('error:  ', key);
+					hasErrors = true;
+				} else {
+					formData.set(key, updatedValue);
+				}
 			}
 		}
 
