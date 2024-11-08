@@ -70,6 +70,7 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 			case ACTION_PROFILE_TYPES.getYourOwnProfile:
 				api.requestYourOwnProfile();
 				break;
+			case ACTION_PROFILE_TYPES.updateProfile:
 			case ACTION_FRIENDS_TYPES.acceptSuccess:
 			case ACTION_FEED_TYPES.postCreateSuccess:
 				if (this.active) {
