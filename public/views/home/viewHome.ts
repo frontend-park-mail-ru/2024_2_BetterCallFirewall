@@ -90,7 +90,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 				break;
 			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_MENU_TYPES.menuLinkClick:
-				this._configHome = change.data;
+				this._configHome = Object.assign(this._configHome, change.data);
 				this.render();
 				break;
 		}
