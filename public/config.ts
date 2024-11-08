@@ -430,8 +430,9 @@ export const validators: Record<string, (value: string | File) => string> = {
 	'password': (value) => Validator.validatePassword(value as string),
 	'password_again': (value) => Validator.validateConfirmation(value as string),
 	'text': (value) => Validator.validatePost(value as string),
-	'img': (value) => Validator.validateImg(value as File),
-	'avatar': (value) => Validator.validateImg(value as File),
+	'file': (value) => Validator.validateImg(value as File),
+	'bio' : (value) => Validator.validatePost(value as string),
+	// 'avatar': (value) => Validator.validateImg(value as File),
   };
 
 export default config;
