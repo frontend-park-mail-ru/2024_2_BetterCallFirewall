@@ -230,7 +230,7 @@ class Ajax {
 		lastId?: number,
 	): Promise<AjaxResponse<ShortProfileResponse[]>> {
 		const url = insertQueryParams(app.config.URL.profiles, {
-			id: `${lastId}`,
+			last_id: `${lastId}`,
 		});
 		return this._getShortProfileResponse(url);
 	}
