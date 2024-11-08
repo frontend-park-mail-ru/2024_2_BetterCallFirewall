@@ -9,32 +9,31 @@ export interface ChangeChat extends ChangeHome {
 }
 
 export class StoreChat extends BaseStore implements Store {
-    private _state: ViewChatConfig;
-    protected _registeredViews: ViewChat[] = [];
-    private _storeHome: StoreHome;
+	private _state: ViewChatConfig;
+	protected _registeredViews: ViewChat[] = [];
+	private _storeHome: StoreHome;
 
-    constructor(storeHome: StoreHome) {
-        super();
-        this._state = reducerChat();
-        this._storeHome = storeHome;
-    }
+	constructor(storeHome: StoreHome) {
+		super();
+		this._state = reducerChat();
+		this._storeHome = storeHome;
+	}
 
-    handleAction(action: Action): void {
-        this._state = { ...this._state, ...this._storeHome.state };
-        this._state = reducerChat(this._state, action);
-        console.log('storeChat: state:', this._state);
-        this._registeredViews.forEach((view) => {
-            if (view.active) {
-                view.handleChange({ type: action.type, data: this._state });
-            }
-        });
-    }
+	handleAction(action: Action): void {
+		this._state = { ...this._state, ...this._storeHome.state };
+		this._state = reducerChat(this._state, action);
+		this._registeredViews.forEach((view) => {
+			if (view.active) {
+				view.handleChange({ type: action.type, data: this._state });
+			}
+		});
+	}
 
-    addView(view: ViewChat): void {
-        this._addView(view);
-    }
+	addView(view: ViewChat): void {
+		this._addView(view);
+	}
 
-    removeView(view: ViewChat): void {
-        this._removeView(view);
-    }
+	removeView(view: ViewChat): void {
+		this._removeView(view);
+	}
 }

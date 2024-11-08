@@ -28,6 +28,11 @@ export const reducerMenu = (
 				Object.keys(newState.links).forEach((key) => {
 					const link = newState.links[key];
 					link.active = app.router.path === link.href;
+					console.log(
+						'update active link:',
+						link.href,
+						app.router.path,
+					);
 				});
 				break;
 			case ACTION_MENU_TYPES.titleClick:
