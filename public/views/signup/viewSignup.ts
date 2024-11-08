@@ -5,11 +5,7 @@ import {
 	ActionSignupClickSuccess,
 	ActionSignupToLoginClick,
 } from '../../actions/actionSignup';
-import {
-	ISignupFormConfig,
-	SignupForm,
-	Root,
-} from '../../components';
+import { ISignupFormConfig, SignupForm, Root } from '../../components';
 import config, { validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 // import dispatcher from '../../dispatcher/dispatcher';
@@ -82,42 +78,44 @@ export class ViewSignup extends BaseView {
 			event.preventDefault();
 		});
 
-		this.InputFieldHandler();
+		this.inputFieldHandler(signupForm);
 	}
 
-	private InputFieldHandler() {
+	private inputFieldHandler(signupForm: SignupForm) {
 		const inputFields = document.querySelectorAll('input, textarea');
 		console.log('input fields handler ', inputFields);
 		inputFields.forEach((input) => {
-			input.addEventListener('input', (event) => {
-			  const target = event.target as HTMLInputElement;
-			  const parentElem = target.parentElement as HTMLElement;
-			  
-			  const validator = validators[target.name];
-			  let error = '';
-		  
-			  if (validator) {
-				if (target.type === 'file' && target.files && target.files[0]) {
-				  error = validator(target.files[0]);
-				} else {
-				  error = validator(target.value.trim());
-				}
-			  }
+			signupForm.addHandler(input as HTMLElement, 'input', (event) => {
+				const target = event.target as HTMLInputElement;
+				const parentElem = target.parentElement as HTMLElement;
 
-			  const valid = new Validator();
-			  if (error) {
-				valid.printError(parentElem as HTMLInputElement, error);
-			  } else {
-				valid.errorsDelete(parentElem);
-			  }
+				const validator = validators[target.name];
+				let error = '';
+
+				if (validator) {
+					if (
+						target.type === 'file' &&
+						target.files &&
+						target.files[0]
+					) {
+						error = validator(target.files[0]);
+					} else {
+						error = validator(target.value.trim());
+					}
+				}
+
+				const valid = new Validator();
+				if (error) {
+					valid.printError(parentElem as HTMLInputElement, error);
+				} else {
+					valid.errorsDelete(parentElem);
+				}
 			});
-		  });
+		});
 	}
 }
 
-const loginFormSubmit = (
-	signupForm: SignupForm,
-) => {
+const loginFormSubmit = (signupForm: SignupForm) => {
 	const validator = new Validator();
 	const data = validator.validateForm(signupForm.formData, signupForm.form);
 	if (data) {
@@ -146,5 +144,3 @@ const loginFormSubmit = (
 		});
 	}
 };
-
-
