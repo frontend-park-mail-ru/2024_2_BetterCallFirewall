@@ -205,7 +205,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 				clearTimeout(debounceTimeout);
 				debounceTimeout = setTimeout(() => {
 					const users = this._configFriends.users.friendsConfig;
-					api.requestUsers(users[users.length - 1].id);
+					api.requestUsers(users[users.length - 1]?.id);
 				}, 200);
 			}
 		};
