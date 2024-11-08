@@ -25,7 +25,6 @@ export class StoreProfile extends BaseStore implements Store {
 			deepClone(this._state),
 			this._storeHome.state,
 		);
-		// this._state = { ...this._state, ...this._storeHome.state };
 		this._state = reducerProfile(this._state, action);
 		this._registeredViews.forEach((view) => {
 			view.handleChange({ type: action.type, data: this._state });

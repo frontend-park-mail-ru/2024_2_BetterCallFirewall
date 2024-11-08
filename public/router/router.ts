@@ -40,8 +40,6 @@ export class Router {
 				this._activeView = route.view;
 				this._activeView.active = true;
 
-				console.log('active view:', this.activeView);
-
 				window.scrollTo(0, 0);
 
 				return;
