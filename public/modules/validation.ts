@@ -26,9 +26,9 @@ export default class Validator {
 			return '';
 		}
 
-		const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+		const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 		if (!validImageTypes.includes(file.type)) {
-			return 'Разрешены только изображения (JPEG, PNG, GIF)';
+			return 'Разрешены только изображения (JPEG, PNG, GIF, WEBP)';
 		}
 
 		const maxSizeInMB = 5;
