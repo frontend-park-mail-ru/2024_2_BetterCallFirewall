@@ -164,6 +164,7 @@ export default class Validator {
 				updatedValue = value.trim();
 			}
 			const validator = validators[key];
+			console.log(key);
 			error = validator(updatedValue);
 			if (error) {
 				this.printError(form.querySelector(`[name="${key}"]`)?.parentElement as HTMLInputElement, error);
