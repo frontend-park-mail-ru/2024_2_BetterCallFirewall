@@ -59,11 +59,6 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		console.log('ViewProfile: change:', change);
 		super.handleChange(change);
 		switch (change.type) {
-			// case ACTION_PROFILE_TYPES.profileRequest:
-			// 	if (this.active) {
-			// 		api.requestProfile(app.router.path);
-			// 	}
-			// 	break;
 			case ACTION_PROFILE_TYPES.getYourOwnProfile:
 				api.requestYourOwnProfile();
 				break;
@@ -99,10 +94,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	}
 
 	render(): void {
-		debugger;
 		this._render();
 		this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
-		this.sendAction(new ActionProfileRequest(this._configProfile.path));
+		this.sendAction(new ActionProfileRequest(app.router.path));
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {

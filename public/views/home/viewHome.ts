@@ -78,7 +78,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 
 	handleChange(change: ChangeHome): void {
 		console.log('ViewHome: change:', change);
-		debugger;
 		switch (change.type) {
 			case ACTION_PROFILE_TYPES.getHeaderSuccess:
 			case ACTION_MENU_TYPES.updateProfileLinkHref:
@@ -90,7 +89,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 				break;
 			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_MENU_TYPES.menuLinkClick:
-				this._configHome = change.data;
+				this._configHome = Object.assign(this._configHome, change.data);
 				this.render();
 				break;
 		}
@@ -212,22 +211,8 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	private _renderMenu() {
 		this._components.menu = new Menu(this._configHome.menu, this._root);
 		this._components.menu.render();
-		// this._updateActiveMenuLinks();
 		this._addMenuHandlers();
 	}
-
-	// private _updateActiveMenuLinks() {
-	// 	console.log('update active link');
-	// 	const curPath = app.router.path;
-	// 	const menu = this._components.menu;
-	// 	if (menu) {
-	// 		Object.keys(menu.config.links).forEach((key) => {
-	// 			const link = menu.config.links[key];
-	// 			console.log('current path:');
-	// 			link.active = curPath === link.href;
-	// 		});
-	// 	}
-	// }
 
 	private _addMenuHandlers() {
 		const menu = this._components.menu;

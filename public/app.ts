@@ -369,8 +369,8 @@ class App {
 		feedView.register(this._stores.home);
 		feedView.register(this._stores.feed);
 
-		profileView.register(this._stores.home);
 		profileView.register(this._stores.profile);
+		profileView.register(this._stores.home);
 
 		messagesView.register(this._stores.home);
 		messagesView.register(this._stores.messages);
