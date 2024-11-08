@@ -24,7 +24,8 @@ export class Router {
 			console.log('pop state:', config);
 			debugger;
 			this.goToPage(this.path);
-			this.activeView?.update(config);
+			// this.activeView?.update(config);
+			this.activeView?.render();
 		};
 	}
 
