@@ -20,10 +20,8 @@ export class StoreProfile extends BaseStore implements Store {
 	}
 
 	handleAction(action: Action): void {
-		console.log('before:', this);
 		this._state = { ...this._state, ...this._storeHome.state };
 		this._state = reducerProfile(this._state, action);
-		console.log('after:', this);
 		this._registeredViews.forEach((view) => {
 			view.handleChange({ type: action.type, data: this._state });
 		});
