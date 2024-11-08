@@ -256,6 +256,7 @@ class App {
 			ACTION_PROFILE_TYPES.getYourOwnProfileSuccess,
 		);
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.getHeaderSuccess);
+		this._stores.home.subscribe(ACTION_PROFILE_TYPES.updateProfile);
 
 		this._stores.login.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.login.subscribe(ACTION_USER_TYPES.unauthorized);
