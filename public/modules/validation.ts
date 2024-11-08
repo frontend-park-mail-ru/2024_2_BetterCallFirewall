@@ -173,7 +173,6 @@ export default class Validator {
 							?.parentElement as HTMLInputElement,
 						error,
 					);
-					console.log('error:  ', key);
 					hasErrors = true;
 				} else {
 					formData.set(key, updatedValue);

@@ -41,7 +41,6 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 	}
 
 	handleChange(change: ChangeFriends): void {
-		console.log('ViewFriends:', change);
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_APP_TYPES.actionAppInit:

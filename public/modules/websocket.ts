@@ -49,22 +49,16 @@ export default class WebsocketClient {
 		dispatcher.getAction(action);
 	}
 
-	private _onOpen(event: Event) {
-		console.log('WS open:', event);
-	}
+	private _onOpen() {}
 
 	private _onMessage(event: MessageEvent) {
-		console.log('WS message:', event.data);
 		const message: MessageResponse = JSON.parse(event.data);
 		this._sendAction(new ActionMessagesNewMessage(message));
 	}
 
-	private _onError(event: Event) {
-		console.log('WS error:', event);
-	}
+	private _onError() {}
 
-	private _onClose(event: CloseEvent) {
-		console.log('WS close:', event);
+	private _onClose() {
 		setTimeout(() => {
 			this._socket = new WebSocket(this._url);
 		}, 5000);

@@ -26,7 +26,6 @@ export class ViewLogin extends BaseView {
 	}
 
 	handleChange(change: ChangeLogin): void {
-		console.log('change:', change);
 		switch (change.type) {
 			case ACTION_APP_TYPES.actionAppInit:
 				this._config = change.data;
@@ -43,7 +42,6 @@ export class ViewLogin extends BaseView {
 	}
 
 	render() {
-		console.log('ViewLogin: render');
 		this.clear();
 
 		const config = this._config;
@@ -87,7 +85,6 @@ export class ViewLogin extends BaseView {
 
 	private inputFieldHandler(loginForm: LoginForm) {
 		const inputFields = document.querySelectorAll('input, textarea');
-		console.log('input fields handler ', inputFields);
 		inputFields.forEach((input) => {
 			loginForm.addHandler(input as HTMLElement, 'input', (event) => {
 				const target = event.target as HTMLInputElement;

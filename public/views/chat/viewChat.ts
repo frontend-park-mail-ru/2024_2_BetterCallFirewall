@@ -52,7 +52,6 @@ export class ViewChat extends ViewHome implements IViewChat {
 	}
 
 	handleChange(change: ChangeChat): void {
-		console.log('ViewChat:', change);
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_PROFILE_TYPES.profileRequestSuccess:
@@ -147,7 +146,6 @@ export class ViewChat extends ViewHome implements IViewChat {
 	private _addSendButtonHandler() {
 		const form = this._chat.form;
 		this._chat.addHandler(form, 'submit', (event) => {
-			console.log('submit');
 			event.preventDefault();
 			const chatText = this._chat.text;
 			if (!chatText) {

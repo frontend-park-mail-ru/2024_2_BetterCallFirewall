@@ -260,9 +260,7 @@ class Ajax {
 	 */
 	async acceptFriend(profileId: number): Promise<AjaxResponse<object>> {
 		let url = app.config.URL.acceptFriend;
-		console.log('profileId:', profileId);
 		url = url.replace('{id}', `${profileId}`);
-		console.log('url:', url);
 		return this._postObjectResponse(url);
 	}
 

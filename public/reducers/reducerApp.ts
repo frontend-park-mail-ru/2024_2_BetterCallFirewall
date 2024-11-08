@@ -19,7 +19,6 @@ import { PAGE_LINKS } from '../config';
 import { View } from '../views/view';
 
 export const reducerApp = (activeView?: View, action?: Action) => {
-	console.log('reducerApp: action:', action);
 	const router = app.router;
 	if (action) {
 		switch (action.type) {
@@ -57,6 +56,5 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 				break;
 		}
 	}
-	console.log('activeView:', router.activeView);
 	return router.activeView;
 };

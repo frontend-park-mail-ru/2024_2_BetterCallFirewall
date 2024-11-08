@@ -77,7 +77,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	handleChange(change: ChangeHome): void {
-		console.log('ViewHome: change:', change);
 		switch (change.type) {
 			case ACTION_PROFILE_TYPES.getHeaderSuccess:
 			case ACTION_MENU_TYPES.updateProfileLinkHref:
@@ -96,7 +95,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	updateViewHome(data: HomeConfig) {
-		console.log('ViewHome: update:');
 		this._configHome = data;
 		this._render();
 	}

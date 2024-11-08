@@ -27,7 +27,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	handleChange(change: ChangeFeed): void {
-		console.log('ViewFeed: change:', change);
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_FEED_TYPES.postCreateSuccess:
@@ -58,7 +57,6 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	updateViewFeed(data: ViewFeedConfig) {
-		console.log('update ViewHome:', this);
 		this.updateViewHome(data);
 		this._configFeed = { ...this._configFeed, ...data };
 		this._render();

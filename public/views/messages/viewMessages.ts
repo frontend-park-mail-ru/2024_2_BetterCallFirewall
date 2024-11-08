@@ -37,7 +37,6 @@ export class ViewMessages extends ViewHome implements IViewHome {
 	}
 
 	handleChange(change: ChangeMessages): void {
-		console.log('ViewMessages:', change);
 		super.handleChange(change);
 		switch (change.type) {
 			default:
