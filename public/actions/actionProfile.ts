@@ -1,4 +1,3 @@
-import { IProfileConfig } from '../components/Profile/Profile';
 import { HeaderResponse } from '../models/header';
 import { FullProfileResponse } from '../models/profile';
 import { Action, ActionType } from './action';
@@ -19,20 +18,24 @@ export const ACTION_PROFILE_TYPES = {
 	deletePostFail: 'actionProfileDeletePostFail',
 };
 
-export interface ActionUpdateProfileData extends IProfileConfig {}
+export interface ActionUpdateProfileData {}
 
 export class ActionUpdateProfile implements Action {
-	type: ActionType;
-	data: ActionUpdateProfileData;
-	constructor(data: ActionUpdateProfileData) {
-		this.type = ACTION_PROFILE_TYPES.updateProfile;
-		this.data = data;
-	}
+	type: ActionType = ACTION_PROFILE_TYPES.updateProfile;
+	data: ActionUpdateProfileData = {};
+}
+
+export interface ActionProfileRequestData {
+	href: string;
 }
 
 export class ActionProfileRequest implements Action {
 	type: ActionType = ACTION_PROFILE_TYPES.profileRequest;
-	data: object = {};
+	data: ActionProfileRequestData;
+
+	constructor(profileHref: string) {
+		this.data = { href: profileHref };
+	}
 }
 
 export interface ActionProfileRequestSuccessData {

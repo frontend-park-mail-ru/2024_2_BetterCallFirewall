@@ -12,7 +12,7 @@ import api from '../../api/api';
 import { Root } from '../../components';
 import { IFriendConfig } from '../../components/Friend/Friend';
 import { Friends, FriendsConfig } from '../../components/Friends/Friends';
-import { PAGE_LINKS } from '../../config';
+import { PAGE_URLS } from '../../config';
 import deepClone from '../../modules/deepClone';
 import { ChangeFriends } from '../../stores/storeFriends';
 import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
@@ -36,8 +36,11 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		this._configFriends = config;
 	}
 
+	get config(): ViewFriendsConfig {
+		return this._configFriends;
+	}
+
 	handleChange(change: ChangeFriends): void {
-		console.log('ViewFriends:', change);
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_APP_TYPES.actionAppInit:
@@ -80,12 +83,17 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		this._render();
 	}
 
+	update(config: object): void {
+		this.updateViewFriends(config as ViewFriendsConfig);
+	}
+
 	protected _render(): void {
 		super._render();
 		this._renderFriends();
 		this._renderSubscribers();
 		this._renderSubscribtions();
 		this._renderUsers();
+		this._addHandlers();
 	}
 
 	private _renderFriends(): void {
@@ -179,23 +187,29 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 				const config = person.config;
 				this.sendAction(
 					new ActionChatGoToChat({
-						chatConfig: {
-							key: `chat-${config.id}`,
-							companionId: config.id,
-							companionAvatar: config.avatar,
-							companionName: `${config.name}`,
-							lastDateOnline: '-1',
-							backButtonHref: PAGE_LINKS.messages,
-							messages: [],
-							myId: this._configFriends.main.header.profile.id,
-							myName: this._configFriends.main.header.profile
-								.name,
-							myAvatar:
-								this._configFriends.main.header.profile.avatar,
-						},
+						href: PAGE_URLS.chat + `/${config.id}`,
 					}),
 				);
 			});
 		});
+	}
+
+	private _addHandlers() {
+		this._addScrollHandler();
+	}
+
+	private _addScrollHandler() {
+		let debounceTimeout: NodeJS.Timeout;
+		const handler = () => {
+			if (this._isNearBottom()) {
+				clearTimeout(debounceTimeout);
+				debounceTimeout = setTimeout(() => {
+					const users = this._configFriends.users.friendsConfig;
+					api.requestUsers(users[users.length - 1].id);
+				}, 200);
+			}
+		};
+
+		this.content.addHandler(document, 'scroll', handler);
 	}
 }

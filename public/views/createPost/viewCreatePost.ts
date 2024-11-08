@@ -41,15 +41,23 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 		this._configCreatePost = config;
 	}
 
+	get config(): ViewCreatePostConfig {
+		return this._configCreatePost;
+	}
+
 	handleChange(change: ChangeCreatePost): void {
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_CREATE_POST_TYPES.goToCreatePost:
+				this._configCreatePost = Object.assign(
+					this._configCreatePost,
+					change.data,
+				);
 				this.render();
 				break;
-			case ACTION_FEED_TYPES.postCreateSuccess: 
+			case ACTION_FEED_TYPES.postCreateSuccess:
 				this.sendAction(
-					new ActionMenuLinkClick({ href: this._profileLinkHref })
+					new ActionMenuLinkClick({ href: this._profileLinkHref }),
 				);
 				break;
 		}
@@ -65,6 +73,10 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 	updateViewCreatePost(data: ViewCreatePostConfig): void {
 		this._configCreatePost = data;
 		this._render();
+	}
+
+	update(config: object): void {
+		this.updateViewCreatePost(config as ViewCreatePostConfig);
 	}
 
 	protected _render(): void {
@@ -98,11 +110,59 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 			(event) => {
 				event.preventDefault();
 				const validator = new Validator();
-				const formData = validator.validateForm(this._createPostForm.formData, this._createPostForm.form);
+				const formData = validator.validateForm(
+					this._createPostForm.formData,
+					this._createPostForm.form,
+				);
 				if (formData) {
-					api.createPost(formData);
+					if (
+						formData.get('text') ||
+						(formData.get('file') as File).name
+					) {
+						api.createPost(formData);
+						this._createPostForm.clearError();
+					} else {
+						this._createPostForm.printError(
+							'Пост не должен быть пустым',
+						);
+					}
 				}
 			},
 		);
+		this._addHandlerInput();
+	}
+
+	private _addHandlerInput(): void {
+		const fileInput = this._createPostForm.fileInput;
+		const label = this._createPostForm.label;
+		const preview = this._createPostForm.img as HTMLImageElement;
+		if (fileInput) {
+			this.content.addHandler(fileInput, 'click', (event) => {
+				const input = event.target as HTMLInputElement;
+				if (input.value) {
+					input.value = '';
+					event.preventDefault();
+					label?.classList.remove('active');
+					label.textContent = 'Прикрепить картинку';
+					preview.src = '';
+				}
+			});
+			this.content.addHandler(fileInput, 'change', (event) => {
+				const input = event.target as HTMLInputElement;
+				if (input.files && input.files.length > 0) {
+					if (label) {
+						label.classList.add('active');
+						label.textContent =
+							'Картинка выбрана, нажмите, чтобы отменить';
+					}
+
+					const reader = new FileReader();
+					reader.onload = function (e) {
+						preview.src = e.target?.result as string;
+					};
+					reader.readAsDataURL(input.files[0]);
+				}
+			});
+		}
 	}
 }

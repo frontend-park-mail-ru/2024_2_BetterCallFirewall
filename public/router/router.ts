@@ -16,22 +16,32 @@ export class Router {
 	constructor(defaultView: BaseView, config: RouterConfig) {
 		this._defaultView = defaultView;
 		this._config = config;
+
+		window.onpopstate = () => {
+			this._path = location.pathname;
+			this.goToPage(this.path, false);
+			this.activeView?.render();
+		};
 	}
 
-	goToPage(path: string) {
+	goToPage(path: string, pushState: boolean = true) {
 		this._path = path;
 		for (const route of this._config) {
 			const regex = new RegExp(`^${route.path}$`);
 			const match = path.match(regex);
 			if (match) {
 				if (this._activeView) {
+					if (pushState) {
+						history.pushState(this._activeView.config, '', path);
+					}
 					this._activeView.active = false;
 				}
 
 				this._activeView = route.view;
 				this._activeView.active = true;
 
-				history.pushState({}, '', path);
+				window.scrollTo(0, 0);
+
 				return;
 			}
 		}
@@ -48,5 +58,14 @@ export class Router {
 
 	get path(): string {
 		return this._path;
+	}
+
+	get chatId(): number | undefined {
+		const regex = /^\/chat\/(\d+)$/;
+		const match = this.path.match(regex);
+		if (match) {
+			const id = Number(match[1]);
+			return id;
+		}
 	}
 }

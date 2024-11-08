@@ -1,5 +1,10 @@
 import { ActionChatGoToChat } from '../../actions/actionChat';
 import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
+import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
+import {
+	ACTION_FRIENDS_TYPES,
+	ActionFriendsAccept,
+} from '../../actions/actionFriends';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
@@ -15,7 +20,7 @@ import api from '../../api/api';
 import app from '../../app';
 import { Post, Root } from '../../components';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
-import { PAGE_LINKS } from '../../config';
+import { PAGE_URLS } from '../../config';
 import { ChangeProfile } from '../../stores/storeProfile';
 import {
 	ComponentsHome,
@@ -46,6 +51,10 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		this._configProfile = config;
 	}
 
+	get config(): ViewProfileConfig {
+		return this._configProfile;
+	}
+
 	get profile(): Profile {
 		const profile = this._components.profile;
 		if (!profile) {
@@ -55,14 +64,17 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	}
 
 	handleChange(change: ChangeProfile): void {
-		console.log('ViewProfile: change:', change);
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_PROFILE_TYPES.profileRequest:
-				api.requestProfile(app.router.path);
-				break;
 			case ACTION_PROFILE_TYPES.getYourOwnProfile:
 				api.requestYourOwnProfile();
+				break;
+			case ACTION_PROFILE_TYPES.updateProfile:
+			case ACTION_FRIENDS_TYPES.acceptSuccess:
+			case ACTION_FEED_TYPES.postCreateSuccess:
+				if (this.active) {
+					this.updateViewProfile(change.data);
+				}
 				break;
 			case ACTION_PROFILE_EDIT_TYPES.requestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestSuccess:
@@ -82,22 +94,29 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				break;
 			case ACTION_PROFILE_TYPES.deletePostSuccess:
 				this.updateViewProfile(change.data);
-				// this.sendAction(new ActionProfileGetYourOwnProfile());
-				this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
-				this.sendAction(new ActionProfileRequest());
+				this.sendAction(new ActionUpdateProfile());
+				this.sendAction(new ActionProfileRequest(app.router.path));
 				break;
 		}
 	}
 
 	render(): void {
+		if (!this.active) {
+			return;
+		}
 		this._render();
-		this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
-		this.sendAction(new ActionProfileRequest());
+		this.sendAction(new ActionUpdateProfile());
+		this.sendAction(new ActionProfileRequest(app.router.path));
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {
-		this._configProfile = data;
+		super.updateViewHome(data);
+		this._configProfile = Object.assign(this._configProfile, data);
 		this._render();
+	}
+
+	update(config: object): void {
+		this.updateViewProfile(config as ViewProfileConfig);
 	}
 
 	protected _render(): void {
@@ -135,22 +154,16 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 				const config = profile.config;
 				this.sendAction(
 					new ActionChatGoToChat({
-						chatConfig: {
-							key: `chat-${config.id}`,
-							companionId: config.id,
-							companionAvatar: config.img,
-							companionName: `${config.firstName} ${config.secondName}`,
-							lastDateOnline: '-1',
-							backButtonHref: PAGE_LINKS.messages,
-							messages: [],
-							myId: this._configProfile.main.header.profile.id,
-							myName: this._configProfile.main.header.profile
-								.name,
-							myAvatar:
-								this._configProfile.main.header.profile.avatar,
-						},
+						href: PAGE_URLS.chat + `/${config.id}`,
 					}),
 				);
+			});
+		}
+
+		if (profile.config.isSubscriber) {
+			profile.addHandler(profile.acceptFriendButton, 'click', (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionFriendsAccept(profile.config.id));
 			});
 		}
 

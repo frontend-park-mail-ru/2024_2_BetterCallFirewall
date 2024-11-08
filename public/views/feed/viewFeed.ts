@@ -1,5 +1,6 @@
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
 import { ACTION_LOGIN_TYPES } from '../../actions/actionLogin';
+import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import { ACTION_SIGNUP_TYPES } from '../../actions/actionSignup';
 import api from '../../api/api';
@@ -21,33 +22,32 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		this._configFeed = config;
 	}
 
+	get config(): ViewFeedConfig {
+		return this._configFeed;
+	}
+
 	handleChange(change: ChangeFeed): void {
-		console.log('ViewFeed: change:', change);
 		super.handleChange(change);
-		let update = true;
 		switch (change.type) {
+			case ACTION_FEED_TYPES.postCreateSuccess:
+				this.sendAction(
+					new ActionMenuLinkClick({ href: this._profileLinkHref }),
+				);
+				break;
 			case ACTION_LOGIN_TYPES.loginClickSuccess:
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 				if (!this._configFeed.posts.length) {
 					api.requestPosts(this.lastPostId);
 				}
-				update = false;
 				break;
 			case ACTION_FEED_TYPES.postsRequestSuccess:
+			case ACTION_FEED_TYPES.postsRequestFail:
 				this.updateViewFeed(change.data);
-				update = false; // Чтобы посты сначала отрендерились, а потом шел запрос с последним id
-				if (!this._configFeed.posts.length) {
-					api.requestPosts(this.lastPostId);
-				}
 				break;
-		}
-		if (update) {
-			this.updateViewFeed(change.data);
 		}
 	}
 
 	render(): void {
-		console.log('render');
 		this._render();
 		this._addHandlers();
 
@@ -57,9 +57,14 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	updateViewFeed(data: ViewFeedConfig) {
+		this.updateViewHome(data);
 		this._configFeed = { ...this._configFeed, ...data };
 		this._render();
 		this._addHandlers();
+	}
+
+	update(config: object): void {
+		this.updateViewFeed(config as ViewFeedConfig);
 	}
 
 	protected _render(): void {
@@ -68,22 +73,16 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		this._printMessage();
 	}
 
-	private get lastPostId(): number {
+	private get lastPostId(): number | undefined {
 		const posts = this._configFeed.posts;
 		if (posts.length) {
 			return posts[posts.length - 1].id;
 		}
-		return -1;
 	}
 
 	private _renderPosts(): void {
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does no exist on ViewFeed');
-		}
-
 		this._configFeed.posts.forEach((postData) => {
-			const post = new Post(postData, content);
+			const post = new Post(postData, this.content);
 			post.render();
 			this._addPostHandlers(post);
 		});
@@ -103,32 +102,16 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	private _addScrollHandler() {
-		let pending = false;
-		const fetchPosts = async () => {
-			if (!pending) {
-				pending = true;
-				await api.requestPosts(this.lastPostId);
-				pending = false;
-			}
-		};
-		let limited = false;
-		const intervalLimit = (func: () => void): (() => void) => {
-			return () => {
-				if (!limited) {
-					limited = true;
-					func();
-					const limit = 1000;
-					setTimeout(() => {
-						limited = false;
-					}, limit);
-				}
-			};
-		};
+		let debounceTimeout: NodeJS.Timeout;
 		const handler = () => {
 			if (this._isNearBottom()) {
-				fetchPosts();
+				clearTimeout(debounceTimeout);
+				debounceTimeout = setTimeout(() => {
+					api.requestPosts(this.lastPostId);
+				}, 200);
 			}
 		};
-		this.content.addHandler(document, 'scroll', intervalLimit(handler));
+
+		this.content.addHandler(document, 'scroll', handler);
 	}
 }

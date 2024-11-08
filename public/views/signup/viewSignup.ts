@@ -6,9 +6,8 @@ import {
 	ActionSignupToLoginClick,
 } from '../../actions/actionSignup';
 import { ISignupFormConfig, SignupForm, Root } from '../../components';
-import config from '../../config';
+import config, { validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
-// import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
 import { ChangeSignup } from '../../stores/storeSignup';
@@ -23,7 +22,7 @@ export class ViewSignup extends BaseView {
 		this._config = config;
 	}
 
-	get config() {
+	get config(): ISignupFormConfig {
 		return this._config;
 	}
 
@@ -34,11 +33,11 @@ export class ViewSignup extends BaseView {
 				this.render();
 				break;
 			default:
-				this.update(change.data);
+				this.updateViewSignup(change.data);
 		}
 	}
 
-	update(data: ISignupFormConfig) {
+	updateViewSignup(data: ISignupFormConfig) {
 		this._config = data;
 		this.render();
 	}
@@ -51,6 +50,10 @@ export class ViewSignup extends BaseView {
 		signupForm.render();
 		this._components.signup = signupForm;
 		this._addSignupHandlers();
+	}
+
+	update(config: object): void {
+		this.updateViewSignup(config as ISignupFormConfig);
 	}
 
 	private _addSignupHandlers() {
@@ -76,6 +79,40 @@ export class ViewSignup extends BaseView {
 		) as HTMLElement;
 		signupForm.addHandler(titleLinkHTML, 'click', (event) => {
 			event.preventDefault();
+		});
+
+		this.inputFieldHandler(signupForm);
+	}
+
+	private inputFieldHandler(signupForm: SignupForm) {
+		const inputFields = document.querySelectorAll('input, textarea');
+		inputFields.forEach((input) => {
+			signupForm.addHandler(input as HTMLElement, 'input', (event) => {
+				const target = event.target as HTMLInputElement;
+				const parentElem = target.parentElement as HTMLElement;
+
+				const validator = validators[target.name];
+				let error = '';
+
+				if (validator) {
+					if (
+						target.type === 'file' &&
+						target.files &&
+						target.files[0]
+					) {
+						error = validator(target.files[0]);
+					} else {
+						error = validator(target.value.trim());
+					}
+				}
+
+				const valid = new Validator();
+				if (error) {
+					valid.printError(parentElem as HTMLInputElement, error);
+				} else {
+					valid.errorsDelete(parentElem);
+				}
+			});
 		});
 	}
 }

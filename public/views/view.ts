@@ -8,6 +8,7 @@ export type ViewData = object;
 export type Components = Record<string, IBaseComponent>;
 
 export interface View {
+	get config(): object;
 	sendAction(action: Action): void;
 	clear(): void;
 	handleChange(change: Change): void;
@@ -15,6 +16,7 @@ export interface View {
 	register(store: Store): void;
 	unregister(store: Store): void;
 	unregisterAllStores(): void;
+	update(config: object): void;
 }
 
 export abstract class BaseView implements View {
@@ -61,6 +63,8 @@ export abstract class BaseView implements View {
 		this._registeredStores.forEach((store) => this.unregister(store));
 	}
 
+	abstract get config(): object;
 	abstract render(): void;
 	abstract handleChange(change: Change): void;
+	abstract update(config: object): void;
 }

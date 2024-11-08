@@ -31,6 +31,30 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 		return html;
 	}
 
+	get fileInput(): HTMLElement {
+		const html = this.htmlElement.querySelector('input[type="file"]') as HTMLElement;
+		if (!html) {
+			throw new Error('input file not found');
+		}
+		return html;
+	}
+
+	get label(): HTMLElement {
+		const html = this.htmlElement.querySelector('.form__upload') as HTMLElement;
+		if (!html) {
+			throw new Error('label not found');
+		}
+		return html;
+	}
+
+	get img(): HTMLElement {
+		const html = this.htmlElement.querySelector('.form__img') as HTMLElement;
+		if (!html) {
+			throw new Error('label not found');
+		}
+		return html;
+	}
+
 	protected _prerender(): void {
 		super._prerender();
 		this._templateContext = {
@@ -49,5 +73,31 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 		this._config = { ...this._config, ...data };
 		this.removeForUpdate();
 		this.render();
+	}
+
+	/**
+	 * Printing error above submit button
+	 * @param {string} error
+	 */
+	printError(error: string) {
+		if (error) {
+			const messageElement =
+				this.htmlElement.querySelector('.form__error');
+			if (!messageElement) {
+				throw new Error('message element not found');
+			}
+			messageElement.textContent = error;
+		}
+	}
+
+	/**
+	 * Clear error above submit button
+	 */
+	clearError() {
+		const messageElement = this.htmlElement.querySelector('.form__error');
+		if (!messageElement) {
+			throw new Error('message element not found');
+		}
+		messageElement.textContent = '';
 	}
 }

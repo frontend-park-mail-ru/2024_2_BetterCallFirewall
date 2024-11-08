@@ -1,3 +1,4 @@
+import { ACTION_APP_TYPES } from '../../actions/actionApp';
 import {
 	ACTION_CHAT_TYPES,
 	ActionChatRequest,
@@ -6,6 +7,11 @@ import {
 } from '../../actions/actionChat';
 import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import { ACTION_MESSAGES_TYPES } from '../../actions/actionMessages';
+import {
+	ACTION_PROFILE_TYPES,
+	ActionProfileRequest,
+} from '../../actions/actionProfile';
+import app from '../../app';
 import { Root } from '../../components';
 import { Chat, IChatConfig } from '../../components/Chat/Chat';
 import dispatcher from '../../dispatcher/dispatcher';
@@ -33,25 +39,48 @@ export interface IViewChat extends IViewHome {
 export class ViewChat extends ViewHome implements IViewChat {
 	protected _configChat: ViewChatConfig;
 	protected _components: ComponentsChat = {};
+	private _chatScrollBottom: number = 0;
+	private _handleScroll: boolean = true;
 
 	constructor(config: ViewChatConfig, root: Root) {
 		super(config, root);
 		this._configChat = config;
 	}
 
+	get config(): ViewChatConfig {
+		return this._configChat;
+	}
+
 	handleChange(change: ChangeChat): void {
-		console.log('ViewChat:', change);
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_CHAT_TYPES.goToChat:
-				this.render();
+			case ACTION_PROFILE_TYPES.profileRequestSuccess:
+				this.updateViewChat(change.data);
 				this.sendAction(
 					new ActionChatRequest(this._configChat.chat.companionId),
 				);
 				break;
-			case ACTION_CHAT_TYPES.sendMessage:
-			case ACTION_MESSAGES_TYPES.newMessage:
+			case ACTION_APP_TYPES.actionAppInit:
+			case ACTION_CHAT_TYPES.goToChat: {
+				this._configChat = Object.assign(this._configChat, change.data);
+				this.render();
+				if (app.router.chatId) {
+					this.sendAction(
+						new ActionProfileRequest(`/${app.router.chatId}`),
+					);
+				}
+				this._chatScrollBottom = 0;
+				break;
+			}
 			case ACTION_CHAT_TYPES.requestChatSuccess:
+				this.updateViewChat(change.data);
+				this._scrollToOldPosition();
+				break;
+			case ACTION_CHAT_TYPES.sendMessage:
+				this.updateViewChat(change.data);
+				this._scrollToBottom();
+				break;
+			case ACTION_MESSAGES_TYPES.newMessage:
 			case ACTION_CHAT_TYPES.updateChat:
 				this.updateViewChat(change.data);
 				break;
@@ -69,6 +98,10 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._render();
 	}
 
+	update(config: object): void {
+		this.updateViewChat(config as ViewChatConfig);
+	}
+
 	protected _render(): void {
 		super._render();
 		this._renderChat();
@@ -80,14 +113,11 @@ export class ViewChat extends ViewHome implements IViewChat {
 		const chat = new Chat(this._configChat.chat, content);
 		chat.render();
 		this._components.chat = chat;
-		this._scrollToBottom();
 	}
 
 	private _scrollToBottom(): void {
-		const chatContainer = this._chat.chatContentHTML;
-		if (chatContainer) {
-			chatContainer.scrollTop = chatContainer.scrollHeight;
-		}
+		this._chatScrollBottom = 0;
+		this._scrollToOldPosition();
 	}
 
 	private _addHandlers() {
@@ -95,7 +125,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._addSendButtonHandler();
 		this._addEnterSendHandler();
 		this._addCompanionLink();
-		// this._addScrollHandler();
+		this._addScrollHandler();
 		this._chat.addHandler(this._chat.settingsButton, 'click', (event) =>
 			event.preventDefault(),
 		);
@@ -116,7 +146,6 @@ export class ViewChat extends ViewHome implements IViewChat {
 	private _addSendButtonHandler() {
 		const form = this._chat.form;
 		this._chat.addHandler(form, 'submit', (event) => {
-			console.log('submit');
 			event.preventDefault();
 			const chatText = this._chat.text;
 			if (!chatText) {
@@ -150,17 +179,18 @@ export class ViewChat extends ViewHome implements IViewChat {
 
 	private _addCompanionLink() {
 		const chat = this._components.chat;
-		const companionLink = chat?.htmlElement?.querySelector('.chat__companion') as HTMLElement;
+		const companionLink = chat?.htmlElement?.querySelector(
+			'.chat__companion',
+		) as HTMLElement;
 		const companionId = this._components.chat?.config.companionId;
 		if (chat && companionId && companionLink) {
 			chat.addHandler(companionLink, 'click', (event) => {
 				event.preventDefault();
 				this.sendAction(
-					new ActionMenuLinkClick({ href: `/${companionId}` })
+					new ActionMenuLinkClick({ href: `/${companionId}` }),
 				);
 			});
 		}
-
 	}
 
 	private _addScrollHandler() {
@@ -170,12 +200,17 @@ export class ViewChat extends ViewHome implements IViewChat {
 		let debounceTimeout: NodeJS.Timeout;
 
 		const handleScroll = () => {
+			if (!this._handleScroll) {
+				return;
+			}
 			clearTimeout(debounceTimeout);
 			debounceTimeout = setTimeout(() => {
 				if (
-					chatContent.scrollTop + chatContent.clientHeight >=
+					chatContent.scrollTop + chatContent.clientHeight * 2 >
 					chatContent.scrollHeight
 				) {
+					this._chatScrollBottom =
+						chatContent.scrollHeight - chatContent.scrollTop;
 					this.sendAction(
 						new ActionChatRequest(
 							this._chat.config.companionId,
@@ -187,6 +222,14 @@ export class ViewChat extends ViewHome implements IViewChat {
 		};
 
 		content.addHandler(chatContent, 'scroll', handleScroll);
+	}
+
+	private _scrollToOldPosition() {
+		const chatContent = this._chat.chatContentHTML;
+		this._handleScroll = false;
+		chatContent.scrollTop =
+			chatContent.scrollHeight - this._chatScrollBottom;
+		this._handleScroll = true;
 	}
 
 	private get _chat(): Chat {

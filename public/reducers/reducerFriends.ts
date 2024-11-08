@@ -22,13 +22,26 @@ export const reducerFriends = (
 	}
 	const newState = deepClone(state);
 	switch (action.type) {
+		case ACTION_FRIENDS_TYPES.getFriends:
+			newState.friends.friendsConfig = [];
+			newState.subscribers.friendsConfig = [];
+			newState.subscriptions.friendsConfig = [];
+			newState.users.friendsConfig = [];
+			return newState;
 		case ACTION_FRIENDS_TYPES.getUsersSuccess: {
 			const actionData = action.data as ActionProfileGetUsersSuccessData;
-			newState.users.friendsConfig = actionData.users
-				.filter(user => !user.is_subscriber && !user.is_friend && !user.is_subscription)
-				.map((user) => {
-					return toFriendConfig(user);
-			});
+			newState.users.friendsConfig = newState.users.friendsConfig.concat(
+				actionData.users
+					.filter(
+						(user) =>
+							!user.is_subscriber &&
+							!user.is_friend &&
+							!user.is_subscription,
+					)
+					.map((user) => {
+						return toFriendConfig(user);
+					}),
+			);
 			return newState;
 		}
 		case ACTION_FRIENDS_TYPES.getSubscribersSuccess: {
@@ -50,8 +63,8 @@ export const reducerFriends = (
 		case ACTION_FRIENDS_TYPES.getSubscriptionsSuccess: {
 			const actionData =
 				action.data as ActionProfileGetSubscriptionsSuccessData;
-			newState.subscriptions.friendsConfig = actionData.subscriptions.map((subscription) =>
-				toFriendConfig(subscription),
+			newState.subscriptions.friendsConfig = actionData.subscriptions.map(
+				(subscription) => toFriendConfig(subscription),
 			);
 			return newState;
 		}

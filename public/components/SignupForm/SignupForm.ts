@@ -45,7 +45,6 @@ export class SignupForm extends BaseForm implements ISignupForm {
 			throw new Error('toLoginLinkHTML not found');
 		}
 		this.items.toLoginLink.htmlElement = toLoginLinkHTML as HTMLElement;
-		console.log(this.items.toLoginLink.htmlElement);
 
 		return this.htmlElement.outerHTML;
 	}

@@ -36,6 +36,10 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 		this._configProfileEdit = config;
 	}
 
+	get config(): ViewProfileEditConfig {
+		return this._configProfileEdit;
+	}
+
 	handleChange(change: ChangeProfileEdit): void {
 		super.handleChange(change);
 		switch (change.type) {
@@ -64,6 +68,10 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 	updateViewProfileEdit(data: ViewProfileEditConfig): void {
 		this._configProfileEdit = Object.assign(this._configProfileEdit, data);
 		this._render();
+	}
+
+	update(config: object): void {
+		this.updateViewProfileEdit(config as ViewProfileEditConfig);
 	}
 
 	protected _render(): void {
@@ -95,10 +103,48 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 		form.addHandler(form.htmlElement, 'submit', (event) => {
 			event.preventDefault();
 			const validator = new Validator();
-			const formData = validator.validateForm(this._profileEditForm.formData, this._profileEditForm.form);
+			const formData = validator.validateForm(
+				this._profileEditForm.formData,
+				this._profileEditForm.form,
+			);
 			if (formData) {
 				api.editProfile(formData);
 			}
 		});
+		this._addHandlerInput();
+	}
+
+	private _addHandlerInput(): void {
+		const fileInput = this._profileEditForm.fileInput;
+		const label = this._profileEditForm.label;
+		const preview = this._profileEditForm.img as HTMLImageElement;
+		if (fileInput) {
+			this.content.addHandler(fileInput, 'click', (event) => {
+				const input = event.target as HTMLInputElement;
+				if (input.value) {
+					input.value = '';
+					event.preventDefault();
+					label?.classList.remove('active');
+					label.textContent = 'Прикрепить картинку';
+					preview.src = '';
+				}
+			});
+			this.content.addHandler(fileInput, 'change', (event) => {
+				const input = event.target as HTMLInputElement;
+				if (input.files && input.files.length > 0) {
+					if (label) {
+						label.classList.add('active');
+						label.textContent =
+							'Картинка выбрана, нажмите, чтобы отменить';
+					}
+
+					const reader = new FileReader();
+					reader.onload = function (e) {
+						preview.src = e.target?.result as string;
+					};
+					reader.readAsDataURL(input.files[0]);
+				}
+			});
+		}
 	}
 }

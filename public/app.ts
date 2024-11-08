@@ -184,10 +184,6 @@ class App {
 				view: signupView,
 			},
 			{
-				path: PAGE_LINKS.messages,
-				view: messagesView,
-			},
-			{
 				path: PAGE_LINKS.createPost,
 				view: createPostView,
 			},
@@ -196,8 +192,12 @@ class App {
 				view: profileEditView,
 			},
 			{
-				path: PAGE_LINKS.chat,
+				path: PAGE_LINKS.chat, // chat должен быть перед messages
 				view: chatView,
+			},
+			{
+				path: PAGE_LINKS.messages,
+				view: messagesView,
 			},
 			{
 				path: PAGE_LINKS.friends,
@@ -256,6 +256,7 @@ class App {
 			ACTION_PROFILE_TYPES.getYourOwnProfileSuccess,
 		);
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.getHeaderSuccess);
+		this._stores.home.subscribe(ACTION_PROFILE_TYPES.updateProfile);
 
 		this._stores.login.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.login.subscribe(ACTION_USER_TYPES.unauthorized);
@@ -274,7 +275,9 @@ class App {
 		this._stores.feed.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestSuccess);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestFail);
+		this._stores.feed.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
 
+		this._stores.profile.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.goToProfile);
 		this._stores.profile.subscribe(
@@ -295,6 +298,9 @@ class App {
 		);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.profileRequest);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.deletePostSuccess);
+		this._stores.profile.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
+		this._stores.profile.subscribe(ACTION_MENU_TYPES.menuLinkClick);
+		this._stores.profile.subscribe(ACTION_FRIENDS_TYPES.acceptSuccess);
 
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.subscribeSuccess);
@@ -327,9 +333,10 @@ class App {
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChatSuccess);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChatFail);
+		this._stores.chat.subscribe(ACTION_CHAT_TYPES.sendMessage);
 		this._stores.chat.subscribe(ACTION_MESSAGES_TYPES.sendMessage);
 		this._stores.chat.subscribe(ACTION_MESSAGES_TYPES.newMessage);
-		this._stores.chat.subscribe(ACTION_CHAT_TYPES.sendMessage);
+		this._stores.chat.subscribe(ACTION_PROFILE_TYPES.profileRequestSuccess);
 
 		this._stores.createPost.subscribe(
 			ACTION_CREATE_POST_TYPES.updateCreatePost,
@@ -364,8 +371,8 @@ class App {
 		feedView.register(this._stores.home);
 		feedView.register(this._stores.feed);
 
-		profileView.register(this._stores.home);
 		profileView.register(this._stores.profile);
+		profileView.register(this._stores.home);
 
 		messagesView.register(this._stores.home);
 		messagesView.register(this._stores.messages);

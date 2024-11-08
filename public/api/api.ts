@@ -13,6 +13,8 @@ import {
 	ActionPostsRequestSuccess,
 } from '../actions/actionFeed';
 import {
+	ACTION_FRIENDS_TYPES,
+	ActionFriendsAcceptData,
 	actionFriendsAcceptFail,
 	ActionFriendsAcceptSuccess,
 	actionFriendsRemoveFail,
@@ -29,7 +31,7 @@ import {
 import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
 	ACTION_MESSAGES_TYPES,
-	actionMessagesRequestFail,
+	ActionMessagesRequestFail as ActionMessagesRequestFail,
 	ActionMessagesRequestSuccess,
 } from '../actions/actionMessages';
 import {
@@ -45,6 +47,8 @@ import {
 	ActionProfileRequestSuccess,
 	ActionProfileDeletePostFail,
 	ActionProfileDeletePostSuccess,
+	ACTION_PROFILE_TYPES,
+	ActionProfileRequestData,
 } from '../actions/actionProfile';
 import {
 	ActionProfileEditRequestFail,
@@ -67,6 +71,14 @@ export const STATUS = {
 class API {
 	handleAction(action: Action) {
 		switch (action.type) {
+			case ACTION_FRIENDS_TYPES.accept:
+				this.acceptFriend((action.data as ActionFriendsAcceptData).id);
+				break;
+			case ACTION_PROFILE_TYPES.profileRequest:
+				this.requestProfile(
+					(action.data as ActionProfileRequestData).href,
+				);
+				break;
 			case ACTION_MESSAGES_TYPES.requestMessages:
 				this.getMessages();
 				break;
@@ -148,9 +160,9 @@ class API {
 		}
 	}
 
-	async requestPosts(lastPostId: number): Promise<void> {
+	async requestPosts(lastPostId?: number): Promise<void> {
 		const params: QueryParams = {};
-		if (lastPostId >= 0) {
+		if (lastPostId) {
 			params.id = `${lastPostId}`;
 		}
 		const response = await ajax.getPosts(params);
@@ -222,6 +234,12 @@ class API {
 						friends: response.data,
 					}),
 				);
+				break;
+			case STATUS.noMoreContent:
+				this.sendAction(
+					new ActionProfileGetFriendsSuccess({ friends: [] }),
+				);
+				break;
 		}
 	}
 
@@ -237,11 +255,17 @@ class API {
 						subscribers: response.data,
 					}),
 				);
+				break;
+			case STATUS.noMoreContent:
+				this.sendAction(
+					new ActionProfileGetSubscribersSuccess({ subscribers: [] }),
+				);
+				break;
 		}
 	}
 
-	async requestUsers() {
-		const response = await ajax.getProfiles();
+	async requestUsers(lastId?: number) {
+		const response = await ajax.getProfiles(lastId);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
@@ -267,6 +291,14 @@ class API {
 						subscriptions: response.data,
 					}),
 				);
+				break;
+			case STATUS.noMoreContent:
+				this.sendAction(
+					new ActionProfileGetSubscriptionsSuccess({
+						subscriptions: [],
+					}),
+				);
+				break;
 		}
 	}
 
@@ -380,15 +412,25 @@ class API {
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
-					this.sendAction(new actionMessagesRequestFail());
+					this.sendAction(
+						new ActionMessagesRequestFail(response.status),
+					);
 					break;
 				}
 				this.sendAction(
 					new ActionMessagesRequestSuccess(response.data),
 				);
 				break;
+			case STATUS.noMoreContent:
+				this.sendAction(
+					new ActionMessagesRequestFail(
+						response.status,
+						'Сообщений нет',
+					),
+				);
+				break;
 			default:
-				this.sendAction(new actionMessagesRequestFail());
+				this.sendAction(new ActionMessagesRequestFail(response.status));
 		}
 	}
 

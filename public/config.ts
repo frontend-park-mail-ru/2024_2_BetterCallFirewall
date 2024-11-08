@@ -13,21 +13,26 @@ import { ViewCreatePostConfig } from './views/createPost/viewCreatePost';
 import { ViewProfileEditConfig } from './views/profileEdit/viewProfileEdit';
 import { ViewPostEditConfig } from './views/PostEdit/viewPostEdit';
 import { IPostEditFormConfig } from './components/PostEditForm/PostEditForm';
+import Validator from './modules/validation';
 
 const DEBUG: boolean = false;
 
-export const PAGE_LINKS = {
+export const PAGE_URLS = {
 	feed: '/feed',
 	login: '/login',
 	signup: '/signup',
-	messages: '/messages',
+	messages: '/chat',
 	chat: '/chat',
 	friends: '/friends',
 	createPost: '/create-post',
 	profileEdit: '/profile-edit',
-	profile: '/([\\w-]+)',
+	profile: '',
 	postEdit: '/post-edit',
 };
+
+export const PAGE_LINKS = { ...PAGE_URLS };
+PAGE_LINKS.chat += '/\\d+';
+PAGE_LINKS.profile += '/([\\w-]+)';
 
 const homeConfig: HomeConfig = {
 	menu: {
@@ -417,5 +422,17 @@ const config: AppConfig = {
 	friendsConfig,
 	editPostConfig,
 };
+
+export const validators: Record<string, (value: string | File) => string> = {
+	'first_name': (value) => Validator.validateName(value as string),
+	'last_name': (value) => Validator.validateName(value as string),
+	'email': (value) => Validator.validateEmail(value as string),
+	'password': (value) => Validator.validatePassword(value as string),
+	'password_again': (value) => Validator.validateConfirmation(value as string),
+	'text': (value) => Validator.validatePost(value as string),
+	'file': (value) => Validator.validateImg(value as File),
+	'bio' : (value) => Validator.validatePost(value as string),
+	// 'avatar': (value) => Validator.validateImg(value as File),
+  };
 
 export default config;

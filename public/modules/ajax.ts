@@ -36,10 +36,12 @@ const replaceId = (url: string, id: number): string => {
 	return url.replace('{id}', `${id}`);
 };
 
-const pasteQueryParams = (baseUrl: string, params: QueryParams) => {
+const insertQueryParams = (baseUrl: string, params: QueryParams) => {
 	let url = baseUrl;
 	Object.entries(params).forEach(([key, value]) => {
-		url += `?${key}=${value}`;
+		if (value) {
+			url += `?${key}=${value}`;
+		}
 	});
 	return url;
 };
@@ -224,8 +226,13 @@ class Ajax {
 	/**
 	 * Получить все профили, кроме своего
 	 */
-	async getProfiles(): Promise<AjaxResponse<ShortProfileResponse[]>> {
-		return this._getShortProfileResponse(app.config.URL.profiles);
+	async getProfiles(
+		lastId?: number,
+	): Promise<AjaxResponse<ShortProfileResponse[]>> {
+		const url = insertQueryParams(app.config.URL.profiles, {
+			id: `${lastId}`,
+		});
+		return this._getShortProfileResponse(url);
 	}
 
 	/**
@@ -292,7 +299,7 @@ class Ajax {
 		lastTime?: string,
 	): Promise<AjaxResponse<MessageResponse[]>> {
 		const url = lastTime
-			? pasteQueryParams(app.config.URL.chat, { lastTime })
+			? insertQueryParams(app.config.URL.chat, { lastTime })
 			: app.config.URL.chat;
 		return this._genericRequest(replaceId(url, profileId), 'get');
 	}
@@ -362,9 +369,9 @@ class Ajax {
 	 * get запрос и ответ в виде ShortProfileResponse
 	 */
 	private async _getShortProfileResponse(
-		baseUrl: string,
+		url: string,
 	): Promise<AjaxResponse<ShortProfileResponse[]>> {
-		const request = this._getRequest(baseUrl);
+		const request = this._getRequest(url);
 		const response = await this._response(request);
 		let shortProfileResponse: AjaxResponse<ShortProfileResponse[]> = {
 			status: response.status,

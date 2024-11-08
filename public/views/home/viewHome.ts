@@ -77,7 +77,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	handleChange(change: ChangeHome): void {
-		console.log('ViewHome: change:', change);
 		switch (change.type) {
 			case ACTION_PROFILE_TYPES.getHeaderSuccess:
 			case ACTION_MENU_TYPES.updateProfileLinkHref:
@@ -89,16 +88,13 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 				break;
 			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_MENU_TYPES.menuLinkClick:
-				this._configHome = change.data;
+				this._configHome = Object.assign(this._configHome, change.data);
 				this.render();
 				break;
-			default:
-				this.updateViewHome(change.data);
 		}
 	}
 
 	updateViewHome(data: HomeConfig) {
-		console.log('ViewHome: update');
 		this._configHome = data;
 		this._render();
 	}
@@ -205,31 +201,15 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	};
 
 	protected _printMessage() {
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does no exist on ViewFeed');
-		}
 		if (this._configHome.errorMessage) {
-			content.printMessage(this._configHome.errorMessage);
+			this.content.printMessage(this._configHome.errorMessage);
 		}
 	}
 
 	private _renderMenu() {
 		this._components.menu = new Menu(this._configHome.menu, this._root);
 		this._components.menu.render();
-		this._updateActiveMenuLinks();
 		this._addMenuHandlers();
-	}
-
-	private _updateActiveMenuLinks() {
-		const curPath = window.location.pathname;
-		const menu = this._components.menu;
-		if (menu) {
-			Object.keys(menu.config.links).forEach(key => {
-				const link = menu.config.links[key];
-				link.active = curPath === link.href;
-			});
-		}
 	}
 
 	private _addMenuHandlers() {

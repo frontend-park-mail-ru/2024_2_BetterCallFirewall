@@ -56,9 +56,18 @@ export class ActionMessagesRequestSuccess implements Action {
 	}
 }
 
-export class actionMessagesRequestFail implements Action {
+export interface ActionMessagesRequestFailData {
+	status: number;
+	message?: string;
+}
+
+export class ActionMessagesRequestFail implements Action {
 	type: ActionType = ACTION_MESSAGES_TYPES.requestMessagesFail;
-	data: object = {};
+	data: ActionMessagesRequestFailData;
+
+	constructor(status: number, message?: string) {
+		this.data = { status, message };
+	}
 }
 
 export interface ActionMessagesNewMessageData {

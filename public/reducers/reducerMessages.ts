@@ -2,6 +2,7 @@ import { Action } from '../actions/action';
 import {
 	ACTION_MESSAGES_TYPES,
 	ActionMessagesNewMessageData,
+	ActionMessagesRequestFailData,
 	ActionMessagesRequestSuccessData,
 	ActionUpdateMessagesData,
 } from '../actions/actionMessages';
@@ -9,6 +10,7 @@ import { IMessageConfig } from '../components/Message/Message';
 import config from '../config';
 import { toMessageConfig } from '../models/chat';
 import deepClone from '../modules/deepClone';
+import parseTime from '../modules/parseTime';
 import { ViewMessagesConfig } from '../views/messages/viewMessages';
 
 const initialMessagesState: IMessageConfig[] = deepClone(
@@ -29,6 +31,13 @@ export const reducerMessages = (
 	}
 	const newState = deepClone(state);
 	switch (action.type) {
+		case ACTION_MESSAGES_TYPES.requestMessagesFail: {
+			const actionData = action.data as ActionMessagesRequestFailData;
+			if (actionData.message) {
+				newState.errorMessage = actionData.message;
+			}
+			return newState;
+		}
 		case ACTION_MESSAGES_TYPES.newMessage: {
 			const actionData = action.data as ActionMessagesNewMessageData;
 			newState.messages = newState.messages.map((messageConfig) => {
@@ -37,7 +46,9 @@ export const reducerMessages = (
 				) {
 					messageConfig.lastMessage =
 						actionData.messageResponse.content;
-					messageConfig.date = actionData.messageResponse.created_at;
+					messageConfig.date = parseTime(
+						actionData.messageResponse.created_at,
+					);
 					return messageConfig;
 				}
 				return messageConfig;
@@ -55,6 +66,6 @@ export const reducerMessages = (
 			return { ...state, ...(action.data as ActionUpdateMessagesData) };
 		case ACTION_MESSAGES_TYPES.goToMessages:
 		default:
-			return state;
+			return newState;
 	}
 };

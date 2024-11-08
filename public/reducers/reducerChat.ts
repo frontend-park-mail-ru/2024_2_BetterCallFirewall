@@ -1,7 +1,6 @@
 import { Action } from '../actions/action';
 import {
 	ACTION_CHAT_TYPES,
-	ActionChatGoToChatData,
 	ActionChatRequestSuccessData,
 	ActionChatSendMessageData,
 } from '../actions/actionChat';
@@ -9,11 +8,17 @@ import {
 	ACTION_MESSAGES_TYPES,
 	ActionMessagesNewMessageData,
 } from '../actions/actionMessages';
+import {
+	ACTION_PROFILE_TYPES,
+	ActionProfileRequestSuccessData,
+} from '../actions/actionProfile';
 import { IChatConfig } from '../components/Chat/Chat';
 import config from '../config';
 import { MessageResponse, toChatMessageConfig } from '../models/message';
+import { toChatConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
 import { ViewChatConfig } from '../views/chat/viewChat';
+import { reducerHome } from './reducerHome';
 
 const initialChatState: IChatConfig = deepClone(config.chatConfig.chat);
 
@@ -26,8 +31,21 @@ export const reducerChat = (
 	state: ViewChatConfig = initialState,
 	action?: Action,
 ) => {
-	const newState = deepClone(state);
+	const newState = Object.assign(
+		deepClone(state),
+		reducerHome(state, action),
+	);
 	switch (action?.type) {
+		case ACTION_PROFILE_TYPES.profileRequestSuccess:
+			newState.chat = toChatConfig(
+				newState.chat,
+				(action.data as ActionProfileRequestSuccessData)
+					.profileResponse,
+			);
+			newState.chat.myId = newState.main.header.profile.id;
+			newState.chat.myName = newState.main.header.profile.name;
+			newState.chat.myAvatar = newState.main.header.profile.avatar;
+			return newState;
 		case ACTION_CHAT_TYPES.sendMessage: {
 			const actionData = action.data as ActionChatSendMessageData;
 			const messageResponse: MessageResponse = {
@@ -63,8 +81,7 @@ export const reducerChat = (
 		case ACTION_CHAT_TYPES.updateChat:
 			return newState;
 		case ACTION_CHAT_TYPES.goToChat: {
-			const actionData = action.data as ActionChatGoToChatData;
-			newState.chat = actionData.chatConfig;
+			newState.chat.messages = [];
 			return newState;
 		}
 		default:

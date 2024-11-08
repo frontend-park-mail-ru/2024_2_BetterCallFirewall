@@ -5,7 +5,7 @@ import {
 	ActionLoginToSignupClick,
 } from '../../actions/actionLogin';
 import { ILoginFormConfig, LoginForm, Root } from '../../components';
-import config from '../../config';
+import config, { validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
@@ -21,29 +21,27 @@ export class ViewLogin extends BaseView {
 		this._config = config;
 	}
 
-	get config() {
+	get config(): ILoginFormConfig {
 		return this._config;
 	}
 
 	handleChange(change: ChangeLogin): void {
-		console.log('change:', change);
 		switch (change.type) {
 			case ACTION_APP_TYPES.actionAppInit:
 				this._config = change.data;
 				this.render();
 				break;
 			default:
-				this.update(change.data);
+				this.updateViewLogin(change.data);
 		}
 	}
 
-	update(data: ILoginFormConfig) {
+	updateViewLogin(data: ILoginFormConfig) {
 		this._config = data;
 		this.render();
 	}
 
 	render() {
-		console.log('ViewLogin: render');
 		this.clear();
 
 		const config = this._config;
@@ -51,6 +49,10 @@ export class ViewLogin extends BaseView {
 		login.render();
 		this._components.login = login;
 		this._addLoginHandlers();
+	}
+
+	update(config: object): void {
+		this.updateViewLogin(config as ILoginFormConfig);
 	}
 
 	private _addLoginHandlers() {
@@ -77,36 +79,67 @@ export class ViewLogin extends BaseView {
 		loginForm.addHandler(titleLinkHTML, 'click', (event) => {
 			event.preventDefault();
 		});
+
+		this.inputFieldHandler(loginForm);
+	}
+
+	private inputFieldHandler(loginForm: LoginForm) {
+		const inputFields = document.querySelectorAll('input, textarea');
+		inputFields.forEach((input) => {
+			loginForm.addHandler(input as HTMLElement, 'input', (event) => {
+				const target = event.target as HTMLInputElement;
+				const parentElem = target.parentElement as HTMLElement;
+
+				const validator = validators[target.name];
+				let error = '';
+
+				if (validator) {
+					if (
+						target.type === 'file' &&
+						target.files &&
+						target.files[0]
+					) {
+						error = validator(target.files[0]);
+					} else {
+						error = validator(target.value.trim());
+					}
+				}
+
+				const valid = new Validator();
+				if (error) {
+					valid.printError(parentElem as HTMLInputElement, error);
+				} else {
+					valid.errorsDelete(parentElem);
+				}
+			});
+		});
 	}
 }
 
 const loginFormSubmit = (loginForm: LoginForm) => {
 	const validator = new Validator();
 	const data = validator.validateForm(loginForm.formData, loginForm.form);
-	if (data) {
-		ajax.sendForm(config.URL.login, data, async (response, error) => {
-			if (error) {
+	if (!data) {
+		return;
+	}
+	ajax.sendForm(config.URL.login, data, async (response, error) => {
+		if (error) {
+			dispatcher.getAction(new ActionFormError('Что-то пошло не так'));
+			return;
+		}
+		if (response && response.ok) {
+			dispatcher.getAction(new ActionLoginClickSuccess());
+		} else if (response) {
+			const data = await response.json();
+			if (data.message === 'wrong email or password') {
+				dispatcher.getAction(
+					new ActionFormError('Неверная почта или пароль'),
+				);
+			} else {
 				dispatcher.getAction(
 					new ActionFormError('Что-то пошло не так'),
 				);
-				return;
 			}
-			if (response && response.ok) {
-				dispatcher.getAction(new ActionLoginClickSuccess());
-			} else if (response) {
-				const data = await response.json();
-				if (data.message === 'wrong email or password') {
-					loginForm.printError('Неверная почта или пароль');
-					// dispatcher.getAction(
-					//  new ActionFormError('Неверная почта или пароль'),
-					// );
-				} else {
-					loginForm.printError('Что-то пошло не так');
-					// dispatcher.getAction(
-					//  new ActionFormError('Что-то пошло не так'),
-					// );
-				}
-			}
-		});
-	}
+		}
+	});
 };

@@ -1,4 +1,5 @@
 import { IInputConfig } from '../components/index';
+import { validators } from '../config';
 export default class Validator {
 	/**
 	 * Deleting content in elements with class '.error'
@@ -7,12 +8,13 @@ export default class Validator {
 	 */
 	errorsDelete(parentElem: HTMLElement): void {
 		const errors: NodeListOf<HTMLElement> =
-			parentElem.querySelectorAll('.error');
+			parentElem.querySelectorAll('.form__input-error');
 		errors.forEach((error) => (error.textContent = ''));
 	}
 
 	static shieldingData(data: string): string {
-		return data.replace(/&/g, '&amp;')
+		return data
+			.replace(/&/g, '&amp;')
 			.replace(/</g, '&lt;')
 			.replace(/>/g, '&gt;')
 			.replace(/"/g, '&quot;')
@@ -161,43 +163,20 @@ export default class Validator {
 			let error: string = '';
 			if (typeof value === 'string') {
 				updatedValue = value.trim();
-				switch (key) {
-					case 'first_name':
-					case 'last_name':
-						error = Validator.validateName(value);
-						break;
-					case 'email':
-						error = Validator.validateEmail(value);
-						break;
-					case 'password':
-						error = Validator.validatePassword(value);
-						break;
-					case 'password_again':
-						error = Validator.validateConfirmation(value);
-						break;
-					case 'text':
-						error = Validator.validatePost(value);
-						break;
-				}
 			}
-
-			if (value instanceof File) {
-				switch (key) {
-					case 'img':
-					case 'avatar':
-						error = Validator.validateImg(value);
-						break;
+			const validator = validators[key];
+			if (validator) {
+				error = validator(updatedValue);
+				if (error) {
+					this.printError(
+						form.querySelector(`[name="${key}"]`)
+							?.parentElement as HTMLInputElement,
+						error,
+					);
+					hasErrors = true;
+				} else {
+					formData.set(key, updatedValue);
 				}
-				error = Validator.validateImg(value);
-			}
-			if (error) {
-				this.printError(form.querySelector(`[name="${key}"]`)?.parentElement as HTMLInputElement, error);
-				console.log('error:  ', key);
-				hasErrors = true;
-				error = '';
-			} else {
-				formData.delete(key);
-				formData.append(key, updatedValue);
 			}
 		}
 
