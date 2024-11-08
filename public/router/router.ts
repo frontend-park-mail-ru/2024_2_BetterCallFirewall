@@ -23,13 +23,13 @@ export class Router {
 			const config = deepClone(event.state);
 			console.log('pop state:', config);
 			// debugger;
-			this.goToPage(this.path);
+			this.goToPage(this.path, false);
 			// this.activeView?.update(config);
 			this.activeView?.render();
 		};
 	}
 
-	goToPage(path: string) {
+	goToPage(path: string, pushState: boolean = true) {
 		this._path = path;
 		for (const route of this._config) {
 			const regex = new RegExp(`^${route.path}$`);
@@ -38,7 +38,9 @@ export class Router {
 				if (this._activeView) {
 					console.log('push state:', this._activeView.config);
 					// debugger;
-					history.pushState(this._activeView.config, '', path);
+					if (pushState) {
+						history.pushState(this._activeView.config, '', path);
+					}
 					this._activeView.active = false;
 				}
 
