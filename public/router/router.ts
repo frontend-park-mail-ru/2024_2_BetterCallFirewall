@@ -1,4 +1,3 @@
-import deepClone from '../modules/deepClone';
 import { BaseView } from '../views/view';
 
 type Route = {
@@ -18,13 +17,9 @@ export class Router {
 		this._defaultView = defaultView;
 		this._config = config;
 
-		window.onpopstate = (event) => {
+		window.onpopstate = () => {
 			this._path = location.pathname;
-			const config = deepClone(event.state);
-			console.log('pop state:', config);
-			// debugger;
 			this.goToPage(this.path, false);
-			// this.activeView?.update(config);
 			this.activeView?.render();
 		};
 	}
@@ -36,8 +31,6 @@ export class Router {
 			const match = path.match(regex);
 			if (match) {
 				if (this._activeView) {
-					console.log('push state:', this._activeView.config);
-					// debugger;
 					if (pushState) {
 						history.pushState(this._activeView.config, '', path);
 					}

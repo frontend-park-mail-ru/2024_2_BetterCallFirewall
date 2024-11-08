@@ -22,6 +22,7 @@ export const reducerMenu = (
 	const newState = deepClone(state);
 	if (action) {
 		switch (action.type) {
+			case ACTION_PROFILE_TYPES.updateProfile:
 			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_MENU_TYPES.menuLinkClick:
 				Object.keys(newState.links).forEach((key) => {
