@@ -22,6 +22,7 @@ export class Router {
 			this._path = location.pathname;
 			const config = deepClone(event.state);
 			console.log('pop state:', config);
+			debugger;
 			this.goToPage(this.path);
 			this.activeView?.update(config);
 		};
@@ -35,6 +36,7 @@ export class Router {
 			if (match) {
 				if (this._activeView) {
 					console.log('push state:', this._activeView.config);
+					debugger;
 					history.pushState(this._activeView.config, '', path);
 					this._activeView.active = false;
 				}
