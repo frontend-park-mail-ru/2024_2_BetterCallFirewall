@@ -41,6 +41,8 @@
             padding-left: .2rem;
             margin-bottom: .8rem;
             white-space: pre-line;
+            max-width: 100%;
+            overflow-wrap: break-word;
         }
         &-image {
             border-radius: 10rem;
@@ -96,4 +98,3 @@
 .header-text {
     margin-bottom: .3rem;
 }
-
