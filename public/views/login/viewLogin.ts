@@ -9,7 +9,7 @@ import {
 	LoginForm,
 	Root,
 } from '../../components';
-import config from '../../config';
+import config, { validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
@@ -80,6 +80,41 @@ export class ViewLogin extends BaseView {
 		) as HTMLElement;
 		loginForm.addHandler(titleLinkHTML, 'click', (event) => {
 			event.preventDefault();
+		});
+
+		this.inputFieldHandler(loginForm);
+	}
+
+	private inputFieldHandler(loginForm: LoginForm) {
+		const inputFields = document.querySelectorAll('input, textarea');
+		console.log('input fields handler ', inputFields);
+		inputFields.forEach((input) => {
+			loginForm.addHandler(input as HTMLElement, 'input', (event) => {
+				const target = event.target as HTMLInputElement;
+				const parentElem = target.parentElement as HTMLElement;
+
+				const validator = validators[target.name];
+				let error = '';
+
+				if (validator) {
+					if (
+						target.type === 'file' &&
+						target.files &&
+						target.files[0]
+					) {
+						error = validator(target.files[0]);
+					} else {
+						error = validator(target.value.trim());
+					}
+				}
+
+				const valid = new Validator();
+				if (error) {
+					valid.printError(parentElem as HTMLInputElement, error);
+				} else {
+					valid.errorsDelete(parentElem);
+				}
+			});
 		});
 	}
 }
