@@ -5,7 +5,6 @@ import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileGetYourOwnProfileSuccessData,
 	ActionProfileRequestSuccessData,
-	ActionUpdateProfileData,
 } from '../actions/actionProfile';
 import {
 	ACTION_PROFILE_EDIT_TYPES,
@@ -40,10 +39,6 @@ export const reducerProfile = (
 			newState.profile = Object.assign(newState.profile, profileConfig);
 			return newState;
 		}
-		case ACTION_PROFILE_TYPES.updateProfile:
-			actionData = action.data as ActionUpdateProfileData;
-			newState.profile = Object.assign(newState.profile, actionData);
-			return newState;
 		case ACTION_PROFILE_TYPES.profileRequestSuccess: {
 			actionData = action.data as ActionProfileRequestSuccessData;
 			const profileConfig = toProfileConfig(
@@ -65,6 +60,7 @@ export const reducerProfile = (
 			newState.profile = Object.assign(newState.profile, profileConfig);
 			return newState;
 		}
+		case ACTION_PROFILE_TYPES.updateProfile:
 		case ACTION_PROFILE_TYPES.profileRequestFail:
 		case ACTION_PROFILE_TYPES.goToProfile:
 		case ACTION_PROFILE_TYPES.getYourOwnProfileFail:

@@ -1,4 +1,5 @@
 import { Action } from '../actions/action';
+import deepClone from '../modules/deepClone';
 import { reducerProfile } from '../reducers/reducerProfile';
 import { ViewProfile, ViewProfileConfig } from '../views/profile/viewProfile';
 import { BaseStore, Store } from './store';
@@ -20,7 +21,11 @@ export class StoreProfile extends BaseStore implements Store {
 	}
 
 	handleAction(action: Action): void {
-		this._state = { ...this._state, ...this._storeHome.state };
+		this._state = Object.assign(
+			deepClone(this._state),
+			this._storeHome.state,
+		);
+		// this._state = { ...this._state, ...this._storeHome.state };
 		this._state = reducerProfile(this._state, action);
 		this._registeredViews.forEach((view) => {
 			view.handleChange({ type: action.type, data: this._state });
