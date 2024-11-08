@@ -81,6 +81,9 @@ export class ViewChat extends ViewHome implements IViewChat {
 				this._scrollToBottom();
 				break;
 			case ACTION_MESSAGES_TYPES.newMessage:
+				this.updateViewChat(change.data);
+				this._scrollToOldPosition();
+				break;
 			case ACTION_CHAT_TYPES.updateChat:
 				this.updateViewChat(change.data);
 				break;
@@ -205,12 +208,12 @@ export class ViewChat extends ViewHome implements IViewChat {
 			}
 			clearTimeout(debounceTimeout);
 			debounceTimeout = setTimeout(() => {
+				this._chatScrollBottom =
+					chatContent.scrollHeight - chatContent.scrollTop;
 				if (
-					chatContent.scrollTop + chatContent.clientHeight * 2 >
-					chatContent.scrollHeight
+					chatContent.scrollHeight - chatContent.scrollTop <
+					chatContent.clientHeight * 2
 				) {
-					this._chatScrollBottom =
-						chatContent.scrollHeight - chatContent.scrollTop;
 					this.sendAction(
 						new ActionChatRequest(
 							this._chat.config.companionId,
