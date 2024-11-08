@@ -219,10 +219,12 @@ export class ViewChat extends ViewHome implements IViewChat {
 			if (!this._handleScroll) {
 				return;
 			}
+			this._chatScrollBottom =
+				chatContent.scrollHeight -
+				chatContent.scrollTop -
+				chatContent.clientHeight;
 			clearTimeout(debounceTimeout);
 			debounceTimeout = setTimeout(() => {
-				this._chatScrollBottom =
-					chatContent.scrollHeight - chatContent.scrollTop;
 				if (chatContent.scrollTop < chatContent.clientHeight * 2) {
 					this.sendAction(
 						new ActionChatRequest(
