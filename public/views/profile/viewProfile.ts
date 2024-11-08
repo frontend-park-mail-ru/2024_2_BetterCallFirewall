@@ -99,6 +99,9 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	}
 
 	render(): void {
+		if (!this.active) {
+			return;
+		}
 		this._render();
 		this.sendAction(new ActionUpdateProfile(this._configProfile.profile));
 		this.sendAction(new ActionProfileRequest(app.router.path));
