@@ -60,9 +60,16 @@ export const reducerChat = (
 		}
 		case ACTION_MESSAGES_TYPES.newMessage: {
 			const actionData = action.data as ActionMessagesNewMessageData;
-			newState.chat.messages.push(
-				toChatMessageConfig(newState.chat, actionData.messageResponse),
-			);
+			if (
+				actionData.messageResponse.sender === newState.chat.companionId
+			) {
+				newState.chat.messages.push(
+					toChatMessageConfig(
+						newState.chat,
+						actionData.messageResponse,
+					),
+				);
+			}
 			// alert(
 			// 	`Новое сообщение: ${actionData.messageResponse.content} от ${actionData.messageResponse.sender}`,
 			// ); // tmp
