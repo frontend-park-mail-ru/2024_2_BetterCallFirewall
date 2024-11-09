@@ -15,6 +15,7 @@ import app from '../../app';
 import { Root } from '../../components';
 import { Chat, IChatConfig } from '../../components/Chat/Chat';
 import { IChatMessageConfig } from '../../components/ChatMessage/ChatMessage';
+import { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import { MessageSend } from '../../models/message';
 import { ChangeChat } from '../../stores/storeChat';
@@ -141,6 +142,7 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._addEnterSendHandler();
 		this._addCompanionLink();
 		this._addScrollHandler();
+		this._addEscapeHandler();
 		this._chat.addHandler(this._chat.settingsButton, 'click', (event) =>
 			event.preventDefault(),
 		);
@@ -236,6 +238,21 @@ export class ViewChat extends ViewHome implements IViewChat {
 		};
 
 		content.addHandler(chatContent, 'scroll', handleScroll);
+	}
+
+	private _addEscapeHandler() {
+		this.content.addHandler(
+			this.content.htmlElement,
+			'keydown',
+			(event) => {
+				const keyEvent = event as KeyboardEvent;
+				if (keyEvent.key === 'Escape') {
+					this.sendAction(
+						new ActionMenuLinkClick({ href: PAGE_LINKS.messages }),
+					);
+				}
+			},
+		);
 	}
 
 	private _scrollToOldPosition() {
