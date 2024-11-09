@@ -19,6 +19,7 @@
         overflow-wrap: break-word;
         line-height: 1.5;
         max-width: 100%;
+        overflow: hidden;
     }
     &__link {
         color: var(--main-color);
