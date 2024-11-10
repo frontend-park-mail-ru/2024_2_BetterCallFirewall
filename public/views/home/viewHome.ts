@@ -3,14 +3,12 @@ import {
 	ActionHeaderLogoutClickFail,
 	ActionHeaderLogoutClickSuccess,
 } from '../../actions/actionHeader';
-import { ACTION_LOGIN_TYPES } from '../../actions/actionLogin';
 import {
 	ACTION_MENU_TYPES,
 	ActionMenuLinkClick,
 	ActionMenuTitleClick,
 } from '../../actions/actionMenu';
 import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
-import api from '../../api/api';
 import app from '../../app';
 import {
 	Header,
@@ -81,10 +79,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 			case ACTION_PROFILE_TYPES.getHeaderSuccess:
 			case ACTION_MENU_TYPES.updateProfileLinkHref:
 				this.updateViewHome(change.data);
-				break;
-			case ACTION_LOGIN_TYPES.loginClickSuccess:
-			case ACTION_PROFILE_TYPES.getHeader:
-				api.requestHeader();
 				break;
 			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_MENU_TYPES.menuLinkClick:
