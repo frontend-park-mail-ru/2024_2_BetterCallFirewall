@@ -198,6 +198,7 @@ class Ajax {
 				break;
 			}
 		}
+		console.log('get header: response:', headerResponse);
 		return headerResponse;
 	}
 

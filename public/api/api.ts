@@ -216,9 +216,13 @@ class API {
 					),
 				);
 				break;
-			case STATUS.badRequest:
 			case STATUS.unauthorized:
 				this.sendAction(new ActionUserUnauthorized());
+				this.sendAction(
+					new ActionProfileGetHeaderFail({ status: response.status }),
+				);
+				break;
+			case STATUS.badRequest:
 				this.sendAction(
 					new ActionProfileGetHeaderFail({ status: response.status }),
 				);
