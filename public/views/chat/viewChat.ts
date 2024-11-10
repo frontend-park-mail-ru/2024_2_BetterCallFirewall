@@ -243,7 +243,6 @@ export class ViewChat extends ViewHome implements IViewChat {
 	private _addEscapeHandler() {
 		this.content.addHandler(document, 'keydown', (event) => {
 			const keyEvent = event as KeyboardEvent;
-			console.log('key:', keyEvent.key);
 			if (keyEvent.key === 'Escape') {
 				this.sendAction(
 					new ActionMenuLinkClick({ href: PAGE_LINKS.messages }),
