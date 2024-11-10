@@ -1,4 +1,4 @@
-FROM node:latest as build
+FROM node:latest
 
 WORKDIR /app
 
@@ -9,17 +9,19 @@ RUN npm install
 
 COPY . .
 
-# EXPOSE 8000
+EXPOSE 8000
 
-RUN npm start
-# CMD [ "npm", "start"]
+# RUN npm build
+CMD [ "npm", "start"]
 
-FROM nginx:latest
+# FROM nginx:latest
 
-COPY --from=build /app /usr/share/nginx/html
+# WORKDIR /app
 
-COPY nginx.conf /etc/nginx/nginx.conf
+# COPY --from=build /app .
 
-EXPOSE 80
+# COPY nginx.conf /etc/nginx/nginx.conf
 
-CMD [ "nginx", "-g", "daemon off;" ]
+# EXPOSE 80
+
+# CMD [ "nginx", "-g", "daemon off;" ]
