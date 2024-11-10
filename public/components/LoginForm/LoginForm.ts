@@ -8,7 +8,6 @@ export interface ILoginFormConfig extends IBaseFormConfig {
 		email: IInputConfig;
 		password: IInputConfig;
 	};
-	// emailText: string;
 	toSignupLink: IFormLinkConfig;
 }
 

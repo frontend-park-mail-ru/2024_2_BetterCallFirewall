@@ -120,6 +120,14 @@ export class ViewSignup extends BaseView {
 const loginFormSubmit = (signupForm: SignupForm) => {
 	const validator = new Validator();
 	const data = validator.validateForm(signupForm.formData, signupForm.form);
+	if (!data) {
+		return;
+	}
+	Object.entries(signupForm.config).forEach(([, input]) => {
+		if (input.type !== 'password') {
+			input.text = data.get(input.name)?.toString();
+		}
+	});
 	if (data) {
 		ajax.sendForm(config.URL.signup, data, async (response, error) => {
 			if (error) {

@@ -174,7 +174,6 @@ const loginConfig: ILoginFormConfig = {
 		href: PAGE_LINKS.signup,
 		text: 'Нет аккаунта? Зарегистрируйся!',
 	},
-	// emailText: '',
 };
 
 const createPostConfig: ViewCreatePostConfig = {
