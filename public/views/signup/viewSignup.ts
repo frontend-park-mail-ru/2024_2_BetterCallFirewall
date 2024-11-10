@@ -123,7 +123,7 @@ const loginFormSubmit = (signupForm: SignupForm) => {
 	if (!data) {
 		return;
 	}
-	Object.entries(signupForm.config).forEach(([, input]) => {
+	Object.entries(signupForm.config.inputs).forEach(([, input]) => {
 		if (input.type !== 'password') {
 			input.text = data.get(input.name)?.toString();
 		}
