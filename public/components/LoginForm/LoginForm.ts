@@ -1,8 +1,14 @@
 import { IBaseComponent } from '../BaseComponent';
 import { BaseForm, IBaseForm, IBaseFormConfig } from '../BaseForm/BaseForm';
 import { FormLink, IFormLinkConfig } from '../FormLink/FormLink';
+import { IInputConfig } from '../Input/Input';
 
 export interface ILoginFormConfig extends IBaseFormConfig {
+	inputs: {
+		email: IInputConfig;
+		password: IInputConfig;
+	};
+	// emailText: string;
 	toSignupLink: IFormLinkConfig;
 }
 
@@ -14,6 +20,10 @@ export class LoginForm extends BaseForm implements ILoginForm {
 	constructor(config: ILoginFormConfig, parent: IBaseComponent) {
 		super(config, parent);
 		this._config = config;
+	}
+
+	get config(): ILoginFormConfig {
+		return this._config;
 	}
 
 	get form(): HTMLElement {

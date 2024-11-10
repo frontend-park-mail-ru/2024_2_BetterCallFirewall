@@ -122,6 +122,11 @@ const loginFormSubmit = (loginForm: LoginForm) => {
 	if (!data) {
 		return;
 	}
+	Object.entries(loginForm.config.inputs).forEach(([, input]) => {
+		if (input.type !== 'password') {
+			input.text = data.get(input.name)?.toString();
+		}
+	});
 	ajax.sendForm(config.URL.login, data, async (response, error) => {
 		if (error) {
 			dispatcher.getAction(new ActionFormError('Что-то пошло не так'));

@@ -4,7 +4,7 @@ import BaseComponent, {
 } from '../BaseComponent';
 
 export interface IInputConfig extends IBaseComponentConfig {
-	name?: string;
+	name: string;
 	placeholder?: string;
 	text?: string;
 	accept?: string;
@@ -48,5 +48,5 @@ export class Input extends BaseComponent implements IInput {
 }
 
 Handlebars.registerHelper('eq', function (arg1, arg2) {
-    return arg1 === arg2;
+	return arg1 === arg2;
 });
