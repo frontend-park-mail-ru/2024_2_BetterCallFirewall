@@ -26,6 +26,7 @@ export class ViewFeed extends ViewHome {
 	}
 
 	handleChange(change: ChangeFeed): void {
+		console.log('ViewFeed: handleChange:', change);
 		this._configFeed = Object.assign(this._configFeed, change.data);
 		super.handleChange(change);
 		switch (change.type) {
