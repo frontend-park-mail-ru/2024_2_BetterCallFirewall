@@ -16,6 +16,7 @@ export default class WebsocketClient {
 	constructor(url: string) {
 		this._url = url;
 		this._socket = new WebSocket(url);
+		console.log('initial ws:', this._socket);
 
 		this._socket.onopen = this._onOpen.bind(this);
 		this._socket.onmessage = this._onMessage.bind(this);
@@ -41,9 +42,15 @@ export default class WebsocketClient {
 		this._socket.send(JSON.stringify(message));
 	}
 
+	private _connect() {
+		console.log('old ws:', this._socket);
+		this._socket = new WebSocket(this._url);
+		console.log('new ws:', this._socket);
+	}
+
 	private _reconnect() {
 		if (this._socket.CLOSING || this._socket.CLOSED) {
-			this._socket = new WebSocket(this._url);
+			this._connect();
 		}
 	}
 
@@ -58,11 +65,14 @@ export default class WebsocketClient {
 		this._sendAction(new ActionMessagesNewMessage(message));
 	}
 
-	private _onError() {}
+	private _onError(event: Event) {
+		console.log('ws: error:', event);
+	}
 
-	private _onClose() {
+	private _onClose(event: Event) {
+		console.log('ws: close:', event);
 		setTimeout(() => {
-			this._socket = new WebSocket(this._url);
+			this._connect();
 		}, 5000);
 	}
 }
