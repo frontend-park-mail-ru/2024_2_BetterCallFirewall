@@ -42,6 +42,7 @@ export class ViewFeed extends ViewHome {
 						new ActionFeedPostsRequest(this.lastPostId),
 					);
 				}
+				this.render();
 				break;
 			case ACTION_FEED_TYPES.postsRequestSuccess:
 			case ACTION_FEED_TYPES.postsRequestFail:
