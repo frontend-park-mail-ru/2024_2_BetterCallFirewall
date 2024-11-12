@@ -269,7 +269,7 @@ class App {
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequest);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestSuccess);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestFail);
-		this._stores.feed.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
+		this._stores.feed.subscribe(ACTION_FEED_TYPES.update);
 
 		this._stores.profile.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.profile.subscribe(ACTION_APP_TYPES.goTo);

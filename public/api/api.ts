@@ -8,7 +8,7 @@ import {
 } from '../actions/actionChat';
 import {
 	ACTION_FEED_TYPES,
-	actionFeedPostCreateFail,
+	ActionFeedPostCreateFail,
 	ActionFeedPostCreateSuccess,
 	ActionFeedPostsRequestData,
 	ActionPostsRequestFail,
@@ -376,7 +376,7 @@ class API {
 				);
 				break;
 			default:
-				this.sendAction(new actionFeedPostCreateFail());
+				this.sendAction(new ActionFeedPostCreateFail());
 		}
 	}
 

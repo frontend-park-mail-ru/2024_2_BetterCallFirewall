@@ -56,9 +56,6 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 				this.render();
 				break;
 			case ACTION_FEED_TYPES.postCreateSuccess:
-				// this.sendAction(
-				// 	new ActionMenuLinkClick({ href: this._profileLinkHref }),
-				// );
 				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
 		}

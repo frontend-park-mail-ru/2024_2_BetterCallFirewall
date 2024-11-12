@@ -1,7 +1,8 @@
-import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
+import { ACTION_APP_TYPES } from '../../actions/actionApp';
 import {
 	ACTION_FEED_TYPES,
 	ActionFeedPostsRequest,
+	ActionFeedUpdate,
 } from '../../actions/actionFeed';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import { IPostConfig, Post, Root } from '../../components';
@@ -27,15 +28,13 @@ export class ViewFeed extends ViewHome {
 
 	handleChange(change: ChangeFeed): void {
 		console.log('ViewFeed: handleChange:', change);
-		this._configFeed = Object.assign(this._configFeed, change.data);
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_FEED_TYPES.update:
+				this.updateViewFeed(change.data);
+				break;
 			case ACTION_FEED_TYPES.postsRequest:
 				this.content.showLoader();
-				break;
-			case ACTION_FEED_TYPES.postCreateSuccess:
-				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
-				this.updateViewFeed(change.data);
 				break;
 			case ACTION_APP_TYPES.goTo:
 				if (!this._configFeed.posts.length) {
@@ -43,6 +42,7 @@ export class ViewFeed extends ViewHome {
 						new ActionFeedPostsRequest(this.lastPostId),
 					);
 				}
+				this.sendAction(new ActionFeedUpdate());
 				break;
 			case ACTION_FEED_TYPES.postsRequestSuccess:
 			case ACTION_FEED_TYPES.postsRequestFail:

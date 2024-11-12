@@ -7,6 +7,7 @@ export const ACTION_FEED_TYPES = {
 	postsRequestFail: 'actionFeedPostsRequestFail',
 	postCreateSuccess: 'actionFeedPostCreateSuccess',
 	postCreateFail: 'actionFeedPostCreateFail',
+	update: 'actionFeedUpdate',
 };
 
 export type ActionPostsRequestSuccessData = {
@@ -52,7 +53,7 @@ export class ActionFeedPostCreateSuccess implements Action {
 	}
 }
 
-export class actionFeedPostCreateFail implements Action {
+export class ActionFeedPostCreateFail implements Action {
 	type: ActionType;
 	data: object;
 
@@ -73,4 +74,9 @@ export class ActionFeedPostsRequest implements Action {
 	constructor(lastId?: number) {
 		this.data = { lastId };
 	}
+}
+
+export class ActionFeedUpdate implements Action {
+	type: ActionType = ACTION_FEED_TYPES.update;
+	data: object = {};
 }
