@@ -1,10 +1,8 @@
 import { ACTION_APP_TYPES } from '../../actions/actionApp';
 import { ActionFormError } from '../../actions/actionForm';
 import { ActionProfileGetHeader } from '../../actions/actionProfile';
-import {
-	ActionSignupClickSuccess,
-	ActionSignupToLoginClick,
-} from '../../actions/actionSignup';
+import { ActionSignupToLoginClick } from '../../actions/actionSignup';
+import { ActionUserAuth } from '../../actions/actionUser';
 import { ISignupFormConfig, SignupForm, Root } from '../../components';
 import config, { validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
@@ -137,7 +135,7 @@ const loginFormSubmit = (signupForm: SignupForm) => {
 				return;
 			}
 			if (response && response.ok) {
-				dispatcher.getAction(new ActionSignupClickSuccess());
+				dispatcher.getAction(new ActionUserAuth());
 				dispatcher.getAction(new ActionProfileGetHeader());
 			} else if (response) {
 				const data = await response.json();

@@ -54,7 +54,6 @@ import {
 	ActionProfileEditRequestFail,
 	ActionProfileEditRequestSuccess,
 } from '../actions/actionProfileEdit';
-import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
 import {
 	ACTION_USER_TYPES,
 	ActionUserUnauthorized,
@@ -75,7 +74,6 @@ export const STATUS = {
 class API {
 	handleAction(action: Action) {
 		switch (action.type) {
-			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 			case ACTION_USER_TYPES.auth:
 			case ACTION_PROFILE_TYPES.getHeader:
 				this.requestHeader();

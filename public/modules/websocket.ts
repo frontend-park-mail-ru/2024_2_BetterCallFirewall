@@ -4,7 +4,6 @@ import {
 	ActionChatSendMessageData,
 } from '../actions/actionChat';
 import { ActionMessagesNewMessage } from '../actions/actionMessages';
-import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
 import { ACTION_USER_TYPES } from '../actions/actionUser';
 import { ActionWSClosed } from '../actions/actionWebsocket';
 import dispatcher from '../dispatcher/dispatcher';
@@ -41,7 +40,6 @@ export default class WebsocketClient {
 				this._close();
 				break;
 			case ACTION_USER_TYPES.auth:
-			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 				this._reconnect();
 				break;
 			case ACTION_CHAT_TYPES.sendMessage:

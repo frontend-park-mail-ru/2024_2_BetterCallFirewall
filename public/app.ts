@@ -237,7 +237,6 @@ class App {
 		this._stores.app.subscribe(ACTION_MENU_TYPES.menuLinkClick);
 		this._stores.app.subscribe(ACTION_LOGIN_TYPES.toSignupClick);
 		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
-		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
 		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 		this._stores.app.subscribe(ACTION_CHAT_TYPES.goToChat);
 		this._stores.app.subscribe(ACTION_CREATE_POST_TYPES.goToCreatePost);
@@ -268,11 +267,9 @@ class App {
 
 		this._stores.signup.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.signup.subscribe(ACTION_FORM_TYPES.formError);
-		this._stores.signup.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
 		this._stores.signup.subscribe(ACTION_LOGIN_TYPES.toSignupClick);
 
 		this._stores.feed.subscribe(ACTION_USER_TYPES.auth);
-		this._stores.feed.subscribe(ACTION_SIGNUP_TYPES.signupClickSuccess);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestSuccess);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
