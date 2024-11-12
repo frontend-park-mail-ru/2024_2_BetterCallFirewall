@@ -30,7 +30,6 @@ export interface IBaseComponent {
 	update(data: IBaseComponentConfig): void;
 	remove(): void;
 	removeForUpdate(): void;
-	show(parent: HTMLElement): void;
 }
 
 export default abstract class BaseComponent implements IBaseComponent {
@@ -210,10 +209,6 @@ export default abstract class BaseComponent implements IBaseComponent {
 		this._config = data;
 		this.render(false);
 		oldHtmlElement.replaceWith(this.htmlElement);
-	}
-
-	show(parent: HTMLElement) {
-		parent.appendChild(this.htmlElement);
 	}
 
 	protected _render(templateFile: string, show: boolean = true): string {

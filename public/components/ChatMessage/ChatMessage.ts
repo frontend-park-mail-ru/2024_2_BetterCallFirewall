@@ -32,8 +32,4 @@ export class ChatMessage extends BaseComponent implements IChatMessage {
 		super._prerender();
 		this._templateContext = { ...this.config };
 	}
-
-	show(parent: HTMLElement) {
-		parent.appendChild(this.htmlElement);
-	}
 }

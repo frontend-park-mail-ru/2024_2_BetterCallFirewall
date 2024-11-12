@@ -5,6 +5,7 @@ import {
 	ContentMessage,
 	IContentMessage,
 } from '../index';
+import { Loader } from '../Loader/Loader';
 
 export interface IContentConfig extends IContainerConfig {}
 
@@ -16,6 +17,7 @@ export interface IContent extends Container {
 
 export class Content extends Container implements IContent {
 	private message: IContentMessage | null;
+	private _loader = new Loader();
 
 	/**
 	 * Создает новый компонент Content
@@ -52,6 +54,14 @@ export class Content extends Container implements IContent {
 			this.message.remove();
 			this.message = null;
 		}
+	}
+
+	showLoader() {
+		this._loader.show();
+	}
+
+	hideLoader() {
+		this._loader.hide();
 	}
 
 	update(data: IContentConfig): void {

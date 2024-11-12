@@ -2,6 +2,7 @@ import { PostResponse } from '../models/post';
 import { Action, ActionType } from './action';
 
 export const ACTION_FEED_TYPES = {
+	postsRequest: 'actionFeedPostsRequest',
 	postsRequestSuccess: 'actionFeedPostsRequestSuccess',
 	postsRequestFail: 'actionFeedPostsRequestFail',
 	postCreateSuccess: 'actionFeedPostCreateSuccess',
@@ -58,5 +59,18 @@ export class actionFeedPostCreateFail implements Action {
 	constructor() {
 		this.type = ACTION_FEED_TYPES.postCreateFail;
 		this.data = {};
+	}
+}
+
+export interface ActionFeedPostsRequestData {
+	lastId?: number;
+}
+
+export class ActionFeedPostsRequest implements Action {
+	type: ActionType = ACTION_FEED_TYPES.postsRequest;
+	data: ActionFeedPostsRequestData;
+
+	constructor(lastId?: number) {
+		this.data = { lastId };
 	}
 }

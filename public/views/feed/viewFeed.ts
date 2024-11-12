@@ -1,19 +1,19 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
-import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
+import {
+	ACTION_FEED_TYPES,
+	ActionFeedPostsRequest,
+} from '../../actions/actionFeed';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import { ACTION_USER_TYPES } from '../../actions/actionUser';
-import api from '../../api/api';
 import { IPostConfig, Post, Root } from '../../components';
 import { ChangeFeed } from '../../stores/storeFeed';
-import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
+import { HomeConfig, ViewHome } from '../home/viewHome';
 
 export interface ViewFeedConfig extends HomeConfig {
 	posts: IPostConfig[];
 }
 
-export interface IViewFeed extends IViewHome {}
-
-export class ViewFeed extends ViewHome implements IViewFeed {
+export class ViewFeed extends ViewHome {
 	protected _configFeed: ViewFeedConfig;
 
 	constructor(config: ViewFeedConfig, root: Root) {
@@ -28,19 +28,22 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	handleChange(change: ChangeFeed): void {
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_FEED_TYPES.postsRequest:
+				this.content.showLoader();
+				break;
 			case ACTION_FEED_TYPES.postCreateSuccess:
-				// this.sendAction(
-				// 	new ActionMenuLinkClick({ href: this._profileLinkHref }),
-				// );
 				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
 			case ACTION_USER_TYPES.auth:
 				if (!this._configFeed.posts.length) {
-					api.requestPosts(this.lastPostId);
+					this.sendAction(
+						new ActionFeedPostsRequest(this.lastPostId),
+					);
 				}
 				break;
 			case ACTION_FEED_TYPES.postsRequestSuccess:
 			case ACTION_FEED_TYPES.postsRequestFail:
+				this.content.hideLoader();
 				this.updateViewFeed(change.data);
 				break;
 		}
@@ -51,7 +54,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		this._addHandlers();
 
 		if (this._isNearBottom()) {
-			api.requestPosts(this.lastPostId);
+			this.sendAction(new ActionFeedPostsRequest(this.lastPostId));
 		}
 	}
 
@@ -106,7 +109,9 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 			if (this._isNearBottom()) {
 				clearTimeout(debounceTimeout);
 				debounceTimeout = setTimeout(() => {
-					api.requestPosts(this.lastPostId);
+					this.sendAction(
+						new ActionFeedPostsRequest(this.lastPostId),
+					);
 				}, 200);
 			}
 		};

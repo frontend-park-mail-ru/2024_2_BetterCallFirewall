@@ -7,8 +7,10 @@ import {
 	ActionChatRequestSuccess,
 } from '../actions/actionChat';
 import {
+	ACTION_FEED_TYPES,
 	actionFeedPostCreateFail,
 	ActionFeedPostCreateSuccess,
+	ActionFeedPostsRequestData,
 	ActionPostsRequestFail,
 	ActionPostsRequestSuccess,
 } from '../actions/actionFeed';
@@ -74,6 +76,11 @@ export const STATUS = {
 class API {
 	handleAction(action: Action) {
 		switch (action.type) {
+			case ACTION_FEED_TYPES.postsRequest:
+				this.requestPosts(
+					(action.data as ActionFeedPostsRequestData).lastId,
+				);
+				break;
 			case ACTION_USER_TYPES.auth:
 			case ACTION_PROFILE_TYPES.getHeader:
 				this.requestHeader();
