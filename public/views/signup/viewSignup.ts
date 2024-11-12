@@ -1,10 +1,9 @@
-import { ACTION_APP_TYPES } from '../../actions/actionApp';
+import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import { ActionFormError } from '../../actions/actionForm';
 import { ActionProfileGetHeader } from '../../actions/actionProfile';
-import { ActionSignupToLoginClick } from '../../actions/actionSignup';
 import { ActionUserAuth } from '../../actions/actionUser';
 import { ISignupFormConfig, SignupForm, Root } from '../../components';
-import config, { validators } from '../../config';
+import config, { PAGE_LINKS, validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
@@ -69,7 +68,7 @@ export class ViewSignup extends BaseView {
 		const toLoginLink = signupForm.items.toLoginLink;
 		signupForm.addHandler(toLoginLink.htmlElement, 'click', (event) => {
 			event.preventDefault();
-			dispatcher.getAction(new ActionSignupToLoginClick());
+			this.sendAction(new ActionAppGoTo(PAGE_LINKS.signup));
 		});
 
 		const titleLinkHTML = signupForm.htmlElement.querySelector(

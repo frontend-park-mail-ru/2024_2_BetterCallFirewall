@@ -18,7 +18,6 @@ import { ACTION_APP_TYPES } from './actions/actionApp';
 import dispatcher from './dispatcher/dispatcher';
 import { StoreSignup } from './stores/storeSignup';
 import { StoreFeed } from './stores/storeFeed';
-import { ACTION_SIGNUP_TYPES } from './actions/actionSignup';
 import {
 	ViewMessages,
 	ViewMessagesConfig,
@@ -234,7 +233,6 @@ class App {
 		this._stores.app.subscribe(ACTION_USER_TYPES.unauthorized);
 		this._stores.app.subscribe(ACTION_USER_TYPES.auth);
 		this._stores.app.subscribe(ACTION_MENU_TYPES.titleClick);
-		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 		this._stores.app.subscribe(ACTION_CHAT_TYPES.goToChat);
 		this._stores.app.subscribe(ACTION_CREATE_POST_TYPES.goToCreatePost);
@@ -256,11 +254,11 @@ class App {
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.updateProfile);
 
 		this._stores.login.subscribe(ACTION_APP_TYPES.actionAppInit);
+		this._stores.login.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.login.subscribe(ACTION_USER_TYPES.unauthorized);
 		this._stores.login.subscribe(ACTION_USER_TYPES.auth);
 		this._stores.login.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
 		this._stores.login.subscribe(ACTION_FORM_TYPES.formError);
-		this._stores.login.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 		this._stores.login.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 
 		this._stores.signup.subscribe(ACTION_APP_TYPES.actionAppInit);

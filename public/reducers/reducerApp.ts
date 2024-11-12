@@ -8,7 +8,6 @@ import { ACTION_CREATE_POST_TYPES } from '../actions/actionCreatePost';
 import { ACTION_MENU_TYPES } from '../actions/actionMenu';
 import { ACTION_POST_EDIT_TYPES } from '../actions/actionPostEdit';
 import { ACTION_PROFILE_EDIT_TYPES } from '../actions/actionProfileEdit';
-import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
 import { ACTION_USER_TYPES } from '../actions/actionUser';
 import app from '../app';
 import { PAGE_LINKS } from '../config';
@@ -23,9 +22,6 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 				break;
 			case ACTION_APP_TYPES.goTo:
 				router.goToPage((action.data as ActionAppGoToData).href);
-				break;
-			case ACTION_SIGNUP_TYPES.toLoginLinkClick:
-				router.goToPage(PAGE_LINKS.login);
 				break;
 			case ACTION_USER_TYPES.auth:
 			case ACTION_MENU_TYPES.titleClick:
