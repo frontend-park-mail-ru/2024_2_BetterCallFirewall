@@ -1,7 +1,10 @@
-import BaseComponent from '../BaseComponent';
+import BaseComponent, { IBaseComponentConfig } from '../BaseComponent';
 
 export class Loader extends BaseComponent {
+	protected _config: IBaseComponentConfig = { key: 'loader' };
+
 	render(show: boolean): string {
+		this._prerender();
 		return this._render('Loader.hbs', show);
 	}
 

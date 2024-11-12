@@ -233,6 +233,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 		if (!this._config) {
 			throw new Error('component has no config');
 		}
+		this._templateContext = { ...this.config };
 	}
 	abstract render(show: boolean): string;
 }
