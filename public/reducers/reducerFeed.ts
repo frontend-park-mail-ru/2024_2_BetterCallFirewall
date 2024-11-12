@@ -21,7 +21,11 @@ export const reducerFeed = (
 	}
 	const newState = deepClone(state);
 	switch (action.type) {
+		case ACTION_FEED_TYPES.postsRequest:
+			newState.pendingPostRequest = true;
+			return newState;
 		case ACTION_FEED_TYPES.postsRequestSuccess: {
+			newState.pendingPostRequest = false;
 			newState.errorMessage = '';
 			const newPosts = (
 				action.data as ActionPostsRequestSuccessData
@@ -32,6 +36,7 @@ export const reducerFeed = (
 			return newState;
 		}
 		case ACTION_FEED_TYPES.postsRequestFail: {
+			newState.pendingPostRequest = false;
 			const data = action.data as ActionPostsRequestFailData;
 			if (data.message) {
 				newState.errorMessage = data.message;

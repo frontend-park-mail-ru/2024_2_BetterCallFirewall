@@ -11,6 +11,7 @@ import { HomeConfig, ViewHome } from '../home/viewHome';
 
 export interface ViewFeedConfig extends HomeConfig {
 	posts: IPostConfig[];
+	pendingPostRequest: boolean;
 }
 
 export class ViewFeed extends ViewHome {
@@ -109,9 +110,11 @@ export class ViewFeed extends ViewHome {
 			if (this._isNearBottom()) {
 				clearTimeout(debounceTimeout);
 				debounceTimeout = setTimeout(() => {
-					this.sendAction(
-						new ActionFeedPostsRequest(this.lastPostId),
-					);
+					if (!this.config.pendingPostRequest) {
+						this.sendAction(
+							new ActionFeedPostsRequest(this.lastPostId),
+						);
+					}
 				}, 200);
 			}
 		};

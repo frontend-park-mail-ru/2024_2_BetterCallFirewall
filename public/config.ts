@@ -249,6 +249,7 @@ const profileEditConfig: ViewProfileEditConfig = {
 const feedConfig: ViewFeedConfig = {
 	...homeConfig,
 	posts: [],
+	pendingPostRequest: false,
 };
 
 const profileComponentConfig: IProfileConfig = {
