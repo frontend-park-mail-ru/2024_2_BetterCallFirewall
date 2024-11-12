@@ -53,7 +53,10 @@ export default class WebsocketClient {
 	}
 
 	private _reconnect() {
-		if (this._socket.CLOSING || this._socket.CLOSED) {
+		if (
+			this._socket.readyState === this._socket.CLOSING ||
+			this._socket.readyState === this._socket.CLOSED
+		) {
 			this._connect();
 		}
 	}
@@ -76,7 +79,7 @@ export default class WebsocketClient {
 	private _onClose(event: Event) {
 		console.log('ws: close:', event);
 		setTimeout(() => {
-			this._connect();
+			this._reconnect();
 		}, 5000);
 	}
 }
