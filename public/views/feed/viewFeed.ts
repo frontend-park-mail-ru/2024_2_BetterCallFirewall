@@ -27,6 +27,7 @@ export class ViewFeed extends ViewHome {
 	}
 
 	handleChange(change: ChangeFeed): void {
+		this._configFeed = Object.assign(this._configFeed, change.data);
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_FEED_TYPES.postsRequest:

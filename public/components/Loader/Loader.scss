@@ -1,10 +1,10 @@
 .loader {
-    border: 1rem solid var(--main-color);
-    border-top: 1rem solid var(--main-bg-color);
+    border: 0.5rem solid var(--second-bg-color);
+    border-top: 0.5rem solid var(--main-color);
     border-radius: 50%;
     width: 4rem;
     height: 4rem;
-    animation: spin 2s linear infinite;
+    animation: spin 1s linear infinite;
     &-hide {
         display: none;
     } 
