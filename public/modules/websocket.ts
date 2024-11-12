@@ -6,8 +6,12 @@ import {
 import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
 import { ActionMessagesNewMessage } from '../actions/actionMessages';
 import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
+import { ACTION_USER_TYPES } from '../actions/actionUser';
+import { ActionWSClosed } from '../actions/actionWebsocket';
 import dispatcher from '../dispatcher/dispatcher';
 import { MessageResponse } from '../models/message';
+
+const checkInterval = 5000;
 
 export const WS_ERRORS = {
 	sendMessage: 'wsSendMessageError',
@@ -26,10 +30,17 @@ export default class WebsocketClient {
 		this._socket.onmessage = this._onMessage.bind(this);
 		this._socket.onerror = this._onError.bind(this);
 		this._socket.onclose = this._onClose.bind(this);
+
+		setInterval(() => {
+			this._reconnect();
+		}, checkInterval);
 	}
 
 	handleAction(action: Action) {
 		switch (action.type) {
+			case ACTION_USER_TYPES.unauthorized:
+				this._close();
+				break;
 			case ACTION_LOGIN_TYPES.loginClickSuccess:
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 				this._reconnect();
@@ -43,7 +54,11 @@ export default class WebsocketClient {
 	}
 
 	sendMessage(message: object) {
-		this._socket.send(JSON.stringify(message));
+		if (this._socket.readyState === this._socket.OPEN) {
+			this._socket.send(JSON.stringify(message));
+		} else {
+			this._sendAction(new ActionWSClosed());
+		}
 	}
 
 	private _connect() {
@@ -53,16 +68,17 @@ export default class WebsocketClient {
 	}
 
 	private _reconnect() {
-		if (
-			this._socket.readyState === this._socket.CLOSING ||
-			this._socket.readyState === this._socket.CLOSED
-		) {
+		if (this._socket.readyState === this._socket.CLOSED) {
 			this._connect();
 		}
 	}
 
 	private _sendAction(action: Action) {
 		dispatcher.getAction(action);
+	}
+
+	private _close() {
+		this._socket.close();
 	}
 
 	private _onOpen() {}
