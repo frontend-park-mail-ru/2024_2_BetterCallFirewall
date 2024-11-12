@@ -9,6 +9,10 @@ import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
 import dispatcher from '../dispatcher/dispatcher';
 import { MessageResponse } from '../models/message';
 
+export const WS_ERRORS = {
+	sendMessage: 'wsSendMessageError',
+};
+
 export default class WebsocketClient {
 	private _socket: WebSocket;
 	private _url: string;
