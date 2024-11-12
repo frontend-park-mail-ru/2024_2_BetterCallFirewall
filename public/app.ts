@@ -14,7 +14,6 @@ import {
 import { ACTION_HEADER_TYPES } from './actions/actionHeader';
 import { StoreLogin } from './stores/storeLogin';
 import { StoreApp } from './stores/storeApp';
-import { ACTION_LOGIN_TYPES } from './actions/actionLogin';
 import { ACTION_APP_TYPES } from './actions/actionApp';
 import dispatcher from './dispatcher/dispatcher';
 import { StoreSignup } from './stores/storeSignup';
@@ -235,7 +234,6 @@ class App {
 		this._stores.app.subscribe(ACTION_USER_TYPES.unauthorized);
 		this._stores.app.subscribe(ACTION_USER_TYPES.auth);
 		this._stores.app.subscribe(ACTION_MENU_TYPES.titleClick);
-		this._stores.app.subscribe(ACTION_LOGIN_TYPES.toSignupClick);
 		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 		this._stores.app.subscribe(ACTION_CHAT_TYPES.goToChat);
@@ -267,7 +265,6 @@ class App {
 
 		this._stores.signup.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.signup.subscribe(ACTION_FORM_TYPES.formError);
-		this._stores.signup.subscribe(ACTION_LOGIN_TYPES.toSignupClick);
 
 		this._stores.feed.subscribe(ACTION_USER_TYPES.auth);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestSuccess);

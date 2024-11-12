@@ -5,7 +5,6 @@ import {
 	ActionChatGoToChatData,
 } from '../actions/actionChat';
 import { ACTION_CREATE_POST_TYPES } from '../actions/actionCreatePost';
-import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
 import { ACTION_MENU_TYPES } from '../actions/actionMenu';
 import { ACTION_POST_EDIT_TYPES } from '../actions/actionPostEdit';
 import { ACTION_PROFILE_EDIT_TYPES } from '../actions/actionProfileEdit';
@@ -24,9 +23,6 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 				break;
 			case ACTION_APP_TYPES.goTo:
 				router.goToPage((action.data as ActionAppGoToData).href);
-				break;
-			case ACTION_LOGIN_TYPES.toSignupClick:
-				router.goToPage(PAGE_LINKS.signup);
 				break;
 			case ACTION_SIGNUP_TYPES.toLoginLinkClick:
 				router.goToPage(PAGE_LINKS.login);
