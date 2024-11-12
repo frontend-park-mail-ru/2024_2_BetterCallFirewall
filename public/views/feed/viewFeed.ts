@@ -1,8 +1,8 @@
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
-import { ACTION_LOGIN_TYPES } from '../../actions/actionLogin';
 import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import { ACTION_SIGNUP_TYPES } from '../../actions/actionSignup';
+import { ACTION_USER_TYPES } from '../../actions/actionUser';
 import api from '../../api/api';
 import { IPostConfig, Post, Root } from '../../components';
 import { ChangeFeed } from '../../stores/storeFeed';
@@ -34,7 +34,7 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 					new ActionMenuLinkClick({ href: this._profileLinkHref }),
 				);
 				break;
-			case ACTION_LOGIN_TYPES.loginClickSuccess:
+			case ACTION_USER_TYPES.auth:
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 				if (!this._configFeed.posts.length) {
 					api.requestPosts(this.lastPostId);

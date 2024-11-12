@@ -28,7 +28,6 @@ import {
 	ActionProfileGetSubscriptionsSuccess,
 	ActionProfileGetUsersSuccess,
 } from '../actions/actionFriends';
-import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
 import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
 	ACTION_MESSAGES_TYPES,
@@ -56,7 +55,10 @@ import {
 	ActionProfileEditRequestSuccess,
 } from '../actions/actionProfileEdit';
 import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
-import { ActionUserUnauthorized } from '../actions/actionUser';
+import {
+	ACTION_USER_TYPES,
+	ActionUserUnauthorized,
+} from '../actions/actionUser';
 import app from '../app';
 import dispatcher from '../dispatcher/dispatcher';
 import ajax, { QueryParams } from '../modules/ajax';
@@ -74,7 +76,7 @@ class API {
 	handleAction(action: Action) {
 		switch (action.type) {
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
-			case ACTION_LOGIN_TYPES.loginClickSuccess:
+			case ACTION_USER_TYPES.auth:
 			case ACTION_PROFILE_TYPES.getHeader:
 				this.requestHeader();
 				break;

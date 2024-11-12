@@ -4,8 +4,6 @@ import {
 	ActionPostsRequestFailData,
 	ActionPostsRequestSuccessData,
 } from '../actions/actionFeed';
-import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
-import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
 import { STATUS } from '../api/api';
 import config from '../config';
 import { toPostConfig } from '../models/post';
@@ -44,9 +42,6 @@ export const reducerFeed = (
 			}
 			return newState;
 		}
-		case ACTION_FEED_TYPES.postCreateSuccess:
-		case ACTION_LOGIN_TYPES.loginClickSuccess:
-		case ACTION_SIGNUP_TYPES.signupClickSuccess:
 		default:
 			return state;
 	}

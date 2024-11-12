@@ -1,9 +1,7 @@
 import { ACTION_APP_TYPES } from '../../actions/actionApp';
 import { ActionFormError } from '../../actions/actionForm';
-import {
-	ActionLoginClickSuccess,
-	ActionLoginToSignupClick,
-} from '../../actions/actionLogin';
+import { ActionLoginToSignupClick } from '../../actions/actionLogin';
+import { ActionUserAuth } from '../../actions/actionUser';
 import { ILoginFormConfig, LoginForm, Root } from '../../components';
 import config, { validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
@@ -133,7 +131,7 @@ const loginFormSubmit = (loginForm: LoginForm) => {
 			return;
 		}
 		if (response && response.ok) {
-			dispatcher.getAction(new ActionLoginClickSuccess());
+			dispatcher.getAction(new ActionUserAuth());
 		} else if (response) {
 			const data = await response.json();
 			if (data.message === 'wrong email or password') {

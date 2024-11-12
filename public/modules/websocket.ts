@@ -3,7 +3,6 @@ import {
 	ACTION_CHAT_TYPES,
 	ActionChatSendMessageData,
 } from '../actions/actionChat';
-import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
 import { ActionMessagesNewMessage } from '../actions/actionMessages';
 import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
 import { ACTION_USER_TYPES } from '../actions/actionUser';
@@ -41,7 +40,7 @@ export default class WebsocketClient {
 			case ACTION_USER_TYPES.unauthorized:
 				this._close();
 				break;
-			case ACTION_LOGIN_TYPES.loginClickSuccess:
+			case ACTION_USER_TYPES.auth:
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
 				this._reconnect();
 				break;

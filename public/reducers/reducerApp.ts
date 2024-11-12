@@ -32,7 +32,7 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 				router.goToPage(PAGE_LINKS.login);
 				break;
 			case ACTION_SIGNUP_TYPES.signupClickSuccess:
-			case ACTION_LOGIN_TYPES.loginClickSuccess:
+			case ACTION_USER_TYPES.auth:
 			case ACTION_MENU_TYPES.titleClick:
 				router.goToPage(PAGE_LINKS.feed);
 				break;
