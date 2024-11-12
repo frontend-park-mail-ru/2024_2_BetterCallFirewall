@@ -9,9 +9,6 @@ services:
       - "8000:8000"
   nginx:
     image: nginx:latest
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
     ports:
       - "80:80"
     volumes:

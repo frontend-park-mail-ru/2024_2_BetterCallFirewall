@@ -359,7 +359,6 @@ const editPostConfig: ViewPostEditConfig = {
 export const ROOT: string = DEBUG
 	? 'http://127.0.0.1:8000'
 	: 'http://vilka.online';
-// : 'http://185.241.194.197:8080';
 
 const ROOT_WS = ROOT.replace('http', 'ws');
 
