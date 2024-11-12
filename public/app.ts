@@ -231,10 +231,10 @@ class App {
 		};
 
 		this._stores.app.subscribe(ACTION_APP_TYPES.actionAppInit);
+		this._stores.app.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.app.subscribe(ACTION_USER_TYPES.unauthorized);
 		this._stores.app.subscribe(ACTION_USER_TYPES.auth);
 		this._stores.app.subscribe(ACTION_MENU_TYPES.titleClick);
-		this._stores.app.subscribe(ACTION_MENU_TYPES.menuLinkClick);
 		this._stores.app.subscribe(ACTION_LOGIN_TYPES.toSignupClick);
 		this._stores.app.subscribe(ACTION_SIGNUP_TYPES.toLoginLinkClick);
 		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
@@ -247,7 +247,7 @@ class App {
 		this._stores.app.subscribe(ACTION_POST_EDIT_TYPES.requestSuccess);
 
 		this._stores.home.subscribe(ACTION_APP_TYPES.actionAppInit);
-		this._stores.home.subscribe(ACTION_MENU_TYPES.menuLinkClick);
+		this._stores.home.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.titleClick);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.updateProfileLinkHref);
 		this._stores.home.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
@@ -275,6 +275,7 @@ class App {
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
 
 		this._stores.profile.subscribe(ACTION_APP_TYPES.actionAppInit);
+		this._stores.profile.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.goToProfile);
 		this._stores.profile.subscribe(
@@ -295,7 +296,6 @@ class App {
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.profileRequest);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.deletePostSuccess);
 		this._stores.profile.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
-		this._stores.profile.subscribe(ACTION_MENU_TYPES.menuLinkClick);
 		this._stores.profile.subscribe(ACTION_FRIENDS_TYPES.acceptSuccess);
 
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);

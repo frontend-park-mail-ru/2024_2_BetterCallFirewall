@@ -1,11 +1,10 @@
-import { ACTION_APP_TYPES } from '../../actions/actionApp';
+import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import {
 	ACTION_CHAT_TYPES,
 	ActionChatRequest,
 	ActionChatSendMessage,
 	ActionUpdateChat,
 } from '../../actions/actionChat';
-import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import { ACTION_MESSAGES_TYPES } from '../../actions/actionMessages';
 import {
 	ACTION_PROFILE_TYPES,
@@ -152,10 +151,13 @@ export class ViewChat extends ViewHome implements IViewChat {
 		const backButtonHTML = this._chat.backButtonHTML;
 		this._chat.addHandler(backButtonHTML, 'click', (event) => {
 			event.preventDefault();
+			// this.sendAction(
+			// 	new ActionMenuLinkClick({
+			// 		href: this._configChat.chat.backButtonHref,
+			// 	}),
+			// );
 			this.sendAction(
-				new ActionMenuLinkClick({
-					href: this._configChat.chat.backButtonHref,
-				}),
+				new ActionAppGoTo(this._configChat.chat.backButtonHref),
 			);
 		});
 	}
@@ -203,9 +205,10 @@ export class ViewChat extends ViewHome implements IViewChat {
 		if (chat && companionId && companionLink) {
 			chat.addHandler(companionLink, 'click', (event) => {
 				event.preventDefault();
-				this.sendAction(
-					new ActionMenuLinkClick({ href: `/${companionId}` }),
-				);
+				// this.sendAction(
+				// 	new ActionMenuLinkClick({ href: `/${companionId}` }),
+				// );
+				this.sendAction(new ActionAppGoTo(`/${companionId}`));
 			});
 		}
 	}
@@ -244,9 +247,10 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this.content.addHandler(document, 'keydown', (event) => {
 			const keyEvent = event as KeyboardEvent;
 			if (keyEvent.key === 'Escape') {
-				this.sendAction(
-					new ActionMenuLinkClick({ href: PAGE_LINKS.messages }),
-				);
+				// this.sendAction(
+				// 	new ActionMenuLinkClick({ href: PAGE_LINKS.messages }),
+				// );
+				this.sendAction(new ActionAppGoTo(PAGE_LINKS.messages));
 			}
 		});
 	}

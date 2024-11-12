@@ -1,22 +1,12 @@
 import { Action, ActionType } from './action';
 
 export const ACTION_MENU_TYPES = {
-	menuLinkClick: 'menuLinkClick',
 	titleClick: 'menuTitleClick',
 	updateProfileLinkHref: 'menuUpdateProfileLinkHref',
 };
 
 export interface ActionMenuLinkClickData {
 	href: string;
-}
-
-export class ActionMenuLinkClick implements Action {
-	type: ActionType;
-	data: ActionMenuLinkClickData;
-	constructor(data: ActionMenuLinkClickData) {
-		this.type = ACTION_MENU_TYPES.menuLinkClick;
-		this.data = data;
-	}
 }
 
 export class ActionMenuTitleClick implements Action {

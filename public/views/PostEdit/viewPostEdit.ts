@@ -1,4 +1,4 @@
-import { ActionMenuLinkClick } from '../../actions/actionMenu';
+import { ActionAppGoTo } from '../../actions/actionApp';
 import { ACTION_POST_EDIT_TYPES } from '../../actions/actionPostEdit';
 import api from '../../api/api';
 import { Root } from '../../components';
@@ -45,9 +45,10 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_POST_EDIT_TYPES.requestSuccess:
-				this.sendAction(
-					new ActionMenuLinkClick({ href: this._profileLinkHref }),
-				);
+				// this.sendAction(
+				// 	new ActionMenuLinkClick({ href: this._profileLinkHref }),
+				// );
+				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
 			case ACTION_POST_EDIT_TYPES.requestFail:
 				this.updateViewProfileEdit(change.data);

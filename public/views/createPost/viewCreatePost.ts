@@ -1,9 +1,9 @@
+import { ActionAppGoTo } from '../../actions/actionApp';
 import {
 	ACTION_CREATE_POST_TYPES,
 	ActionUpdateCreatePost,
 } from '../../actions/actionCreatePost';
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
-import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import api from '../../api/api';
 import { Root } from '../../components';
 import {
@@ -56,9 +56,10 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 				this.render();
 				break;
 			case ACTION_FEED_TYPES.postCreateSuccess:
-				this.sendAction(
-					new ActionMenuLinkClick({ href: this._profileLinkHref }),
-				);
+				// this.sendAction(
+				// 	new ActionMenuLinkClick({ href: this._profileLinkHref }),
+				// );
+				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
 		}
 	}

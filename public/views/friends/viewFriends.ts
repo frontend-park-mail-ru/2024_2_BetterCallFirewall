@@ -1,13 +1,9 @@
-import { ACTION_APP_TYPES } from '../../actions/actionApp';
+import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import { ActionChatGoToChat } from '../../actions/actionChat';
 import {
 	ACTION_FRIENDS_TYPES,
 	ActionProfileGetFriends,
 } from '../../actions/actionFriends';
-import {
-	ACTION_MENU_TYPES,
-	ActionMenuLinkClick,
-} from '../../actions/actionMenu';
 import api from '../../api/api';
 import { Root } from '../../components';
 import { IFriendConfig } from '../../components/Friend/Friend';
@@ -44,7 +40,7 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_APP_TYPES.actionAppInit:
-			case ACTION_MENU_TYPES.menuLinkClick:
+			case ACTION_APP_TYPES.goTo:
 				this.render();
 				this.sendAction(new ActionProfileGetFriends());
 				break;
@@ -172,15 +168,17 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 			}
 			person.addHandler(person.profileLink, 'click', (event) => {
 				event.preventDefault();
-				this.sendAction(
-					new ActionMenuLinkClick({ href: `/${person.config.id}` }),
-				);
+				// this.sendAction(
+				// 	new ActionMenuLinkClick({ href: `/${person.config.id}` }),
+				// );
+				this.sendAction(new ActionAppGoTo(`/${person.config.id}`));
 			});
 			person.addHandler(person.profileLinkAvatar, 'click', (event) => {
 				event.preventDefault();
-				this.sendAction(
-					new ActionMenuLinkClick({ href: `/${person.config.id}` }),
-				);
+				// this.sendAction(
+				// 	new ActionMenuLinkClick({ href: `/${person.config.id}` }),
+				// );
+				this.sendAction(new ActionAppGoTo(`/${person.config.id}`));
 			});
 			person.addHandler(person.writeMessageLink, 'click', (event) => {
 				event.preventDefault();

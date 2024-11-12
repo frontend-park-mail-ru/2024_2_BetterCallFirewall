@@ -1,4 +1,4 @@
-import { ActionMenuLinkClick } from '../../actions/actionMenu';
+import { ActionAppGoTo } from '../../actions/actionApp';
 import { ACTION_PROFILE_EDIT_TYPES } from '../../actions/actionProfileEdit';
 import api from '../../api/api';
 import { Root } from '../../components';
@@ -47,9 +47,10 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 				this.updateViewProfileEdit(change.data);
 				break;
 			case ACTION_PROFILE_EDIT_TYPES.requestSuccess:
-				this.sendAction(
-					new ActionMenuLinkClick({ href: this._profileLinkHref }),
-				);
+				// this.sendAction(
+				// 	new ActionMenuLinkClick({ href: this._profileLinkHref }),
+				// );
+				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
 			case ACTION_PROFILE_EDIT_TYPES.goToProfileEdit:
 				this._configProfileEdit = Object.assign(

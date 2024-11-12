@@ -1,15 +1,12 @@
 import { Action } from '../actions/action';
-import { ACTION_APP_TYPES } from '../actions/actionApp';
+import { ACTION_APP_TYPES, ActionAppGoToData } from '../actions/actionApp';
 import {
 	ACTION_CHAT_TYPES,
 	ActionChatGoToChatData,
 } from '../actions/actionChat';
 import { ACTION_CREATE_POST_TYPES } from '../actions/actionCreatePost';
 import { ACTION_LOGIN_TYPES } from '../actions/actionLogin';
-import {
-	ACTION_MENU_TYPES,
-	ActionMenuLinkClickData,
-} from '../actions/actionMenu';
+import { ACTION_MENU_TYPES } from '../actions/actionMenu';
 import { ACTION_POST_EDIT_TYPES } from '../actions/actionPostEdit';
 import { ACTION_PROFILE_EDIT_TYPES } from '../actions/actionProfileEdit';
 import { ACTION_SIGNUP_TYPES } from '../actions/actionSignup';
@@ -25,6 +22,9 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			case ACTION_APP_TYPES.actionAppInit:
 				app.inited = true;
 				break;
+			case ACTION_APP_TYPES.goTo:
+				router.goToPage((action.data as ActionAppGoToData).href);
+				break;
 			case ACTION_LOGIN_TYPES.toSignupClick:
 				router.goToPage(PAGE_LINKS.signup);
 				break;
@@ -34,9 +34,6 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			case ACTION_USER_TYPES.auth:
 			case ACTION_MENU_TYPES.titleClick:
 				router.goToPage(PAGE_LINKS.feed);
-				break;
-			case ACTION_MENU_TYPES.menuLinkClick:
-				router.goToPage((action.data as ActionMenuLinkClickData).href);
 				break;
 			case ACTION_USER_TYPES.unauthorized:
 				router.goToPage(PAGE_LINKS.login);

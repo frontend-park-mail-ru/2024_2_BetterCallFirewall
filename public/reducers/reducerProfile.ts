@@ -1,6 +1,5 @@
 import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
-import { ACTION_MENU_TYPES } from '../actions/actionMenu';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileGetYourOwnProfileSuccessData,
@@ -26,7 +25,7 @@ export const reducerProfile = (
 	let actionData;
 	switch (action?.type) {
 		case ACTION_APP_TYPES.actionAppInit:
-		case ACTION_MENU_TYPES.menuLinkClick:
+		case ACTION_APP_TYPES.goTo:
 			newState.path = app.router.path;
 			return newState;
 		case ACTION_PROFILE_EDIT_TYPES.requestSuccess: {

@@ -24,6 +24,11 @@ export class Router {
 		};
 	}
 
+	/**
+	 * Переключает активную view в соответствии с path
+	 * @param path Путь
+	 * @param pushState Сохранить в историю
+	 */
 	goToPage(path: string, pushState: boolean = true) {
 		this._path = path;
 		for (const route of this._config) {

@@ -1,11 +1,10 @@
-import { ACTION_APP_TYPES } from '../../actions/actionApp';
+import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import {
 	ActionHeaderLogoutClickFail,
 	ActionHeaderLogoutClickSuccess,
 } from '../../actions/actionHeader';
 import {
 	ACTION_MENU_TYPES,
-	ActionMenuLinkClick,
 	ActionMenuTitleClick,
 } from '../../actions/actionMenu';
 import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
@@ -81,7 +80,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 				this.updateViewHome(change.data);
 				break;
 			case ACTION_APP_TYPES.actionAppInit:
-			case ACTION_MENU_TYPES.menuLinkClick:
+			case ACTION_APP_TYPES.goTo:
 				this._configHome = Object.assign(this._configHome, change.data);
 				this.render();
 				break;
@@ -215,35 +214,39 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		const feedLink = menu.children[config.links.feed.key];
 		menu.addHandler(feedLink.htmlElement, 'click', (event) => {
 			event.preventDefault();
-			dispatcher.getAction(
-				new ActionMenuLinkClick({
-					href: config.links.feed.href,
-				}),
-			);
+			// dispatcher.getAction(
+			// 	new ActionMenuLinkClick({
+			// 		href: config.links.feed.href,
+			// 	}),
+			// );
+			this.sendAction(new ActionAppGoTo(config.links.feed.href));
 		});
 
 		const profileLink = menu.children[config.links.profile.key];
 		menu.addHandler(profileLink.htmlElement, 'click', (event) => {
 			event.preventDefault();
-			dispatcher.getAction(
-				new ActionMenuLinkClick({ href: config.links.profile.href }),
-			);
+			// dispatcher.getAction(
+			// 	new ActionMenuLinkClick({ href: config.links.profile.href }),
+			// );
+			this.sendAction(new ActionAppGoTo(config.links.profile.href));
 		});
 
 		const friendsLink = menu.children[config.links.friends.key];
 		menu.addHandler(friendsLink.htmlElement, 'click', (event) => {
 			event.preventDefault();
-			dispatcher.getAction(
-				new ActionMenuLinkClick({ href: config.links.friends.href }),
-			);
+			// dispatcher.getAction(
+			// 	new ActionMenuLinkClick({ href: config.links.friends.href }),
+			// );
+			this.sendAction(new ActionAppGoTo(config.links.friends.href));
 		});
 
 		const messagesLink = menu.children[config.links.messages.key];
 		menu.addHandler(messagesLink.htmlElement, 'click', (event) => {
 			event.preventDefault();
-			this.sendAction(
-				new ActionMenuLinkClick({ href: config.links.messages.href }),
-			);
+			// this.sendAction(
+			// 	new ActionMenuLinkClick({ href: config.links.messages.href }),
+			// );
+			this.sendAction(new ActionAppGoTo(config.links.messages.href));
 		});
 
 		const titleHTML = menu.htmlElement.querySelector(
@@ -293,9 +296,10 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		header.addHandler(header.profileLink, 'click', (event) => {
 			event.preventDefault();
 			const profile = header.config as IHeaderConfig;
-			this.sendAction(
-				new ActionMenuLinkClick({ href: `/${profile.profile.id}` }),
-			);
+			// this.sendAction(
+			// 	new ActionMenuLinkClick({ href: `/${profile.profile.id}` }),
+			// );
+			this.sendAction(new ActionAppGoTo(`/${profile.profile.id}`));
 		});
 	}
 }

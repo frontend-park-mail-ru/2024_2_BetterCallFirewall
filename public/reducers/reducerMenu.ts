@@ -24,7 +24,7 @@ export const reducerMenu = (
 		switch (action.type) {
 			case ACTION_PROFILE_TYPES.updateProfile:
 			case ACTION_APP_TYPES.actionAppInit:
-			case ACTION_MENU_TYPES.menuLinkClick:
+			case ACTION_APP_TYPES.goTo:
 				Object.keys(newState.links).forEach((key) => {
 					const link = newState.links[key];
 					link.active = app.router.path === link.href;

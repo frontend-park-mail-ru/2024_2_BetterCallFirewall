@@ -1,5 +1,5 @@
+import { ActionAppGoTo } from '../../actions/actionApp';
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
-import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import { ACTION_USER_TYPES } from '../../actions/actionUser';
 import api from '../../api/api';
@@ -29,9 +29,10 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_FEED_TYPES.postCreateSuccess:
-				this.sendAction(
-					new ActionMenuLinkClick({ href: this._profileLinkHref }),
-				);
+				// this.sendAction(
+				// 	new ActionMenuLinkClick({ href: this._profileLinkHref }),
+				// );
+				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
 			case ACTION_USER_TYPES.auth:
 				if (!this._configFeed.posts.length) {
