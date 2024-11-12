@@ -42,7 +42,9 @@ export default class WebsocketClient {
 	}
 
 	private _reconnect() {
-		this._socket = new WebSocket(this._url);
+		if (this._socket.CLOSING || this._socket.CLOSED) {
+			this._socket = new WebSocket(this._url);
+		}
 	}
 
 	private _sendAction(action: Action) {
