@@ -17,7 +17,7 @@ export interface IContent extends Container {
 
 export class Content extends Container implements IContent {
 	private message: IContentMessage | null;
-	private _loader = new Loader();
+	private _loader = new Loader({ key: 'loader' }, this);
 
 	/**
 	 * Создает новый компонент Content
@@ -57,11 +57,11 @@ export class Content extends Container implements IContent {
 	}
 
 	showLoader() {
-		this._loader.show();
+		this._loader.render();
 	}
 
 	hideLoader() {
-		this._loader.hide();
+		this._loader.remove();
 	}
 
 	update(data: IContentConfig): void {

@@ -1,18 +1,20 @@
 import BaseComponent, { IBaseComponentConfig } from '../BaseComponent';
 
 export class Loader extends BaseComponent {
-	protected _config: IBaseComponentConfig = { key: 'loader' };
+	constructor(config: IBaseComponentConfig, parent: BaseComponent) {
+		super(config, parent);
+	}
 
-	render(show: boolean): string {
+	render(show: boolean = true): string {
 		this._prerender();
 		return this._render('Loader.hbs', show);
 	}
 
-	show() {
-		this.htmlElement.className = 'loader';
-	}
+	// show() {
+	// 	this.htmlElement.className = 'loader';
+	// }
 
-	hide() {
-		this.htmlElement.className = 'loader-hide';
-	}
+	// hide() {
+	// 	this.htmlElement.className = 'loader-hide';
+	// }
 }
