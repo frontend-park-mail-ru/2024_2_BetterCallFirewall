@@ -26,6 +26,7 @@ export class ViewSignup extends BaseView {
 	handleChange(change: ChangeSignup): void {
 		switch (change.type) {
 			case ACTION_APP_TYPES.actionAppInit:
+			case ACTION_APP_TYPES.goTo:
 				this._config = change.data;
 				this.render();
 				break;

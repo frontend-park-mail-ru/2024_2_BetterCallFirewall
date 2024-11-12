@@ -84,8 +84,6 @@ export class ViewChat extends ViewHome implements IViewChat {
 			case ACTION_MESSAGES_TYPES.newMessage: {
 				const messages = change.data.chat.messages;
 				this.addNewMessage(messages[messages.length - 1]);
-				// this.updateViewChat(change.data);
-				// this._scrollToOldPosition();
 				break;
 			}
 			case ACTION_CHAT_TYPES.updateChat:
@@ -151,11 +149,6 @@ export class ViewChat extends ViewHome implements IViewChat {
 		const backButtonHTML = this._chat.backButtonHTML;
 		this._chat.addHandler(backButtonHTML, 'click', (event) => {
 			event.preventDefault();
-			// this.sendAction(
-			// 	new ActionMenuLinkClick({
-			// 		href: this._configChat.chat.backButtonHref,
-			// 	}),
-			// );
 			this.sendAction(
 				new ActionAppGoTo(this._configChat.chat.backButtonHref),
 			);
@@ -205,9 +198,6 @@ export class ViewChat extends ViewHome implements IViewChat {
 		if (chat && companionId && companionLink) {
 			chat.addHandler(companionLink, 'click', (event) => {
 				event.preventDefault();
-				// this.sendAction(
-				// 	new ActionMenuLinkClick({ href: `/${companionId}` }),
-				// );
 				this.sendAction(new ActionAppGoTo(`/${companionId}`));
 			});
 		}
@@ -247,9 +237,6 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this.content.addHandler(document, 'keydown', (event) => {
 			const keyEvent = event as KeyboardEvent;
 			if (keyEvent.key === 'Escape') {
-				// this.sendAction(
-				// 	new ActionMenuLinkClick({ href: PAGE_LINKS.messages }),
-				// );
 				this.sendAction(new ActionAppGoTo(PAGE_LINKS.messages));
 			}
 		});
