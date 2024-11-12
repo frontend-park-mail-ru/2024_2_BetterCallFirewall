@@ -69,7 +69,7 @@ export class ViewSignup extends BaseView {
 		const toLoginLink = signupForm.items.toLoginLink;
 		signupForm.addHandler(toLoginLink.htmlElement, 'click', (event) => {
 			event.preventDefault();
-			this.sendAction(new ActionAppGoTo(PAGE_LINKS.signup));
+			this.sendAction(new ActionAppGoTo(PAGE_LINKS.login));
 		});
 
 		const titleLinkHTML = signupForm.htmlElement.querySelector(
