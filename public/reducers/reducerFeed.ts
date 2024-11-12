@@ -1,6 +1,7 @@
 import { Action } from '../actions/action';
 import {
 	ACTION_FEED_TYPES,
+	ActionFeedPostCreateSuccessData,
 	ActionPostsRequestFailData,
 	ActionPostsRequestSuccessData,
 } from '../actions/actionFeed';
@@ -21,6 +22,12 @@ export const reducerFeed = (
 	}
 	const newState = deepClone(state);
 	switch (action.type) {
+		case ACTION_FEED_TYPES.postCreateSuccess: {
+			const actionData = action.data as ActionFeedPostCreateSuccessData;
+			const postConfig = toPostConfig(actionData.post);
+			newState.posts = [postConfig].concat(newState.posts);
+			return newState;
+		}
 		case ACTION_FEED_TYPES.postsRequest:
 			newState.pendingPostRequest = true;
 			return newState;

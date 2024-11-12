@@ -34,6 +34,7 @@ export class ViewFeed extends ViewHome {
 				break;
 			case ACTION_FEED_TYPES.postCreateSuccess:
 				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
+				this.updateViewFeed(change.data);
 				break;
 			case ACTION_APP_TYPES.goTo:
 				if (!this._configFeed.posts.length) {
