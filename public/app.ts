@@ -264,6 +264,7 @@ class App {
 		this._stores.login.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 
 		this._stores.signup.subscribe(ACTION_APP_TYPES.actionAppInit);
+		this._stores.signup.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.signup.subscribe(ACTION_FORM_TYPES.formError);
 
 		this._stores.feed.subscribe(ACTION_USER_TYPES.auth);
