@@ -19,7 +19,7 @@ export class Dispatcher {
 		const stores = this.subscribed[action.type];
 		if (stores) {
 			stores.forEach((store) => {
-				console.log('dispatcher: to store:', store);
+				// console.log('dispatcher: to store:', store);
 				store.handleAction(action);
 			});
 		}

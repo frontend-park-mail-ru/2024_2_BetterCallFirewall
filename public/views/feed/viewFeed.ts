@@ -1,10 +1,9 @@
-import { ActionAppGoTo } from '../../actions/actionApp';
+import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import {
 	ACTION_FEED_TYPES,
 	ActionFeedPostsRequest,
 } from '../../actions/actionFeed';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
-import { ACTION_USER_TYPES } from '../../actions/actionUser';
 import { IPostConfig, Post, Root } from '../../components';
 import { ChangeFeed } from '../../stores/storeFeed';
 import { HomeConfig, ViewHome } from '../home/viewHome';
@@ -36,13 +35,12 @@ export class ViewFeed extends ViewHome {
 			case ACTION_FEED_TYPES.postCreateSuccess:
 				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
-			case ACTION_USER_TYPES.auth:
+			case ACTION_APP_TYPES.goTo:
 				if (!this._configFeed.posts.length) {
 					this.sendAction(
 						new ActionFeedPostsRequest(this.lastPostId),
 					);
 				}
-				this.render();
 				break;
 			case ACTION_FEED_TYPES.postsRequestSuccess:
 			case ACTION_FEED_TYPES.postsRequestFail:
@@ -54,7 +52,6 @@ export class ViewFeed extends ViewHome {
 
 	render(): void {
 		this._render();
-		this._addHandlers();
 
 		if (this._isNearBottom()) {
 			this.sendAction(new ActionFeedPostsRequest(this.lastPostId));
@@ -65,7 +62,6 @@ export class ViewFeed extends ViewHome {
 		this.updateViewHome(data);
 		this._configFeed = { ...this._configFeed, ...data };
 		this._render();
-		this._addHandlers();
 	}
 
 	update(config: object): void {
@@ -76,6 +72,7 @@ export class ViewFeed extends ViewHome {
 		super._render();
 		this._renderPosts();
 		this._printMessage();
+		this._addHandlers();
 	}
 
 	private get lastPostId(): number | undefined {

@@ -132,6 +132,7 @@ const loginFormSubmit = (loginForm: LoginForm) => {
 		}
 		if (response && response.ok) {
 			dispatcher.getAction(new ActionUserAuth());
+			dispatcher.getAction(new ActionAppGoTo(PAGE_LINKS.feed));
 		} else if (response) {
 			const data = await response.json();
 			if (data.message === 'wrong email or password') {
