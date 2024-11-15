@@ -40,9 +40,16 @@ const vNodeFromNode = (node: ChildNode): VNode | string => {
 	const children = Array.from(node.childNodes).map((node) => {
 		return vNodeFromNode(node);
 	});
-	const key = elementNode.getAttribute('data-key');
+	let key = elementNode.getAttribute('data-key');
 	if (!key) {
-		throw new Error('Element has no key');
+		const parentNode = elementNode.parentNode;
+		if (parentNode) {
+			const nodes = Array.from(parentNode.childNodes);
+			const i = nodes.indexOf(elementNode);
+			key = `${elementNode.tagName}-${elementNode.className}-${i}`;
+		} else {
+			throw new Error('Element has no key and parent');
+		}
 	}
 	return {
 		key,
