@@ -3,5 +3,8 @@
         <div class="menu__title"><a href="{{title.href}}" class="title" data-key="{{title.key}}"><h1>{{title.text}}</h1></a></div>
     </div>
     <div class="menu__items">
+        {{#each links}}
+            {{{this}}}
+        {{/each}}
     </div>
 </div>

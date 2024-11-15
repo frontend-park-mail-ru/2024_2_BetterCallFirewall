@@ -47,9 +47,9 @@ export abstract class BaseView implements View {
 	}
 
 	clear() {
-		Object.entries(this._root.children).forEach(([, child]) => {
-			child.remove();
-		});
+		// Object.entries(this._root.children).forEach(([, child]) => {
+		// 	child.remove();
+		// });
 	}
 
 	unregister(store: Store) {

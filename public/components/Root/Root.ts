@@ -1,25 +1,39 @@
-import BaseComponent, { IBaseComponent } from '../BaseComponent';
+// import BaseComponent from '../BaseComponent';
 
-export interface IRoot extends IBaseComponent {}
+// export class Root extends BaseComponent {
+// 	/**
+// 	 * Возвращает html-элемент с id='root'
+// 	 * @returns {HTMLElement}
+// 	 */
+// 	override get htmlElement() {
+// 		const html = document.getElementById('root');
+// 		if (html) {
+// 			return html;
+// 		}
+// 		throw new Error('root does not found');
+// 	}
 
-export class Root extends BaseComponent implements IRoot {
-	/**
-	 * Возвращает html-элемент с id='root'
-	 * @returns {HTMLElement}
-	 */
-	override get htmlElement() {
-		const html = document.getElementById('root');
-		if (html) {
-			return html;
+// 	/**
+// 	 * Не использовать этот метод, в нем нет смысла
+// 	 * @returns {string}
+// 	 */
+// 	render(): string {
+// 		return '';
+// 	}
+// }
+
+import Component from '../Component';
+
+export class Root extends Component {
+	get node(): Element {
+		const element = document.getElementById('root');
+		if (!element) {
+			throw new Error('root no found');
 		}
-		throw new Error('root does not found');
+		return element;
 	}
 
-	/**
-	 * Не использовать этот метод, в нем нет смысла
-	 * @returns {string}
-	 */
 	render(): string {
-		return '';
+		return this._render('Root.hbs');
 	}
 }

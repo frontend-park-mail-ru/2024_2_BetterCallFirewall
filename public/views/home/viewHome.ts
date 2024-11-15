@@ -3,10 +3,7 @@ import {
 	ActionHeaderLogoutClickFail,
 	ActionHeaderLogoutClickSuccess,
 } from '../../actions/actionHeader';
-import {
-	ACTION_MENU_TYPES,
-	ActionMenuTitleClick,
-} from '../../actions/actionMenu';
+import { ACTION_MENU_TYPES } from '../../actions/actionMenu';
 import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
 import app from '../../app';
 import {
@@ -15,14 +12,15 @@ import {
 	IContainerConfig,
 	IContentConfig,
 	IHeaderConfig,
-	IMenuConfig,
-	Menu,
-	Root,
+	MenuConfig,
 	Content,
+	Root,
 } from '../../components';
+import Menu from '../../components/Menu/Menu';
 import config, { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
+import { update, VNode } from '../../modules/vdom';
 import { ChangeHome } from '../../stores/storeHome';
 import { BaseView, Components, View } from '../view';
 
@@ -35,7 +33,7 @@ export interface MainConfig {
 }
 
 export interface HomeConfig {
-	menu: IMenuConfig;
+	menu: MenuConfig;
 	main: MainConfig;
 	errorMessage: string;
 }
@@ -49,7 +47,7 @@ export type ComponentsHome = {
 } & Components;
 
 export interface ViewMenu extends ViewHome {
-	updateMenu(data: IMenuConfig): void;
+	updateMenu(data: MenuConfig): void;
 }
 
 export interface ViewHeader extends ViewHome {
@@ -63,9 +61,11 @@ export interface IViewHome extends View {
 export abstract class ViewHome extends BaseView implements IViewHome {
 	protected _components: ComponentsHome = {};
 	private _configHome: HomeConfig;
+	private _newRoot: Root;
 
 	constructor(config: HomeConfig, root: Root) {
-		super(root);
+		super(app.root);
+		this._newRoot = root;
 		this._configHome = config;
 	}
 
@@ -96,15 +96,15 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		this._render();
 	}
 
-	updateMenu(data: IMenuConfig): void {
-		this._configHome.menu = data;
-		const menu = this._components.menu;
-		if (!menu) {
-			throw new Error('menu does not exist on ViewHome');
-		}
-		menu.update(data);
-		this._addMenuHandlers();
-	}
+	// updateMenu(data: MenuConfig): void {
+	// 	this._configHome.menu = data;
+	// 	const menu = this._components.menu;
+	// 	if (!menu) {
+	// 		throw new Error('menu does not exist on ViewHome');
+	// 	}
+	// 	menu.update(data);
+	// 	this._addMenuHandlers();
+	// }
 
 	updateHeader(data: IHeaderConfig): void {
 		const header = this._components.header;
@@ -174,16 +174,21 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	protected _render() {
-		this.clear();
-		this._renderMenu();
-		this._renderMain();
-		this._renderContent();
-		const main = this._components.main;
-		if (!main) {
-			throw new Error('main does not exist on viewHome');
-		}
-		const aside = new Container(this._configHome.main.aside, main);
-		aside.render();
+		const rootVNode = this._newRoot.vnode;
+		const menuVNode = this._renderMenu();
+		rootVNode.children.push(menuVNode);
+		update(this._newRoot.node, rootVNode);
+
+		// this.clear();
+		// this._renderMenu();
+		// this._renderMain();
+		// this._renderContent();
+		// const main = this._components.main;
+		// if (!main) {
+		// 	throw new Error('main does not exist on viewHome');
+		// }
+		// const aside = new Container(this._configHome.main.aside, main);
+		// aside.render();
 	}
 
 	// true, если до конца документа осталось меньше двух экранов
@@ -199,10 +204,21 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		}
 	}
 
-	private _renderMenu() {
-		this._components.menu = new Menu(this._configHome.menu, this._root);
-		this._components.menu.render();
-		this._addMenuHandlers();
+	private get menu(): Menu {
+		const menu = this._components.menu;
+		if (!menu) {
+			throw new Error('menu does not exist');
+		}
+		return menu;
+	}
+
+	private _renderMenu(): VNode {
+		this._components.menu = new Menu(this._configHome.menu, this._newRoot);
+		return this.menu.vnode;
+
+		// this._components.menu = new Menu(this._configHome.menu, this._root);
+		// this._components.menu.render();
+		// this._addMenuHandlers();
 	}
 
 	private _addMenuHandlers() {
@@ -210,65 +226,51 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		if (!menu) {
 			throw new Error('menu not found');
 		}
-		const config = menu.config;
-		const feedLink = menu.children[config.links.feed.key];
-		menu.addHandler(feedLink.htmlElement, 'click', (event) => {
-			event.preventDefault();
-			// dispatcher.getAction(
-			// 	new ActionMenuLinkClick({
-			// 		href: config.links.feed.href,
-			// 	}),
-			// );
-			this.sendAction(new ActionAppGoTo(config.links.feed.href));
-		});
+		// const config = menu.config;
+		// const feedLink = menu.children[config.links.feed.key];
+		// menu.addHandler(feedLink.htmlElement, 'click', (event) => {
+		// 	event.preventDefault();
+		// 	this.sendAction(new ActionAppGoTo(config.links.feed.href));
+		// });
 
-		const profileLink = menu.children[config.links.profile.key];
-		menu.addHandler(profileLink.htmlElement, 'click', (event) => {
-			event.preventDefault();
-			// dispatcher.getAction(
-			// 	new ActionMenuLinkClick({ href: config.links.profile.href }),
-			// );
-			this.sendAction(new ActionAppGoTo(config.links.profile.href));
-		});
+		// const profileLink = menu.children[config.links.profile.key];
+		// menu.addHandler(profileLink.htmlElement, 'click', (event) => {
+		// 	event.preventDefault();
+		// 	this.sendAction(new ActionAppGoTo(config.links.profile.href));
+		// });
 
-		const friendsLink = menu.children[config.links.friends.key];
-		menu.addHandler(friendsLink.htmlElement, 'click', (event) => {
-			event.preventDefault();
-			// dispatcher.getAction(
-			// 	new ActionMenuLinkClick({ href: config.links.friends.href }),
-			// );
-			this.sendAction(new ActionAppGoTo(config.links.friends.href));
-		});
+		// const friendsLink = menu.children[config.links.friends.key];
+		// menu.addHandler(friendsLink.htmlElement, 'click', (event) => {
+		// 	event.preventDefault();
+		// 	this.sendAction(new ActionAppGoTo(config.links.friends.href));
+		// });
 
-		const messagesLink = menu.children[config.links.messages.key];
-		menu.addHandler(messagesLink.htmlElement, 'click', (event) => {
-			event.preventDefault();
-			// this.sendAction(
-			// 	new ActionMenuLinkClick({ href: config.links.messages.href }),
-			// );
-			this.sendAction(new ActionAppGoTo(config.links.messages.href));
-		});
+		// const messagesLink = menu.children[config.links.messages.key];
+		// menu.addHandler(messagesLink.htmlElement, 'click', (event) => {
+		// 	event.preventDefault();
+		// 	this.sendAction(new ActionAppGoTo(config.links.messages.href));
+		// });
 
-		const titleHTML = menu.htmlElement.querySelector(
-			'[data-key=title]',
-		) as HTMLElement;
-		if (!titleHTML) {
-			throw new Error('title not found');
-		}
-		menu.addHandler(titleHTML, 'click', (event) => {
-			event.preventDefault();
-			dispatcher.getAction(new ActionMenuTitleClick());
-		});
+		// const titleHTML = menu.htmlElement.querySelector(
+		// 	'[data-key=title]',
+		// ) as HTMLElement;
+		// if (!titleHTML) {
+		// 	throw new Error('title not found');
+		// }
+		// menu.addHandler(titleHTML, 'click', (event) => {
+		// 	event.preventDefault();
+		// 	dispatcher.getAction(new ActionMenuTitleClick());
+		// });
 	}
 
-	private _renderMain() {
-		this._components.main = new Container(
-			this._configHome.main,
-			this._root,
-		);
-		this._components.main.render();
-		this._renderHeader();
-	}
+	// private _renderMain() {
+	// 	this._components.main = new Container(
+	// 		this._configHome.main,
+	// 		this._root,
+	// 	);
+	// 	this._components.main.render();
+	// 	this._renderHeader();
+	// }
 
 	private _renderHeader() {
 		const main = this._components.main;

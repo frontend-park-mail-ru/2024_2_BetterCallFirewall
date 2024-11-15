@@ -1,11 +1,11 @@
 import { ILoginFormConfig, ISignupFormConfig, Root } from './components/index';
 import { Router, RouterConfig } from './router/router';
 import config, { PAGE_LINKS } from './config';
-import { ViewLogin } from './views/login/viewLogin';
-import { ViewSignup } from './views/signup/viewSignup';
+// import { ViewLogin } from './views/login/viewLogin';
+// import { ViewSignup } from './views/signup/viewSignup';
 import { ACTION_MENU_TYPES } from './actions/actionMenu';
 import { ViewFeed, ViewFeedConfig } from './views/feed/viewFeed';
-import { ViewProfile, ViewProfileConfig } from './views/profile/viewProfile';
+// import { ViewProfile, ViewProfileConfig } from './views/profile/viewProfile';
 import { StoreProfile } from './stores/storeProfile';
 import {
 	ACTION_PROFILE_TYPES,
@@ -18,41 +18,41 @@ import { ACTION_APP_TYPES } from './actions/actionApp';
 import dispatcher from './dispatcher/dispatcher';
 import { StoreSignup } from './stores/storeSignup';
 import { StoreFeed } from './stores/storeFeed';
-import {
-	ViewMessages,
-	ViewMessagesConfig,
-} from './views/messages/viewMessages';
-import { ViewChat } from './views/chat/viewChat';
+// import {
+// 	ViewMessages,
+// 	ViewMessagesConfig,
+// } from './views/messages/viewMessages';
+// import { ViewChat } from './views/chat/viewChat';
 import { StoreMessages } from './stores/storeMessages';
 import { ACTION_MESSAGES_TYPES } from './actions/actionMessages';
-import { ViewChatConfig } from './views/chat/viewChat';
+// import { ViewChatConfig } from './views/chat/viewChat';
 import { StoreChat } from './stores/storeChat';
 import { ACTION_CHAT_TYPES } from './actions/actionChat';
-import { ViewFriends, ViewFriendsConfig } from './views/friends/viewFriends';
+// import { ViewFriends, ViewFriendsConfig } from './views/friends/viewFriends';
 import { HomeConfig } from './views/home/viewHome';
 import { StoreHome } from './stores/storeHome';
 import { StoreFriends } from './stores/storeFriends';
 import { ACTION_FORM_TYPES } from './actions/actionForm';
 import { ACTION_FEED_TYPES } from './actions/actionFeed';
-import {
-	ViewCreatePost,
-	ViewCreatePostConfig,
-} from './views/createPost/viewCreatePost';
+// import {
+// 	ViewCreatePost,
+// 	ViewCreatePostConfig,
+// } from './views/createPost/viewCreatePost';
 import { StoreCreatePost } from './stores/storeCreatePost';
 import { ACTION_CREATE_POST_TYPES } from './actions/actionCreatePost';
 
 import { ACTION_USER_TYPES } from './actions/actionUser';
-import {
-	ViewProfileEdit,
-	ViewProfileEditConfig,
-} from './views/profileEdit/viewProfileEdit';
+// import {
+// 	ViewProfileEdit,
+// 	ViewProfileEditConfig,
+// } from './views/profileEdit/viewProfileEdit';
 import { StoreProfileEdit } from './stores/storeProfileEditForm';
 import { ACTION_PROFILE_EDIT_TYPES } from './actions/actionProfileEdit';
 import { ACTION_FRIENDS_TYPES } from './actions/actionFriends';
-import {
-	ViewPostEdit,
-	ViewPostEditConfig,
-} from './views/PostEdit/viewPostEdit';
+// import {
+// 	ViewPostEdit,
+// 	ViewPostEditConfig,
+// } from './views/PostEdit/viewPostEdit';
 import { ACTION_POST_EDIT_TYPES } from './actions/actionPostEdit';
 import { StorePostEdit } from './stores/storePostEdit';
 import WebsocketClient from './modules/websocket';
@@ -91,13 +91,13 @@ export interface AppConfig {
 	signupConfig: ISignupFormConfig;
 	loginConfig: ILoginFormConfig;
 	feedConfig: ViewFeedConfig;
-	profileConfig: ViewProfileConfig;
-	profileEditConfig: ViewProfileEditConfig;
-	messagesConfig: ViewMessagesConfig;
-	chatConfig: ViewChatConfig;
-	friendsConfig: ViewFriendsConfig;
-	createPostConfig: ViewCreatePostConfig;
-	editPostConfig: ViewPostEditConfig;
+	// profileConfig: ViewProfileConfig;
+	// profileEditConfig: ViewProfileEditConfig;
+	// messagesConfig: ViewMessagesConfig;
+	// chatConfig: ViewChatConfig;
+	// friendsConfig: ViewFriendsConfig;
+	// createPostConfig: ViewCreatePostConfig;
+	// editPostConfig: ViewPostEditConfig;
 }
 
 export interface AppStores {
@@ -138,77 +138,77 @@ class App {
 		this._websocket = new WebsocketClient(this._config.URL.chatWS);
 
 		const feedView = new ViewFeed(this._config.feedConfig, this._root);
-		const profileView = new ViewProfile(
-			this._config.profileConfig,
-			this._root,
-		);
-		const friendView = new ViewFriends(
-			this._config.friendsConfig,
-			this._root,
-		);
-		const loginView = new ViewLogin(this._config.loginConfig, this._root);
-		const signupView = new ViewSignup(
-			this._config.signupConfig,
-			this._root,
-		);
-		const createPostView = new ViewCreatePost(
-			this._config.createPostConfig,
-			this._root,
-		);
-		const profileEditView = new ViewProfileEdit(
-			this._config.profileEditConfig,
-			this._root,
-		);
-		const messagesView = new ViewMessages(
-			this._config.messagesConfig,
-			this._root,
-		);
-		const chatView = new ViewChat(this._config.chatConfig, this._root);
-		const postEditView = new ViewPostEdit(
-			this._config.editPostConfig,
-			this._root,
-		);
+		// const profileView = new ViewProfile(
+		// 	this._config.profileConfig,
+		// 	this._root,
+		// );
+		// const friendView = new ViewFriends(
+		// 	this._config.friendsConfig,
+		// 	this._root,
+		// );
+		// const loginView = new ViewLogin(this._config.loginConfig, this._root);
+		// const signupView = new ViewSignup(
+		// 	this._config.signupConfig,
+		// 	this._root,
+		// );
+		// const createPostView = new ViewCreatePost(
+		// 	this._config.createPostConfig,
+		// 	this._root,
+		// );
+		// const profileEditView = new ViewProfileEdit(
+		// 	this._config.profileEditConfig,
+		// 	this._root,
+		// );
+		// const messagesView = new ViewMessages(
+		// 	this._config.messagesConfig,
+		// 	this._root,
+		// );
+		// const chatView = new ViewChat(this._config.chatConfig, this._root);
+		// const postEditView = new ViewPostEdit(
+		// 	this._config.editPostConfig,
+		// 	this._root,
+		// );
 		const routerConfig: RouterConfig = [
 			{
 				path: PAGE_LINKS.feed,
 				view: feedView,
 			},
-			{
-				path: PAGE_LINKS.login,
-				view: loginView,
-			},
-			{
-				path: PAGE_LINKS.signup,
-				view: signupView,
-			},
-			{
-				path: PAGE_LINKS.createPost,
-				view: createPostView,
-			},
-			{
-				path: PAGE_LINKS.profileEdit,
-				view: profileEditView,
-			},
-			{
-				path: PAGE_LINKS.chat, // chat должен быть перед messages
-				view: chatView,
-			},
-			{
-				path: PAGE_LINKS.messages,
-				view: messagesView,
-			},
-			{
-				path: PAGE_LINKS.friends,
-				view: friendView,
-			},
-			{
-				path: PAGE_LINKS.postEdit,
-				view: postEditView,
-			},
-			{
-				path: PAGE_LINKS.profile, // Должен быть последним
-				view: profileView,
-			},
+			// {
+			// 	path: PAGE_LINKS.login,
+			// 	view: loginView,
+			// },
+			// {
+			// 	path: PAGE_LINKS.signup,
+			// 	view: signupView,
+			// },
+			// {
+			// 	path: PAGE_LINKS.createPost,
+			// 	view: createPostView,
+			// },
+			// {
+			// 	path: PAGE_LINKS.profileEdit,
+			// 	view: profileEditView,
+			// },
+			// {
+			// 	path: PAGE_LINKS.chat, // chat должен быть перед messages
+			// 	view: chatView,
+			// },
+			// {
+			// 	path: PAGE_LINKS.messages,
+			// 	view: messagesView,
+			// },
+			// {
+			// 	path: PAGE_LINKS.friends,
+			// 	view: friendView,
+			// },
+			// {
+			// 	path: PAGE_LINKS.postEdit,
+			// 	view: postEditView,
+			// },
+			// {
+			// 	path: PAGE_LINKS.profile, // Должен быть последним
+			// 	view: profileView,
+			// },
 		];
 		this._router = new Router(feedView, routerConfig);
 
@@ -357,33 +357,37 @@ class App {
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestSuccess);
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestFail);
 
-		loginView.register(this._stores.login);
+		// loginView.register(this._stores.login);
 
-		signupView.register(this._stores.signup);
+		// signupView.register(this._stores.signup);
 
 		feedView.register(this._stores.home);
 		feedView.register(this._stores.feed);
 
-		profileView.register(this._stores.profile);
-		profileView.register(this._stores.home);
+		// profileView.register(this._stores.profile);
+		// profileView.register(this._stores.home);
 
-		messagesView.register(this._stores.home);
-		messagesView.register(this._stores.messages);
+		// messagesView.register(this._stores.home);
+		// messagesView.register(this._stores.messages);
 
-		chatView.register(this._stores.home);
-		chatView.register(this._stores.chat);
+		// chatView.register(this._stores.home);
+		// chatView.register(this._stores.chat);
 
-		createPostView.register(this._stores.home);
-		createPostView.register(this._stores.createPost);
+		// createPostView.register(this._stores.home);
+		// createPostView.register(this._stores.createPost);
 
-		profileEditView.register(this._stores.home);
-		profileEditView.register(this._stores.profileEdit);
+		// profileEditView.register(this._stores.home);
+		// profileEditView.register(this._stores.profileEdit);
 
-		friendView.register(this._stores.home);
-		friendView.register(this._stores.friends);
+		// friendView.register(this._stores.home);
+		// friendView.register(this._stores.friends);
 
-		postEditView.register(this._stores.home);
-		postEditView.register(this._stores.postEdit);
+		// postEditView.register(this._stores.home);
+		// postEditView.register(this._stores.postEdit);
+	}
+
+	get root(): Root {
+		return this._root;
 	}
 
 	get router(): Router {

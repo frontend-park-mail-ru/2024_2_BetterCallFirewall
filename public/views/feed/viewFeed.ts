@@ -72,9 +72,9 @@ export class ViewFeed extends ViewHome {
 
 	protected _render(): void {
 		super._render();
-		this._renderPosts();
-		this._printMessage();
-		this._addHandlers();
+		// this._renderPosts();
+		// this._printMessage();
+		// this._addHandlers();
 	}
 
 	private get lastPostId(): number | undefined {

@@ -1,8 +1,106 @@
-import BaseComponent, {
-	IBaseComponent,
-	IBaseComponentConfig,
-} from '../BaseComponent';
-import { MenuLink, IMenuLink, IMenuLinkConfig } from '../MenuLink/MenuLink';
+import Component, { ComponentConfig } from '../Component';
+import MenuLink, { IMenuLinkConfig } from '../MenuLink/MenuLink';
+
+// type TitleConfig = {
+// 	key: string;
+// 	text: string;
+// 	href: string;
+// };
+// type LinksConfig = [string, IMenuLinkConfig][];
+// type Links = IMenuLink[];
+
+// export interface IMenuConfig extends IBaseComponentConfig {
+// 	title: TitleConfig;
+// 	links: Record<string, IMenuLinkConfig>;
+// }
+
+// export interface IMenu extends IBaseComponent {}
+
+// /**
+//  * Class to menu navigation
+//  */
+// export class Menu extends BaseComponent implements IMenu {
+// 	protected override _config: IMenuConfig | null;
+// 	private links: Links = [];
+
+// 	/**
+// 	 * Создает новый компонент меню
+// 	 * @param {IMenuConfig} config
+// 	 * @param {IBaseComponent} parent
+// 	 */
+// 	constructor(config: IMenuConfig, parent: IBaseComponent) {
+// 		super(config, parent);
+// 		this._config = config;
+// 	}
+
+// 	/**
+// 	 * Getting configs of links
+// 	 * @returns {ArrayLike<[string, Object]>}
+// 	 */
+// 	get linksConfig(): LinksConfig {
+// 		if (!this._config) {
+// 			throw new Error('component has no config');
+// 		}
+// 		return Object.entries(this._config.links);
+// 	}
+
+// 	get config(): IMenuConfig {
+// 		if (this._config) {
+// 			return this._config;
+// 		}
+// 		throw new Error('config not found');
+// 	}
+
+// 	set config(config: IMenuConfig) {
+// 		this._config = config;
+// 	}
+
+// 	/**
+// 	 * Rendering menu and add to parent elem
+// 	 *
+// 	 * @returns {string}
+// 	 */
+// 	render(show: boolean = true): string {
+// 		this._prerender();
+// 		this._render('Menu.hbs', show);
+
+// 		const menuItems = this._htmlElement?.querySelector(
+// 			'.menu__items',
+// 		) as HTMLElement;
+// 		if (menuItems) {
+// 			this.links.forEach((link) => {
+// 				link.render(false);
+// 				link.appendToHTML(menuItems);
+// 			});
+// 		} else {
+// 			throw new Error('menu has no .menu__items');
+// 		}
+
+// 		return this.htmlElement.outerHTML;
+// 	}
+
+// 	remove(): void {
+// 		super.remove();
+// 		this.links = [];
+// 	}
+
+// 	removeForUpdate(): void {
+// 		super.removeForUpdate();
+// 		this.links = [];
+// 	}
+
+// 	protected _prerender(): void {
+// 		super._prerender();
+// 		this.linksConfig.forEach(([, value]) => {
+// 			const link = new MenuLink(value, this);
+// 			this.links.push(link);
+// 		});
+// 		this._templateContext = {
+// 			...this._config,
+// 			title: this._config?.title,
+// 		};
+// 	}
+// }
 
 type TitleConfig = {
 	key: string;
@@ -10,97 +108,43 @@ type TitleConfig = {
 	href: string;
 };
 type LinksConfig = [string, IMenuLinkConfig][];
-type Links = IMenuLink[];
+type Links = MenuLink[];
 
-export interface IMenuConfig extends IBaseComponentConfig {
+export interface MenuConfig extends ComponentConfig {
 	title: TitleConfig;
 	links: Record<string, IMenuLinkConfig>;
 }
 
-export interface IMenu extends IBaseComponent {}
+export default class Menu extends Component {
+	protected _config: MenuConfig;
+	protected _links: Links = [];
 
-/**
- * Class to menu navigation
- */
-export class Menu extends BaseComponent implements IMenu {
-	protected override _config: IMenuConfig | null;
-	private links: Links = [];
-
-	/**
-	 * Создает новый компонент меню
-	 * @param {IMenuConfig} config
-	 * @param {IBaseComponent} parent
-	 */
-	constructor(config: IMenuConfig, parent: IBaseComponent) {
+	constructor(config: MenuConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 	}
 
-	/**
-	 * Getting configs of links
-	 * @returns {ArrayLike<[string, Object]>}
-	 */
+	get config(): MenuConfig {
+		return this._config;
+	}
+
 	get linksConfig(): LinksConfig {
-		if (!this._config) {
-			throw new Error('component has no config');
-		}
-		return Object.entries(this._config.links);
+		return Object.entries(this.config.links);
 	}
 
-	get config(): IMenuConfig {
-		if (this._config) {
-			return this._config;
-		}
-		throw new Error('config not found');
-	}
-
-	set config(config: IMenuConfig) {
-		this._config = config;
-	}
-
-	/**
-	 * Rendering menu and add to parent elem
-	 *
-	 * @returns {string}
-	 */
-	render(show: boolean = true): string {
-		this._prerender();
-		this._render('Menu.hbs', show);
-
-		const menuItems = this._htmlElement?.querySelector(
-			'.menu__items',
-		) as HTMLElement;
-		if (menuItems) {
-			this.links.forEach((link) => {
-				link.render(false);
-				link.appendToHTML(menuItems);
-			});
-		} else {
-			throw new Error('menu has no .menu__items');
-		}
-
-		return this.htmlElement.outerHTML;
-	}
-
-	remove(): void {
-		super.remove();
-		this.links = [];
-	}
-
-	removeForUpdate(): void {
-		super.removeForUpdate();
-		this.links = [];
+	render(): string {
+		return this._render('Menu.hbs');
 	}
 
 	protected _prerender(): void {
 		super._prerender();
-		this.linksConfig.forEach(([, value]) => {
-			const link = new MenuLink(value, this);
-			this.links.push(link);
+		this._links = this.linksConfig.map(([, config]) => {
+			return new MenuLink(config, this);
 		});
 		this._templateContext = {
-			...this._config,
-			title: this._config?.title,
+			...this._templateContext,
+			title: this._config.title,
+			links: this._links.map((link) => link.render()),
 		};
 	}
 }
