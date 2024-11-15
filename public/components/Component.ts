@@ -41,6 +41,10 @@ export default abstract class Component {
 
 	protected _render(templateFile: string): string {
 		const template = Handlebars.templates[templateFile];
+		console.log(
+			'Component._render(): templateContext:',
+			this._templateContext,
+		);
 		return template(this._templateContext);
 	}
 

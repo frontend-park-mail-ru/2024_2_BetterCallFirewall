@@ -63,6 +63,7 @@ export default class MenuLink extends Component {
 	}
 
 	render(): string {
+		this._prerender();
 		return this._render('MenuLink.hbs');
 	}
 }

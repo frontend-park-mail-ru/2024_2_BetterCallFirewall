@@ -133,6 +133,7 @@ export default class Menu extends Component {
 	}
 
 	render(): string {
+		this._prerender();
 		return this._render('Menu.hbs');
 	}
 
