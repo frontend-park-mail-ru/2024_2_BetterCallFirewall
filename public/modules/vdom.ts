@@ -26,6 +26,7 @@ interface VChildNode extends ChildNode {
 }
 
 export const vNodesFromString = (htmlStr: string): (VNode | string)[] => {
+	console.log('vNodesFromString: htmlStr:', htmlStr);
 	const wrapper = document.createElement('div');
 	wrapper.innerHTML = htmlStr;
 	const nodes = Array.from(wrapper.childNodes);
