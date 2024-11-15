@@ -108,7 +108,7 @@ export const update = (node: ExtendedNode, vnode: VNode | string) => {
 	elementVNode.attrubutes['data-key'] = elementVNode.key;
 	updateAttrs(
 		elementNode,
-		Array.from(elementNode.attributes),
+		Object.entries(elementNode.attributes).map(([, attr]) => attr),
 		elementVNode.attrubutes,
 	);
 	updateHandlers(
