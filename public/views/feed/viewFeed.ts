@@ -53,6 +53,7 @@ export class ViewFeed extends ViewHome {
 	}
 
 	render(): void {
+		console.log('ViewFeed.render()');
 		this._render();
 
 		if (this._isNearBottom()) {
@@ -71,6 +72,7 @@ export class ViewFeed extends ViewHome {
 	}
 
 	protected _render(): void {
+		console.log('ViewFeed._render()');
 		super._render();
 		// this._renderPosts();
 		// this._printMessage();
