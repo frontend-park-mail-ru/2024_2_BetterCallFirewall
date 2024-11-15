@@ -152,6 +152,7 @@ const updateChildren = (
 		} else if (
 			!fromString &&
 			!toString &&
+			prevVChild &&
 			newVChild.key === prevVChild.key
 		) {
 			update(node.childNodes[i], newVChild);
