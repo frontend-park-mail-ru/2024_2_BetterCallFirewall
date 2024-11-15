@@ -1,18 +1,18 @@
 import { AppConfig, URLInterface } from './app';
 import { ILoginFormConfig, ISignupFormConfig } from './components';
-// import { IChatConfig } from './components/Chat/Chat';
-// import { IMessageConfig } from './components/Message/Message';
-// import { IProfileConfig } from './components/Profile/Profile';
-// import { ViewChatConfig } from './views/chat/viewChat';
-// import { ViewMessagesConfig } from './views/messages/viewMessages';
+import { IChatConfig } from './components/Chat/Chat';
+import { IMessageConfig } from './components/Message/Message';
+import { IProfileConfig } from './components/Profile/Profile';
+import { ViewChatConfig } from './views/chat/viewChat';
+import { ViewMessagesConfig } from './views/messages/viewMessages';
 import { ViewFeedConfig } from './views/feed/viewFeed';
-// import { ViewFriendsConfig } from './views/friends/viewFriends';
+import { ViewFriendsConfig } from './views/friends/viewFriends';
 import { HomeConfig } from './views/home/viewHome';
-// import { ViewProfileConfig } from './views/profile/viewProfile';
-// import { ViewCreatePostConfig } from './views/createPost/viewCreatePost';
-// import { ViewProfileEditConfig } from './views/profileEdit/viewProfileEdit';
-// import { ViewPostEditConfig } from './views/PostEdit/viewPostEdit';
-// import { IPostEditFormConfig } from './components/PostEditForm/PostEditForm';
+import { ViewProfileConfig } from './views/profile/viewProfile';
+import { ViewCreatePostConfig } from './views/createPost/viewCreatePost';
+import { ViewProfileEditConfig } from './views/profileEdit/viewProfileEdit';
+import { ViewPostEditConfig } from './views/PostEdit/viewPostEdit';
+import { IPostEditFormConfig } from './components/PostEditForm/PostEditForm';
 import Validator from './modules/validation';
 
 const DEBUG: boolean = false;
@@ -176,75 +176,75 @@ const loginConfig: ILoginFormConfig = {
 	},
 };
 
-// const createPostConfig: ViewCreatePostConfig = {
-// 	...homeConfig,
-// 	createPostForm: {
-// 		key: 'createPostForm',
-// 		textAreas: {
-// 			text: {
-// 				key: 'text',
-// 				type: 'textarea',
-// 				header: 'Текст поста',
-// 				text: '',
-// 				name: 'text',
-// 			},
-// 		},
-// 		inputs: {
-// 			image: {
-// 				key: 'image',
-// 				name: 'file',
-// 				type: 'file',
-// 				accept: 'image/*',
-// 				placeholder: 'Прикрепить картинку',
-// 				// extra: 'multiple',
-// 			},
-// 		},
-// 		button: {
-// 			key: 'submitButton',
-// 			text: 'Опубликовать',
-// 		},
-// 	},
-// };
+const createPostConfig: ViewCreatePostConfig = {
+	...homeConfig,
+	createPostForm: {
+		key: 'createPostForm',
+		textAreas: {
+			text: {
+				key: 'text',
+				type: 'textarea',
+				header: 'Текст поста',
+				text: '',
+				name: 'text',
+			},
+		},
+		inputs: {
+			image: {
+				key: 'image',
+				name: 'file',
+				type: 'file',
+				accept: 'image/*',
+				placeholder: 'Прикрепить картинку',
+				// extra: 'multiple',
+			},
+		},
+		button: {
+			key: 'submitButton',
+			text: 'Опубликовать',
+		},
+	},
+};
 
-// const profileEditConfig: ViewProfileEditConfig = {
-// 	...homeConfig,
-// 	profileEditForm: {
-// 		key: 'profileEditForm',
-// 		inputs: {
-// 			firstName: {
-// 				key: 'firstName',
-// 				type: 'text',
-// 				placeholder: 'Имя',
-// 				name: 'first_name',
-// 			},
-// 			secondName: {
-// 				key: 'secondName',
-// 				type: 'text',
-// 				placeholder: 'Фамилия',
-// 				name: 'last_name',
-// 			},
-// 			description: {
-// 				key: 'description',
-// 				type: 'text',
-// 				placeholder: 'Описание',
-// 				name: 'bio',
-// 			},
-// 			avatar: {
-// 				key: 'avatar',
-// 				name: 'file',
-// 				type: 'file',
-// 				accept: 'image/*',
-// 				placeholder: 'Изменить аватар',
-// 				// extra: 'multiple',
-// 			},
-// 		},
+const profileEditConfig: ViewProfileEditConfig = {
+	...homeConfig,
+	profileEditForm: {
+		key: 'profileEditForm',
+		inputs: {
+			firstName: {
+				key: 'firstName',
+				type: 'text',
+				placeholder: 'Имя',
+				name: 'first_name',
+			},
+			secondName: {
+				key: 'secondName',
+				type: 'text',
+				placeholder: 'Фамилия',
+				name: 'last_name',
+			},
+			description: {
+				key: 'description',
+				type: 'text',
+				placeholder: 'Описание',
+				name: 'bio',
+			},
+			avatar: {
+				key: 'avatar',
+				name: 'file',
+				type: 'file',
+				accept: 'image/*',
+				placeholder: 'Изменить аватар',
+				// extra: 'multiple',
+			},
+		},
 
-// 		button: {
-// 			key: 'profileEditButton',
-// 			text: 'Сохранить',
-// 		},
-// 	},
-// };
+		button: {
+			key: 'profileEditButton',
+			text: 'Сохранить',
+		},
+	},
+};
 
 const feedConfig: ViewFeedConfig = {
 	...homeConfig,
@@ -252,110 +252,110 @@ const feedConfig: ViewFeedConfig = {
 	pendingPostRequest: false,
 };
 
-// const profileComponentConfig: IProfileConfig = {
-// 	id: -1,
-// 	key: 'profile',
-// 	firstName: '',
-// 	secondName: '',
-// 	description: '',
-// 	friendsCount: -1,
-// 	groupsCount: -1,
-// 	img: '',
-// 	createPostHref: PAGE_LINKS.createPost,
-// 	isAuthor: false,
-// 	isFriend: false,
-// 	isSubscriber: false,
-// 	isSubscription: false,
-// };
+const profileComponentConfig: IProfileConfig = {
+	id: -1,
+	key: 'profile',
+	firstName: '',
+	secondName: '',
+	description: '',
+	friendsCount: -1,
+	groupsCount: -1,
+	img: '',
+	createPostHref: PAGE_LINKS.createPost,
+	isAuthor: false,
+	isFriend: false,
+	isSubscriber: false,
+	isSubscription: false,
+};
 
-// const profileConfig: ViewProfileConfig = {
-// 	...homeConfig,
-// 	profile: profileComponentConfig,
-// 	path: '/',
-// };
+const profileConfig: ViewProfileConfig = {
+	...homeConfig,
+	profile: profileComponentConfig,
+	path: '/',
+};
 
-// const messagesComponentConfig: IMessageConfig[] = [];
+const messagesComponentConfig: IMessageConfig[] = [];
 
-// const messagesConfig: ViewMessagesConfig = {
-// 	...homeConfig,
-// 	messages: messagesComponentConfig,
-// };
+const messagesConfig: ViewMessagesConfig = {
+	...homeConfig,
+	messages: messagesComponentConfig,
+};
 
-// const emptyChatComponentConfig: IChatConfig = {
-// 	companionId: -1,
-// 	key: 'chat',
-// 	companionAvatar: '',
-// 	companionName: '',
-// 	lastDateOnline: '',
-// 	backButtonHref: PAGE_LINKS.messages,
-// 	messages: [],
-// 	myId: -1,
-// 	myName: '',
-// 	myAvatar: '',
-// 	text: '',
-// };
+const emptyChatComponentConfig: IChatConfig = {
+	companionId: -1,
+	key: 'chat',
+	companionAvatar: '',
+	companionName: '',
+	lastDateOnline: '',
+	backButtonHref: PAGE_LINKS.messages,
+	messages: [],
+	myId: -1,
+	myName: '',
+	myAvatar: '',
+	text: '',
+};
 
-// const chatConfig: ViewChatConfig = {
-// 	...homeConfig,
-// 	chat: emptyChatComponentConfig,
-// };
+const chatConfig: ViewChatConfig = {
+	...homeConfig,
+	chat: emptyChatComponentConfig,
+};
 
-// const friendsConfig: ViewFriendsConfig = {
-// 	...homeConfig,
-// 	friends: {
-// 		key: 'friends',
-// 		headerText: 'Друзья',
-// 		friendsConfig: [],
-// 	},
-// 	subscribers: {
-// 		key: 'subscribers',
-// 		headerText: 'Подписчики',
-// 		friendsConfig: [],
-// 	},
-// 	subscriptions: {
-// 		key: 'subscriptions',
-// 		headerText: 'Подписки',
-// 		friendsConfig: [],
-// 	},
-// 	users: {
-// 		key: 'users',
-// 		headerText: 'Поиск друзей',
-// 		friendsConfig: [],
-// 	},
-// };
+const friendsConfig: ViewFriendsConfig = {
+	...homeConfig,
+	friends: {
+		key: 'friends',
+		headerText: 'Друзья',
+		friendsConfig: [],
+	},
+	subscribers: {
+		key: 'subscribers',
+		headerText: 'Подписчики',
+		friendsConfig: [],
+	},
+	subscriptions: {
+		key: 'subscriptions',
+		headerText: 'Подписки',
+		friendsConfig: [],
+	},
+	users: {
+		key: 'users',
+		headerText: 'Поиск друзей',
+		friendsConfig: [],
+	},
+};
 
-// const postEditFormConfig: IPostEditFormConfig = {
-// 	key: 'postEditForm',
-// 	textAreas: {
-// 		text: {
-// 			key: 'text',
-// 			type: 'textarea',
-// 			header: 'Текст поста',
-// 			text: '',
-// 			name: 'text',
-// 		},
-// 	},
-// 	inputs: {
-// 		image: {
-// 			key: 'image',
-// 			name: 'file',
-// 			type: 'file',
-// 			accept: 'image/*',
-// 			placeholder: 'Изменить картинку',
-// 			// extra: 'multiple',
-// 		},
-// 	},
-// 	button: {
-// 		key: 'submitButton',
-// 		text: 'Сохранить пост',
-// 	},
-// };
+const postEditFormConfig: IPostEditFormConfig = {
+	key: 'postEditForm',
+	textAreas: {
+		text: {
+			key: 'text',
+			type: 'textarea',
+			header: 'Текст поста',
+			text: '',
+			name: 'text',
+		},
+	},
+	inputs: {
+		image: {
+			key: 'image',
+			name: 'file',
+			type: 'file',
+			accept: 'image/*',
+			placeholder: 'Изменить картинку',
+			// extra: 'multiple',
+		},
+	},
+	button: {
+		key: 'submitButton',
+		text: 'Сохранить пост',
+	},
+};
 
-// const editPostConfig: ViewPostEditConfig = {
-// 	...homeConfig,
-// 	postEditForm: postEditFormConfig,
-// 	postId: -1,
-// };
+const editPostConfig: ViewPostEditConfig = {
+	...homeConfig,
+	postEditForm: postEditFormConfig,
+	postId: -1,
+};
 
 export const ROOT: string = DEBUG
 	? 'http://127.0.0.1:8000'
@@ -416,13 +416,13 @@ const config: AppConfig = {
 	signupConfig,
 	loginConfig,
 	feedConfig,
-	// profileConfig,
-	// createPostConfig,
-	// profileEditConfig,
-	// messagesConfig,
-	// chatConfig,
-	// friendsConfig,
-	// editPostConfig,
+	profileConfig,
+	createPostConfig,
+	profileEditConfig,
+	messagesConfig,
+	chatConfig,
+	friendsConfig,
+	editPostConfig,
 };
 
 export const validators: Record<string, (value: string | File) => string> = {
@@ -434,7 +434,7 @@ export const validators: Record<string, (value: string | File) => string> = {
 	text: (value) => Validator.validatePost(value as string),
 	file: (value) => Validator.validateImg(value as File),
 	bio: (value) => Validator.validatePost(value as string),
-	// 'avatar': (value) => Validator.validateImg(value as File),
+	avatar: (value) => Validator.validateImg(value as File),
 };
 
 export default config;
