@@ -20,7 +20,7 @@ import Menu from '../../components/Menu/Menu';
 import config, { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
-import { update, VNode } from '../../modules/vdom';
+import { ExtendedNode, update, VNode } from '../../modules/vdom';
 import { ChangeHome } from '../../stores/storeHome';
 import { BaseView, Components, View } from '../view';
 
@@ -179,7 +179,11 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		console.log('menuVNode:', menuVNode);
 		rootVNode.children.push(menuVNode);
 		console.log('rootVNode.children:', rootVNode.children);
-		update(this._root.node, rootVNode);
+		const rootExtendedNode: ExtendedNode = {
+			...this._root.node,
+			_vnode: this._root.vnode,
+		};
+		update(rootExtendedNode, rootVNode);
 
 		// this.clear();
 		// this._renderMenu();

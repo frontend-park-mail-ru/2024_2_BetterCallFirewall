@@ -1,5 +1,9 @@
 type Attributes = Record<string, string>;
 
+export interface ExtendedNode extends Node {
+	_vnode?: VNode;
+}
+
 export interface VNode {
 	key: string;
 	tagName: string;
@@ -95,7 +99,7 @@ export const create = (vnode: VNode | string): Node => {
 	return element;
 };
 
-export const update = (node: Node, vnode: VNode | string) => {
+export const update = (node: ExtendedNode, vnode: VNode | string) => {
 	if (node.nodeType === Node.TEXT_NODE) {
 		node.textContent = vnode as string;
 	}
