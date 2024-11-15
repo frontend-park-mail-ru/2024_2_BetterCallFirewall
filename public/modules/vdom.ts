@@ -17,6 +17,10 @@ interface VElement extends Element {
 	_vnode: VNode;
 }
 
+interface VChildNode extends ChildNode {
+	_vnode?: VNode;
+}
+
 export const vNodesFromString = (htmlStr: string): (VNode | string)[] => {
 	const wrapper = document.createElement('div');
 	wrapper.innerHTML = htmlStr;
@@ -24,7 +28,7 @@ export const vNodesFromString = (htmlStr: string): (VNode | string)[] => {
 	return nodes.map((node) => {
 		switch (node.nodeType) {
 			case Node.ELEMENT_NODE:
-				return vNodeFromNode(node as Element);
+				return vNodeFromNode(node as VElement);
 			case Node.TEXT_NODE:
 				return vNodeFromNode(node as Text);
 		}
@@ -32,11 +36,11 @@ export const vNodesFromString = (htmlStr: string): (VNode | string)[] => {
 	});
 };
 
-const vNodeFromNode = (node: ChildNode): VNode | string => {
+const vNodeFromNode = (node: VChildNode): VNode | string => {
 	if (node instanceof Text) {
 		return node.textContent ? node.textContent : '';
 	}
-	const elementNode = node as Element;
+	const elementNode = node as VElement;
 	const children = Array.from(node.childNodes).map((node) => {
 		return vNodeFromNode(node);
 	});
@@ -51,13 +55,15 @@ const vNodeFromNode = (node: ChildNode): VNode | string => {
 			throw new Error('Element has no key and parent');
 		}
 	}
-	return {
+	const vnode = {
 		key,
 		tagName: elementNode.tagName,
 		attrubutes: attributesFromNode(elementNode),
 		handlers: [],
 		children,
 	};
+	elementNode._vnode = vnode;
+	return vnode;
 };
 
 const attributesFromNode = (node: Element): Attributes => {
