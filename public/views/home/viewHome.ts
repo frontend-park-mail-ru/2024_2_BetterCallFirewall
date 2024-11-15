@@ -61,11 +61,9 @@ export interface IViewHome extends View {
 export abstract class ViewHome extends BaseView implements IViewHome {
 	protected _components: ComponentsHome = {};
 	private _configHome: HomeConfig;
-	private _newRoot: Root;
 
 	constructor(config: HomeConfig, root: Root) {
-		super(app.root);
-		this._newRoot = root;
+		super(root);
 		this._configHome = config;
 	}
 
@@ -174,10 +172,10 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	protected _render() {
-		const rootVNode = this._newRoot.vnode;
+		const rootVNode = this._root.vnode;
 		const menuVNode = this._renderMenu();
 		rootVNode.children.push(menuVNode);
-		update(this._newRoot.node, rootVNode);
+		update(this._root.node, rootVNode);
 
 		// this.clear();
 		// this._renderMenu();
@@ -213,7 +211,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	private _renderMenu(): VNode {
-		this._components.menu = new Menu(this._configHome.menu, this._newRoot);
+		this._components.menu = new Menu(this._configHome.menu, this._root);
 		return this.menu.vnode;
 
 		// this._components.menu = new Menu(this._configHome.menu, this._root);
