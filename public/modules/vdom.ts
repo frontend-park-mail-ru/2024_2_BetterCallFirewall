@@ -41,7 +41,9 @@ export const vNodesFromString = (htmlStr: string): (VNode | string)[] => {
 };
 
 const vNodeFromNode = (node: VChildNode): VNode | string => {
+	console.log('vNodeFromNode: node:', node);
 	if (node instanceof Text) {
+		console.log('this is Text:', node);
 		return node.textContent ? node.textContent : '';
 	}
 	const elementNode = node as VElement;
