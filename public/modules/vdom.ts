@@ -116,7 +116,9 @@ export const update = (node: ExtendedNode, vnode: VNode | string) => {
 	console.log('node:', node);
 	console.log('vnode:', vnode);
 	if (node.nodeType === Node.TEXT_NODE) {
-		node.textContent = vnode as string;
+		if (typeof vnode === 'string') {
+			node.textContent = vnode;
+		}
 		console.log('node.textContent:', node.textContent);
 		console.log('vnode:', vnode);
 		return;
@@ -212,4 +214,8 @@ const updateHandlers = (
 			node.addEventListener(newHandler.event, newHandler.callback);
 		}
 	}
+};
+
+const remove = (node: Node) => {
+	node.parentNode?.removeChild(node);
 };
