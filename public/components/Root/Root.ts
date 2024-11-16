@@ -34,6 +34,7 @@ export class Root extends Component {
 	}
 
 	render(): string {
+		this._prerender();
 		return this._render('Root.hbs');
 	}
 }

@@ -1,3 +1,5 @@
+const SVG_TAGS = ['svg', 'path'];
+
 type Attributes = Record<string, string>;
 
 export interface ExtendedNode extends Node {
@@ -85,9 +87,16 @@ export const create = (vnode: VNode | string): Node => {
 	if (typeof vnode === 'string') {
 		return document.createTextNode(vnode);
 	}
-	const element = document.createElement(
-		vnode.tagName,
-	) as unknown as VElement;
+	let element: VElement;
+	if (SVG_TAGS.indexOf(vnode.tagName) >= 0) {
+		const svgNamespace = 'http://www.w3.org/2000/svg';
+		element = document.createElementNS(
+			svgNamespace,
+			vnode.tagName,
+		) as unknown as VElement;
+	} else {
+		element = document.createElement(vnode.tagName) as unknown as VElement;
+	}
 	Object.entries(vnode.attrubutes).forEach(([attrName, attrValue]) => {
 		element.setAttribute(attrName, attrValue);
 	});

@@ -8,6 +8,7 @@ export default abstract class Component {
 	protected _config: ComponentConfig | null;
 	protected _parent: Component | null;
 	protected _templateContext: object = {};
+	protected _children: Component[] = [];
 
 	constructor(
 		config: ComponentConfig | null = null,
@@ -15,6 +16,7 @@ export default abstract class Component {
 	) {
 		this._config = config;
 		this._parent = parent;
+		this._parent?.addChildren(this);
 	}
 
 	get key(): string {
@@ -39,6 +41,10 @@ export default abstract class Component {
 		return node;
 	}
 
+	addChildren(child: Component) {
+		this._children.push(child);
+	}
+
 	protected _render(templateFile: string): string {
 		const template = Handlebars.templates[templateFile];
 		console.log(
@@ -49,7 +55,12 @@ export default abstract class Component {
 	}
 
 	protected _prerender(): void {
-		this._templateContext = { ...this.config };
+		this._templateContext = {
+			...this.config,
+			children: this._children.map((child) => {
+				return child.render();
+			}),
+		};
 	}
 
 	abstract render(): string;

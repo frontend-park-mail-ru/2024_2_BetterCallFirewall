@@ -20,7 +20,7 @@ import Menu from '../../components/Menu/Menu';
 import config, { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
-import { ExtendedNode, update, VNode } from '../../modules/vdom';
+import { ExtendedNode, update } from '../../modules/vdom';
 import { ChangeHome } from '../../stores/storeHome';
 import { BaseView, Components, View } from '../view';
 
@@ -173,13 +173,12 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 
 	protected _render() {
 		console.log('ViewHome._render()');
+		this._components.menu = new Menu(this._configHome.menu, this._root);
 		const rootVNode = this._root.vnode;
 		console.log('rootVNode:', rootVNode);
-		const menuVNode = this._renderMenu();
-		console.log('menuVNode:', menuVNode);
-		rootVNode.children.push(menuVNode);
 		console.log('rootVNode.children:', rootVNode.children);
 		const rootExtendedNode: ExtendedNode = this._root.node;
+		console.log('rootNode:', rootExtendedNoderootVNode);
 		rootExtendedNode._vnode = this._root.vnode;
 		update(rootExtendedNode, rootVNode);
 
@@ -216,10 +215,8 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		return menu;
 	}
 
-	private _renderMenu(): VNode {
-		this._components.menu = new Menu(this._configHome.menu, this._root);
-		return this.menu.vnode;
-
+	private _renderMenu() {
+		// this._components.menu = new Menu(this._configHome.menu, this._root);
 		// this._components.menu = new Menu(this._configHome.menu, this._root);
 		// this._components.menu.render();
 		// this._addMenuHandlers();
