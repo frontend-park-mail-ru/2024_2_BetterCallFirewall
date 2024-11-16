@@ -120,7 +120,8 @@ export const update = (node: ExtendedNode, vnode: VNode | string) => {
 	elementVNode.attrubutes['data-key'] = elementVNode.key;
 	updateAttrs(
 		elementNode,
-		Object.entries(elementNode.attributes).map(([, attr]) => attr),
+		elementNode._vnode.attrubutes,
+		// Object.entries(elementNode.attributes).map(([, attr]) => attr),
 		elementVNode.attrubutes,
 	);
 	updateHandlers(
@@ -136,13 +137,17 @@ export const update = (node: ExtendedNode, vnode: VNode | string) => {
 	elementNode._vnode = elementVNode;
 };
 
-const updateAttrs = (node: Element, prevAttrs: Attr[], attrs: Attributes) => {
+const updateAttrs = (
+	node: Element,
+	prevAttrs: Attributes,
+	attrs: Attributes,
+) => {
 	Object.entries(attrs).forEach(([name, value]) => {
 		node.setAttribute(name, value);
 	});
-	prevAttrs.forEach((prevAttr) => {
-		if (!attrs || !(prevAttr.name in attrs)) {
-			node.removeAttribute(prevAttr.name);
+	Object.keys(prevAttrs).forEach((name) => {
+		if (!attrs || !(name in attrs)) {
+			node.removeAttribute(name);
 		}
 	});
 };
