@@ -1,5 +1,10 @@
 const SVG_TAGS = ['svg', 'path'];
 
+const isEmptyString = (str: string): boolean => {
+	const regex = /^\s*\n\s*/;
+	return regex.test(str);
+};
+
 type Attributes = Record<string, string>;
 
 export interface ExtendedNode extends Node {
@@ -32,7 +37,7 @@ export const vNodesFromString = (htmlStr: string): (VNode | string)[] => {
 	const wrapper = document.createElement('div');
 	wrapper.innerHTML = htmlStr;
 	const nodes = Array.from(wrapper.childNodes);
-	return nodes.map((node) => {
+	let vnodes = nodes.map((node) => {
 		switch (node.nodeType) {
 			case Node.ELEMENT_NODE:
 				return vNodeFromNode(node as VElement);
@@ -41,6 +46,13 @@ export const vNodesFromString = (htmlStr: string): (VNode | string)[] => {
 		}
 		return '';
 	});
+	vnodes = vnodes.filter((vnode) => {
+		if (typeof vnode === 'string' && isEmptyString(vnode)) {
+			return false;
+		}
+		return true;
+	});
+	return vnodes;
 };
 
 const vNodeFromNode = (node: VChildNode): VNode | string => {
@@ -165,8 +177,8 @@ const updateChildren = (
 	newChildren: (VNode | string)[],
 ) => {
 	console.log('updateChildren: node:', node);
-	console.log('updateChildren:', prevChildren);
-	console.log('updateChildren:', newChildren);
+	console.log('updateChildren: prevChildren:', prevChildren);
+	console.log('updateChildren: newChildren:', newChildren);
 	for (let i = 0, j = 0; i < newChildren.length; i++, j++) {
 		const newVChild = newChildren[i];
 		const prevVChild = prevChildren[j];
