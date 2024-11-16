@@ -22,9 +22,11 @@
 // 	}
 // }
 
-import Component from '../Component';
+import Component, { ComponentConfig } from '../Component';
 
 export class Root extends Component {
+	protected _config: ComponentConfig = { key: 'root' };
+
 	get node(): Element {
 		const element = document.getElementById('root');
 		if (!element) {
