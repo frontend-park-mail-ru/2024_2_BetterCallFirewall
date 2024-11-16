@@ -122,7 +122,6 @@ export const update = (node: ExtendedNode, vnode: VNode | string) => {
 	updateAttrs(
 		elementNode,
 		elementNode._vnode.attrubutes,
-		// Object.entries(elementNode.attributes).map(([, attr]) => attr),
 		elementVNode.attrubutes,
 	);
 	updateHandlers(

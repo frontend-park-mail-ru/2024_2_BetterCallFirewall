@@ -16,7 +16,7 @@ export default abstract class Component {
 	) {
 		this._config = config;
 		this._parent = parent;
-		this._parent?.addChildren(this);
+		this._parent?.addChild(this);
 	}
 
 	get key(): string {
@@ -41,8 +41,12 @@ export default abstract class Component {
 		return node;
 	}
 
-	addChildren(child: Component) {
+	addChild(child: Component) {
 		this._children.push(child);
+	}
+
+	removeChildren() {
+		this._children = [];
 	}
 
 	protected _render(templateFile: string): string {
