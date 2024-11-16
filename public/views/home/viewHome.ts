@@ -183,7 +183,8 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		this._components.menu = new Menu(this._configHome.menu, this._root);
 		const rootVNode = this._root.vnode;
 
-		this.menu.menuLinkVNode('feed').handlers.push({
+		const linkVNode = this.menu.menuLinkVNode('feed');
+		linkVNode.handlers.push({
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
@@ -192,6 +193,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 				);
 			},
 		});
+		console.log('linkVNode:', linkVNode);
 
 		console.log('rootVNode:', rootVNode);
 		console.log('rootVNode.children:', rootVNode.children);
