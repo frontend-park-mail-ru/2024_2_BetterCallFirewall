@@ -45,7 +45,7 @@ export const vNodesFromString = (htmlStr: string): (VNode | string)[] => {
 
 const vNodeFromNode = (node: VChildNode): VNode | string => {
 	console.log('vNodeFromNode: node:', node);
-	if (node instanceof Text) {
+	if (node.nodeType === Node.TEXT_NODE) {
 		console.log('this is Text:', node);
 		return node.textContent ? node.textContent : '';
 	}
