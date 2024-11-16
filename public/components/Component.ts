@@ -9,7 +9,6 @@ export default abstract class Component {
 	protected _parent: Component | null;
 	protected _templateContext: object = {};
 	protected _children: Component[] = [];
-	private _vnode?: VNode;
 
 	constructor(
 		config: ComponentConfig | null = null,
@@ -35,14 +34,10 @@ export default abstract class Component {
 	}
 
 	get vnode(): VNode {
-		if (this._vnode) {
-			return this._vnode;
-		}
 		const vnode = vNodesFromString(this.render())[0];
 		if (typeof vnode === 'string') {
 			throw new Error('this is string node');
 		}
-		this._vnode = vnode;
 		return vnode;
 	}
 
