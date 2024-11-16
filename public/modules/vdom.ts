@@ -164,6 +164,9 @@ const updateChildren = (
 	prevChildren: (VNode | string)[],
 	newChildren: (VNode | string)[],
 ) => {
+	console.log('updateChildren: node:', node);
+	console.log('updateChildren:', prevChildren);
+	console.log('updateChildren:', newChildren);
 	for (let i = 0, j = 0; i < newChildren.length; i++, j++) {
 		const newVChild = newChildren[i];
 		const prevVChild = prevChildren[j];
