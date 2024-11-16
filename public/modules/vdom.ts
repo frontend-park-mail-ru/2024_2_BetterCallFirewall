@@ -112,6 +112,9 @@ export const create = (vnode: VNode | string): Node => {
 };
 
 export const update = (node: ExtendedNode, vnode: VNode | string) => {
+	console.log('update:');
+	console.log('node:', node);
+	console.log('vnode:', vnode);
 	if (node.nodeType === Node.TEXT_NODE) {
 		node.textContent = vnode as string;
 		return;
