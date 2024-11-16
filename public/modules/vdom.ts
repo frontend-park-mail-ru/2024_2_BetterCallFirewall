@@ -118,6 +118,7 @@ export const update = (node: ExtendedNode, vnode: VNode | string) => {
 	if (node.nodeType === Node.TEXT_NODE) {
 		node.textContent = vnode as string;
 		console.log('node.textContent:', node.textContent);
+		console.log('vnode:', vnode);
 		return;
 	}
 	const elementNode = node as VElement;
