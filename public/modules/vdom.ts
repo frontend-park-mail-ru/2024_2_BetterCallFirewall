@@ -49,6 +49,9 @@ export const vNodesFromString = (htmlStr: string): (VNode | string)[] => {
 	});
 	vnodes = vnodes.filter((vnode) => {
 		console.log('filter: vnode:', vnode);
+		if (!vnode) {
+			return false;
+		}
 		if (typeof vnode === 'string' && isEmptyString(vnode)) {
 			console.log('empty');
 			return false;
@@ -56,18 +59,27 @@ export const vNodesFromString = (htmlStr: string): (VNode | string)[] => {
 		return true;
 	});
 	console.log('return: vnodes:', vnodes);
-	return vnodes;
+	return vnodes as (VNode | string)[];
 };
 
-const vNodeFromNode = (node: VChildNode): VNode | string => {
+const vNodeFromNode = (node: VChildNode): VNode | string | undefined => {
 	console.log('vNodeFromNode: node:', node);
 	if (node.nodeType === Node.TEXT_NODE) {
 		console.log('this is Text:', node);
-		return node.textContent ? node.textContent : '';
+		if (!node.textContent) {
+			return undefined;
+		} else if (isEmptyString(node.textContent)) {
+			return undefined;
+		}
+		return node.textContent;
 	}
 	const elementNode = node as VElement;
-	const children = Array.from(node.childNodes).map((node) => {
-		return vNodeFromNode(node);
+	const children: (VNode | string)[] = [];
+	Array.from(node.childNodes).forEach((node) => {
+		const vnode = vNodeFromNode(node);
+		if (vnode) {
+			children.push(vnode);
+		}
 	});
 	let key = elementNode.getAttribute('data-key');
 	if (!key) {
