@@ -256,6 +256,40 @@ const updateHandlers = (
 	}
 };
 
-const remove = (node: Node) => {
-	node.parentNode?.removeChild(node);
+export const findVNodeByKey = (from: VNode, key: string): VNode | undefined => {
+	return bfs(from, (vnode) => {
+		if (vnode.key === key) {
+			return vnode;
+		}
+	});
+};
+
+export const findVNodeByClass = (
+	from: VNode,
+	className: string,
+): VNode | undefined => {
+	return bfs(from, (vnode) => {
+		const classNames = vnode.attrubutes.className.split(' ');
+		if (classNames.indexOf(className) >= 0) {
+			return vnode;
+		}
+	});
+};
+
+const bfs = (
+	from: VNode,
+	callback: (vnode: VNode) => VNode | undefined,
+): VNode | undefined => {
+	let queue: (VNode | string)[] = from.children;
+	while (queue.length > 0) {
+		const vnode = queue.shift();
+		if (vnode && typeof vnode !== 'string') {
+			const result = callback(vnode);
+			if (result) {
+				return result;
+			}
+			queue = queue.concat(vnode.children);
+		}
+	}
+	return undefined;
 };

@@ -1,3 +1,4 @@
+import { findVNodeByKey, VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
 import MenuLink, { IMenuLinkConfig } from '../MenuLink/MenuLink';
 
@@ -130,6 +131,14 @@ export default class Menu extends Component {
 
 	get linksConfig(): LinksConfig {
 		return Object.entries(this.config.links);
+	}
+
+	menuLinkVNode(key: string): VNode {
+		const vnode = findVNodeByKey(this.vnode, key);
+		if (!vnode) {
+			throw new Error('menu link not found');
+		}
+		return vnode;
 	}
 
 	render(): string {
