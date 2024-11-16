@@ -2,7 +2,8 @@ const SVG_TAGS = ['svg', 'path'];
 
 const isEmptyString = (str: string): boolean => {
 	const regex = /^\s*\n\s*$/;
-	return regex.test(str);
+	const emptyRegex = /^\s*$/;
+	return regex.test(str) || emptyRegex.test(str);
 };
 
 type Attributes = Record<string, string>;
@@ -54,6 +55,7 @@ export const vNodesFromString = (htmlStr: string): (VNode | string)[] => {
 		}
 		return true;
 	});
+	console.log('return: vnodes:', vnodes);
 	return vnodes;
 };
 
