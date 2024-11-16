@@ -33,9 +33,9 @@ export class ViewFeed extends ViewHome {
 			case ACTION_FEED_TYPES.update:
 				this.updateViewFeed(change.data);
 				break;
-			case ACTION_FEED_TYPES.postsRequest:
-				this.content.showLoader();
-				break;
+			// case ACTION_FEED_TYPES.postsRequest:
+			// 	this.content.showLoader();
+			// 	break;
 			case ACTION_APP_TYPES.goTo:
 				if (!this._configFeed.posts.length) {
 					this.sendAction(
@@ -44,11 +44,11 @@ export class ViewFeed extends ViewHome {
 				}
 				this.sendAction(new ActionFeedUpdate());
 				break;
-			case ACTION_FEED_TYPES.postsRequestSuccess:
-			case ACTION_FEED_TYPES.postsRequestFail:
-				this.content.hideLoader();
-				this.updateViewFeed(change.data);
-				break;
+			// case ACTION_FEED_TYPES.postsRequestSuccess:
+			// case ACTION_FEED_TYPES.postsRequestFail:
+			// 	this.content.hideLoader();
+			// 	this.updateViewFeed(change.data);
+			// 	break;
 		}
 	}
 
