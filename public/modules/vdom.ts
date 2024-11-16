@@ -160,7 +160,10 @@ const updateChildren = (
 		const toString = typeof newVChild === 'string';
 
 		if (toString && fromString) {
-			node.childNodes[i].textContent = newVChild;
+			const childNode = node.childNodes[i];
+			if (childNode) {
+				childNode.textContent = newVChild;
+			}
 		} else if (
 			!fromString &&
 			!toString &&
