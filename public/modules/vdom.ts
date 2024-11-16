@@ -220,8 +220,17 @@ const updateChildren = (
 			j--;
 		}
 	}
+	let i = newChildren.length;
 	while (newChildren.length < node.childNodes.length) {
-		node.removeChild(node.childNodes[node.childNodes.length - 1]);
+		const childNode = node.childNodes[node.childNodes.length - 1];
+		const childVNode = prevChildren[i];
+		if (typeof childVNode !== 'string') {
+			childVNode.handlers.forEach((handler) => {
+				childNode.removeEventListener(handler.event, handler.callback);
+			});
+		}
+		node.removeChild(childNode);
+		i++;
 	}
 };
 
