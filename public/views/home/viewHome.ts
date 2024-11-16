@@ -178,7 +178,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		console.log('rootVNode:', rootVNode);
 		console.log('rootVNode.children:', rootVNode.children);
 		const rootExtendedNode: ExtendedNode = this._root.node;
-		console.log('rootNode:', rootExtendedNoderootVNode);
+		console.log('rootNode:', rootExtendedNode);
 		rootExtendedNode._vnode = this._root.vnode;
 		update(rootExtendedNode, rootVNode);
 
