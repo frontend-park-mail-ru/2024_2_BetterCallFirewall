@@ -41,8 +41,8 @@ export default abstract class Component {
 		return this.updateVNode();
 	}
 
-	updateVNode(): VNode {
-		const vnode = vNodesFromString(this.render())[0];
+	updateVNode(html?: string): VNode {
+		const vnode = vNodesFromString(html ? html : this.render())[0];
 		if (typeof vnode === 'string') {
 			throw new Error('this is string node');
 		}
@@ -65,7 +65,7 @@ export default abstract class Component {
 			this._templateContext,
 		);
 		const html = template(this._templateContext);
-		this.updateVNode();
+		this.updateVNode(html);
 		return html;
 	}
 
