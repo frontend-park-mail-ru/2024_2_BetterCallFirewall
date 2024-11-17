@@ -52,7 +52,8 @@ export default abstract class Component {
 			return this._vnode;
 		}
 		if (this._vnode) {
-			console.log('vnode: has vnode');
+			console.log('vnode: has vnode:', this._vnode);
+			debugger;
 			return this._vnode;
 		}
 		console.log('vnode: new vnode');
