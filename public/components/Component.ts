@@ -62,6 +62,7 @@ export default abstract class Component {
 
 	newVNode(html?: string): VNode {
 		const vnode = vNodesFromString(html ? html : this.render())[0];
+		debugger;
 		if (typeof vnode === 'string') {
 			throw new Error('this is string node');
 		}
