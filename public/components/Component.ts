@@ -1,4 +1,9 @@
-import { findVNodeByKey, VNode, vNodesFromString } from '../modules/vdom';
+import {
+	findVNodeByKey,
+	Handler,
+	VNode,
+	vNodesFromString,
+} from '../modules/vdom';
 
 export interface ComponentConfig {
 	key: string;
@@ -10,6 +15,7 @@ export default abstract class Component {
 	protected _templateContext: object = {};
 	protected _children: Component[] = [];
 	private _vnode?: VNode;
+	private _handlers: Handler[] = [];
 
 	constructor(
 		config: ComponentConfig | null = null,
@@ -43,6 +49,9 @@ export default abstract class Component {
 			this._vnode = vnode;
 			return this._vnode;
 		}
+		if (this._vnode) {
+			return this._vnode;
+		}
 		return this.newVNode();
 	}
 
@@ -50,7 +59,7 @@ export default abstract class Component {
 		if (this._parent) {
 			return this._parent.rootVNode;
 		}
-		return this.newVNode();
+		return this.vnode;
 	}
 
 	newVNode(html?: string): VNode {

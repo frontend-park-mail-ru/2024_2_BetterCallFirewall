@@ -20,7 +20,7 @@ export interface VNode {
 	children: (VNode | string)[];
 }
 
-interface Handler {
+export interface Handler {
 	event: string;
 	callback: (event: Event) => void;
 }
