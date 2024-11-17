@@ -1,9 +1,4 @@
-import {
-	findVNodeByKey,
-	updateVNode,
-	VNode,
-	vNodesFromString,
-} from '../modules/vdom';
+import { findVNodeByKey, VNode, vNodesFromString } from '../modules/vdom';
 
 export interface ComponentConfig {
 	key: string;
@@ -62,15 +57,10 @@ export default abstract class Component {
 
 	newVNode(html?: string): VNode {
 		const vnode = vNodesFromString(html ? html : this.render())[0];
-		debugger;
 		if (typeof vnode === 'string') {
 			throw new Error('this is string node');
 		}
-		if (this._vnode) {
-			updateVNode(this._vnode, vnode);
-		} else {
-			this._vnode = vnode;
-		}
+		this._vnode = vnode;
 		return this._vnode;
 	}
 
