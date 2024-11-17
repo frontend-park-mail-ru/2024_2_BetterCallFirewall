@@ -134,7 +134,6 @@ export default class Menu extends Component {
 	}
 
 	menuLinkVNode(key: string): VNode {
-		debugger;
 		const vnode = findVNodeByKey(this.vnode, key);
 		if (!vnode) {
 			throw new Error('menu link not found');

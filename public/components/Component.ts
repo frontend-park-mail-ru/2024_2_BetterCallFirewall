@@ -42,7 +42,7 @@ export default abstract class Component {
 
 	get vnode(): VNode {
 		if (this._parent) {
-			const vnode = findVNodeByKey(this.rootVNode, this.config.key);
+			const vnode = findVNodeByKey(this._parent.vnode, this.config.key);
 			if (!vnode) {
 				throw new Error('vnode not found');
 			}
@@ -53,13 +53,6 @@ export default abstract class Component {
 			return this._vnode;
 		}
 		return this.newVNode();
-	}
-
-	get rootVNode(): VNode {
-		if (this._parent) {
-			return this._parent.rootVNode;
-		}
-		return this.vnode;
 	}
 
 	newVNode(html?: string): VNode {
