@@ -1,3 +1,5 @@
+import deepClone from './deepClone';
+
 const SVG_TAGS = ['svg', 'path'];
 
 const isEmptyString = (str: string): boolean => {
@@ -280,7 +282,7 @@ const bfs = (
 	from: VNode,
 	callback: (vnode: VNode) => VNode | undefined,
 ): VNode | undefined => {
-	let queue: (VNode | string)[] = from.children;
+	let queue: (VNode | string)[] = deepClone(from.children);
 	while (queue.length > 0) {
 		const vnode = queue.shift();
 		if (vnode && typeof vnode !== 'string') {
@@ -288,7 +290,7 @@ const bfs = (
 			if (result) {
 				return result;
 			}
-			queue = queue.concat(vnode.children);
+			queue = queue.concat(deepClone(vnode.children));
 		}
 	}
 	return undefined;
