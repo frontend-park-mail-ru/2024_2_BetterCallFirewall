@@ -66,12 +66,12 @@ export class ViewMessages extends ViewHome implements IViewHome {
 	}
 
 	protected _renderMessages(): void {
-		const content = this.content;
-		this._configMessages.messages.forEach((messageConfig) => {
-			const message = new Message(messageConfig, content);
-			message.render();
-			this._addMessageHandlers(message);
-		});
+		// const content = this.content;
+		// this._configMessages.messages.forEach((messageConfig) => {
+		// 	const message = new Message(messageConfig, content);
+		// 	message.render();
+		// 	this._addMessageHandlers(message);
+		// });
 	}
 
 	protected _addMessageHandlers(message: Message): void {

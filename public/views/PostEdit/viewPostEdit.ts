@@ -1,12 +1,10 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
 import { ACTION_POST_EDIT_TYPES } from '../../actions/actionPostEdit';
-import api from '../../api/api';
 import { Root } from '../../components';
 import {
 	IPostEditFormConfig,
 	PostEditForm,
 } from '../../components/PostEditForm/PostEditForm';
-import Validator from '../../modules/validation';
 import { ChangePostEdit } from '../../stores/storePostEdit';
 import {
 	ComponentsHome,
@@ -83,13 +81,13 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 	}
 
 	protected _renderPostEditForm(): void {
-		const content = this.content;
-		const postEditForm = new PostEditForm(
-			this._configPostEdit.postEditForm,
-			content,
-		);
-		postEditForm.render();
-		this._components.postEditForm = postEditForm;
+		// const content = this.content;
+		// const postEditForm = new PostEditForm(
+		// 	this._configPostEdit.postEditForm,
+		// 	content,
+		// );
+		// postEditForm.render();
+		// this._components.postEditForm = postEditForm;
 	}
 
 	private get _postEditForm(): PostEditForm {
@@ -101,56 +99,54 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 	}
 
 	private _addHandlers() {
-		this.content.addHandler(
-			this._postEditForm.htmlElement,
-			'submit',
-			(event) => {
-				event.preventDefault();
-				const validator = new Validator();
-				const formData = validator.validateForm(
-					this._postEditForm.formData,
-					this._postEditForm.form,
-				);
-				if (formData) {
-					api.editPost(formData, this._configPostEdit.postId);
-				}
-			},
-		);
-
+		// this.content.addHandler(
+		// 	this._postEditForm.htmlElement,
+		// 	'submit',
+		// 	(event) => {
+		// 		event.preventDefault();
+		// 		const validator = new Validator();
+		// 		const formData = validator.validateForm(
+		// 			this._postEditForm.formData,
+		// 			this._postEditForm.form,
+		// 		);
+		// 		if (formData) {
+		// 			api.editPost(formData, this._configPostEdit.postId);
+		// 		}
+		// 	},
+		// );
 		// this._addHandlerInput();
 	}
 
 	private _addHandlerInput(): void {
-		const fileInput = this._postEditForm.fileInput;
-		const label = this._postEditForm.label;
-		const preview = this._postEditForm.img as HTMLImageElement;
-		if (fileInput) {
-			this.content.addHandler(fileInput, 'click', (event) => {
-				const input = event.target as HTMLInputElement;
-				if (input.value) {
-					input.value = '';
-					event.preventDefault();
-					label?.classList.remove('active');
-					label.textContent = 'Прикрепить картинку';
-					preview.src = '';
-				}
-			});
-			this.content.addHandler(fileInput, 'change', (event) => {
-				const input = event.target as HTMLInputElement;
-				if (input.files && input.files.length > 0) {
-					if (label) {
-						label.classList.add('active');
-						label.textContent =
-							'Картинка выбрана, нажмите, чтобы отменить';
-					}
-
-					const reader = new FileReader();
-					reader.onload = function (e) {
-						preview.src = e.target?.result as string;
-					};
-					reader.readAsDataURL(input.files[0]);
-				}
-			});
-		}
+		// const fileInput = this._postEditForm.fileInput;
+		// const label = this._postEditForm.label;
+		// const preview = this._postEditForm.img as HTMLImageElement;
+		// if (fileInput) {
+		// 	this.content.addHandler(fileInput, 'click', (event) => {
+		// 		const input = event.target as HTMLInputElement;
+		// 		if (input.value) {
+		// 			input.value = '';
+		// 			event.preventDefault();
+		// 			label?.classList.remove('active');
+		// 			label.textContent = 'Прикрепить картинку';
+		// 			preview.src = '';
+		// 		}
+		// 	});
+		// 	this.content.addHandler(fileInput, 'change', (event) => {
+		// 		const input = event.target as HTMLInputElement;
+		// 		if (input.files && input.files.length > 0) {
+		// 			if (label) {
+		// 				label.classList.add('active');
+		// 				label.textContent =
+		// 					'Картинка выбрана, нажмите, чтобы отменить';
+		// 			}
+		// 			const reader = new FileReader();
+		// 			reader.onload = function (e) {
+		// 				preview.src = e.target?.result as string;
+		// 			};
+		// 			reader.readAsDataURL(input.files[0]);
+		// 		}
+		// 	});
+		// }
 	}
 }

@@ -93,37 +93,37 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 	}
 
 	private _renderFriends(): void {
-		const content = this.content;
-		const friends = new Friends(this._configFriends.friends, content);
-		friends.render();
-		this._addFriendsHandlers(friends);
+		// const content = this.content;
+		// const friends = new Friends(this._configFriends.friends, content);
+		// friends.render();
+		// this._addFriendsHandlers(friends);
 	}
 
 	private _renderSubscribers() {
-		const content = this.content;
-		const subscribers = new Friends(
-			this._configFriends.subscribers,
-			content,
-		);
-		subscribers.render();
-		this._addFriendsHandlers(subscribers);
+		// const content = this.content;
+		// const subscribers = new Friends(
+		// 	this._configFriends.subscribers,
+		// 	content,
+		// );
+		// subscribers.render();
+		// this._addFriendsHandlers(subscribers);
 	}
 
 	private _renderSubscribtions() {
-		const content = this.content;
-		const subscriptions = new Friends(
-			this._configFriends.subscriptions,
-			content,
-		);
-		subscriptions.render();
-		this._addFriendsHandlers(subscriptions);
+		// const content = this.content;
+		// const subscriptions = new Friends(
+		// 	this._configFriends.subscriptions,
+		// 	content,
+		// );
+		// subscriptions.render();
+		// this._addFriendsHandlers(subscriptions);
 	}
 
 	private _renderUsers() {
-		const content = this.content;
-		const users = new Friends(this._configFriends.users, content);
-		users.render();
-		this._addFriendsHandlers(users);
+		// const content = this.content;
+		// const users = new Friends(this._configFriends.users, content);
+		// users.render();
+		// this._addFriendsHandlers(users);
 	}
 
 	private _addFriendsHandlers(people: Friends) {
@@ -197,17 +197,16 @@ export class ViewFriends extends ViewHome implements IViewFriends {
 	}
 
 	private _addScrollHandler() {
-		let debounceTimeout: NodeJS.Timeout;
-		const handler = () => {
-			if (this._isNearBottom()) {
-				clearTimeout(debounceTimeout);
-				debounceTimeout = setTimeout(() => {
-					const users = this._configFriends.users.friendsConfig;
-					api.requestUsers(users[users.length - 1]?.id);
-				}, 200);
-			}
-		};
-
-		this.content.addHandler(document, 'scroll', handler);
+		// let debounceTimeout: NodeJS.Timeout;
+		// const handler = () => {
+		// 	if (this._isNearBottom()) {
+		// 		clearTimeout(debounceTimeout);
+		// 		debounceTimeout = setTimeout(() => {
+		// 			const users = this._configFriends.users.friendsConfig;
+		// 			api.requestUsers(users[users.length - 1]?.id);
+		// 		}, 200);
+		// 	}
+		// };
+		// this.content.addHandler(document, 'scroll', handler);
 	}
 }

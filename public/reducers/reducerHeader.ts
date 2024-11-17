@@ -4,7 +4,7 @@ import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileGetHeaderSuccessData,
 } from '../actions/actionProfile';
-import { IHeaderConfig } from '../components';
+import { HeaderConfig } from '../components';
 import config from '../config';
 import { headerResponseToHeaderConfig } from '../models/header';
 import deepClone from '../modules/deepClone';
@@ -12,9 +12,9 @@ import deepClone from '../modules/deepClone';
 const initialState = deepClone(config.homeConfig.main.header);
 
 export const reducerHeader = (
-	state: IHeaderConfig = initialState,
+	state: HeaderConfig = initialState,
 	action?: Action,
-): IHeaderConfig => {
+): HeaderConfig => {
 	if (!action) {
 		return state;
 	}

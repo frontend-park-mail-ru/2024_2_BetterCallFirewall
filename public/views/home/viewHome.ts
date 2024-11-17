@@ -1,25 +1,17 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
-import {
-	ActionHeaderLogoutClickFail,
-	ActionHeaderLogoutClickSuccess,
-} from '../../actions/actionHeader';
 import { ACTION_MENU_TYPES } from '../../actions/actionMenu';
 import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
-import app from '../../app';
 import {
 	Header,
 	Container,
-	IContainerConfig,
-	IContentConfig,
-	IHeaderConfig,
+	ContainerConfig,
+	HeaderConfig,
 	MenuConfig,
-	Content,
 	Root,
+	ContentConfig,
+	Content,
 } from '../../components';
 import Menu from '../../components/Menu/Menu';
-import config, { PAGE_LINKS } from '../../config';
-import dispatcher from '../../dispatcher/dispatcher';
-import ajax from '../../modules/ajax';
 import deepClone from '../../modules/deepClone';
 import { ExtendedNode, update } from '../../modules/vdom';
 import { ChangeHome } from '../../stores/storeHome';
@@ -28,9 +20,9 @@ import { BaseView, Components, View } from '../view';
 export interface MainConfig {
 	key: string;
 	className: string;
-	header: IHeaderConfig;
-	content: IContentConfig;
-	aside: IContainerConfig;
+	header: HeaderConfig;
+	content: ContentConfig;
+	aside: ContainerConfig;
 }
 
 export interface HomeConfig {
@@ -46,14 +38,6 @@ export type ComponentsHome = {
 	content?: Content;
 	aside?: Container;
 } & Components;
-
-export interface ViewMenu extends ViewHome {
-	updateMenu(data: MenuConfig): void;
-}
-
-export interface ViewHeader extends ViewHome {
-	updateHeader(data: IHeaderConfig): void;
-}
 
 export interface IViewHome extends View {
 	updateViewHome(data: HomeConfig): void;
@@ -105,28 +89,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	// 	this._addMenuHandlers();
 	// }
 
-	updateHeader(data: IHeaderConfig): void {
-		const header = this._components.header;
-		if (!header) {
-			throw new Error('header does not exist on ViewHome');
-		}
-		header.update(data);
-		this._addHeaderHandlers();
-	}
-
-	updateMain(data: MainConfig): void {
-		this.updateHeader(data.header);
-		const content = this._components.content;
-		const main = this._components.main;
-		const aside = this._components.aside;
-		if (!main || !content || !aside) {
-			throw new Error('component does not exist on ViewHome');
-		}
-		main.update(data);
-		content.update(data.content);
-		aside.update(data.aside);
-	}
-
 	protected get _homeComponents(): ComponentsHome {
 		return this._components;
 	}
@@ -148,11 +110,11 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	protected _clearContent() {
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does not exist on ViewHome');
-		}
-		content.removeInner();
+		// const content = this._components.content;
+		// if (!content) {
+		// 	throw new Error('content does not exist on ViewHome');
+		// }
+		// content.removeInner();
 	}
 
 	protected _updateContent() {
@@ -161,15 +123,15 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	}
 
 	protected _renderContent(): void {
-		const main = this._components.main;
-		if (!main) {
-			throw new Error('main does not exist on viewHome');
-		}
-		this._components.content = new Content(
-			this._configHome.main.content,
-			main,
-		);
-		this._components.content.render();
+		// const main = this._components.main;
+		// if (!main) {
+		// 	throw new Error('main does not exist on viewHome');
+		// }
+		// this._components.content = new Content(
+		// 	this._configHome.main.content,
+		// 	main,
+		// );
+		// this._components.content.render();
 	}
 
 	protected _render() {
@@ -181,6 +143,22 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 
 		this._root.removeChildren();
 		this._components.menu = new Menu(this._configHome.menu, this._root);
+		this._components.main = new Container(
+			this._configHome.main,
+			this._root,
+		);
+		this._components.header = new Header(
+			this._configHome.main.header,
+			this._components.main,
+		);
+		this._components.header = new Content(
+			this._configHome.main.content,
+			this._components.main,
+		);
+		this._components.aside = new Container(
+			this._configHome.main.aside,
+			this._components.main,
+		);
 		const rootVNode = this._root.newVNode();
 
 		const linkVNode = this.menu.menuLinkVNode('feed');
@@ -219,9 +197,9 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	};
 
 	protected _printMessage() {
-		if (this._configHome.errorMessage) {
-			this.content.printMessage(this._configHome.errorMessage);
-		}
+		// if (this._configHome.errorMessage) {
+		// 	this.content.printMessage(this._configHome.errorMessage);
+		// }
 	}
 
 	private get menu(): Menu {
@@ -291,46 +269,45 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	// }
 
 	private _renderHeader() {
-		const main = this._components.main;
-		if (!main) {
-			throw new Error('main does not exist on viewHome');
-		}
-		this._components.header = new Header(
-			this._configHome.main.header,
-			main,
-		);
-		this._components.header.render();
-		this._addHeaderHandlers();
+		// const main = this._components.main;
+		// if (!main) {
+		// 	throw new Error('main does not exist on viewHome');
+		// }
+		// this._components.header = new Header(
+		// 	this._configHome.main.header,
+		// 	main,
+		// );
+		// this._components.header.render();
+		// this._addHeaderHandlers();
 	}
 
 	private _addHeaderHandlers() {
-		const header = this._components.header;
-		if (!header) {
-			throw new Error('header not found');
-		}
-		header.addHandler(header.logoutButtonHTML, 'click', (event: Event) => {
-			event.preventDefault();
-			logoutButtonClick();
-		});
-
-		header.addHandler(header.profileLink, 'click', (event) => {
-			event.preventDefault();
-			const profile = header.config as IHeaderConfig;
-			// this.sendAction(
-			// 	new ActionMenuLinkClick({ href: `/${profile.profile.id}` }),
-			// );
-			this.sendAction(new ActionAppGoTo(`/${profile.profile.id}`));
-		});
+		// const header = this._components.header;
+		// if (!header) {
+		// 	throw new Error('header not found');
+		// }
+		// header.addHandler(header.logoutButtonHTML, 'click', (event: Event) => {
+		// 	event.preventDefault();
+		// 	logoutButtonClick();
+		// });
+		// header.addHandler(header.profileLink, 'click', (event) => {
+		// 	event.preventDefault();
+		// 	const profile = header.config as HeaderConfig;
+		// 	// this.sendAction(
+		// 	// 	new ActionMenuLinkClick({ href: `/${profile.profile.id}` }),
+		// 	// );
+		// 	this.sendAction(new ActionAppGoTo(`/${profile.profile.id}`));
+		// });
 	}
 }
 
-const logoutButtonClick = () => {
-	ajax.post(config.URL.logout, {}, (data, error) => {
-		if (error) {
-			dispatcher.getAction(new ActionHeaderLogoutClickFail());
-			return;
-		}
-		app.router.goToPage(PAGE_LINKS.login);
-		dispatcher.getAction(new ActionHeaderLogoutClickSuccess());
-	});
-};
+// const logoutButtonClick = () => {
+// 	ajax.post(config.URL.logout, {}, (data, error) => {
+// 		if (error) {
+// 			dispatcher.getAction(new ActionHeaderLogoutClickFail());
+// 			return;
+// 		}
+// 		app.router.goToPage(PAGE_LINKS.login);
+// 		dispatcher.getAction(new ActionHeaderLogoutClickSuccess());
+// 	});
+// };

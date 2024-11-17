@@ -1,4 +1,4 @@
-import { IHeaderConfig } from '../components';
+import { HeaderConfig } from '../components';
 import { IProfileConfig } from '../components/Profile/Profile';
 import deepClone from '../modules/deepClone';
 import parseImage from '../modules/parseImage';
@@ -20,9 +20,9 @@ export const headerResponseToProfileConfig = (
 };
 
 export const headerResponseToHeaderConfig = (
-	headerConfig: IHeaderConfig,
+	headerConfig: HeaderConfig,
 	headerResponse: HeaderResponse,
-): IHeaderConfig => {
+): HeaderConfig => {
 	const newHeaderConfig = deepClone(headerConfig);
 	newHeaderConfig.profile.id = headerResponse.author_id;
 	newHeaderConfig.profile.name = headerResponse.author;

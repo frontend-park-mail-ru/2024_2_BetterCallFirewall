@@ -87,11 +87,11 @@ export class ViewFeed extends ViewHome {
 	}
 
 	private _renderPosts(): void {
-		this._configFeed.posts.forEach((postData) => {
-			const post = new Post(postData, this.content);
-			post.render();
-			this._addPostHandlers(post);
-		});
+		// this._configFeed.posts.forEach((postData) => {
+		// 	const post = new Post(postData, this.content);
+		// 	post.render();
+		// 	this._addPostHandlers(post);
+		// });
 	}
 
 	private _addPostHandlers(post: Post) {
@@ -108,20 +108,19 @@ export class ViewFeed extends ViewHome {
 	}
 
 	private _addScrollHandler() {
-		let debounceTimeout: NodeJS.Timeout;
-		const handler = () => {
-			if (this._isNearBottom()) {
-				clearTimeout(debounceTimeout);
-				debounceTimeout = setTimeout(() => {
-					if (!this.config.pendingPostRequest) {
-						this.sendAction(
-							new ActionFeedPostsRequest(this.lastPostId),
-						);
-					}
-				}, 200);
-			}
-		};
-
-		this.content.addHandler(document, 'scroll', handler);
+		// let debounceTimeout: NodeJS.Timeout;
+		// const handler = () => {
+		// 	if (this._isNearBottom()) {
+		// 		clearTimeout(debounceTimeout);
+		// 		debounceTimeout = setTimeout(() => {
+		// 			if (!this.config.pendingPostRequest) {
+		// 				this.sendAction(
+		// 					new ActionFeedPostsRequest(this.lastPostId),
+		// 				);
+		// 			}
+		// 		}, 200);
+		// 	}
+		// };
+		// this.content.addHandler(document, 'scroll', handler);
 	}
 }

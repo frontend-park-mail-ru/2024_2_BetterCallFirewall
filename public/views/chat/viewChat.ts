@@ -14,7 +14,6 @@ import app from '../../app';
 import { Root } from '../../components';
 import { Chat, IChatConfig } from '../../components/Chat/Chat';
 import { IChatMessageConfig } from '../../components/ChatMessage/ChatMessage';
-import { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import { MessageSend } from '../../models/message';
 import { ChangeChat } from '../../stores/storeChat';
@@ -121,11 +120,11 @@ export class ViewChat extends ViewHome implements IViewChat {
 	}
 
 	protected _renderChat(): void {
-		const content = this.content;
-		const chat = new Chat(this._configChat.chat, content);
-		chat.render();
-		this._components.chat = chat;
-		chat.textarea.focus();
+		// const content = this.content;
+		// const chat = new Chat(this._configChat.chat, content);
+		// chat.render();
+		// this._components.chat = chat;
+		// chat.textarea.focus();
 	}
 
 	private _scrollToBottom(): void {
@@ -204,42 +203,39 @@ export class ViewChat extends ViewHome implements IViewChat {
 	}
 
 	private _addScrollHandler() {
-		const chatContent = this._chat.chatContentHTML;
-		const content = this.content;
-
-		let debounceTimeout: NodeJS.Timeout;
-
-		const handleScroll = () => {
-			if (!this._handleScroll) {
-				return;
-			}
-			this._chatScrollBottom =
-				chatContent.scrollHeight -
-				chatContent.scrollTop -
-				chatContent.clientHeight;
-			clearTimeout(debounceTimeout);
-			debounceTimeout = setTimeout(() => {
-				if (chatContent.scrollTop < chatContent.clientHeight * 2) {
-					this.sendAction(
-						new ActionChatRequest(
-							this._chat.config.companionId,
-							this._chat.config.messages[0].createdAtISO,
-						),
-					);
-				}
-			}, 200);
-		};
-
-		content.addHandler(chatContent, 'scroll', handleScroll);
+		// const chatContent = this._chat.chatContentHTML;
+		// const content = this.content;
+		// let debounceTimeout: NodeJS.Timeout;
+		// const handleScroll = () => {
+		// 	if (!this._handleScroll) {
+		// 		return;
+		// 	}
+		// 	this._chatScrollBottom =
+		// 		chatContent.scrollHeight -
+		// 		chatContent.scrollTop -
+		// 		chatContent.clientHeight;
+		// 	clearTimeout(debounceTimeout);
+		// 	debounceTimeout = setTimeout(() => {
+		// 		if (chatContent.scrollTop < chatContent.clientHeight * 2) {
+		// 			this.sendAction(
+		// 				new ActionChatRequest(
+		// 					this._chat.config.companionId,
+		// 					this._chat.config.messages[0].createdAtISO,
+		// 				),
+		// 			);
+		// 		}
+		// 	}, 200);
+		// };
+		// content.addHandler(chatContent, 'scroll', handleScroll);
 	}
 
 	private _addEscapeHandler() {
-		this.content.addHandler(document, 'keydown', (event) => {
-			const keyEvent = event as KeyboardEvent;
-			if (keyEvent.key === 'Escape') {
-				this.sendAction(new ActionAppGoTo(PAGE_LINKS.messages));
-			}
-		});
+		// this.content.addHandler(document, 'keydown', (event) => {
+		// 	const keyEvent = event as KeyboardEvent;
+		// 	if (keyEvent.key === 'Escape') {
+		// 		this.sendAction(new ActionAppGoTo(PAGE_LINKS.messages));
+		// 	}
+		// });
 	}
 
 	private _scrollToOldPosition() {

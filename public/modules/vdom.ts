@@ -291,5 +291,4 @@ const bfs = (
 			queue = queue.concat([...vnode.children]);
 		}
 	}
-	return undefined;
 };
