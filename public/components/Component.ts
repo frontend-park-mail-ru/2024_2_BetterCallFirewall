@@ -35,28 +35,22 @@ export default abstract class Component {
 	}
 
 	get vnode(): VNode {
-		debugger;
-		if (this._vnode) {
-			return this._vnode;
-		}
 		if (this._parent) {
 			const vnode = findVNodeByKey(this.rootVNode, this.config.key);
 			if (!vnode) {
 				throw new Error('vnode not found');
 			}
 			this._vnode = vnode;
-			debugger;
 			return this._vnode;
 		}
 		return this.newVNode();
 	}
 
 	get rootVNode(): VNode {
-		debugger;
 		if (this._parent) {
 			return this._parent.rootVNode;
 		}
-		return this.vnode;
+		return this.newVNode();
 	}
 
 	newVNode(html?: string): VNode {
