@@ -295,6 +295,8 @@ const bfs = (
 };
 
 export const updateVNode = (old: VNode, cur: VNode) => {
+	console.log('updateVNode: old:', old);
+	console.log('updateVNode: cur:', cur);
 	old.attrubutes = cur.attrubutes;
 	old.children = cur.children;
 	old.handlers = cur.handlers;
