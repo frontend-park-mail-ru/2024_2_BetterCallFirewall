@@ -53,7 +53,6 @@ export default abstract class Component {
 		}
 		if (this._vnode) {
 			console.log('vnode: has vnode:', this._vnode);
-			debugger;
 			return this._vnode;
 		}
 		console.log('vnode: new vnode');
@@ -61,7 +60,6 @@ export default abstract class Component {
 	}
 
 	newVNode(html?: string): VNode {
-		debugger;
 		const vnode = vNodesFromString(html ? html : this.render())[0];
 		if (typeof vnode === 'string') {
 			throw new Error('this is string node');
