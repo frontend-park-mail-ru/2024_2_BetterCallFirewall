@@ -183,17 +183,17 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		this._components.menu = new Menu(this._configHome.menu, this._root);
 		const rootVNode = this._root.newVNode();
 
-		// const linkVNode = this.menu.menuLinkVNode('feed');
-		// linkVNode.handlers.push({
-		// 	event: 'click',
-		// 	callback: (event) => {
-		// 		event.preventDefault();
-		// 		this.sendAction(
-		// 			new ActionAppGoTo(this.menu.config.links.feed.href),
-		// 		);
-		// 	},
-		// });
-		// console.log('linkVNode:', linkVNode);
+		const linkVNode = this.menu.menuLinkVNode('feed');
+		linkVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this.sendAction(
+					new ActionAppGoTo(this.menu.config.links.feed.href),
+				);
+			},
+		});
+		console.log('linkVNode:', linkVNode);
 
 		console.log('rootVNode:', rootVNode);
 		console.log('rootVNode.children:', rootVNode.children);
