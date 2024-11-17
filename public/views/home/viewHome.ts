@@ -20,6 +20,7 @@ import Menu from '../../components/Menu/Menu';
 import config, { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
+import deepClone from '../../modules/deepClone';
 import { ExtendedNode, update } from '../../modules/vdom';
 import { ChangeHome } from '../../stores/storeHome';
 import { BaseView, Components, View } from '../view';
@@ -175,12 +176,12 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		console.log('ViewHome._render()');
 
 		const rootExtendedNode: ExtendedNode = this._root.node;
-		rootExtendedNode._vnode = this._root.vnode;
+		rootExtendedNode._vnode = deepClone(this._root.vnode);
 		console.log('rootNode:', rootExtendedNode);
 
 		this._root.removeChildren();
 		this._components.menu = new Menu(this._configHome.menu, this._root);
-		const rootVNode = this._root.updateVNode();
+		const rootVNode = this._root.newVNode();
 
 		const linkVNode = this.menu.menuLinkVNode('feed');
 		linkVNode.handlers.push({

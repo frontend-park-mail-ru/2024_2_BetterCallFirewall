@@ -1,4 +1,9 @@
-import { VNode, vNodesFromString } from '../modules/vdom';
+import {
+	findVNodeByKey,
+	updateVNode,
+	VNode,
+	vNodesFromString,
+} from '../modules/vdom';
 
 export interface ComponentConfig {
 	key: string;
@@ -35,18 +40,36 @@ export default abstract class Component {
 	}
 
 	get vnode(): VNode {
+		if (this._parent) {
+			const vnode = findVNodeByKey(this.rootVNode, this.config.key);
+			if (!vnode) {
+				throw new Error('vnode not found');
+			}
+			return vnode;
+		}
 		if (this._vnode) {
 			return this._vnode;
 		}
-		return this.updateVNode();
+		return this.newVNode();
 	}
 
-	updateVNode(html?: string): VNode {
+	get rootVNode(): VNode {
+		if (this._parent) {
+			return this._parent.rootVNode;
+		}
+		return this.vnode;
+	}
+
+	newVNode(html?: string): VNode {
 		const vnode = vNodesFromString(html ? html : this.render())[0];
 		if (typeof vnode === 'string') {
 			throw new Error('this is string node');
 		}
-		this._vnode = vnode;
+		if (this._vnode) {
+			updateVNode(this._vnode, vnode);
+		} else {
+			this._vnode = vnode;
+		}
 		return this._vnode;
 	}
 
@@ -64,9 +87,7 @@ export default abstract class Component {
 			'Component._render(): templateContext:',
 			this._templateContext,
 		);
-		const html = template(this._templateContext);
-		this.updateVNode(html);
-		return html;
+		return template(this._templateContext);
 	}
 
 	protected _prerender(): void {
