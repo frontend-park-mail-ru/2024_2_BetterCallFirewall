@@ -15,13 +15,13 @@ export class StoreFeed extends BaseStore implements Store {
 	private _storeHome: StoreHome;
 
 	constructor(storeHome: StoreHome) {
-		debugger;
 		super();
 		this._state = reducerFeed();
 		this._storeHome = storeHome;
 	}
 
 	handleAction(action: Action): void {
+		console.log('storeFeed: state before home:', this._state.posts);
 		this._state = { ...this._state, ...this._storeHome.state };
 		console.log('storeFeed: state before:', this._state.posts);
 		this._state = reducerFeed(this._state, action);
