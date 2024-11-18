@@ -71,9 +71,10 @@ export class ViewFeed extends ViewHome {
 		const rootNode = this._root.node;
 
 		this._renderPosts();
-		this._addHandlers();
 
 		const rootVNode = this._root.newVNode();
+
+		this._addHandlers();
 
 		console.log('rootVNode:', rootVNode);
 		console.log('rootVNode.children:', rootVNode.children);

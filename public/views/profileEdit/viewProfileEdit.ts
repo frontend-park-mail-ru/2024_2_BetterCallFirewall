@@ -90,7 +90,7 @@ export class ViewProfileEdit extends ViewHome {
 		return form;
 	}
 
-	private _addHandlers() {
+	protected _addHandlers() {
 		// const form = this._profileEditForm;
 		// form.addHandler(form.htmlElement, 'submit', (event) => {
 		// 	event.preventDefault();

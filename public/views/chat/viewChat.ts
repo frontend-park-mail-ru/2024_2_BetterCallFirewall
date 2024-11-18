@@ -123,7 +123,7 @@ export class ViewChat extends ViewHome {
 		this._scrollToOldPosition();
 	}
 
-	private _addHandlers() {
+	protected _addHandlers() {
 		this._addBackButtonHandler();
 		this._addSendButtonHandler();
 		this._addEnterSendHandler();

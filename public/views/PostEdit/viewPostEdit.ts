@@ -89,7 +89,7 @@ export class ViewPostEdit extends ViewHome {
 		return form;
 	}
 
-	private _addHandlers() {
+	protected _addHandlers() {
 		// this.content.addHandler(
 		// 	this._postEditForm.htmlElement,
 		// 	'submit',

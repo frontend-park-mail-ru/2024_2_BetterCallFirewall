@@ -90,7 +90,7 @@ export class ViewCreatePost extends ViewHome {
 		return form;
 	}
 
-	private _addHandlers() {
+	protected _addHandlers() {
 		// this.content.addHandler(
 		// 	this._createPostForm.htmlElement,
 		// 	'submit',

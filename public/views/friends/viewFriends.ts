@@ -188,7 +188,7 @@ export class ViewFriends extends ViewHome {
 		});
 	}
 
-	private _addHandlers() {
+	protected _addHandlers() {
 		this._addScrollHandler();
 	}
 
