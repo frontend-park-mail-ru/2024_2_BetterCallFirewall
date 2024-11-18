@@ -98,7 +98,7 @@ export class ViewLogin extends View {
 	}
 
 	private inputFieldHandler(loginForm: LoginForm) {
-		loginForm.inputFieldsVNodes.forEach((input) => {
+		loginForm.textInputFieldsVNodes.forEach((input) => {
 			input.handlers.push({
 				event: 'input',
 				callback: (event) => {
@@ -126,33 +126,6 @@ export class ViewLogin extends View {
 				},
 			});
 		});
-
-		// const inputFields = document.querySelectorAll('input, textarea');
-		// inputFields.forEach((input) => {
-		// 	loginForm.addHandler(input as HTMLElement, 'input', (event) => {
-		// 		const target = event.target as HTMLInputElement;
-		// 		const parentElem = target.parentElement as HTMLElement;
-		// 		const validator = validators[target.name];
-		// 		let error = '';
-		// 		if (validator) {
-		// 			if (
-		// 				target.type === 'file' &&
-		// 				target.files &&
-		// 				target.files[0]
-		// 			) {
-		// 				error = validator(target.files[0]);
-		// 			} else {
-		// 				error = validator(target.value.trim());
-		// 			}
-		// 		}
-		// 		const valid = new Validator();
-		// 		if (error) {
-		// 			valid.printError(parentElem as HTMLInputElement, error);
-		// 		} else {
-		// 			valid.errorsDelete(parentElem);
-		// 		}
-		// 	});
-		// });
 	}
 }
 

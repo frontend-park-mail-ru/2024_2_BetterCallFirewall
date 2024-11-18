@@ -264,7 +264,21 @@ export const findVNodeByClass = (
 	});
 };
 
-export const findVNodesbyTagName = (from: VNode, tagName: string): VNode[] => {
+export const findVNodebyTagName = (
+	from: VNode,
+	tagName: string,
+): VNode | undefined => {
+	return bfs(from, (vnode) => {
+		if (vnode.tagName.toLowerCase() === tagName) {
+			return vnode;
+		}
+	});
+};
+
+export const findVNodebyTagNameAll = (
+	from: VNode,
+	tagName: string,
+): VNode[] => {
 	return bfsAll(from, (vnode) => {
 		if (vnode.tagName.toLowerCase() === tagName) {
 			return vnode;
