@@ -21,11 +21,8 @@ export class StoreFeed extends BaseStore implements Store {
 	}
 
 	handleAction(action: Action): void {
-		console.log('storeFeed: state before home:', this._state.posts);
 		this._state = { ...this._state, ...this._storeHome.state };
-		console.log('storeFeed: state before:', this._state.posts);
 		this._state = reducerFeed(this._state, action);
-		console.log('storeFeed: state after:', this._state.posts);
 		if (this._registeredView?.active) {
 			this._registeredView.handleChange({
 				type: action.type,

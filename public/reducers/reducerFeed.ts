@@ -39,10 +39,7 @@ export const reducerFeed = (
 			).postsData.map((postResponse) => {
 				return toPostConfig(postResponse);
 			});
-			console.log('reducerFeed: posts before:', newState.posts);
-			console.log('reducerFeed: newPosts:', newPosts);
 			newState.posts = newState.posts.concat(newPosts);
-			console.log('reducerFeed: posts after:', newState.posts);
 			return newState;
 		}
 		case ACTION_FEED_TYPES.postsRequestFail: {

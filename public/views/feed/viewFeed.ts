@@ -5,7 +5,6 @@ import {
 	ActionFeedUpdate,
 } from '../../actions/actionFeed';
 import { PostConfig, Post, Root } from '../../components';
-import deepClone from '../../modules/deepClone';
 import { update } from '../../modules/vdom';
 import { ChangeFeed } from '../../stores/storeFeed';
 import { HomeConfig, ViewHome } from '../home/viewHome';
@@ -35,7 +34,10 @@ export class ViewFeed extends ViewHome {
 				this.updateViewFeed(change.data);
 				break;
 			case ACTION_APP_TYPES.goTo:
-				if (!this._configFeed.posts.length) {
+				if (
+					!this._configFeed.posts.length &&
+					!this._configFeed.pendingPostRequest
+				) {
 					this.sendAction(
 						new ActionFeedPostsRequest(this.lastPostId),
 					);
@@ -55,7 +57,7 @@ export class ViewFeed extends ViewHome {
 		console.log('ViewFeed.render()');
 		this._render();
 
-		if (this._isNearBottom()) {
+		if (this._isNearBottom() && !this._configFeed.pendingPostRequest) {
 			this.sendAction(new ActionFeedPostsRequest(this.lastPostId));
 		}
 	}
@@ -96,12 +98,9 @@ export class ViewFeed extends ViewHome {
 	}
 
 	private _renderPosts(): void {
-		console.log('renderPosts: posts:', this._configFeed.posts);
 		this._configFeed.posts.forEach((postConfig) => {
-			new Post(deepClone(postConfig), this.content);
+			new Post(postConfig, this.content);
 		});
-		console.log('renderPosts: content:', this.content);
-		console.log('renderPosts: rootVNode:', this._root.vnode);
 	}
 
 	private _addScrollHandler() {
