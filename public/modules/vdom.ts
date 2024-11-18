@@ -34,7 +34,6 @@ interface VChildNode extends ChildNode {
 }
 
 export const vNodesFromString = (htmlStr: string): (VNode | string)[] => {
-	console.log('vNodesFromString: htmlStr:', htmlStr);
 	const wrapper = document.createElement('div');
 	wrapper.innerHTML = htmlStr;
 	const nodes = Array.from(wrapper.childNodes);
@@ -48,24 +47,19 @@ export const vNodesFromString = (htmlStr: string): (VNode | string)[] => {
 		return '';
 	});
 	vnodes = vnodes.filter((vnode) => {
-		console.log('filter: vnode:', vnode);
 		if (!vnode) {
 			return false;
 		}
 		if (typeof vnode === 'string' && isEmptyString(vnode)) {
-			console.log('empty');
 			return false;
 		}
 		return true;
 	});
-	console.log('return: vnodes:', vnodes);
 	return vnodes as (VNode | string)[];
 };
 
 const vNodeFromNode = (node: VChildNode): VNode | string | undefined => {
-	console.log('vNodeFromNode: node:', node);
 	if (node.nodeType === Node.TEXT_NODE) {
-		console.log('this is Text:', node);
 		if (!node.textContent) {
 			return undefined;
 		} else if (isEmptyString(node.textContent)) {
@@ -140,15 +134,10 @@ export const create = (vnode: VNode | string): Node => {
 };
 
 export const update = (node: ExtendedNode, vnode: VNode | string) => {
-	console.log('update:');
-	console.log('node:', node);
-	console.log('vnode:', vnode);
 	if (node.nodeType === Node.TEXT_NODE) {
 		if (typeof vnode === 'string') {
 			node.textContent = vnode;
 		}
-		console.log('node.textContent:', node.textContent);
-		console.log('vnode:', vnode);
 		return;
 	}
 	const elementNode = node as VElement;
@@ -192,9 +181,6 @@ const updateChildren = (
 	prevChildren: (VNode | string)[],
 	newChildren: (VNode | string)[],
 ) => {
-	console.log('updateChildren: node:', node);
-	console.log('updateChildren: prevChildren:', prevChildren);
-	console.log('updateChildren: newChildren:', newChildren);
 	for (let i = 0, j = 0; i < newChildren.length; i++, j++) {
 		const newVChild = newChildren[i];
 		const prevVChild = prevChildren[j];

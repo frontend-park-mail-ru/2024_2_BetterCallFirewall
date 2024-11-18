@@ -1,9 +1,14 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import {
+	ActionHeaderLogoutClickFail,
+	ActionHeaderLogoutClickSuccess,
+} from '../../actions/actionHeader';
+import {
 	ACTION_MENU_TYPES,
 	ActionMenuTitleClick,
 } from '../../actions/actionMenu';
 import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
+import app from '../../app';
 import {
 	Header,
 	Container,
@@ -15,6 +20,9 @@ import {
 	Content,
 } from '../../components';
 import Menu from '../../components/Menu/Menu';
+import { PAGE_LINKS } from '../../config';
+import dispatcher from '../../dispatcher/dispatcher';
+import ajax from '../../modules/ajax';
 import { ExtendedNode, update } from '../../modules/vdom';
 import { ChangeHome } from '../../stores/storeHome';
 import { Components, View } from '../view';
@@ -77,16 +85,6 @@ export abstract class ViewHome extends View {
 		this._render();
 	}
 
-	// updateMenu(data: MenuConfig): void {
-	// 	this._configHome.menu = data;
-	// 	const menu = this._components.menu;
-	// 	if (!menu) {
-	// 		throw new Error('menu does not exist on ViewHome');
-	// 	}
-	// 	menu.update(data);
-	// 	this._addMenuHandlers();
-	// }
-
 	protected get _homeComponents(): ComponentsHome {
 		return this._components;
 	}
@@ -105,31 +103,6 @@ export abstract class ViewHome extends View {
 			throw new Error('profile link not found');
 		}
 		return profileLink.href;
-	}
-
-	protected _clearContent() {
-		// const content = this._components.content;
-		// if (!content) {
-		// 	throw new Error('content does not exist on ViewHome');
-		// }
-		// content.removeInner();
-	}
-
-	protected _updateContent() {
-		this._clearContent();
-		this._renderContent();
-	}
-
-	protected _renderContent(): void {
-		// const main = this._components.main;
-		// if (!main) {
-		// 	throw new Error('main does not exist on viewHome');
-		// }
-		// this._components.content = new Content(
-		// 	this._configHome.main.content,
-		// 	main,
-		// );
-		// this._components.content.render();
 	}
 
 	protected _render() {
@@ -159,6 +132,7 @@ export abstract class ViewHome extends View {
 		const rootVNode = this._root.newVNode();
 
 		this._addMenuHandlers();
+		this._addHeaderHandlers();
 
 		console.log('rootVNode:', rootVNode);
 		console.log('rootVNode.children:', rootVNode.children);
@@ -186,6 +160,14 @@ export abstract class ViewHome extends View {
 		return menu;
 	}
 
+	private get header(): Header {
+		const header = this._components.header;
+		if (!header) {
+			throw new Error('header does not exist');
+		}
+		return header;
+	}
+
 	private _addMenuHandlers() {
 		Object.entries(this.menu.config.links).forEach(([, link]) => {
 			const linkVNode = this.menu.menuLinkVNode(link.key);
@@ -209,32 +191,31 @@ export abstract class ViewHome extends View {
 	}
 
 	private _addHeaderHandlers() {
-		// const header = this._components.header;
-		// if (!header) {
-		// 	throw new Error('header not found');
-		// }
-		// header.addHandler(header.logoutButtonHTML, 'click', (event: Event) => {
-		// 	event.preventDefault();
-		// 	logoutButtonClick();
-		// });
-		// header.addHandler(header.profileLink, 'click', (event) => {
-		// 	event.preventDefault();
-		// 	const profile = header.config as HeaderConfig;
-		// 	// this.sendAction(
-		// 	// 	new ActionMenuLinkClick({ href: `/${profile.profile.id}` }),
-		// 	// );
-		// 	this.sendAction(new ActionAppGoTo(`/${profile.profile.id}`));
-		// });
+		this.header.logoutButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				logoutButtonClick();
+			},
+		});
+		this.header.profileLinkVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				const profile = this.header.config;
+				this.sendAction(new ActionAppGoTo(`/${profile.profile.id}`));
+			},
+		});
 	}
 }
 
-// const logoutButtonClick = () => {
-// 	ajax.post(config.URL.logout, {}, (data, error) => {
-// 		if (error) {
-// 			dispatcher.getAction(new ActionHeaderLogoutClickFail());
-// 			return;
-// 		}
-// 		app.router.goToPage(PAGE_LINKS.login);
-// 		dispatcher.getAction(new ActionHeaderLogoutClickSuccess());
-// 	});
-// };
+const logoutButtonClick = () => {
+	ajax.post(app.config.URL.logout, {}, (data, error) => {
+		if (error) {
+			dispatcher.getAction(new ActionHeaderLogoutClickFail());
+			return;
+		}
+		app.router.goToPage(PAGE_LINKS.login);
+		dispatcher.getAction(new ActionHeaderLogoutClickSuccess());
+	});
+};
