@@ -1,5 +1,8 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
-import { ACTION_MENU_TYPES } from '../../actions/actionMenu';
+import {
+	ACTION_MENU_TYPES,
+	ActionMenuTitleClick,
+} from '../../actions/actionMenu';
 import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
 import {
 	Header,
@@ -155,17 +158,7 @@ export abstract class ViewHome extends View {
 		);
 		const rootVNode = this._root.newVNode();
 
-		const linkVNode = this.menu.menuLinkVNode('feed');
-		linkVNode.handlers.push({
-			event: 'click',
-			callback: (event) => {
-				event.preventDefault();
-				this.sendAction(
-					new ActionAppGoTo(this.menu.config.links.feed.href),
-				);
-			},
-		});
-		console.log('linkVNode:', linkVNode);
+		this._addMenuHandlers();
 
 		console.log('rootVNode:', rootVNode);
 		console.log('rootVNode.children:', rootVNode.children);
@@ -193,75 +186,26 @@ export abstract class ViewHome extends View {
 		return menu;
 	}
 
-	private _renderMenu() {
-		// this._components.menu = new Menu(this._configHome.menu, this._root);
-		// this._components.menu = new Menu(this._configHome.menu, this._root);
-		// this._components.menu.render();
-		// this._addMenuHandlers();
-	}
-
 	private _addMenuHandlers() {
-		const menu = this._components.menu;
-		if (!menu) {
-			throw new Error('menu not found');
-		}
-		// const config = menu.config;
-		// const feedLink = menu.children[config.links.feed.key];
-		// menu.addHandler(feedLink.htmlElement, 'click', (event) => {
-		// 	event.preventDefault();
-		// 	this.sendAction(new ActionAppGoTo(config.links.feed.href));
-		// });
+		Object.entries(this.menu.config.links).forEach(([, link]) => {
+			const linkVNode = this.menu.menuLinkVNode(link.key);
+			linkVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionAppGoTo(link.href));
+				},
+			});
+			console.log('linkVNode:', linkVNode);
+		});
 
-		// const profileLink = menu.children[config.links.profile.key];
-		// menu.addHandler(profileLink.htmlElement, 'click', (event) => {
-		// 	event.preventDefault();
-		// 	this.sendAction(new ActionAppGoTo(config.links.profile.href));
-		// });
-
-		// const friendsLink = menu.children[config.links.friends.key];
-		// menu.addHandler(friendsLink.htmlElement, 'click', (event) => {
-		// 	event.preventDefault();
-		// 	this.sendAction(new ActionAppGoTo(config.links.friends.href));
-		// });
-
-		// const messagesLink = menu.children[config.links.messages.key];
-		// menu.addHandler(messagesLink.htmlElement, 'click', (event) => {
-		// 	event.preventDefault();
-		// 	this.sendAction(new ActionAppGoTo(config.links.messages.href));
-		// });
-
-		// const titleHTML = menu.htmlElement.querySelector(
-		// 	'[data-key=title]',
-		// ) as HTMLElement;
-		// if (!titleHTML) {
-		// 	throw new Error('title not found');
-		// }
-		// menu.addHandler(titleHTML, 'click', (event) => {
-		// 	event.preventDefault();
-		// 	dispatcher.getAction(new ActionMenuTitleClick());
-		// });
-	}
-
-	// private _renderMain() {
-	// 	this._components.main = new Container(
-	// 		this._configHome.main,
-	// 		this._root,
-	// 	);
-	// 	this._components.main.render();
-	// 	this._renderHeader();
-	// }
-
-	private _renderHeader() {
-		// const main = this._components.main;
-		// if (!main) {
-		// 	throw new Error('main does not exist on viewHome');
-		// }
-		// this._components.header = new Header(
-		// 	this._configHome.main.header,
-		// 	main,
-		// );
-		// this._components.header.render();
-		// this._addHeaderHandlers();
+		this.menu.titleVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionMenuTitleClick());
+			},
+		});
 	}
 
 	private _addHeaderHandlers() {

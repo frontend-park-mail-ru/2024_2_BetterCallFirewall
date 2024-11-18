@@ -133,6 +133,14 @@ export default class Menu extends Component {
 		return Object.entries(this.config.links);
 	}
 
+	get titleVNode(): VNode {
+		const vnode = findVNodeByKey(this.vnode, this._config.title.key);
+		if (!vnode) {
+			throw new Error('title not found');
+		}
+		return vnode;
+	}
+
 	menuLinkVNode(key: string): VNode {
 		const vnode = findVNodeByKey(this.vnode, key);
 		if (!vnode) {
