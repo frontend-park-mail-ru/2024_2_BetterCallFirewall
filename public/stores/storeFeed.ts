@@ -15,6 +15,7 @@ export class StoreFeed extends BaseStore implements Store {
 	private _storeHome: StoreHome;
 
 	constructor(storeHome: StoreHome) {
+		debugger;
 		super();
 		this._state = reducerFeed();
 		this._storeHome = storeHome;
