@@ -269,7 +269,7 @@ export const findVNodeByClass = (
 	className: string,
 ): VNode | undefined => {
 	return bfs(from, (vnode) => {
-		const classNames = vnode.attrubutes.className.split(' ');
+		const classNames = vnode.attrubutes.class.split(' ');
 		if (classNames.indexOf(className) >= 0) {
 			return vnode;
 		}
