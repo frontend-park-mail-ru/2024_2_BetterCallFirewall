@@ -1,7 +1,7 @@
 import { IBaseComponent } from '../BaseComponent';
-import { BaseForm, IBaseForm, IBaseFormConfig } from '../BaseForm/BaseForm';
+import { BaseForm, IBaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
 
-export interface ICreatePostFormConfig extends IBaseFormConfig {}
+export interface ICreatePostFormConfig extends BaseFormConfig {}
 
 export interface ICreatePostForm extends IBaseForm {}
 
@@ -32,7 +32,9 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 	}
 
 	get fileInput(): HTMLElement {
-		const html = this.htmlElement.querySelector('input[type="file"]') as HTMLElement;
+		const html = this.htmlElement.querySelector(
+			'input[type="file"]',
+		) as HTMLElement;
 		if (!html) {
 			throw new Error('input file not found');
 		}
@@ -40,7 +42,9 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 	}
 
 	get label(): HTMLElement {
-		const html = this.htmlElement.querySelector('.form__upload') as HTMLElement;
+		const html = this.htmlElement.querySelector(
+			'.form__upload',
+		) as HTMLElement;
 		if (!html) {
 			throw new Error('label not found');
 		}
@@ -48,7 +52,9 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 	}
 
 	get img(): HTMLElement {
-		const html = this.htmlElement.querySelector('.form__img') as HTMLElement;
+		const html = this.htmlElement.querySelector(
+			'.form__img',
+		) as HTMLElement;
 		if (!html) {
 			throw new Error('label not found');
 		}

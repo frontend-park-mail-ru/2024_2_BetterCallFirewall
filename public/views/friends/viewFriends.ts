@@ -11,7 +11,7 @@ import { Friends, FriendsConfig } from '../../components/Friends/Friends';
 import { PAGE_URLS } from '../../config';
 import deepClone from '../../modules/deepClone';
 import { ChangeFriends } from '../../stores/storeFriends';
-import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
+import { HomeConfig, ViewHome } from '../home/viewHome';
 
 export interface ViewFriendsConfig extends HomeConfig {
 	friends: FriendsConfig;
@@ -20,11 +20,7 @@ export interface ViewFriendsConfig extends HomeConfig {
 	subscriptions: FriendsConfig;
 }
 
-export interface IViewFriends extends IViewHome {
-	handleChange(change: ChangeFriends): void;
-}
-
-export class ViewFriends extends ViewHome implements IViewFriends {
+export class ViewFriends extends ViewHome {
 	protected _configFriends: ViewFriendsConfig;
 
 	constructor(config: ViewFriendsConfig, root: Root) {

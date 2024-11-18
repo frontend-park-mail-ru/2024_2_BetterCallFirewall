@@ -22,16 +22,19 @@
 // 	}
 // }
 
+import deepClone from '../../modules/deepClone';
+import { ExtendedNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
 
 export class Root extends Component {
 	protected _config: ComponentConfig = { key: 'root' };
 
-	get node(): Element {
-		const element = document.getElementById('root');
+	get node(): ExtendedNode {
+		const element = document.getElementById('root') as ExtendedNode;
 		if (!element) {
 			throw new Error('root no found');
 		}
+		element._vnode = deepClone(this.vnode);
 		return element;
 	}
 

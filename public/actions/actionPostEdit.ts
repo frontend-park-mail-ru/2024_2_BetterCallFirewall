@@ -1,4 +1,4 @@
-import { IPostConfig } from '../components';
+import { PostConfig } from '../components';
 import { PostResponse } from '../models/post';
 import { Action, ActionType } from './action';
 
@@ -26,14 +26,14 @@ export class ActionPostEditUpdate implements Action {
 }
 
 export interface ActionPostEditGoToData {
-	postConfig: IPostConfig;
+	postConfig: PostConfig;
 }
 
 export class ActionPostEditGoTo implements Action {
 	type: ActionType = ACTION_POST_EDIT_TYPES.goToPostEdit;
 	data: ActionPostEditGoToData;
 
-	constructor(postConfig: IPostConfig) {
+	constructor(postConfig: PostConfig) {
 		this.data = { postConfig };
 	}
 }

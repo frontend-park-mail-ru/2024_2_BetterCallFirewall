@@ -4,12 +4,7 @@ import { Root } from '../../components';
 import { IMessageConfig, Message } from '../../components/Message/Message';
 import { PAGE_URLS } from '../../config';
 import { ChangeMessages } from '../../stores/storeMessages';
-import {
-	ComponentsHome,
-	HomeConfig,
-	IViewHome,
-	ViewHome,
-} from '../home/viewHome';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsMessages = {
 	messages?: Message[];
@@ -19,11 +14,7 @@ export interface ViewMessagesConfig extends HomeConfig {
 	messages: IMessageConfig[];
 }
 
-export interface IViewMessages extends IViewHome {
-	handleChange(change: ChangeMessages): void;
-}
-
-export class ViewMessages extends ViewHome implements IViewHome {
+export class ViewMessages extends ViewHome {
 	protected _configMessages: ViewMessagesConfig;
 	protected _components: ComponentsMessages = {};
 

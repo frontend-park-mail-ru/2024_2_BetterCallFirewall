@@ -1,4 +1,4 @@
-import { IPostConfig } from '../components';
+import { PostConfig } from '../components';
 import parseImage from '../modules/parseImage';
 import parseTime from '../modules/parseTime';
 
@@ -20,7 +20,7 @@ export interface PostResponse {
 	post_content: PostContent;
 }
 
-export const toPostConfig = (postResponse: PostResponse): IPostConfig => {
+export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 	return {
 		id: postResponse.id,
 		key: `post-${postResponse.id}`,

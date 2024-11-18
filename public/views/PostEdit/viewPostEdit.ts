@@ -6,12 +6,7 @@ import {
 	PostEditForm,
 } from '../../components/PostEditForm/PostEditForm';
 import { ChangePostEdit } from '../../stores/storePostEdit';
-import {
-	ComponentsHome,
-	HomeConfig,
-	IViewHome,
-	ViewHome,
-} from '../home/viewHome';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsPostEdit = {
 	postEditForm?: PostEditForm;
@@ -22,11 +17,7 @@ export interface ViewPostEditConfig extends HomeConfig {
 	postId: number;
 }
 
-export interface IViewPostEdit extends IViewHome {
-	// handleChange(change: ChangePostEdit): void;
-}
-
-export class ViewPostEdit extends ViewHome implements IViewPostEdit {
+export class ViewPostEdit extends ViewHome {
 	protected _configPostEdit: ViewPostEditConfig;
 	protected _components: ComponentsPostEdit = {};
 

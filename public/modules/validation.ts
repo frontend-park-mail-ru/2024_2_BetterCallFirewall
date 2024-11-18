@@ -1,4 +1,4 @@
-import { IInputConfig } from '../components/index';
+import { InputConfig } from '../components/index';
 import { validators } from '../config';
 export default class Validator {
 	/**
@@ -149,8 +149,8 @@ export default class Validator {
 	 * @param {Object} config
 	 */
 	configItems(
-		config: Record<string, IInputConfig>,
-	): Array<[string, IInputConfig]> {
+		config: Record<string, InputConfig>,
+	): Array<[string, InputConfig]> {
 		return Object.entries(config);
 	}
 

@@ -4,13 +4,14 @@ import {
 	ActionFeedPostsRequest,
 	ActionFeedUpdate,
 } from '../../actions/actionFeed';
-import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
-import { IPostConfig, Post, Root } from '../../components';
+import { PostConfig, Post, Root } from '../../components';
+import deepClone from '../../modules/deepClone';
+import { update } from '../../modules/vdom';
 import { ChangeFeed } from '../../stores/storeFeed';
 import { HomeConfig, ViewHome } from '../home/viewHome';
 
 export interface ViewFeedConfig extends HomeConfig {
-	posts: IPostConfig[];
+	posts: PostConfig[];
 	pendingPostRequest: boolean;
 }
 
@@ -67,13 +68,15 @@ export class ViewFeed extends ViewHome {
 		this._render();
 	}
 
-	update(config: object): void {
-		this.updateViewFeed(config as ViewFeedConfig);
-	}
-
 	protected _render(): void {
 		console.log('ViewFeed._render()');
 		super._render();
+		const rootNode = this._root.node;
+		const rootVNode = deepClone(this._root.vnode);
+
+		this._renderPosts();
+
+		update(rootNode, rootVNode);
 		// this._renderPosts();
 		// this._printMessage();
 		// this._addHandlers();
@@ -87,20 +90,9 @@ export class ViewFeed extends ViewHome {
 	}
 
 	private _renderPosts(): void {
-		// this._configFeed.posts.forEach((postData) => {
-		// 	const post = new Post(postData, this.content);
-		// 	post.render();
-		// 	this._addPostHandlers(post);
-		// });
-	}
-
-	private _addPostHandlers(post: Post) {
-		if (post.config.hasEditButton) {
-			post.addHandler(post.editButton, 'click', (event) => {
-				event.preventDefault();
-				this.sendAction(new ActionPostEditGoTo(post.config));
-			});
-		}
+		this._configFeed.posts.forEach((postData) => {
+			new Post(postData, this.content);
+		});
 	}
 
 	private _addHandlers() {

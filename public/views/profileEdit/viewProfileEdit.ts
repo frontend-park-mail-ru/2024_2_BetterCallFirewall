@@ -8,12 +8,7 @@ import {
 } from '../../components/ProfileEditForm/ProfileEditForm';
 import Validator from '../../modules/validation';
 import { ChangeProfileEdit } from '../../stores/storeProfileEditForm';
-import {
-	ComponentsHome,
-	HomeConfig,
-	IViewHome,
-	ViewHome,
-} from '../home/viewHome';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsProfileEdit = {
 	profileEditForm?: ProfileEditForm;
@@ -23,11 +18,7 @@ export interface ViewProfileEditConfig extends HomeConfig {
 	profileEditForm: IProfileEditFormConfig;
 }
 
-export interface IViewProfileEdit extends IViewHome {
-	handleChange(change: ChangeProfileEdit): void;
-}
-
-export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
+export class ViewProfileEdit extends ViewHome {
 	protected _configProfileEdit: ViewProfileEditConfig;
 	protected _components: ComponentsProfileEdit = {};
 
@@ -100,19 +91,19 @@ export class ViewProfileEdit extends ViewHome implements IViewProfileEdit {
 	}
 
 	private _addHandlers() {
-		const form = this._profileEditForm;
-		form.addHandler(form.htmlElement, 'submit', (event) => {
-			event.preventDefault();
-			const validator = new Validator();
-			const formData = validator.validateForm(
-				this._profileEditForm.formData,
-				this._profileEditForm.form,
-			);
-			if (formData) {
-				api.editProfile(formData);
-			}
-		});
-		this._addHandlerInput();
+		// const form = this._profileEditForm;
+		// form.addHandler(form.htmlElement, 'submit', (event) => {
+		// 	event.preventDefault();
+		// 	const validator = new Validator();
+		// 	const formData = validator.validateForm(
+		// 		this._profileEditForm.formData,
+		// 		this._profileEditForm.form,
+		// 	);
+		// 	if (formData) {
+		// 		api.editProfile(formData);
+		// 	}
+		// });
+		// this._addHandlerInput();
 	}
 
 	private _addHandlerInput(): void {

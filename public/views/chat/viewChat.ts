@@ -17,12 +17,7 @@ import { IChatMessageConfig } from '../../components/ChatMessage/ChatMessage';
 import dispatcher from '../../dispatcher/dispatcher';
 import { MessageSend } from '../../models/message';
 import { ChangeChat } from '../../stores/storeChat';
-import {
-	ComponentsHome,
-	HomeConfig,
-	IViewHome,
-	ViewHome,
-} from '../home/viewHome';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsChat = {
 	chat?: Chat;
@@ -32,11 +27,7 @@ export interface ViewChatConfig extends HomeConfig {
 	chat: IChatConfig;
 }
 
-export interface IViewChat extends IViewHome {
-	handleChange(change: ChangeChat): void;
-}
-
-export class ViewChat extends ViewHome implements IViewChat {
+export class ViewChat extends ViewHome {
 	protected _configChat: ViewChatConfig;
 	protected _components: ComponentsChat = {};
 	private _chatScrollBottom: number = 0;

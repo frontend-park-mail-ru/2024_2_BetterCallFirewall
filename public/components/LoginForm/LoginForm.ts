@@ -57,23 +57,23 @@
 // 	}
 // }
 
-import BaseComponent from '../BaseComponent';
-import { BaseForm, IBaseFormConfig } from '../BaseForm/BaseForm';
-import { FormLink, IFormLinkConfig } from '../FormLink/FormLink';
-import { IInputConfig } from '../Input/Input';
+import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
+import Component from '../Component';
+import { FormLink, FormLinkConfig } from '../FormLink/FormLink';
+import { InputConfig } from '../Input/Input';
 
-export interface ILoginFormConfig extends IBaseFormConfig {
+export interface ILoginFormConfig extends BaseFormConfig {
 	inputs: {
-		email: IInputConfig;
-		password: IInputConfig;
+		email: InputConfig;
+		password: InputConfig;
 	};
-	toSignupLink: IFormLinkConfig;
+	toSignupLink: FormLinkConfig;
 }
 
 export class LoginForm extends BaseForm {
 	protected override _config: ILoginFormConfig;
 
-	constructor(config: ILoginFormConfig, parent: BaseComponent) {
+	constructor(config: ILoginFormConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 	}
@@ -83,7 +83,7 @@ export class LoginForm extends BaseForm {
 	}
 
 	get form(): HTMLElement {
-		const html = this.htmlElement.querySelector('.form') as HTMLElement;
+		const html = document.querySelector('.form') as HTMLElement;
 		if (html) {
 			return html;
 		}
@@ -96,22 +96,12 @@ export class LoginForm extends BaseForm {
 		this._items.toSignupLink = toSignupLink;
 		this._templateContext = {
 			...this._templateContext,
-			toSignupLink: toSignupLink.render(false),
+			toSignupLink: toSignupLink.render(),
 		};
 	}
 
 	render(): string {
 		this._prerender();
-		this._render('LoginForm.hbs');
-
-		const toSignupLinkHTML = this.htmlElement.querySelector(
-			`[data-key=${this._config.toSignupLink.key}]`,
-		);
-		if (!toSignupLinkHTML) {
-			throw new Error('toSignupLinkHTML not found');
-		}
-		this.items.toSignupLink.htmlElement = toSignupLinkHTML as HTMLElement;
-
-		return this.htmlElement.outerHTML;
+		return this._render('LoginForm.hbs');
 	}
 }

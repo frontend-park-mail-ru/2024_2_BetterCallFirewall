@@ -2,7 +2,7 @@ import BaseComponent, {
 	IBaseComponent,
 	IBaseComponentConfig,
 } from '../BaseComponent';
-import { IPostConfig, Post } from '../Post/Post';
+import { PostConfig, Post } from '../Post/Post';
 
 type Posts = Post[];
 
@@ -15,7 +15,7 @@ export interface IProfileConfig extends IBaseComponentConfig {
 	groupsCount?: number;
 	img: string;
 	currentUser?: boolean;
-	posts?: IPostConfig[];
+	posts?: PostConfig[];
 	createPostHref: string;
 	isAuthor: boolean;
 	isFriend: boolean;

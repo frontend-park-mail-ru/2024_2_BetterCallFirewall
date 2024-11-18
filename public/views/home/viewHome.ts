@@ -12,10 +12,9 @@ import {
 	Content,
 } from '../../components';
 import Menu from '../../components/Menu/Menu';
-import deepClone from '../../modules/deepClone';
 import { ExtendedNode, update } from '../../modules/vdom';
 import { ChangeHome } from '../../stores/storeHome';
-import { BaseView, Components, View } from '../view';
+import { Components, View } from '../view';
 
 export interface MainConfig {
 	key: string;
@@ -39,11 +38,7 @@ export type ComponentsHome = {
 	aside?: Container;
 } & Components;
 
-export interface IViewHome extends View {
-	updateViewHome(data: HomeConfig): void;
-}
-
-export abstract class ViewHome extends BaseView implements IViewHome {
+export abstract class ViewHome extends View {
 	protected _components: ComponentsHome = {};
 	private _configHome: HomeConfig;
 
@@ -137,9 +132,8 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	protected _render() {
 		console.log('ViewHome._render()');
 
-		const rootExtendedNode: ExtendedNode = this._root.node;
-		rootExtendedNode._vnode = deepClone(this._root.vnode);
-		console.log('rootNode:', rootExtendedNode);
+		const rootNode: ExtendedNode = this._root.node;
+		console.log('rootNode:', rootNode);
 
 		this._root.removeChildren();
 		this._components.menu = new Menu(this._configHome.menu, this._root);
@@ -175,18 +169,7 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 
 		console.log('rootVNode:', rootVNode);
 		console.log('rootVNode.children:', rootVNode.children);
-		update(rootExtendedNode, rootVNode);
-
-		// this.clear();
-		// this._renderMenu();
-		// this._renderMain();
-		// this._renderContent();
-		// const main = this._components.main;
-		// if (!main) {
-		// 	throw new Error('main does not exist on viewHome');
-		// }
-		// const aside = new Container(this._configHome.main.aside, main);
-		// aside.render();
+		update(rootNode, rootVNode);
 	}
 
 	// true, если до конца документа осталось меньше двух экранов

@@ -1,6 +1,5 @@
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
 import { ACTION_FRIENDS_TYPES } from '../../actions/actionFriends';
-import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileRequest,
@@ -15,12 +14,7 @@ import app from '../../app';
 import { Post, Root } from '../../components';
 import { IProfileConfig, Profile } from '../../components/Profile/Profile';
 import { ChangeProfile } from '../../stores/storeProfile';
-import {
-	ComponentsHome,
-	HomeConfig,
-	IViewHome,
-	ViewHome,
-} from '../home/viewHome';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsProfile = {
 	profile?: Profile;
@@ -31,11 +25,7 @@ export interface ViewProfileConfig extends HomeConfig {
 	path: string;
 }
 
-export interface IViewProfile extends IViewHome {
-	handleChange(change: ChangeProfile): void;
-}
-
-export class ViewProfile extends ViewHome implements IViewProfile {
+export class ViewProfile extends ViewHome {
 	protected _configProfile: ViewProfileConfig;
 	protected _components: ComponentsProfile = {};
 
@@ -160,17 +150,17 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	}
 
 	private _addPostHandlers(post: Post) {
-		if (post.config.hasEditButton) {
-			post.addHandler(post.editButton, 'click', (event) => {
-				event.preventDefault();
-				this.sendAction(new ActionPostEditGoTo(post.config));
-			});
-		}
-		if (post.config.hasDeleteButton) {
-			post.addHandler(post.deleteButton, 'click', (event) => {
-				event.preventDefault();
-				api.deletePost(post.config.id);
-			});
-		}
+		// if (post.config.hasEditButton) {
+		// 	post.addHandler(post.editButton, 'click', (event) => {
+		// 		event.preventDefault();
+		// 		this.sendAction(new ActionPostEditGoTo(post.config));
+		// 	});
+		// }
+		// if (post.config.hasDeleteButton) {
+		// 	post.addHandler(post.deleteButton, 'click', (event) => {
+		// 		event.preventDefault();
+		// 		api.deletePost(post.config.id);
+		// 	});
+		// }
 	}
 }

@@ -11,12 +11,7 @@ import {
 } from '../../components/CreatePostForm/CreatePostForm';
 import dispatcher from '../../dispatcher/dispatcher';
 import { ChangeCreatePost } from '../../stores/storeCreatePost';
-import {
-	ComponentsHome,
-	HomeConfig,
-	IViewHome,
-	ViewHome,
-} from '../home/viewHome';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsCreatePost = {
 	createPostForm?: CreatePostForm;
@@ -26,11 +21,7 @@ export interface ViewCreatePostConfig extends HomeConfig {
 	createPostForm: ICreatePostFormConfig;
 }
 
-export interface IViewCreatePost extends IViewHome {
-	handleChange(change: ChangeCreatePost): void;
-}
-
-export class ViewCreatePost extends ViewHome implements IViewCreatePost {
+export class ViewCreatePost extends ViewHome {
 	protected _configCreatePost: ViewCreatePostConfig;
 	protected _components: ComponentsCreatePost = {};
 
