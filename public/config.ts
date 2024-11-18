@@ -1,5 +1,5 @@
 import { AppConfig, URLInterface } from './app';
-import { ILoginFormConfig, ISignupFormConfig } from './components';
+import { ILoginFormConfig, SignupFormConfig } from './components';
 import { IChatConfig } from './components/Chat/Chat';
 import { IMessageConfig } from './components/Message/Message';
 import { IProfileConfig } from './components/Profile/Profile';
@@ -105,7 +105,7 @@ const homeConfig: HomeConfig = {
 	},
 };
 
-const signupConfig: ISignupFormConfig = {
+const signupConfig: SignupFormConfig = {
 	key: 'signupForm',
 	inputs: {
 		firstName: {

@@ -2,7 +2,7 @@ import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import { ActionFormError } from '../../actions/actionForm';
 import { ActionProfileGetHeader } from '../../actions/actionProfile';
 import { ActionUserAuth } from '../../actions/actionUser';
-import { ISignupFormConfig, SignupForm, Root } from '../../components';
+import { SignupFormConfig, SignupForm, Root } from '../../components';
 import config, { PAGE_LINKS, validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
@@ -12,15 +12,15 @@ import { ChangeSignup } from '../../stores/storeSignup';
 import { Components, View } from '../view';
 
 export class ViewSignup extends View {
-	private _config: ISignupFormConfig;
+	private _config: SignupFormConfig;
 	private _components: Components = {};
 
-	constructor(config: ISignupFormConfig, root: Root) {
+	constructor(config: SignupFormConfig, root: Root) {
 		super(root);
 		this._config = config;
 	}
 
-	get config(): ISignupFormConfig {
+	get config(): SignupFormConfig {
 		return this._config;
 	}
 
@@ -36,7 +36,7 @@ export class ViewSignup extends View {
 		}
 	}
 
-	updateViewSignup(data: ISignupFormConfig) {
+	updateViewSignup(data: SignupFormConfig) {
 		this._config = data;
 		this._render();
 	}

@@ -1,4 +1,4 @@
-import { ILoginFormConfig, ISignupFormConfig, Root } from './components/index';
+import { ILoginFormConfig, SignupFormConfig, Root } from './components/index';
 import { Router, RouterConfig } from './router/router';
 import config, { PAGE_LINKS } from './config';
 import { ViewLogin } from './views/login/viewLogin';
@@ -88,7 +88,7 @@ export interface URLInterface {
 export interface AppConfig {
 	URL: URLInterface;
 	homeConfig: HomeConfig;
-	signupConfig: ISignupFormConfig;
+	signupConfig: SignupFormConfig;
 	loginConfig: ILoginFormConfig;
 	feedConfig: ViewFeedConfig;
 	profileConfig: ViewProfileConfig;

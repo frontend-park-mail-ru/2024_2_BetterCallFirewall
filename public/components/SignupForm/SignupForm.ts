@@ -4,7 +4,7 @@ import Component from '../Component';
 import { FormLink, FormLinkConfig } from '../FormLink/FormLink';
 import { InputConfig } from '../Input/Input';
 
-export interface ISignupFormConfig extends BaseFormConfig {
+export interface SignupFormConfig extends BaseFormConfig {
 	inputs: {
 		firstName: InputConfig;
 		secondName: InputConfig;
@@ -16,14 +16,14 @@ export interface ISignupFormConfig extends BaseFormConfig {
 }
 
 export class SignupForm extends BaseForm {
-	protected override _config: ISignupFormConfig;
+	protected override _config: SignupFormConfig;
 
-	constructor(config: ISignupFormConfig, parent: Component) {
+	constructor(config: SignupFormConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 	}
 
-	get config(): ISignupFormConfig {
+	get config(): SignupFormConfig {
 		return this._config;
 	}
 

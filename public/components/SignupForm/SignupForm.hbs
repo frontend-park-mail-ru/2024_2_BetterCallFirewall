@@ -7,7 +7,9 @@
                 {{#each inputs}}
                     {{{this}}}
                 {{/each}}
-                <span class="form__error"></span>
+                <span class="form__error">
+                    {{this.error}}
+                </span>
                 {{{button}}}
                 {{{toLoginLink}}}
             </form>
