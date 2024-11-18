@@ -144,7 +144,7 @@ export abstract class ViewHome extends View {
 
 	// true, если до конца документа осталось меньше 100 пикселей
 	protected _isOnBottom = () => {
-		return 100 + window.scrollY > document.body.offsetHeight;
+		return 200 + window.scrollY > document.body.offsetHeight;
 	};
 
 	private get menu(): Menu {
