@@ -106,7 +106,7 @@ export class ViewFeed extends ViewHome {
 	private _addScrollHandler() {
 		let debounceTimeout: NodeJS.Timeout;
 		const handler = () => {
-			if (this._isNearBottom()) {
+			if (this._isNearBottom() && !this._isOnBottom()) {
 				clearTimeout(debounceTimeout);
 				debounceTimeout = setTimeout(() => {
 					if (!this.config.pendingPostRequest) {

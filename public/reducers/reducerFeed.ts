@@ -31,6 +31,7 @@ export const reducerFeed = (
 		case ACTION_FEED_TYPES.postsRequest:
 			newState.pendingPostRequest = true;
 			newState.main.content.showLoader = true;
+			newState.main.content.message = '';
 			return newState;
 		case ACTION_FEED_TYPES.postsRequestSuccess: {
 			newState.pendingPostRequest = false;
