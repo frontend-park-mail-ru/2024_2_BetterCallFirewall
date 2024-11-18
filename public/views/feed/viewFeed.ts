@@ -95,6 +95,7 @@ export class ViewFeed extends ViewHome {
 	}
 
 	private _renderPosts(): void {
+		console.log('renderPosts: posts:', this._configFeed.posts);
 		this._configFeed.posts.forEach((postData) => {
 			new Post(postData, this.content);
 		});
