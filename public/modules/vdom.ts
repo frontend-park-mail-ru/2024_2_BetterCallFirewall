@@ -264,6 +264,14 @@ export const findVNodeByClass = (
 	});
 };
 
+export const findVNodesbyTagName = (from: VNode, tagName: string): VNode[] => {
+	return bfsAll(from, (vnode) => {
+		if (vnode.tagName === tagName) {
+			return vnode;
+		}
+	});
+};
+
 const bfs = (
 	from: VNode,
 	callback: (vnode: VNode) => VNode | undefined,
@@ -279,4 +287,23 @@ const bfs = (
 			queue = queue.concat([...vnode.children]);
 		}
 	}
+};
+
+const bfsAll = (
+	from: VNode,
+	callback: (vnode: VNode) => VNode | undefined,
+): VNode[] => {
+	const result = [];
+	let queue: (VNode | string)[] = [...from.children];
+	while (queue.length > 0) {
+		const vnode = queue.shift();
+		if (vnode && typeof vnode !== 'string') {
+			const found = callback(vnode);
+			if (found) {
+				result.push(found);
+			}
+			queue = queue.concat([...vnode.children]);
+		}
+	}
+	return result;
 };

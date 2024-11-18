@@ -57,7 +57,12 @@
 // 	}
 // }
 
-import { findVNodeByClass, VNode } from '../../modules/vdom';
+import {
+	findVNodeByClass,
+	findVNodeByKey,
+	findVNodesbyTagName,
+	VNode,
+} from '../../modules/vdom';
 import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
 import Component from '../Component';
 import { FormLink, FormLinkConfig } from '../FormLink/FormLink';
@@ -97,6 +102,29 @@ export class LoginForm extends BaseForm {
 			throw new Error('form vnode not found');
 		}
 		return vnode;
+	}
+
+	get toSingupLinkVNode(): VNode {
+		const vnode = findVNodeByKey(this.vnode, this._config.toSignupLink.key);
+		if (!vnode) {
+			throw new Error('toSignupLink vnode not found');
+		}
+		return vnode;
+	}
+
+	get titleLinkVNode(): VNode {
+		const vnode = findVNodeByClass(this.vnode, 'title');
+		if (!vnode) {
+			throw new Error('titleLink vnode not found');
+		}
+		return vnode;
+	}
+
+	get inputFieldsVNodes(): VNode[] {
+		const vnodes: VNode[] = [];
+		vnodes.push(...findVNodesbyTagName(this.vnode, 'input'));
+		vnodes.push(...findVNodesbyTagName(this.vnode, 'textarea'));
+		return vnodes;
 	}
 
 	protected _prerender(): void {

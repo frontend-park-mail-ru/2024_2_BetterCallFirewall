@@ -2,7 +2,7 @@ import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import { ActionFormError } from '../../actions/actionForm';
 import { ActionUserAuth } from '../../actions/actionUser';
 import { ILoginFormConfig, LoginForm, Root } from '../../components';
-import config, { PAGE_LINKS } from '../../config';
+import config, { PAGE_LINKS, validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
@@ -80,46 +80,53 @@ export class ViewLogin extends View {
 				}
 			},
 		});
-		// const toSignupLink = loginForm.items.toSignupLink;
-		// loginForm.addHandler(toSignupLink.htmlElement, 'click', (event) => {
-		// 	event.preventDefault();
-		// 	this.sendAction(new ActionAppGoTo(PAGE_LINKS.signup));
-		// });
-		// const titleLinkHTML = loginForm.htmlElement.querySelector(
-		// 	'.title',
-		// ) as HTMLElement;
-		// loginForm.addHandler(titleLinkHTML, 'click', (event) => {
-		// 	event.preventDefault();
-		// });
-		// this.inputFieldHandler(loginForm);
+		loginForm.toSingupLinkVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionAppGoTo(PAGE_LINKS.signup));
+			},
+		});
+		loginForm.titleLinkVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+			},
+		});
 
-		//
-
-		// const loginForm = this._components.login as LoginForm;
-		// if (!loginForm) {
-		// 	throw new Error('login form not found');
-		// }
-		// loginForm.addHandler(loginForm.form, 'submit', (event: Event) => {
-		// 	event.preventDefault();
-		// 	if (this._config.inputs) {
-		// 		loginFormSubmit(loginForm);
-		// 	}
-		// });
-		// const toSignupLink = loginForm.items.toSignupLink;
-		// loginForm.addHandler(toSignupLink.htmlElement, 'click', (event) => {
-		// 	event.preventDefault();
-		// 	this.sendAction(new ActionAppGoTo(PAGE_LINKS.signup));
-		// });
-		// const titleLinkHTML = loginForm.htmlElement.querySelector(
-		// 	'.title',
-		// ) as HTMLElement;
-		// loginForm.addHandler(titleLinkHTML, 'click', (event) => {
-		// 	event.preventDefault();
-		// });
-		// this.inputFieldHandler(loginForm);
+		this.inputFieldHandler(loginForm);
 	}
 
 	private inputFieldHandler(loginForm: LoginForm) {
+		loginForm.inputFieldsVNodes.forEach((input) => {
+			input.handlers.push({
+				event: 'input',
+				callback: (event) => {
+					const target = event.target as HTMLInputElement;
+					const parentElem = target.parentElement as HTMLElement;
+					const validator = validators[target.name];
+					let error = '';
+					if (validator) {
+						if (
+							target.type === 'file' &&
+							target.files &&
+							target.files[0]
+						) {
+							error = validator(target.files[0]);
+						} else {
+							error = validator(target.value.trim());
+						}
+					}
+					const valid = new Validator();
+					if (error) {
+						valid.printError(parentElem as HTMLInputElement, error);
+					} else {
+						valid.errorsDelete(parentElem);
+					}
+				},
+			});
+		});
+
 		// const inputFields = document.querySelectorAll('input, textarea');
 		// inputFields.forEach((input) => {
 		// 	loginForm.addHandler(input as HTMLElement, 'input', (event) => {
