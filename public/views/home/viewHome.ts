@@ -135,18 +135,21 @@ export abstract class ViewHome extends View {
 		this._addHeaderHandlers();
 	}
 
-	// true, если до конца документа осталось меньше двух экранов
+	// true, если до конца документа осталось меньше экрана
 	protected _isNearBottom = () => {
 		return (
 			window.innerHeight * 2 + window.scrollY > document.body.offsetHeight
 		);
 	};
 
-	// true, если до конца документа осталось меньше 200 пикселей
+	// true, если до конца документа осталось меньше 100 пикселей
 	protected _isOnBottom = () => {
 		console.log('window.scrollY:', window.scrollY);
 		console.log('document.body.offsetHeight:', document.body.offsetHeight);
-		return 200 + window.scrollY > document.body.offsetHeight;
+		return (
+			100 + window.innerHeight + window.scrollY >
+			document.body.offsetHeight
+		);
 	};
 
 	private get menu(): Menu {
