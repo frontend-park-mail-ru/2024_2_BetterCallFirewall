@@ -1,20 +1,18 @@
-import { IBaseComponent } from '../BaseComponent';
-import { BaseForm, IBaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
+import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
+import Component from '../Component';
 
-export interface ICreatePostFormConfig extends BaseFormConfig {}
+export interface CreatePostFormConfig extends BaseFormConfig {}
 
-export interface ICreatePostForm extends IBaseForm {}
+export class CreatePostForm extends BaseForm {
+	protected override _config: CreatePostFormConfig;
 
-export class CreatePostForm extends BaseForm implements ICreatePostForm {
-	protected override _config: ICreatePostFormConfig;
-
-	constructor(config: ICreatePostFormConfig, parent: IBaseComponent) {
+	constructor(config: CreatePostFormConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 	}
 
 	get form(): HTMLElement {
-		const html = this.htmlElement.querySelector('.form') as HTMLElement;
+		const html = document.querySelector('.form') as HTMLElement;
 		if (html) {
 			return html;
 		}
@@ -22,9 +20,7 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 	}
 
 	get submitButton(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.form__button',
-		) as HTMLElement;
+		const html = document.querySelector('.form__button') as HTMLElement;
 		if (!html) {
 			throw new Error('submit button not found');
 		}
@@ -32,7 +28,7 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 	}
 
 	get fileInput(): HTMLElement {
-		const html = this.htmlElement.querySelector(
+		const html = document.querySelector(
 			'input[type="file"]',
 		) as HTMLElement;
 		if (!html) {
@@ -42,9 +38,7 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 	}
 
 	get label(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.form__upload',
-		) as HTMLElement;
+		const html = document.querySelector('.form__upload') as HTMLElement;
 		if (!html) {
 			throw new Error('label not found');
 		}
@@ -52,9 +46,7 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 	}
 
 	get img(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.form__img',
-		) as HTMLElement;
+		const html = document.querySelector('.form__img') as HTMLElement;
 		if (!html) {
 			throw new Error('label not found');
 		}
@@ -71,39 +63,32 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 
 	render(): string {
 		this._prerender();
-		this._render('CreatePostForm.hbs');
-		return this.htmlElement.outerHTML;
+		return this._render('CreatePostForm.hbs');
 	}
 
-	update(data: ICreatePostFormConfig): void {
-		this._config = { ...this._config, ...data };
-		this.removeForUpdate();
-		this.render();
-	}
+	// /**
+	//  * Printing error above submit button
+	//  * @param {string} error
+	//  */
+	// printError(error: string) {
+	// 	if (error) {
+	// 		const messageElement =
+	// 			this.htmlElement.querySelector('.form__error');
+	// 		if (!messageElement) {
+	// 			throw new Error('message element not found');
+	// 		}
+	// 		messageElement.textContent = error;
+	// 	}
+	// }
 
-	/**
-	 * Printing error above submit button
-	 * @param {string} error
-	 */
-	printError(error: string) {
-		if (error) {
-			const messageElement =
-				this.htmlElement.querySelector('.form__error');
-			if (!messageElement) {
-				throw new Error('message element not found');
-			}
-			messageElement.textContent = error;
-		}
-	}
-
-	/**
-	 * Clear error above submit button
-	 */
-	clearError() {
-		const messageElement = this.htmlElement.querySelector('.form__error');
-		if (!messageElement) {
-			throw new Error('message element not found');
-		}
-		messageElement.textContent = '';
-	}
+	// /**
+	//  * Clear error above submit button
+	//  */
+	// clearError() {
+	// 	const messageElement = this.htmlElement.querySelector('.form__error');
+	// 	if (!messageElement) {
+	// 		throw new Error('message element not found');
+	// 	}
+	// 	messageElement.textContent = '';
+	// }
 }

@@ -12,7 +12,7 @@ import { ViewProfileConfig } from './views/profile/viewProfile';
 import { ViewCreatePostConfig } from './views/createPost/viewCreatePost';
 import { ViewProfileEditConfig } from './views/profileEdit/viewProfileEdit';
 import { ViewPostEditConfig } from './views/PostEdit/viewPostEdit';
-import { IPostEditFormConfig } from './components/PostEditForm/PostEditForm';
+import { PostEditFormConfig } from './components/PostEditForm/PostEditForm';
 import Validator from './modules/validation';
 
 const DEBUG: boolean = false;
@@ -324,7 +324,7 @@ const friendsConfig: ViewFriendsConfig = {
 	},
 };
 
-const postEditFormConfig: IPostEditFormConfig = {
+const postEditFormConfig: PostEditFormConfig = {
 	key: 'postEditForm',
 	textAreas: {
 		text: {

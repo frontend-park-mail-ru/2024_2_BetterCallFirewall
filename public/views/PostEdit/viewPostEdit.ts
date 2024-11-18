@@ -2,7 +2,7 @@ import { ActionAppGoTo } from '../../actions/actionApp';
 import { ACTION_POST_EDIT_TYPES } from '../../actions/actionPostEdit';
 import { Root } from '../../components';
 import {
-	IPostEditFormConfig,
+	PostEditFormConfig,
 	PostEditForm,
 } from '../../components/PostEditForm/PostEditForm';
 import { ChangePostEdit } from '../../stores/storePostEdit';
@@ -13,7 +13,7 @@ export type ComponentsPostEdit = {
 } & ComponentsHome;
 
 export interface ViewPostEditConfig extends HomeConfig {
-	postEditForm: IPostEditFormConfig;
+	postEditForm: PostEditFormConfig;
 	postId: number;
 }
 

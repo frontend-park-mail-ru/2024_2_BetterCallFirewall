@@ -101,19 +101,19 @@ export class Profile extends BaseComponent {
 		this._prerender();
 		this._render('Profile.hbs', show);
 
-		const postsItems = this._htmlElement?.querySelector(
-			'.profile__posts',
-		) as HTMLElement;
-		if (postsItems) {
-			this.config.posts?.forEach((config) => {
-				const post = new Post(config, this);
-				this._posts.push(post);
-				post.render(false);
-				post.appendToHTML(postsItems);
-			});
-		} else {
-			throw new Error('profile has no .profile__posts');
-		}
+		// const postsItems = this._htmlElement?.querySelector(
+		// 	'.profile__posts',
+		// ) as HTMLElement;
+		// if (postsItems) {
+		// 	this.config.posts?.forEach((config) => {
+		// 		const post = new Post(config, this);
+		// 		this._posts.push(post);
+		// 		post.render(false);
+		// 		post.appendToHTML(postsItems);
+		// 	});
+		// } else {
+		// 	throw new Error('profile has no .profile__posts');
+		// }
 
 		return this.htmlElement.outerHTML;
 	}

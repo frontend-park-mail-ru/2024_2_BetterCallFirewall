@@ -1,4 +1,4 @@
-import { ICreatePostFormConfig } from '../components/CreatePostForm/CreatePostForm';
+import { CreatePostFormConfig } from '../components/CreatePostForm/CreatePostForm';
 import { Action, ActionType } from './action';
 
 export const ACTION_CREATE_POST_TYPES = {
@@ -6,7 +6,7 @@ export const ACTION_CREATE_POST_TYPES = {
 	goToCreatePost: 'actionCreatePostGoTo',
 };
 
-export interface ActionUpdateCreatePostData extends ICreatePostFormConfig {}
+export interface ActionUpdateCreatePostData extends CreatePostFormConfig {}
 
 export class ActionUpdateCreatePost implements Action {
 	type: ActionType;

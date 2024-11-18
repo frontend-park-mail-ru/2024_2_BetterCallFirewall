@@ -1,20 +1,18 @@
-import { IBaseComponent } from '../BaseComponent';
-import { BaseForm, IBaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
+import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
+import Component from '../Component';
 
-export interface IPostEditFormConfig extends BaseFormConfig {}
+export interface PostEditFormConfig extends BaseFormConfig {}
 
-export interface IPostEditForm extends IBaseForm {}
+export class PostEditForm extends BaseForm {
+	protected override _config: PostEditFormConfig;
 
-export class PostEditForm extends BaseForm implements IPostEditForm {
-	protected override _config: IPostEditFormConfig;
-
-	constructor(config: IPostEditFormConfig, parent: IBaseComponent) {
+	constructor(config: PostEditFormConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 	}
 
 	get form(): HTMLElement {
-		const html = this.htmlElement.querySelector('.form') as HTMLElement;
+		const html = document.querySelector('.form') as HTMLElement;
 		if (html) {
 			return html;
 		}
@@ -22,7 +20,7 @@ export class PostEditForm extends BaseForm implements IPostEditForm {
 	}
 
 	get fileInput(): HTMLElement {
-		const html = this.htmlElement.querySelector(
+		const html = document.querySelector(
 			'input[type="file"]',
 		) as HTMLElement;
 		if (!html) {
@@ -32,9 +30,7 @@ export class PostEditForm extends BaseForm implements IPostEditForm {
 	}
 
 	get label(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.form__upload',
-		) as HTMLElement;
+		const html = document.querySelector('.form__upload') as HTMLElement;
 		if (!html) {
 			throw new Error('label not found');
 		}
@@ -42,9 +38,7 @@ export class PostEditForm extends BaseForm implements IPostEditForm {
 	}
 
 	get img(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.form__img',
-		) as HTMLElement;
+		const html = document.querySelector('.form__img') as HTMLElement;
 		if (!html) {
 			throw new Error('label not found');
 		}
@@ -61,13 +55,6 @@ export class PostEditForm extends BaseForm implements IPostEditForm {
 
 	render(): string {
 		this._prerender();
-		this._render('PostEditForm.hbs');
-		return this.htmlElement.outerHTML;
-	}
-
-	update(data: IPostEditFormConfig): void {
-		this._config = { ...this._config, ...data };
-		this.removeForUpdate();
-		this.render();
+		return this._render('PostEditForm.hbs');
 	}
 }

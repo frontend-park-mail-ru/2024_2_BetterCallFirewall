@@ -7,7 +7,7 @@ import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
 import { Root } from '../../components';
 import {
 	CreatePostForm,
-	ICreatePostFormConfig,
+	CreatePostFormConfig,
 } from '../../components/CreatePostForm/CreatePostForm';
 import dispatcher from '../../dispatcher/dispatcher';
 import { ChangeCreatePost } from '../../stores/storeCreatePost';
@@ -18,7 +18,7 @@ export type ComponentsCreatePost = {
 } & ComponentsHome;
 
 export interface ViewCreatePostConfig extends HomeConfig {
-	createPostForm: ICreatePostFormConfig;
+	createPostForm: CreatePostFormConfig;
 }
 
 export class ViewCreatePost extends ViewHome {
