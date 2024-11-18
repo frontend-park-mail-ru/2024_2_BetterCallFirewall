@@ -57,6 +57,7 @@
 // 	}
 // }
 
+import { findVNodeByClass, VNode } from '../../modules/vdom';
 import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
 import Component from '../Component';
 import { FormLink, FormLinkConfig } from '../FormLink/FormLink';
@@ -88,6 +89,14 @@ export class LoginForm extends BaseForm {
 			return html;
 		}
 		throw new Error('form not found');
+	}
+
+	get formVNode(): VNode {
+		const vnode = findVNodeByClass(this.vnode, 'form');
+		if (!vnode) {
+			throw new Error('form vnode not found');
+		}
+		return vnode;
 	}
 
 	protected _prerender(): void {

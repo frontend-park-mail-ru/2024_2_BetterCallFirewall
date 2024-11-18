@@ -10,9 +10,13 @@ import { update } from '../../modules/vdom';
 import { ChangeLogin } from '../../stores/storeLogin';
 import { Components, View } from '../view';
 
+export type ComponentsLogin = {
+	login?: LoginForm;
+} & Components;
+
 export class ViewLogin extends View {
 	private _config: ILoginFormConfig;
-	private _components: Components = {};
+	private _components: ComponentsLogin = {};
 
 	constructor(config: ILoginFormConfig, root: Root) {
 		super(root);
@@ -57,11 +61,40 @@ export class ViewLogin extends View {
 		this._root.removeChildren();
 		this._components.login = new LoginForm(this._config, this._root);
 		const rootVNode = this._root.newVNode();
+		this._addLoginHandlers();
 
 		update(rootNode, rootVNode);
 	}
 
 	private _addLoginHandlers() {
+		const loginForm = this._components.login;
+		if (!loginForm) {
+			throw new Error('login form not found');
+		}
+		loginForm.formVNode.handlers.push({
+			event: 'submit',
+			callback: (event) => {
+				event.preventDefault();
+				if (this._config.inputs) {
+					loginFormSubmit(loginForm);
+				}
+			},
+		});
+		// const toSignupLink = loginForm.items.toSignupLink;
+		// loginForm.addHandler(toSignupLink.htmlElement, 'click', (event) => {
+		// 	event.preventDefault();
+		// 	this.sendAction(new ActionAppGoTo(PAGE_LINKS.signup));
+		// });
+		// const titleLinkHTML = loginForm.htmlElement.querySelector(
+		// 	'.title',
+		// ) as HTMLElement;
+		// loginForm.addHandler(titleLinkHTML, 'click', (event) => {
+		// 	event.preventDefault();
+		// });
+		// this.inputFieldHandler(loginForm);
+
+		//
+
 		// const loginForm = this._components.login as LoginForm;
 		// if (!loginForm) {
 		// 	throw new Error('login form not found');

@@ -7,6 +7,7 @@ import config, { PAGE_LINKS, validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
+import { update } from '../../modules/vdom';
 import { ChangeSignup } from '../../stores/storeSignup';
 import { Components, View } from '../view';
 
@@ -37,10 +38,12 @@ export class ViewSignup extends View {
 
 	updateViewSignup(data: ISignupFormConfig) {
 		this._config = data;
-		this.render();
+		this._render();
 	}
 
 	render() {
+		this._render();
+
 		// this.clear();
 		// const config = this._config;
 		// const signupForm = new SignupForm(config, this._root);
@@ -49,8 +52,13 @@ export class ViewSignup extends View {
 		// this._addSignupHandlers();
 	}
 
-	update(config: object): void {
-		this.updateViewSignup(config as ISignupFormConfig);
+	_render() {
+		const rootNode = this._root.node;
+		this._root.removeChildren();
+		const rootVNode = this._root.newVNode();
+		this._components.signup = new SignupForm(this._config, this._root);
+
+		update(rootNode, rootVNode);
 	}
 
 	private _addSignupHandlers() {
