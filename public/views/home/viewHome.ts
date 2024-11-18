@@ -145,7 +145,7 @@ export abstract class ViewHome extends View {
 			this._configHome.main.header,
 			this._components.main,
 		);
-		this._components.header = new Content(
+		this._components.content = new Content(
 			this._configHome.main.content,
 			this._components.main,
 		);
