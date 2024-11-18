@@ -1,4 +1,5 @@
 import { Action } from '../actions/action';
+import deepClone from '../modules/deepClone';
 import { reducerFeed } from '../reducers/reducerFeed';
 import { ViewFeed, ViewFeedConfig } from '../views/feed/viewFeed';
 import { BaseStore, Change, Store } from './store';
@@ -27,7 +28,7 @@ export class StoreFeed extends BaseStore implements Store {
 		if (this._registeredView?.active) {
 			this._registeredView.handleChange({
 				type: action.type,
-				data: this._state,
+				data: deepClone(this._state),
 			});
 		}
 	}
