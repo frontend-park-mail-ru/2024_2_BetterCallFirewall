@@ -34,9 +34,6 @@ export class ViewFeed extends ViewHome {
 			case ACTION_FEED_TYPES.update:
 				this.updateViewFeed(change.data);
 				break;
-			// case ACTION_FEED_TYPES.postsRequest:
-			// 	this.content.showLoader();
-			// 	break;
 			case ACTION_APP_TYPES.goTo:
 				if (!this._configFeed.posts.length) {
 					this.sendAction(
@@ -45,11 +42,12 @@ export class ViewFeed extends ViewHome {
 				}
 				this.sendAction(new ActionFeedUpdate());
 				break;
-			// case ACTION_FEED_TYPES.postsRequestSuccess:
-			// case ACTION_FEED_TYPES.postsRequestFail:
-			// 	this.content.hideLoader();
-			// 	this.updateViewFeed(change.data);
-			// 	break;
+			case ACTION_FEED_TYPES.postsRequestSuccess:
+			case ACTION_FEED_TYPES.postsRequestFail:
+				this.updateViewFeed(change.data);
+				break;
+			default:
+				this.updateViewFeed(change.data);
 		}
 	}
 
@@ -75,11 +73,9 @@ export class ViewFeed extends ViewHome {
 		const rootVNode = deepClone(this._root.vnode);
 
 		this._renderPosts();
+		this._addHandlers();
 
 		update(rootNode, rootVNode);
-		// this._renderPosts();
-		// this._printMessage();
-		// this._addHandlers();
 	}
 
 	private get lastPostId(): number | undefined {
@@ -100,19 +96,19 @@ export class ViewFeed extends ViewHome {
 	}
 
 	private _addScrollHandler() {
-		// let debounceTimeout: NodeJS.Timeout;
-		// const handler = () => {
-		// 	if (this._isNearBottom()) {
-		// 		clearTimeout(debounceTimeout);
-		// 		debounceTimeout = setTimeout(() => {
-		// 			if (!this.config.pendingPostRequest) {
-		// 				this.sendAction(
-		// 					new ActionFeedPostsRequest(this.lastPostId),
-		// 				);
-		// 			}
-		// 		}, 200);
-		// 	}
-		// };
-		// this.content.addHandler(document, 'scroll', handler);
+		let debounceTimeout: NodeJS.Timeout;
+		const handler = () => {
+			if (this._isNearBottom()) {
+				clearTimeout(debounceTimeout);
+				debounceTimeout = setTimeout(() => {
+					if (!this.config.pendingPostRequest) {
+						this.sendAction(
+							new ActionFeedPostsRequest(this.lastPostId),
+						);
+					}
+				}, 200);
+			}
+		};
+		this._root.addDocumentHandler({ event: 'scroll', callback: handler });
 	}
 }

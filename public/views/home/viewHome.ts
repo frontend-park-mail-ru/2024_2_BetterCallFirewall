@@ -146,12 +146,6 @@ export abstract class ViewHome extends View {
 		);
 	};
 
-	protected _printMessage() {
-		// if (this._configHome.errorMessage) {
-		// 	this.content.printMessage(this._configHome.errorMessage);
-		// }
-	}
-
 	private get menu(): Menu {
 		const menu = this._components.menu;
 		if (!menu) {
