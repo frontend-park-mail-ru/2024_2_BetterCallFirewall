@@ -30,9 +30,11 @@ export const reducerFeed = (
 		}
 		case ACTION_FEED_TYPES.postsRequest:
 			newState.pendingPostRequest = true;
+			newState.main.content.showLoader = true;
 			return newState;
 		case ACTION_FEED_TYPES.postsRequestSuccess: {
 			newState.pendingPostRequest = false;
+			newState.main.content.showLoader = false;
 			newState.errorMessage = '';
 			const newPosts = (
 				action.data as ActionPostsRequestSuccessData
@@ -44,6 +46,7 @@ export const reducerFeed = (
 		}
 		case ACTION_FEED_TYPES.postsRequestFail: {
 			newState.pendingPostRequest = false;
+			newState.main.content.showLoader = false;
 			const data = action.data as ActionPostsRequestFailData;
 			if (data.message) {
 				newState.errorMessage = data.message;

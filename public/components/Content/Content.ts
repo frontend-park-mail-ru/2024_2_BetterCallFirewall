@@ -80,9 +80,12 @@ import Component from '../Component';
 import { Container, ContainerConfig, ContentMessage } from '../index';
 import { Loader } from '../Loader/Loader';
 
-export interface ContentConfig extends ContainerConfig {}
+export interface ContentConfig extends ContainerConfig {
+	showLoader: boolean;
+}
 
 export class Content extends Container {
+	protected _config: ContentConfig;
 	private _message: ContentMessage | null;
 
 	/**
@@ -92,6 +95,7 @@ export class Content extends Container {
 	 */
 	constructor(config: ContentConfig, parent: Component) {
 		super(config, parent);
+		this._config = config;
 		this._message = null;
 	}
 
@@ -101,7 +105,9 @@ export class Content extends Container {
 	}
 
 	protected _prerender(): void {
-		new Loader({ key: 'loader' }, this);
+		if (this._config.showLoader) {
+			new Loader({ key: 'loader' }, this);
+		}
 		if (this._message) {
 			this.addChild(this._message);
 		}

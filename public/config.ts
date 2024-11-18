@@ -95,6 +95,7 @@ const homeConfig: HomeConfig = {
 		content: {
 			key: 'content',
 			className: 'content',
+			showLoader: false,
 		},
 		aside: {
 			key: 'aside',
