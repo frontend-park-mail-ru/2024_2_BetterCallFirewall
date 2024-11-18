@@ -142,8 +142,10 @@ export abstract class ViewHome extends View {
 		);
 	};
 
-	// true, если до конца документа осталось меньше 100 пикселей
+	// true, если до конца документа осталось меньше 200 пикселей
 	protected _isOnBottom = () => {
+		console.log('window.scrollY:', window.scrollY);
+		console.log('document.body.offsetHeight:', document.body.offsetHeight);
 		return 200 + window.scrollY > document.body.offsetHeight;
 	};
 
