@@ -224,7 +224,7 @@ const updateChildren = (
 	while (newChildren.length < node.childNodes.length) {
 		const childNode = node.childNodes[node.childNodes.length - 1];
 		const childVNode = prevChildren[i];
-		if (typeof childVNode !== 'string') {
+		if (childVNode && typeof childVNode !== 'string') {
 			childVNode.handlers.forEach((handler) => {
 				childNode.removeEventListener(handler.event, handler.callback);
 			});
