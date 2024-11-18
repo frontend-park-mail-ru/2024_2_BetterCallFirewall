@@ -5,7 +5,6 @@ import {
 	ActionFeedUpdate,
 } from '../../actions/actionFeed';
 import { PostConfig, Post, Root } from '../../components';
-import deepClone from '../../modules/deepClone';
 import { update } from '../../modules/vdom';
 import { ChangeFeed } from '../../stores/storeFeed';
 import { HomeConfig, ViewHome } from '../home/viewHome';
@@ -70,7 +69,7 @@ export class ViewFeed extends ViewHome {
 		console.log('ViewFeed._render()');
 		super._render();
 		const rootNode = this._root.node;
-		const rootVNode = deepClone(this._root.vnode);
+		const rootVNode = this._root.vnode;
 
 		this._renderPosts();
 		this._addHandlers();
