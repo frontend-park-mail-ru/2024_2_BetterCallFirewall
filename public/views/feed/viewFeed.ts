@@ -69,11 +69,11 @@ export class ViewFeed extends ViewHome {
 		console.log('ViewFeed._render()');
 		super._render();
 		const rootNode = this._root.node;
-		const rootVNode = this._root.vnode;
 
 		this._renderPosts();
 		this._addHandlers();
 
+		const rootVNode = this._root.newVNode();
 		update(rootNode, rootVNode);
 	}
 
@@ -88,6 +88,8 @@ export class ViewFeed extends ViewHome {
 		this._configFeed.posts.forEach((postData) => {
 			new Post(postData, this.content);
 		});
+		console.log('renderPosts: content:', this.content);
+		console.log('renderPosts: rootVNode:', this._root.vnode);
 	}
 
 	private _addHandlers() {
