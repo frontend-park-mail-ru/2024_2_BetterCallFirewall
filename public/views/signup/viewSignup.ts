@@ -5,6 +5,7 @@ import { ActionUserAuth } from '../../actions/actionUser';
 import { SignupFormConfig, SignupForm, Root } from '../../components';
 import config, { PAGE_LINKS, validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
+import { ERROR_MESSAGES_MAP } from '../../models/errorMessages';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
@@ -148,10 +149,9 @@ const loginFormSubmit = (signupForm: SignupForm) => {
 				dispatcher.getAction(new ActionProfileGetHeader());
 			} else if (response) {
 				const data = await response.json();
-				if (data.message === 'wrong email or password') {
-					dispatcher.getAction(
-						new ActionFormError('Неверная почта или пароль'),
-					);
+				const error = ERROR_MESSAGES_MAP[data.message];
+				if (error) {
+					dispatcher.getAction(new ActionFormError(error));
 				} else {
 					dispatcher.getAction(
 						new ActionFormError('Что-то пошло не так'),

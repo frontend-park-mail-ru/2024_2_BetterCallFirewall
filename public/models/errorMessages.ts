@@ -1,8 +1,12 @@
 export type ErrorMessages = Record<string, string>;
 
 export const ERROR_MESSAGES: ErrorMessages = {
+	UserAlreadyExists: 'user already exists',
+};
+
+export const ERROR_MESSAGES_MAP: ErrorMessages = {
 	'user not found': 'Пользователь не найден',
-	'user already exists': 'Пользователь уже существует',
+	'user already exists': 'Пользователь с таким email уже существует',
 	'no auth': 'Не авторизован',
 	'wrong email or password': 'Неверный email или пароль',
 	'file too large': 'Файл слишком большой',
