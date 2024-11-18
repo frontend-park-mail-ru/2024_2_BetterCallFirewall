@@ -266,7 +266,7 @@ export const findVNodeByClass = (
 
 export const findVNodesbyTagName = (from: VNode, tagName: string): VNode[] => {
 	return bfsAll(from, (vnode) => {
-		if (vnode.tagName === tagName) {
+		if (vnode.tagName.toLowerCase() === tagName) {
 			return vnode;
 		}
 	});
