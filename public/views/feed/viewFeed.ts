@@ -74,7 +74,16 @@ export class ViewFeed extends ViewHome {
 		this._addHandlers();
 
 		const rootVNode = this._root.newVNode();
+
+		console.log('rootVNode:', rootVNode);
+		console.log('rootVNode.children:', rootVNode.children);
+
 		update(rootNode, rootVNode);
+	}
+
+	protected _addHandlers() {
+		super._addHandlers();
+		this._addScrollHandler();
 	}
 
 	private get lastPostId(): number | undefined {
@@ -90,10 +99,6 @@ export class ViewFeed extends ViewHome {
 		});
 		console.log('renderPosts: content:', this.content);
 		console.log('renderPosts: rootVNode:', this._root.vnode);
-	}
-
-	private _addHandlers() {
-		this._addScrollHandler();
 	}
 
 	private _addScrollHandler() {

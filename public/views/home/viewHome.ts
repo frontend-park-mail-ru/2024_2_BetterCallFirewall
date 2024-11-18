@@ -23,7 +23,7 @@ import Menu from '../../components/Menu/Menu';
 import { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
-import { ExtendedNode, update } from '../../modules/vdom';
+import { ExtendedNode } from '../../modules/vdom';
 import { ChangeHome } from '../../stores/storeHome';
 import { Components, View } from '../view';
 
@@ -111,7 +111,7 @@ export abstract class ViewHome extends View {
 		const rootNode: ExtendedNode = this._root.node;
 		console.log('rootNode:', rootNode);
 
-		this._root.removeChildren();
+		this._root.clear();
 		this._components.menu = new Menu(this._configHome.menu, this._root);
 		this._components.main = new Container(
 			this._configHome.main,
@@ -129,14 +129,11 @@ export abstract class ViewHome extends View {
 			this._configHome.main.aside,
 			this._components.main,
 		);
-		const rootVNode = this._root.newVNode();
+	}
 
+	protected _addHandlers() {
 		this._addMenuHandlers();
 		this._addHeaderHandlers();
-
-		console.log('rootVNode:', rootVNode);
-		console.log('rootVNode.children:', rootVNode.children);
-		update(rootNode, rootVNode);
 	}
 
 	// true, если до конца документа осталось меньше двух экранов
