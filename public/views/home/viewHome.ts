@@ -144,8 +144,6 @@ export abstract class ViewHome extends View {
 
 	// true, если до конца документа осталось меньше 100 пикселей
 	protected _isOnBottom = () => {
-		console.log('window.scrollY:', window.scrollY);
-		console.log('document.body.offsetHeight:', document.body.offsetHeight);
 		return (
 			100 + window.innerHeight + window.scrollY >
 			document.body.offsetHeight
