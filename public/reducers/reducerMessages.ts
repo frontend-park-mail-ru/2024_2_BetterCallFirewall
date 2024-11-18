@@ -34,7 +34,7 @@ export const reducerMessages = (
 		case ACTION_MESSAGES_TYPES.requestMessagesFail: {
 			const actionData = action.data as ActionMessagesRequestFailData;
 			if (actionData.message) {
-				newState.errorMessage = actionData.message;
+				newState.main.content.message = actionData.message;
 			}
 			return newState;
 		}

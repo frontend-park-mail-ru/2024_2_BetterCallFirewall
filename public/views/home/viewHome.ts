@@ -38,7 +38,6 @@ export interface MainConfig {
 export interface HomeConfig {
 	menu: MenuConfig;
 	main: MainConfig;
-	errorMessage: string;
 }
 
 export type ComponentsHome = {

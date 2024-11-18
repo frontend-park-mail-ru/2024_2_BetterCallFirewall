@@ -95,6 +95,7 @@ const homeConfig: HomeConfig = {
 		content: {
 			key: 'content',
 			className: 'content',
+			message: '',
 			showLoader: false,
 		},
 		aside: {
@@ -102,7 +103,6 @@ const homeConfig: HomeConfig = {
 			className: 'aside',
 		},
 	},
-	errorMessage: '',
 };
 
 const signupConfig: ISignupFormConfig = {
