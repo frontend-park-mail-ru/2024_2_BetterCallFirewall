@@ -23,7 +23,6 @@ import Menu from '../../components/Menu/Menu';
 import { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
-import { ExtendedNode } from '../../modules/vdom';
 import { ChangeHome } from '../../stores/storeHome';
 import { Components, View } from '../view';
 
@@ -105,11 +104,6 @@ export abstract class ViewHome extends View {
 	}
 
 	protected _render() {
-		console.log('ViewHome._render()');
-
-		const rootNode: ExtendedNode = this._root.node;
-		console.log('rootNode:', rootNode);
-
 		this._root.clear();
 		this._components.menu = new Menu(this._configHome.menu, this._root);
 		this._components.main = new Container(
