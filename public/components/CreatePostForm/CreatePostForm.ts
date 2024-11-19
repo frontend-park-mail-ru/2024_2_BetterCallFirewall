@@ -1,7 +1,13 @@
+import { VNode } from '../../modules/vdom';
 import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
 import Component from '../Component';
+import { InputConfig } from '../Input/Input';
 
-export interface CreatePostFormConfig extends BaseFormConfig {}
+export interface CreatePostFormConfig extends BaseFormConfig {
+	inputs: {
+		image: InputConfig;
+	};
+}
 
 export class CreatePostForm extends BaseForm {
 	protected override _config: CreatePostFormConfig;
@@ -37,6 +43,10 @@ export class CreatePostForm extends BaseForm {
 		return html;
 	}
 
+	get fileInputVNode(): VNode {
+		return this._findVNodeByKey(this._config.inputs.image.key);
+	}
+
 	get label(): HTMLElement {
 		const html = document.querySelector('.form__upload') as HTMLElement;
 		if (!html) {
@@ -66,29 +76,28 @@ export class CreatePostForm extends BaseForm {
 		return this._render('CreatePostForm.hbs');
 	}
 
-	// /**
-	//  * Printing error above submit button
-	//  * @param {string} error
-	//  */
-	// printError(error: string) {
-	// 	if (error) {
-	// 		const messageElement =
-	// 			this.htmlElement.querySelector('.form__error');
-	// 		if (!messageElement) {
-	// 			throw new Error('message element not found');
-	// 		}
-	// 		messageElement.textContent = error;
-	// 	}
-	// }
+	/**
+	 * Printing error above submit button
+	 * @param {string} error
+	 */
+	printError(error: string) {
+		if (error) {
+			const messageElement = document.querySelector('.form__error');
+			if (!messageElement) {
+				throw new Error('message element not found');
+			}
+			messageElement.textContent = error;
+		}
+	}
 
-	// /**
-	//  * Clear error above submit button
-	//  */
-	// clearError() {
-	// 	const messageElement = this.htmlElement.querySelector('.form__error');
-	// 	if (!messageElement) {
-	// 		throw new Error('message element not found');
-	// 	}
-	// 	messageElement.textContent = '';
-	// }
+	/**
+	 * Clear error above submit button
+	 */
+	clearError() {
+		const messageElement = document.querySelector('.form__error');
+		if (!messageElement) {
+			throw new Error('message element not found');
+		}
+		messageElement.textContent = '';
+	}
 }

@@ -4,12 +4,15 @@ import {
 	ActionUpdateCreatePost,
 } from '../../actions/actionCreatePost';
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
+import api from '../../api/api';
 import { Root } from '../../components';
 import {
 	CreatePostForm,
 	CreatePostFormConfig,
 } from '../../components/CreatePostForm/CreatePostForm';
 import dispatcher from '../../dispatcher/dispatcher';
+import Validator from '../../modules/validation';
+import { update } from '../../modules/vdom';
 import { ChangeCreatePost } from '../../stores/storeCreatePost';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
@@ -62,24 +65,54 @@ export class ViewCreatePost extends ViewHome {
 		this._render();
 	}
 
-	update(config: object): void {
-		this.updateViewCreatePost(config as ViewCreatePostConfig);
-	}
-
 	protected _render(): void {
+		const rootNode = this._root.node;
+
 		super._render();
 		this._renderCreatePostForm();
+
+		const rootVNode = this._root.newVNode();
+
 		this._addHandlers();
+
+		update(rootNode, rootVNode);
 	}
 
 	protected _renderCreatePostForm(): void {
-		// const content = this.content;
-		// const createPostForm = new CreatePostForm(
-		// 	this._configCreatePost.createPostForm,
-		// 	content,
-		// );
-		// createPostForm.render();
-		// this._components.createPostForm = createPostForm;
+		this._components.createPostForm = new CreatePostForm(
+			this._configCreatePost.createPostForm,
+			this.content,
+		);
+	}
+
+	protected _addHandlers() {
+		super._addHandlers();
+
+		this._createPostForm.vnode.handlers.push({
+			event: 'submit',
+			callback: (event) => {
+				event.preventDefault();
+				const validator = new Validator();
+				const formData = validator.validateForm(
+					this._createPostForm.formData,
+					this._createPostForm.form,
+				);
+				if (formData) {
+					if (
+						formData.get('text') ||
+						(formData.get('file') as File).name
+					) {
+						api.createPost(formData);
+						this._createPostForm.clearError();
+					} else {
+						this._createPostForm.printError(
+							'Пост не должен быть пустым',
+						);
+					}
+				}
+			},
+		});
+		this._addHandlerInput();
 	}
 
 	private get _createPostForm(): CreatePostForm {
@@ -90,65 +123,44 @@ export class ViewCreatePost extends ViewHome {
 		return form;
 	}
 
-	protected _addHandlers() {
-		// this.content.addHandler(
-		// 	this._createPostForm.htmlElement,
-		// 	'submit',
-		// 	(event) => {
-		// 		event.preventDefault();
-		// 		const validator = new Validator();
-		// 		const formData = validator.validateForm(
-		// 			this._createPostForm.formData,
-		// 			this._createPostForm.form,
-		// 		);
-		// 		if (formData) {
-		// 			if (
-		// 				formData.get('text') ||
-		// 				(formData.get('file') as File).name
-		// 			) {
-		// 				api.createPost(formData);
-		// 				this._createPostForm.clearError();
-		// 			} else {
-		// 				this._createPostForm.printError(
-		// 					'Пост не должен быть пустым',
-		// 				);
-		// 			}
-		// 		}
-		// 	},
-		// );
-		// this._addHandlerInput();
-	}
-
 	private _addHandlerInput(): void {
-		// const fileInput = this._createPostForm.fileInput;
-		// const label = this._createPostForm.label;
-		// const preview = this._createPostForm.img as HTMLImageElement;
-		// if (fileInput) {
-		// 	this.content.addHandler(fileInput, 'click', (event) => {
-		// 		const input = event.target as HTMLInputElement;
-		// 		if (input.value) {
-		// 			input.value = '';
-		// 			event.preventDefault();
-		// 			label?.classList.remove('active');
-		// 			label.textContent = 'Прикрепить картинку';
-		// 			preview.src = '';
-		// 		}
-		// 	});
-		// 	this.content.addHandler(fileInput, 'change', (event) => {
-		// 		const input = event.target as HTMLInputElement;
-		// 		if (input.files && input.files.length > 0) {
-		// 			if (label) {
-		// 				label.classList.add('active');
-		// 				label.textContent =
-		// 					'Картинка выбрана, нажмите, чтобы отменить';
-		// 			}
-		// 			const reader = new FileReader();
-		// 			reader.onload = function (e) {
-		// 				preview.src = e.target?.result as string;
-		// 			};
-		// 			reader.readAsDataURL(input.files[0]);
-		// 		}
-		// 	});
-		// }
+		const fileInput = this._createPostForm.fileInput;
+		const label = this._createPostForm.label;
+		const preview = this._createPostForm.img as HTMLImageElement;
+		if (fileInput) {
+			this._createPostForm.fileInputVNode.handlers.push(
+				{
+					event: 'click',
+					callback: (event) => {
+						const input = event.target as HTMLInputElement;
+						if (input.value) {
+							input.value = '';
+							event.preventDefault();
+							label?.classList.remove('active');
+							label.textContent = 'Прикрепить картинку';
+							preview.src = '';
+						}
+					},
+				},
+				{
+					event: 'change',
+					callback: (event) => {
+						const input = event.target as HTMLInputElement;
+						if (input.files && input.files.length > 0) {
+							if (label) {
+								label.classList.add('active');
+								label.textContent =
+									'Картинка выбрана, нажмите, чтобы отменить';
+							}
+							const reader = new FileReader();
+							reader.onload = function (e) {
+								preview.src = e.target?.result as string;
+							};
+							reader.readAsDataURL(input.files[0]);
+						}
+					},
+				},
+			);
+		}
 	}
 }
