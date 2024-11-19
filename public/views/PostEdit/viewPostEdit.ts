@@ -1,10 +1,13 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
 import { ACTION_POST_EDIT_TYPES } from '../../actions/actionPostEdit';
+import api from '../../api/api';
 import { Root } from '../../components';
 import {
 	PostEditFormConfig,
 	PostEditForm,
 } from '../../components/PostEditForm/PostEditForm';
+import Validator from '../../modules/validation';
+import { update } from '../../modules/vdom';
 import { ChangePostEdit } from '../../stores/storePostEdit';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
@@ -34,9 +37,6 @@ export class ViewPostEdit extends ViewHome {
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_POST_EDIT_TYPES.requestSuccess:
-				// this.sendAction(
-				// 	new ActionMenuLinkClick({ href: this._profileLinkHref }),
-				// );
 				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
 			case ACTION_POST_EDIT_TYPES.requestFail:
@@ -61,24 +61,43 @@ export class ViewPostEdit extends ViewHome {
 		this._render();
 	}
 
-	update(config: object): void {
-		this.updateViewProfileEdit(config as ViewPostEditConfig);
-	}
-
 	protected _render(): void {
+		const rootNode = this._root.node;
+
 		super._render();
 		this._renderPostEditForm();
+
+		const rootVNode = this._root.newVNode();
+
 		this._addHandlers();
+
+		update(rootNode, rootVNode);
 	}
 
 	protected _renderPostEditForm(): void {
-		// const content = this.content;
-		// const postEditForm = new PostEditForm(
-		// 	this._configPostEdit.postEditForm,
-		// 	content,
-		// );
-		// postEditForm.render();
-		// this._components.postEditForm = postEditForm;
+		this._components.postEditForm = new PostEditForm(
+			this._configPostEdit.postEditForm,
+			this.content,
+		);
+	}
+
+	protected _addHandlers() {
+		super._addHandlers();
+		this._postEditForm.vnode.handlers.push({
+			event: 'submit',
+			callback: (event) => {
+				event.preventDefault();
+				const validator = new Validator();
+				const formData = validator.validateForm(
+					this._postEditForm.formData,
+					this._postEditForm.form,
+				);
+				if (formData) {
+					api.editPost(formData, this._configPostEdit.postId);
+				}
+			},
+		});
+		this._addHandlerInput();
 	}
 
 	private get _postEditForm(): PostEditForm {
@@ -89,55 +108,43 @@ export class ViewPostEdit extends ViewHome {
 		return form;
 	}
 
-	protected _addHandlers() {
-		// this.content.addHandler(
-		// 	this._postEditForm.htmlElement,
-		// 	'submit',
-		// 	(event) => {
-		// 		event.preventDefault();
-		// 		const validator = new Validator();
-		// 		const formData = validator.validateForm(
-		// 			this._postEditForm.formData,
-		// 			this._postEditForm.form,
-		// 		);
-		// 		if (formData) {
-		// 			api.editPost(formData, this._configPostEdit.postId);
-		// 		}
-		// 	},
-		// );
-		// this._addHandlerInput();
-	}
-
 	private _addHandlerInput(): void {
-		// const fileInput = this._postEditForm.fileInput;
-		// const label = this._postEditForm.label;
-		// const preview = this._postEditForm.img as HTMLImageElement;
-		// if (fileInput) {
-		// 	this.content.addHandler(fileInput, 'click', (event) => {
-		// 		const input = event.target as HTMLInputElement;
-		// 		if (input.value) {
-		// 			input.value = '';
-		// 			event.preventDefault();
-		// 			label?.classList.remove('active');
-		// 			label.textContent = 'Прикрепить картинку';
-		// 			preview.src = '';
-		// 		}
-		// 	});
-		// 	this.content.addHandler(fileInput, 'change', (event) => {
-		// 		const input = event.target as HTMLInputElement;
-		// 		if (input.files && input.files.length > 0) {
-		// 			if (label) {
-		// 				label.classList.add('active');
-		// 				label.textContent =
-		// 					'Картинка выбрана, нажмите, чтобы отменить';
-		// 			}
-		// 			const reader = new FileReader();
-		// 			reader.onload = function (e) {
-		// 				preview.src = e.target?.result as string;
-		// 			};
-		// 			reader.readAsDataURL(input.files[0]);
-		// 		}
-		// 	});
-		// }
+		this._postEditForm.fileInputVNode.handlers.push(
+			{
+				event: 'click',
+				callback: (event) => {
+					const label = this._postEditForm.label;
+					const preview = this._postEditForm.img as HTMLImageElement;
+					const input = event.target as HTMLInputElement;
+					if (input.value) {
+						input.value = '';
+						event.preventDefault();
+						label?.classList.remove('active');
+						label.textContent = 'Прикрепить картинку';
+						preview.src = '';
+					}
+				},
+			},
+			{
+				event: 'change',
+				callback: (event) => {
+					const label = this._postEditForm.label;
+					const preview = this._postEditForm.img as HTMLImageElement;
+					const input = event.target as HTMLInputElement;
+					if (input.files && input.files.length > 0) {
+						if (label) {
+							label.classList.add('active');
+							label.textContent =
+								'Картинка выбрана, нажмите, чтобы отменить';
+						}
+						const reader = new FileReader();
+						reader.onload = function (e) {
+							preview.src = e.target?.result as string;
+						};
+						reader.readAsDataURL(input.files[0]);
+					}
+				},
+			},
+		);
 	}
 }

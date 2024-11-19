@@ -1,7 +1,13 @@
+import { VNode } from '../../modules/vdom';
 import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
 import Component from '../Component';
+import { InputConfig } from '../Input/Input';
 
-export interface PostEditFormConfig extends BaseFormConfig {}
+export interface PostEditFormConfig extends BaseFormConfig {
+	inputs: {
+		image: InputConfig;
+	};
+}
 
 export class PostEditForm extends BaseForm {
 	protected override _config: PostEditFormConfig;
@@ -27,6 +33,10 @@ export class PostEditForm extends BaseForm {
 			throw new Error('input file not found');
 		}
 		return html;
+	}
+
+	get fileInputVNode(): VNode {
+		return this._findVNodeByKey(this._config.inputs.image.key);
 	}
 
 	get label(): HTMLElement {
