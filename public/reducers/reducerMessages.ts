@@ -6,14 +6,14 @@ import {
 	ActionMessagesRequestSuccessData,
 	ActionUpdateMessagesData,
 } from '../actions/actionMessages';
-import { IMessageConfig } from '../components/Message/Message';
+import { MessageConfig } from '../components/Message/Message';
 import config from '../config';
 import { toMessageConfig } from '../models/chat';
 import deepClone from '../modules/deepClone';
 import parseTime from '../modules/parseTime';
 import { ViewMessagesConfig } from '../views/messages/viewMessages';
 
-const initialMessagesState: IMessageConfig[] = deepClone(
+const initialMessagesState: MessageConfig[] = deepClone(
 	config.messagesConfig.messages,
 );
 

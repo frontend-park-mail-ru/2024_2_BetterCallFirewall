@@ -1,7 +1,7 @@
 import { AppConfig, URLInterface } from './app';
 import { ILoginFormConfig, SignupFormConfig } from './components';
 import { IChatConfig } from './components/Chat/Chat';
-import { IMessageConfig } from './components/Message/Message';
+import { MessageConfig } from './components/Message/Message';
 import { ProfileConfig } from './components/Profile/Profile';
 import { ViewChatConfig } from './views/chat/viewChat';
 import { ViewMessagesConfig } from './views/messages/viewMessages';
@@ -276,7 +276,7 @@ const profileConfig: ViewProfileConfig = {
 	path: '/',
 };
 
-const messagesComponentConfig: IMessageConfig[] = [];
+const messagesComponentConfig: MessageConfig[] = [];
 
 const messagesConfig: ViewMessagesConfig = {
 	...homeConfig,

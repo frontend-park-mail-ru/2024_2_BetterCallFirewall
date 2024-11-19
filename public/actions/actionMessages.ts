@@ -1,4 +1,4 @@
-import { IMessageConfig } from '../components/Message/Message';
+import { MessageConfig } from '../components/Message/Message';
 import { ChatResponse } from '../models/chat';
 import { MessageResponse, MessageSend } from '../models/message';
 import { Action, ActionType } from './action';
@@ -13,7 +13,7 @@ export const ACTION_MESSAGES_TYPES = {
 	sendMessage: 'actionMessagesSendMessage',
 };
 
-export interface ActionUpdateMessagesData extends IMessageConfig {}
+export interface ActionUpdateMessagesData extends MessageConfig {}
 
 export class ActionUpdateMessages implements Action {
 	type: ActionType;

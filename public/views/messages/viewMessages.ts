@@ -1,8 +1,9 @@
 import { ActionChatGoToChat } from '../../actions/actionChat';
 import { ActionMessagesRequest } from '../../actions/actionMessages';
 import { Root } from '../../components';
-import { IMessageConfig, Message } from '../../components/Message/Message';
+import { MessageConfig, Message } from '../../components/Message/Message';
 import { PAGE_URLS } from '../../config';
+import { update } from '../../modules/vdom';
 import { ChangeMessages } from '../../stores/storeMessages';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
@@ -11,7 +12,7 @@ export type ComponentsMessages = {
 } & ComponentsHome;
 
 export interface ViewMessagesConfig extends HomeConfig {
-	messages: IMessageConfig[];
+	messages: MessageConfig[];
 }
 
 export class ViewMessages extends ViewHome {
@@ -46,33 +47,45 @@ export class ViewMessages extends ViewHome {
 		this._render();
 	}
 
-	update(config: object): void {
-		this.updateViewMessages(config as ViewMessagesConfig);
-	}
-
 	protected _render(): void {
+		const rootNode = this._root.node;
+
 		super._render();
 		this._renderMessages();
+
+		const rootVNode = this._root.newVNode();
+
+		this._addHandlers();
+
+		update(rootNode, rootVNode);
 	}
 
 	protected _renderMessages(): void {
-		// const content = this.content;
-		// this._configMessages.messages.forEach((messageConfig) => {
-		// 	const message = new Message(messageConfig, content);
-		// 	message.render();
-		// 	this._addMessageHandlers(message);
-		// });
+		this._components.messages = this._configMessages.messages.map(
+			(config) => {
+				return new Message(config, this.content);
+			},
+		);
+	}
+
+	protected _addHandlers(): void {
+		super._addHandlers();
+		this._components.messages?.forEach((message) => {
+			this._addMessageHandlers(message);
+		});
 	}
 
 	protected _addMessageHandlers(message: Message): void {
-		message.addHandler(message.htmlElement, 'click', (event) => {
-			event.preventDefault();
-			const config = message.config;
-			this.sendAction(
-				new ActionChatGoToChat({
-					href: PAGE_URLS.chat + `/${config.authorId}`,
-				}),
-			);
+		message.vnode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this.sendAction(
+					new ActionChatGoToChat({
+						href: PAGE_URLS.chat + `/${message.config.authorId}`,
+					}),
+				);
+			},
 		});
 	}
 }
