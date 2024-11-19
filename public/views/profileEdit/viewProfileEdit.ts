@@ -66,7 +66,7 @@ export class ViewProfileEdit extends ViewHome {
 		super._render();
 		this._renderProfileEditForm();
 
-		const rootVNode = this._root.vnode;
+		const rootVNode = this._root.newVNode();
 
 		this._addHandlers();
 
