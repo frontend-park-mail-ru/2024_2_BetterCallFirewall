@@ -14,7 +14,6 @@ import {
 import {
 	ACTION_PROFILE_EDIT_TYPES,
 	ActionProfileEditGoTo,
-	ActionProfileEditUpdate,
 } from '../../actions/actionProfileEdit';
 import api from '../../api/api';
 import app from '../../app';
