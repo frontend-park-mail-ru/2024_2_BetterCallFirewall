@@ -1,5 +1,11 @@
+import { ActionChatGoToChat } from '../../actions/actionChat';
+import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
-import { ACTION_FRIENDS_TYPES } from '../../actions/actionFriends';
+import {
+	ACTION_FRIENDS_TYPES,
+	ActionFriendsAccept,
+} from '../../actions/actionFriends';
+import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileRequest,
@@ -7,12 +13,15 @@ import {
 } from '../../actions/actionProfile';
 import {
 	ACTION_PROFILE_EDIT_TYPES,
+	ActionProfileEditGoTo,
 	ActionProfileEditUpdate,
 } from '../../actions/actionProfileEdit';
 import api from '../../api/api';
 import app from '../../app';
 import { Post, Root } from '../../components';
-import { IProfileConfig, Profile } from '../../components/Profile/Profile';
+import { ProfileConfig, Profile } from '../../components/Profile/Profile';
+import { PAGE_URLS } from '../../config';
+import { update } from '../../modules/vdom';
 import { ChangeProfile } from '../../stores/storeProfile';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
@@ -21,7 +30,7 @@ export type ComponentsProfile = {
 } & ComponentsHome;
 
 export interface ViewProfileConfig extends HomeConfig {
-	profile: IProfileConfig;
+	profile: ProfileConfig;
 	path: string;
 }
 
@@ -98,69 +107,86 @@ export class ViewProfile extends ViewHome {
 		this._render();
 	}
 
-	update(config: object): void {
-		this.updateViewProfile(config as ViewProfileConfig);
-	}
-
 	protected _render(): void {
 		super._render();
 		this._renderProfile();
+
+		const rootVNode = this._root.newVNode();
+
+		this._addProfileHandlers();
+
+		update(this._root.node, rootVNode);
 	}
 
 	protected _renderProfile(): void {
-		// const content = this.content;
-		// const profile = new Profile(this._configProfile.profile, content);
-		// profile.render();
-		// this._components.profile = profile;
-		// this._addProfileHandlers();
+		this._components.profile = new Profile(
+			this._configProfile.profile,
+			this.content,
+		);
 	}
 
 	private _addProfileHandlers() {
-		// const profile = this.profile;
-		// if (profile.config.isAuthor) {
-		// 	const createPostLink = this.profile.createPostLink;
-		// 	this.content.addHandler(createPostLink, 'click', (event) => {
-		// 		event.preventDefault();
-		// 		this.sendAction(new ActionCreatePostGoTo());
-		// 	});
-		// 	const profileEditLink = this.profile.profileEditLink;
-		// 	this.content.addHandler(profileEditLink, 'click', (event) => {
-		// 		event.preventDefault();
-		// 		this.sendAction(new ActionProfileEditGoTo());
-		// 	});
-		// }
-		// if (!profile.config.isAuthor) {
-		// 	profile.addHandler(profile.writeMessageLink, 'click', (event) => {
-		// 		event.preventDefault();
-		// 		const config = profile.config;
-		// 		this.sendAction(
-		// 			new ActionChatGoToChat({
-		// 				href: PAGE_URLS.chat + `/${config.id}`,
-		// 			}),
-		// 		);
-		// 	});
-		// }
-		// if (profile.config.isSubscriber) {
-		// 	profile.addHandler(profile.acceptFriendButton, 'click', (event) => {
-		// 		event.preventDefault();
-		// 		this.sendAction(new ActionFriendsAccept(profile.config.id));
-		// 	});
-		// }
-		// this.profile.posts.forEach((post) => this._addPostHandlers(post));
+		const profile = this.profile;
+		if (profile.config.isAuthor) {
+			profile.createPostLinkVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionCreatePostGoTo());
+				},
+			});
+			profile.profileEditLinkVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionProfileEditGoTo());
+				},
+			});
+		}
+		if (!profile.config.isAuthor) {
+			profile.writeMessageLinkVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					const config = profile.config;
+					this.sendAction(
+						new ActionChatGoToChat({
+							href: PAGE_URLS.chat + `/${config.id}`,
+						}),
+					);
+				},
+			});
+		}
+		if (profile.config.isSubscriber) {
+			profile.acceptFriendButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionFriendsAccept(profile.config.id));
+				},
+			});
+		}
+		this.profile.posts.forEach((post) => this._addPostHandlers(post));
 	}
 
 	private _addPostHandlers(post: Post) {
-		// if (post.config.hasEditButton) {
-		// 	post.addHandler(post.editButton, 'click', (event) => {
-		// 		event.preventDefault();
-		// 		this.sendAction(new ActionPostEditGoTo(post.config));
-		// 	});
-		// }
-		// if (post.config.hasDeleteButton) {
-		// 	post.addHandler(post.deleteButton, 'click', (event) => {
-		// 		event.preventDefault();
-		// 		api.deletePost(post.config.id);
-		// 	});
-		// }
+		if (post.config.hasEditButton) {
+			post.editButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionPostEditGoTo(post.config));
+				},
+			});
+		}
+		if (post.config.hasDeleteButton) {
+			post.deleteButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					api.deletePost(post.config.id);
+				},
+			});
+		}
 	}
 }

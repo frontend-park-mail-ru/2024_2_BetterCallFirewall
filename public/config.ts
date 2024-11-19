@@ -2,7 +2,7 @@ import { AppConfig, URLInterface } from './app';
 import { ILoginFormConfig, SignupFormConfig } from './components';
 import { IChatConfig } from './components/Chat/Chat';
 import { IMessageConfig } from './components/Message/Message';
-import { IProfileConfig } from './components/Profile/Profile';
+import { ProfileConfig } from './components/Profile/Profile';
 import { ViewChatConfig } from './views/chat/viewChat';
 import { ViewMessagesConfig } from './views/messages/viewMessages';
 import { ViewFeedConfig } from './views/feed/viewFeed';
@@ -253,7 +253,7 @@ const feedConfig: ViewFeedConfig = {
 	pendingPostRequest: false,
 };
 
-const profileComponentConfig: IProfileConfig = {
+const profileComponentConfig: ProfileConfig = {
 	id: -1,
 	key: 'profile',
 	firstName: '',
@@ -267,6 +267,7 @@ const profileComponentConfig: IProfileConfig = {
 	isFriend: false,
 	isSubscriber: false,
 	isSubscription: false,
+	posts: [],
 };
 
 const profileConfig: ViewProfileConfig = {

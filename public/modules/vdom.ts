@@ -250,40 +250,51 @@ export const findVNodeByKey = (from: VNode, key: string): VNode | undefined => {
 	});
 };
 
-export const findVNodeByClass = (
-	from: VNode,
-	className: string,
-): VNode | undefined => {
-	return bfs(from, (vnode) => {
+const findByClassNameCallback = (className: string) => {
+	return (vnode: VNode) => {
 		if (vnode.attrubutes.class) {
 			const classNames = vnode.attrubutes.class.split(' ');
 			if (classNames.indexOf(className) >= 0) {
 				return vnode;
 			}
 		}
-	});
+	};
+};
+
+export const findVNodeByClass = (
+	from: VNode,
+	className: string,
+): VNode | undefined => {
+	return bfs(from, findByClassNameCallback(className));
+};
+
+export const findVNodeByClassAll = (
+	from: VNode,
+	className: string,
+): VNode[] => {
+	return bfsAll(from, findByClassNameCallback(className));
+};
+
+const findByTagNameCallback = (tagName: string) => {
+	return (vnode: VNode) => {
+		if (vnode.tagName.toLowerCase() === tagName) {
+			return vnode;
+		}
+	};
 };
 
 export const findVNodebyTagName = (
 	from: VNode,
 	tagName: string,
 ): VNode | undefined => {
-	return bfs(from, (vnode) => {
-		if (vnode.tagName.toLowerCase() === tagName) {
-			return vnode;
-		}
-	});
+	return bfs(from, findByTagNameCallback(tagName));
 };
 
 export const findVNodebyTagNameAll = (
 	from: VNode,
 	tagName: string,
 ): VNode[] => {
-	return bfsAll(from, (vnode) => {
-		if (vnode.tagName.toLowerCase() === tagName) {
-			return vnode;
-		}
-	});
+	return bfsAll(from, findByTagNameCallback(tagName));
 };
 
 const bfs = (
