@@ -111,16 +111,15 @@ export class ViewProfile extends ViewHome {
 	}
 
 	private _addProfileHandlers() {
-		const profile = this.profile;
-		if (profile.config.isAuthor) {
-			profile.createPostLinkVNode.handlers.push({
+		if (this.profile.config.isAuthor) {
+			this.profile.createPostLinkVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
 					this.sendAction(new ActionCreatePostGoTo());
 				},
 			});
-			profile.profileEditLinkVNode.handlers.push({
+			this.profile.profileEditLinkVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
@@ -128,26 +127,27 @@ export class ViewProfile extends ViewHome {
 				},
 			});
 		}
-		if (!profile.config.isAuthor) {
-			profile.writeMessageLinkVNode.handlers.push({
+		if (!this.profile.config.isAuthor) {
+			this.profile.writeMessageLinkVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					const config = profile.config;
 					this.sendAction(
 						new ActionChatGoToChat({
-							href: PAGE_URLS.chat + `/${config.id}`,
+							href: PAGE_URLS.chat + `/${this.profile.config.id}`,
 						}),
 					);
 				},
 			});
 		}
-		if (profile.config.isSubscriber) {
-			profile.acceptFriendButtonVNode.handlers.push({
+		if (this.profile.config.isSubscriber) {
+			this.profile.acceptFriendButtonVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					this.sendAction(new ActionFriendsAccept(profile.config.id));
+					this.sendAction(
+						new ActionFriendsAccept(this.profile.config.id),
+					);
 				},
 			});
 		}

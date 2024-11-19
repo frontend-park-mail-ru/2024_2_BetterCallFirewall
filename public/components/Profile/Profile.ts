@@ -97,10 +97,12 @@ export class Profile extends Component {
 
 	protected _prerender(): void {
 		super._prerender();
+		this._posts = this._config.posts.map((config) => {
+			return new Post(config, this);
+		});
 		this._templateContext = {
 			...this._templateContext,
-			posts: this._config.posts.map((postConfig) => {
-				const post = new Post(postConfig, this);
+			posts: this._posts.map((post) => {
 				return post.render();
 			}),
 		};
