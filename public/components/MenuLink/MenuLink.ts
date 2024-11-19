@@ -45,7 +45,7 @@ import Component, { ComponentConfig } from '../Component';
 // 	}
 // }
 
-export interface IMenuLinkConfig extends ComponentConfig {
+export interface MenuLinkConfig extends ComponentConfig {
 	text: string;
 	href: string;
 	icon: string;
@@ -55,9 +55,9 @@ export interface IMenuLinkConfig extends ComponentConfig {
 export interface IMenuLink extends Component {}
 
 export default class MenuLink extends Component {
-	protected _config: IMenuLinkConfig;
+	protected _config: MenuLinkConfig;
 
-	constructor(config: IMenuLinkConfig, parent: Component | null = null) {
+	constructor(config: MenuLinkConfig, parent: Component | null = null) {
 		super(config, parent);
 		this._config = config;
 	}

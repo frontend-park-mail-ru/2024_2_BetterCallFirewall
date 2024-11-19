@@ -1,3 +1,4 @@
+import { ActionAppGoTo } from '../../actions/actionApp';
 import { ActionChatGoToChat } from '../../actions/actionChat';
 import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
@@ -11,10 +12,7 @@ import {
 	ActionProfileRequest,
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
-import {
-	ACTION_PROFILE_EDIT_TYPES,
-	ActionProfileEditGoTo,
-} from '../../actions/actionProfileEdit';
+import { ACTION_PROFILE_EDIT_TYPES } from '../../actions/actionProfileEdit';
 import api from '../../api/api';
 import app from '../../app';
 import { Post, Root } from '../../components';
@@ -123,7 +121,12 @@ export class ViewProfile extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					this.sendAction(new ActionProfileEditGoTo());
+					// this.sendAction(new ActionProfileEditGoTo());
+					this.sendAction(
+						new ActionAppGoTo(
+							this._configProfile.menu.links.profile.href,
+						),
+					);
 				},
 			});
 		}

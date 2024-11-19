@@ -1,6 +1,6 @@
 import { findVNodeByKey, VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
-import MenuLink, { IMenuLinkConfig } from '../MenuLink/MenuLink';
+import MenuLink, { MenuLinkConfig } from '../MenuLink/MenuLink';
 
 // type TitleConfig = {
 // 	key: string;
@@ -108,12 +108,17 @@ type TitleConfig = {
 	text: string;
 	href: string;
 };
-type LinksConfig = [string, IMenuLinkConfig][];
+type LinksConfig = [string, MenuLinkConfig][];
 type Links = MenuLink[];
 
 export interface MenuConfig extends ComponentConfig {
 	title: TitleConfig;
-	links: Record<string, IMenuLinkConfig>;
+	links: {
+		feed: MenuLinkConfig;
+		profile: MenuLinkConfig;
+		friends: MenuLinkConfig;
+		messages: MenuLinkConfig;
+	};
 }
 
 export default class Menu extends Component {
