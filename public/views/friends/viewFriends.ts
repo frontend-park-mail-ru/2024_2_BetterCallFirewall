@@ -6,7 +6,6 @@ import {
 } from '../../actions/actionFriends';
 import api from '../../api/api';
 import { Root } from '../../components';
-import { FriendConfig } from '../../components/Friend/Friend';
 import { Friends, FriendsConfig } from '../../components/Friends/Friends';
 import { PAGE_URLS } from '../../config';
 import { update } from '../../modules/vdom';
@@ -132,6 +131,7 @@ export class ViewFriends extends ViewHome {
 	}
 
 	protected _addHandlers() {
+		super._addHandlers();
 		this._addFriendsHandlers(this.friends);
 		this._addFriendsHandlers(this.subscribers);
 		this._addFriendsHandlers(this.subscriptions);
