@@ -196,12 +196,12 @@ export class ViewChat extends ViewHome {
 	}
 
 	private _addScrollHandler() {
-		const chatContent = this._chat.chatContentHTML;
 		let debounceTimeout: NodeJS.Timeout;
 		const handleScroll = () => {
 			if (!this._handleScroll) {
 				return;
 			}
+			const chatContent = this._chat.chatContentHTML;
 			this._chatScrollBottom =
 				chatContent.scrollHeight -
 				chatContent.scrollTop -
