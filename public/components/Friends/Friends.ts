@@ -26,11 +26,13 @@ export class Friends extends Component {
 
 	protected _prerender(): void {
 		super._prerender();
+		this._people = this._config.friendsConfig.map((config) => {
+			return new Friend(config, this);
+		});
 		this._templateContext = {
 			...this._templateContext,
-			friends: this._config.friendsConfig.map((config) => {
-				const friend = new Friend(config, this);
-				return friend.render();
+			friends: this._people.map((person) => {
+				return person.render();
 			}),
 		};
 	}
