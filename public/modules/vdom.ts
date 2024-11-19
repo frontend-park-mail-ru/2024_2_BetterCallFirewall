@@ -1,4 +1,4 @@
-const SVG_TAGS = ['svg', 'path'];
+const SVG_TAGS = ['svg', 'path', 'g'];
 
 const isEmptyString = (str: string): boolean => {
 	const regex = /^\s*\n\s*$/;

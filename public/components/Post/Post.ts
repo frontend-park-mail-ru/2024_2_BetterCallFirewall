@@ -52,7 +52,6 @@ export class Post extends Component {
 
 	render(): string {
 		this._prerender();
-		const renderResult = this._render('Post.hbs');
-		return renderResult;
+		return this._render('Post.hbs');
 	}
 }
