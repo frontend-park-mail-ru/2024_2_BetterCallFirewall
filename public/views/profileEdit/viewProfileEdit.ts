@@ -1,5 +1,8 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
-import { ActionProfileRequest } from '../../actions/actionProfile';
+import {
+	ACTION_PROFILE_TYPES,
+	ActionProfileRequest,
+} from '../../actions/actionProfile';
 import { ACTION_PROFILE_EDIT_TYPES } from '../../actions/actionProfileEdit';
 import api from '../../api/api';
 import { Root } from '../../components';
@@ -36,6 +39,7 @@ export class ViewProfileEdit extends ViewHome {
 	handleChange(change: ChangeProfileEdit): void {
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_PROFILE_TYPES.profileRequestSuccess:
 			case ACTION_PROFILE_EDIT_TYPES.requestFail:
 				this.updateViewProfileEdit(change.data);
 				break;
