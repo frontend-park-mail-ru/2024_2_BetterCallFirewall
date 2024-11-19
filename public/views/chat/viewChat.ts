@@ -104,11 +104,11 @@ export class ViewChat extends ViewHome {
 		this._addHandlers();
 
 		update(rootNode, rootVNode);
+		this._chat.textarea.focus();
 	}
 
 	protected _renderChat(): void {
 		this._components.chat = new Chat(this._configChat.chat, this.content);
-		this._chat.textarea.focus();
 	}
 
 	private _scrollToBottom(): void {
