@@ -86,10 +86,11 @@ export class ViewProfile extends ViewHome {
 	}
 
 	protected _render(): void {
+		const rootNode = this._root.node;
+
 		super._render();
 		this._renderProfile();
 
-		const rootNode = this._root.node;
 		const rootVNode = this._root.newVNode();
 
 		this._addHandlers();

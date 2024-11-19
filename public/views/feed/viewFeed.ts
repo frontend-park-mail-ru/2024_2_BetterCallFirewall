@@ -69,18 +69,14 @@ export class ViewFeed extends ViewHome {
 	}
 
 	protected _render(): void {
-		console.log('ViewFeed._render()');
-		super._render();
 		const rootNode = this._root.node;
 
+		super._render();
 		this._renderPosts();
 
 		const rootVNode = this._root.newVNode();
 
 		this._addHandlers();
-
-		console.log('rootVNode:', rootVNode);
-		console.log('rootVNode.children:', rootVNode.children);
 
 		update(rootNode, rootVNode);
 	}
