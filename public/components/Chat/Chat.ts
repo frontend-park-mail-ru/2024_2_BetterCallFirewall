@@ -1,98 +1,94 @@
-import BaseComponent, {
-	IBaseComponent,
-	IBaseComponentConfig,
-} from '../BaseComponent';
-import { ChatMessage, IChatMessageConfig } from '../ChatMessage/ChatMessage';
+import { VNode } from '../../modules/vdom';
+import { ChatMessage, ChatMessageConfig } from '../ChatMessage/ChatMessage';
+import Component, { ComponentConfig } from '../Component';
 
-export interface IChatConfig extends IBaseComponentConfig {
+export interface ChatConfig extends ComponentConfig {
 	companionId: number;
 	companionAvatar: string;
 	companionName: string;
 	lastDateOnline: string;
 	backButtonHref: string;
-	messages: IChatMessageConfig[];
+	messages: ChatMessageConfig[];
 	myId: number;
 	myName: string;
 	myAvatar: string;
-	text: string;
+	inputText: string;
+	inputKey: string;
 }
 
-export interface IChat extends BaseComponent {}
-
-export class Chat extends BaseComponent implements IChat {
-	protected _config: IChatConfig;
+export class Chat extends Component {
+	protected _config: ChatConfig;
 	private _messages: ChatMessage[] = [];
 
 	/**
 	 * Instance of chat
 	 *
-	 * @param {IChatConfig} config - post data
-	 * @param {IBaseComponent} parent - parent element
+	 * @param {ChatConfig} config - post data
+	 * @param {Component} parent - parent element
 	 */
-	constructor(config: IChatConfig, parent: IBaseComponent) {
+	constructor(config: ChatConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 	}
 
-	get config(): IChatConfig {
+	get config(): ChatConfig {
 		return this._config;
 	}
 
-	get backButtonHTML(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'a.chat__back-button',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('back button not found');
-		}
-		return html;
+	get backButtonVNode(): VNode {
+		return this._findVNodeByClass('chat__back-button');
+	}
+
+	get companionLinkVNode(): VNode {
+		return this._findVNodeByClass('chat__companion');
 	}
 
 	get chatContentHTML(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.chat__content',
-		) as HTMLElement;
+		const html = document.querySelector('.chat__content') as HTMLElement;
 		if (!html) {
 			throw new Error('chatContent not found');
 		}
 		return html;
 	}
 
-	get settingsButton(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.chat__settings-button',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('settingsButton not found');
-		}
-		return html;
+	get chatContentVNode(): VNode {
+		return this._findVNodeByClass('chat__content');
 	}
 
-	get form(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'form.sender',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('form not found');
-		}
-		return html;
+	get settingsButtonVNode(): VNode {
+		return this._findVNodeByClass('chat__settings-button');
 	}
 
-	get textarea(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.sender__input',
-		) as HTMLElement;
+	get formVNode(): VNode {
+		return this._findVNodeByKey('form');
+	}
+
+	// get form(): HTMLElement {
+	// 	const html = this.htmlElement.querySelector(
+	// 		'form.sender',
+	// 	) as HTMLElement;
+	// 	if (!html) {
+	// 		throw new Error('form not found');
+	// 	}
+	// 	return html;
+	// }
+
+	get textarea(): HTMLTextAreaElement {
+		const html = document.querySelector(
+			`[data-key]=${this._config.inputKey}`,
+		) as HTMLTextAreaElement;
 		if (!html) {
 			throw new Error('textarea not found');
 		}
 		return html;
+	}
+
+	get textareaVNode(): VNode {
+		return this._findVNodeByKey(this._config.inputKey);
 	}
 
 	get text(): string {
-		const textarea = this.form.querySelector('textarea');
-		if (!textarea) {
-			throw new Error('textarea not found');
-		}
+		const textarea = this.textarea as HTMLTextAreaElement;
 		return textarea.value ? textarea.value.trim() : '';
 	}
 
@@ -100,33 +96,21 @@ export class Chat extends BaseComponent implements IChat {
 		return this._messages;
 	}
 
-	render(show: boolean = true): string {
+	render(): string {
 		this._prerender();
-		this._render('Chat.hbs', show);
-		const chatContent = this.chatContentHTML;
-		const messages = this._config?.messages.map((config) => {
-			const message = new ChatMessage(config, this);
-			message.render(false);
-			message.appendToHTML(chatContent);
-			return message;
-		});
-		if (messages) {
-			this._messages = messages;
-		}
-		return this.htmlElement.outerHTML;
-	}
-
-	addMessage(config?: IChatMessageConfig) {
-		if (config) {
-			const message = new ChatMessage(config, this);
-			message.render(false);
-			message.appendToHTML(this.chatContentHTML);
-			this._messages.push(message);
-		}
+		return this._render('Chat.hbs');
 	}
 
 	protected _prerender(): void {
 		super._prerender();
-		this._templateContext = { ...this.config };
+		this._messages = this._config.messages.map((config) => {
+			return new ChatMessage(config, this);
+		});
+		this._templateContext = {
+			...this._templateContext,
+			messages: this._messages.map((message) => {
+				return message.render();
+			}),
+		};
 	}
 }

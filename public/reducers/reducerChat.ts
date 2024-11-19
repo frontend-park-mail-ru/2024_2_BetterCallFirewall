@@ -12,7 +12,7 @@ import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileRequestSuccessData,
 } from '../actions/actionProfile';
-import { IChatConfig } from '../components/Chat/Chat';
+import { ChatConfig } from '../components/Chat/Chat';
 import config from '../config';
 import { MessageResponse, toChatMessageConfig } from '../models/message';
 import { toChatConfig } from '../models/profile';
@@ -20,7 +20,7 @@ import deepClone from '../modules/deepClone';
 import { ViewChatConfig } from '../views/chat/viewChat';
 import { reducerHome } from './reducerHome';
 
-const initialChatState: IChatConfig = deepClone(config.chatConfig.chat);
+const initialChatState: ChatConfig = deepClone(config.chatConfig.chat);
 
 const initialState: ViewChatConfig = {
 	...config.homeConfig,
@@ -70,9 +70,6 @@ export const reducerChat = (
 					),
 				);
 			}
-			// alert(
-			// 	`Новое сообщение: ${actionData.messageResponse.content} от ${actionData.messageResponse.sender}`,
-			// ); // tmp
 			return newState;
 		}
 		case ACTION_CHAT_TYPES.requestChatSuccess: {

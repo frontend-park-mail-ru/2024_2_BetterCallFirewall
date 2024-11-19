@@ -1,6 +1,6 @@
 import { AppConfig, URLInterface } from './app';
 import { ILoginFormConfig, SignupFormConfig } from './components';
-import { IChatConfig } from './components/Chat/Chat';
+import { ChatConfig } from './components/Chat/Chat';
 import { MessageConfig } from './components/Message/Message';
 import { ProfileConfig } from './components/Profile/Profile';
 import { ViewChatConfig } from './views/chat/viewChat';
@@ -283,7 +283,7 @@ const messagesConfig: ViewMessagesConfig = {
 	messages: messagesComponentConfig,
 };
 
-const emptyChatComponentConfig: IChatConfig = {
+const emptyChatComponentConfig: ChatConfig = {
 	companionId: -1,
 	key: 'chat',
 	companionAvatar: '',
@@ -294,7 +294,8 @@ const emptyChatComponentConfig: IChatConfig = {
 	myId: -1,
 	myName: '',
 	myAvatar: '',
-	text: '',
+	inputText: '',
+	inputKey: 'chat-input',
 };
 
 const chatConfig: ViewChatConfig = {

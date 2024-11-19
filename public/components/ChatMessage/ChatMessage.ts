@@ -1,9 +1,6 @@
-import BaseComponent, {
-	IBaseComponent,
-	IBaseComponentConfig,
-} from '../BaseComponent';
+import Component, { ComponentConfig } from '../Component';
 
-export interface IChatMessageConfig extends IBaseComponentConfig {
+export interface ChatMessageConfig extends ComponentConfig {
 	userId: number;
 	messageAvatar: string;
 	messageName: string;
@@ -13,23 +10,16 @@ export interface IChatMessageConfig extends IBaseComponentConfig {
 	isAuthor: boolean;
 }
 
-export interface IChatMessage extends BaseComponent {}
+export class ChatMessage extends Component {
+	protected _config: ChatMessageConfig;
 
-export class ChatMessage extends BaseComponent implements IChatMessage {
-	protected _config: IChatMessageConfig | null;
-
-	constructor(config: IChatMessageConfig, parent: IBaseComponent) {
+	constructor(config: ChatMessageConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 	}
 
-	render(show: boolean = true): string {
+	render(): string {
 		this._prerender();
-		return this._render('ChatMessage.hbs', show);
-	}
-
-	protected _prerender(): void {
-		super._prerender();
-		this._templateContext = { ...this.config };
+		return this._render('ChatMessage.hbs');
 	}
 }

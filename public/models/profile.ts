@@ -1,4 +1,4 @@
-import { IChatConfig } from '../components/Chat/Chat';
+import { ChatConfig } from '../components/Chat/Chat';
 import { FriendConfig } from '../components/Friend/Friend';
 import { ProfileConfig } from '../components/Profile/Profile';
 import { PAGE_LINKS } from '../config';
@@ -70,9 +70,9 @@ export const toFriendConfig = (
 };
 
 export const toChatConfig = (
-	chatConfig: IChatConfig,
+	chatConfig: ChatConfig,
 	response: FullProfileResponse,
-): IChatConfig => {
+): ChatConfig => {
 	const newChatConfig = deepClone(chatConfig);
 	newChatConfig.companionId = response.id;
 	newChatConfig.companionName = `${response.first_name} ${response.last_name}`;
