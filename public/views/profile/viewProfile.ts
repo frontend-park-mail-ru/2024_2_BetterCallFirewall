@@ -74,9 +74,6 @@ export class ViewProfile extends ViewHome {
 	}
 
 	render(): void {
-		if (!this.active) {
-			return;
-		}
 		this._render();
 		this.sendAction(new ActionUpdateProfile());
 		this.sendAction(new ActionProfileRequest(app.router.path));
@@ -92,11 +89,12 @@ export class ViewProfile extends ViewHome {
 		super._render();
 		this._renderProfile();
 
+		const rootNode = this._root.node;
 		const rootVNode = this._root.newVNode();
 
-		this._addProfileHandlers();
+		this._addHandlers();
 
-		update(this._root.node, rootVNode);
+		update(rootNode, rootVNode);
 	}
 
 	protected _renderProfile(): void {
@@ -104,6 +102,11 @@ export class ViewProfile extends ViewHome {
 			this._configProfile.profile,
 			this.content,
 		);
+	}
+
+	protected _addHandlers(): void {
+		super._addHandlers();
+		this._addProfileHandlers();
 	}
 
 	private _addProfileHandlers() {
