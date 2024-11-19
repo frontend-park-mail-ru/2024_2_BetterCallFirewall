@@ -56,6 +56,7 @@ export const reducerChat = (
 			newState.chat.messages.push(
 				toChatMessageConfig(newState.chat, messageResponse),
 			);
+			newState.chat.inputText = '';
 			return newState;
 		}
 		case ACTION_MESSAGES_TYPES.newMessage: {
