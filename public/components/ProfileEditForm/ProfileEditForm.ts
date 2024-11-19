@@ -1,7 +1,16 @@
+import { VNode } from '../../modules/vdom';
 import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
 import Component from '../Component';
+import { InputConfig } from '../Input/Input';
 
-export interface IProfileEditFormConfig extends BaseFormConfig {}
+export interface IProfileEditFormConfig extends BaseFormConfig {
+	inputs: {
+		firstName: InputConfig;
+		secondName: InputConfig;
+		description: InputConfig;
+		avatar: InputConfig;
+	};
+}
 
 export class ProfileEditForm extends BaseForm {
 	protected override _config: IProfileEditFormConfig;
@@ -27,6 +36,10 @@ export class ProfileEditForm extends BaseForm {
 			throw new Error('input file not found');
 		}
 		return html;
+	}
+
+	get fileInputVNode(): VNode {
+		return this._findVNodeByKey(this._config.inputs.avatar.key);
 	}
 
 	get label(): HTMLElement {
