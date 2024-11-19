@@ -1,4 +1,5 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
+import { ActionProfileRequest } from '../../actions/actionProfile';
 import { ACTION_PROFILE_EDIT_TYPES } from '../../actions/actionProfileEdit';
 import api from '../../api/api';
 import { Root } from '../../components';
@@ -55,6 +56,11 @@ export class ViewProfileEdit extends ViewHome {
 			);
 		}
 		this._render();
+		this.sendAction(
+			new ActionProfileRequest(
+				this._configProfileEdit.menu.links.profile.href,
+			),
+		);
 	}
 
 	updateViewProfileEdit(data: ViewProfileEditConfig): void {
