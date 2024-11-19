@@ -157,6 +157,7 @@ export class ViewChat extends ViewHome {
 					content: chatText,
 					receiver: this._chat.config.companionId,
 				};
+				this._chat.textarea.value = '';
 				this.sendAction(new ActionChatSendMessage(message));
 			},
 		});
