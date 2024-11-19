@@ -27,7 +27,6 @@ export class ViewFeed extends ViewHome {
 	}
 
 	handleChange(change: ChangeFeed): void {
-		console.log('ViewFeed: handleChange:', change);
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_FEED_TYPES.update:
@@ -54,7 +53,6 @@ export class ViewFeed extends ViewHome {
 	}
 
 	render(): void {
-		console.log('ViewFeed.render()');
 		this._render();
 
 		if (this._isNearBottom() && !this._configFeed.pendingPostRequest) {

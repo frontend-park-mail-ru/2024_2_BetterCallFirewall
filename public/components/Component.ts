@@ -1,4 +1,5 @@
 import {
+	findVNodeByClass,
 	findVNodeByKey,
 	Handler,
 	VNode,
@@ -86,5 +87,20 @@ export default abstract class Component {
 		};
 	}
 
+	protected _findVNodeByKey(key: string): VNode {
+		return checkVNode(findVNodeByKey(this.vnode, key));
+	}
+
+	protected _findVNodeByClass(className: string) {
+		return checkVNode(findVNodeByClass(this.vnode, className));
+	}
+
 	abstract render(): string;
 }
+
+const checkVNode = (vnode?: VNode) => {
+	if (!vnode) {
+		throw new Error('vnode not found');
+	}
+	return vnode;
+};

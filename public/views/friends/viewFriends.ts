@@ -6,12 +6,19 @@ import {
 } from '../../actions/actionFriends';
 import api from '../../api/api';
 import { Root } from '../../components';
-import { IFriendConfig } from '../../components/Friend/Friend';
+import { FriendConfig } from '../../components/Friend/Friend';
 import { Friends, FriendsConfig } from '../../components/Friends/Friends';
 import { PAGE_URLS } from '../../config';
-import deepClone from '../../modules/deepClone';
+import { update } from '../../modules/vdom';
 import { ChangeFriends } from '../../stores/storeFriends';
-import { HomeConfig, ViewHome } from '../home/viewHome';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
+
+export type ComponentsFriends = {
+	friends?: Friends;
+	subscribers?: Friends;
+	subscriptions?: Friends;
+	users?: Friends;
+} & ComponentsHome;
 
 export interface ViewFriendsConfig extends HomeConfig {
 	friends: FriendsConfig;
@@ -22,6 +29,7 @@ export interface ViewFriendsConfig extends HomeConfig {
 
 export class ViewFriends extends ViewHome {
 	protected _configFriends: ViewFriendsConfig;
+	protected _components: ComponentsFriends = {};
 
 	constructor(config: ViewFriendsConfig, root: Root) {
 		super(config, root);
@@ -67,7 +75,7 @@ export class ViewFriends extends ViewHome {
 	}
 
 	updateViewFriends(data: ViewFriendsConfig) {
-		this._configFriends = deepClone(data);
+		this._configFriends = data;
 		this._render();
 	}
 
@@ -75,134 +83,166 @@ export class ViewFriends extends ViewHome {
 		this._render();
 	}
 
-	update(config: object): void {
-		this.updateViewFriends(config as ViewFriendsConfig);
+	protected get friends(): Friends {
+		const friends = this._components.friends;
+		if (!friends) {
+			throw new Error('friends does not exist');
+		}
+		return friends;
+	}
+
+	protected get subscribers(): Friends {
+		const subscribers = this._components.subscribers;
+		if (!subscribers) {
+			throw new Error('subscribers does not exist');
+		}
+		return subscribers;
+	}
+
+	protected get subscriptions(): Friends {
+		const subscriptions = this._components.subscriptions;
+		if (!subscriptions) {
+			throw new Error('subscriptions does not exist');
+		}
+		return subscriptions;
+	}
+
+	protected get users(): Friends {
+		const users = this._components.users;
+		if (!users) {
+			throw new Error('users does not exist');
+		}
+		return users;
 	}
 
 	protected _render(): void {
+		const rootNode = this._root.node;
+
 		super._render();
 		this._renderFriends();
 		this._renderSubscribers();
-		this._renderSubscribtions();
+		this._renderSubscriptions();
 		this._renderUsers();
+
+		const rootVNode = this._root.newVNode();
+
 		this._addHandlers();
+
+		update(rootNode, rootVNode);
+	}
+
+	protected _addHandlers() {
+		this._addFriendsHandlers(this.friends);
+		this._addFriendsHandlers(this.subscribers);
+		this._addFriendsHandlers(this.subscriptions);
+		this._addFriendsHandlers(this.users);
+		this._addScrollHandler();
 	}
 
 	private _renderFriends(): void {
-		// const content = this.content;
-		// const friends = new Friends(this._configFriends.friends, content);
-		// friends.render();
-		// this._addFriendsHandlers(friends);
+		this._components.friends = new Friends(
+			this._configFriends.friends,
+			this.content,
+		);
 	}
 
 	private _renderSubscribers() {
-		// const content = this.content;
-		// const subscribers = new Friends(
-		// 	this._configFriends.subscribers,
-		// 	content,
-		// );
-		// subscribers.render();
-		// this._addFriendsHandlers(subscribers);
+		this._components.subscribers = new Friends(
+			this._configFriends.subscribers,
+			this.content,
+		);
 	}
 
-	private _renderSubscribtions() {
-		// const content = this.content;
-		// const subscriptions = new Friends(
-		// 	this._configFriends.subscriptions,
-		// 	content,
-		// );
-		// subscriptions.render();
-		// this._addFriendsHandlers(subscriptions);
+	private _renderSubscriptions() {
+		this._components.subscriptions = new Friends(
+			this._configFriends.subscriptions,
+			this.content,
+		);
 	}
 
 	private _renderUsers() {
-		// const content = this.content;
-		// const users = new Friends(this._configFriends.users, content);
-		// users.render();
-		// this._addFriendsHandlers(users);
+		this._components.users = new Friends(
+			this._configFriends.users,
+			this.content,
+		);
 	}
 
 	private _addFriendsHandlers(people: Friends) {
 		people.listPeople.forEach((person) => {
-			const personConfig = person.config as IFriendConfig;
+			const personConfig = person.config;
 			if (personConfig.isFriend) {
-				person.addHandler(
-					person.removeFriendButton,
-					'click',
-					(event) => {
+				person.removeFriendButtonVNode.handlers.push({
+					event: 'click',
+					callback: (event) => {
 						event.preventDefault();
 						api.removeFriend(personConfig.id);
 					},
-				);
+				});
 			} else if (personConfig.isSubscriber) {
-				person.addHandler(
-					person.acceptFriendButton,
-					'click',
-					(event) => {
+				person.acceptFriendButtonVNode.handlers.push({
+					event: 'click',
+					callback: (event) => {
 						event.preventDefault();
 						api.acceptFriend(personConfig.id);
 					},
-				);
+				});
 			} else if (personConfig.isSubscription) {
-				person.addHandler(
-					person.unsubscribeFriendButton,
-					'click',
-					(event) => {
+				person.unsubscribeFriendButtonVNode.handlers.push({
+					event: 'click',
+					callback: (event) => {
 						event.preventDefault();
 						api.unsubscribeToProfile(personConfig.id);
 					},
-				);
+				});
 			} else {
-				person.addHandler(
-					person.subscribeFriendButton,
-					'click',
-					(event) => {
+				person.subscribeFriendButtonVNode.handlers.push({
+					event: 'click',
+					callback: (event) => {
 						event.preventDefault();
 						api.subscribeToProfile(personConfig.id);
 					},
-				);
+				});
 			}
-			person.addHandler(person.profileLink, 'click', (event) => {
-				event.preventDefault();
-				// this.sendAction(
-				// 	new ActionMenuLinkClick({ href: `/${person.config.id}` }),
-				// );
-				this.sendAction(new ActionAppGoTo(`/${person.config.id}`));
+			person.profileLinkVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionAppGoTo(`/${person.config.id}`));
+				},
 			});
-			person.addHandler(person.profileLinkAvatar, 'click', (event) => {
-				event.preventDefault();
-				// this.sendAction(
-				// 	new ActionMenuLinkClick({ href: `/${person.config.id}` }),
-				// );
-				this.sendAction(new ActionAppGoTo(`/${person.config.id}`));
+			person.profileLinkAvatarVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionAppGoTo(`/${person.config.id}`));
+				},
 			});
-			person.addHandler(person.writeMessageLink, 'click', (event) => {
-				event.preventDefault();
-				const config = person.config;
-				this.sendAction(
-					new ActionChatGoToChat({
-						href: PAGE_URLS.chat + `/${config.id}`,
-					}),
-				);
+			person.writeMessageLinkVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					const config = person.config;
+					this.sendAction(
+						new ActionChatGoToChat({
+							href: PAGE_URLS.chat + `/${config.id}`,
+						}),
+					);
+				},
 			});
 		});
 	}
 
-	protected _addHandlers() {
-		this._addScrollHandler();
-	}
-
 	private _addScrollHandler() {
-		// let debounceTimeout: NodeJS.Timeout;
-		// const handler = () => {
-		// 	if (this._isNearBottom()) {
-		// 		clearTimeout(debounceTimeout);
-		// 		debounceTimeout = setTimeout(() => {
-		// 			const users = this._configFriends.users.friendsConfig;
-		// 			api.requestUsers(users[users.length - 1]?.id);
-		// 		}, 200);
-		// 	}
-		// };
-		// this.content.addHandler(document, 'scroll', handler);
+		let debounceTimeout: NodeJS.Timeout;
+		const handler = () => {
+			if (this._isNearBottom()) {
+				clearTimeout(debounceTimeout);
+				debounceTimeout = setTimeout(() => {
+					const users = this._configFriends.users.friendsConfig;
+					api.requestUsers(users[users.length - 1]?.id);
+				}, 200);
+			}
+		};
+		this._root.addDocumentHandler({ event: 'scroll', callback: handler });
 	}
 }

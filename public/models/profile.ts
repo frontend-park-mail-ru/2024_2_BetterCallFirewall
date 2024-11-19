@@ -1,5 +1,5 @@
 import { IChatConfig } from '../components/Chat/Chat';
-import { IFriendConfig } from '../components/Friend/Friend';
+import { FriendConfig } from '../components/Friend/Friend';
 import { ProfileConfig } from '../components/Profile/Profile';
 import { PAGE_LINKS } from '../config';
 import deepClone from '../modules/deepClone';
@@ -56,8 +56,8 @@ export const toProfileConfig = (
 
 export const toFriendConfig = (
 	profileResponse: ShortProfileResponse,
-): IFriendConfig => {
-	const newConfig: IFriendConfig = {
+): FriendConfig => {
+	const newConfig: FriendConfig = {
 		id: profileResponse.id,
 		key: `friend-${profileResponse.id}`,
 		name: `${profileResponse.first_name} ${profileResponse.last_name}`,
