@@ -63,19 +63,9 @@ export class Chat extends Component {
 		return this._findVNodeByKey('form');
 	}
 
-	// get form(): HTMLElement {
-	// 	const html = this.htmlElement.querySelector(
-	// 		'form.sender',
-	// 	) as HTMLElement;
-	// 	if (!html) {
-	// 		throw new Error('form not found');
-	// 	}
-	// 	return html;
-	// }
-
 	get textarea(): HTMLTextAreaElement {
 		const html = document.querySelector(
-			`[data-key]=${this._config.inputKey}`,
+			`[data-key=${this._config.inputKey}]`,
 		) as HTMLTextAreaElement;
 		if (!html) {
 			throw new Error('textarea not found');
