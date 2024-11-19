@@ -68,8 +68,7 @@ export abstract class ViewHome extends View {
 				break;
 			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_APP_TYPES.goTo:
-				this._configHome = Object.assign(this._configHome, change.data);
-				this.render();
+				this.render(change.data);
 				break;
 		}
 	}
@@ -79,7 +78,10 @@ export abstract class ViewHome extends View {
 		this._render();
 	}
 
-	render(): void {
+	render(data?: HomeConfig): void {
+		if (data) {
+			this._configHome = Object.assign(this._configHome, data);
+		}
 		this._render();
 	}
 

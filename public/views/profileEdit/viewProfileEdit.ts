@@ -42,16 +42,18 @@ export class ViewProfileEdit extends ViewHome {
 				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
 			case ACTION_PROFILE_EDIT_TYPES.goToProfileEdit:
-				this._configProfileEdit = Object.assign(
-					this._configProfileEdit,
-					change.data,
-				);
-				this.render();
+				this.render(change.data);
 				break;
 		}
 	}
 
-	render(): void {
+	render(data?: ViewProfileEditConfig): void {
+		if (data) {
+			this._configProfileEdit = Object.assign(
+				this._configProfileEdit,
+				data,
+			);
+		}
 		this._render();
 	}
 
