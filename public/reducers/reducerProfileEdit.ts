@@ -7,8 +7,10 @@ import {
 	ACTION_PROFILE_EDIT_TYPES,
 	ActionProfileEditUpdateData,
 } from '../actions/actionProfileEdit';
-import { ConfigInputs } from '../components/BaseForm/BaseForm';
-import { IProfileEditFormConfig } from '../components/ProfileEditForm/ProfileEditForm';
+import {
+	IProfileEditFormConfig,
+	ProfileEditFormInputs,
+} from '../components/ProfileEditForm/ProfileEditForm';
 import config from '../config';
 import { FullProfileResponse } from '../models/profile';
 import deepClone from '../modules/deepClone';
@@ -69,7 +71,7 @@ export const reducerProfileEdit = (
 
 const profileResponseToInputs = (
 	profileResponse: FullProfileResponse,
-	inputs: ConfigInputs,
+	inputs: ProfileEditFormInputs,
 ) => {
 	inputs.firstName.text = profileResponse.first_name;
 	inputs.secondName.text = profileResponse.last_name;

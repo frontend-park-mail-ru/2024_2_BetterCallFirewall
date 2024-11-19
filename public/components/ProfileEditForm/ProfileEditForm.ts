@@ -1,15 +1,17 @@
 import { VNode } from '../../modules/vdom';
-import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
+import { BaseForm, BaseFormConfig, ConfigInputs } from '../BaseForm/BaseForm';
 import Component from '../Component';
 import { InputConfig } from '../Input/Input';
 
+export interface ProfileEditFormInputs extends ConfigInputs {
+	firstName: InputConfig;
+	secondName: InputConfig;
+	description: InputConfig;
+	avatar: InputConfig;
+}
+
 export interface IProfileEditFormConfig extends BaseFormConfig {
-	inputs: {
-		firstName: InputConfig;
-		secondName: InputConfig;
-		description: InputConfig;
-		avatar: InputConfig;
-	};
+	inputs: ProfileEditFormInputs;
 }
 
 export class ProfileEditForm extends BaseForm {
