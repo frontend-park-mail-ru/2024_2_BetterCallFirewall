@@ -149,16 +149,7 @@ export class ViewChat extends ViewHome {
 			event: 'submit',
 			callback: (event) => {
 				event.preventDefault();
-				const chatText = this._chat.text;
-				if (!chatText) {
-					return;
-				}
-				const message: MessageSend = {
-					content: chatText,
-					receiver: this._chat.config.companionId,
-				};
-				this._chat.textarea.value = '';
-				this.sendAction(new ActionChatSendMessage(message));
+				this._sendMessage();
 			},
 		});
 	}
@@ -170,15 +161,7 @@ export class ViewChat extends ViewHome {
 				const keyboardEvent = event as KeyboardEvent;
 				if (keyboardEvent.key === 'Enter') {
 					event.preventDefault();
-					const chatText = this._chat.text;
-					if (!chatText) {
-						return;
-					}
-					const message: MessageSend = {
-						content: chatText,
-						receiver: this._chat.config.companionId,
-					};
-					this.sendAction(new ActionChatSendMessage(message));
+					this._sendMessage();
 				}
 			},
 		});
@@ -257,5 +240,18 @@ export class ViewChat extends ViewHome {
 			throw new Error('chat does not exist');
 		}
 		return chat;
+	}
+
+	private _sendMessage() {
+		const chatText = this._chat.text;
+		if (!chatText) {
+			return;
+		}
+		const message: MessageSend = {
+			content: chatText,
+			receiver: this._chat.config.companionId,
+		};
+		this._chat.textarea.value = '';
+		this.sendAction(new ActionChatSendMessage(message));
 	}
 }
