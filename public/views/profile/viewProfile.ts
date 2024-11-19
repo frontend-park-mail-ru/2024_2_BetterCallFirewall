@@ -58,31 +58,13 @@ export class ViewProfile extends ViewHome {
 	handleChange(change: ChangeProfile): void {
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_PROFILE_TYPES.getYourOwnProfile:
-				api.requestYourOwnProfile();
-				break;
 			case ACTION_PROFILE_TYPES.updateProfile:
 			case ACTION_FRIENDS_TYPES.acceptSuccess:
 			case ACTION_FEED_TYPES.postCreateSuccess:
-				if (this.active) {
-					this.updateViewProfile(change.data);
-				}
-				break;
 			case ACTION_PROFILE_EDIT_TYPES.requestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestFail:
-				this.sendAction(
-					new ActionProfileEditUpdate({
-						inputs: {
-							firstName: change.data.profile.firstName,
-							lastName: change.data.profile.secondName,
-							description: change.data.profile.description,
-						},
-					}),
-				);
-				if (this.active) {
-					this.updateViewProfile(change.data);
-				}
+				this.updateViewProfile(change.data);
 				break;
 			case ACTION_PROFILE_TYPES.deletePostSuccess:
 				this.updateViewProfile(change.data);

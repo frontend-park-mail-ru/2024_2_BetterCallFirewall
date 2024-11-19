@@ -15,7 +15,7 @@ export type ConfigTextAreaItems = [string, TextAreaConfig][];
 export type Items = { [key: string]: Component };
 
 export interface BaseFormConfig extends ComponentConfig {
-	inputs?: Record<string, InputConfig>;
+	inputs?: ConfigInputs;
 	button: FormButtonConfig;
 	textAreas?: Record<string, TextAreaConfig>;
 	error?: string;

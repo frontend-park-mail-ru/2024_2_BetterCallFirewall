@@ -55,6 +55,7 @@ export class Router {
 		}
 		this._activeView = this._defaultView;
 		this._activeView.active = true;
+		console.log('router: active view:', this._activeView);
 	}
 
 	get activeView(): View | undefined {

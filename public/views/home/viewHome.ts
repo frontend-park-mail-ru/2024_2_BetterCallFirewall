@@ -176,7 +176,6 @@ export abstract class ViewHome extends View {
 					this.sendAction(new ActionAppGoTo(link.href));
 				},
 			});
-			console.log('linkVNode:', linkVNode);
 		});
 
 		this.menu.titleVNode.handlers.push({
