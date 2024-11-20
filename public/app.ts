@@ -1,4 +1,4 @@
-import { ILoginFormConfig, ISignupFormConfig, Root } from './components/index';
+import { ILoginFormConfig, SignupFormConfig, Root } from './components/index';
 import { Router, RouterConfig } from './router/router';
 import config, { PAGE_LINKS } from './config';
 import { ViewLogin } from './views/login/viewLogin';
@@ -88,7 +88,7 @@ export interface URLInterface {
 export interface AppConfig {
 	URL: URLInterface;
 	homeConfig: HomeConfig;
-	signupConfig: ISignupFormConfig;
+	signupConfig: SignupFormConfig;
 	loginConfig: ILoginFormConfig;
 	feedConfig: ViewFeedConfig;
 	profileConfig: ViewProfileConfig;
@@ -265,6 +265,7 @@ class App {
 		this._stores.signup.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.signup.subscribe(ACTION_FORM_TYPES.formError);
 
+		this._stores.feed.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.feed.subscribe(ACTION_USER_TYPES.auth);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequest);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestSuccess);
@@ -352,6 +353,9 @@ class App {
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.requestFail,
 		);
+		this._stores.profileEdit.subscribe(
+			ACTION_PROFILE_TYPES.profileRequestSuccess,
+		);
 
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.goToPostEdit);
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestSuccess);
@@ -384,6 +388,10 @@ class App {
 
 		postEditView.register(this._stores.home);
 		postEditView.register(this._stores.postEdit);
+	}
+
+	get root(): Root {
+		return this._root;
 	}
 
 	get router(): Router {

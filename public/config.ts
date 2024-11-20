@@ -1,8 +1,8 @@
 import { AppConfig, URLInterface } from './app';
-import { ILoginFormConfig, ISignupFormConfig } from './components';
-import { IChatConfig } from './components/Chat/Chat';
-import { IMessageConfig } from './components/Message/Message';
-import { IProfileConfig } from './components/Profile/Profile';
+import { ILoginFormConfig, SignupFormConfig } from './components';
+import { ChatConfig } from './components/Chat/Chat';
+import { MessageConfig } from './components/Message/Message';
+import { ProfileConfig } from './components/Profile/Profile';
 import { ViewChatConfig } from './views/chat/viewChat';
 import { ViewMessagesConfig } from './views/messages/viewMessages';
 import { ViewFeedConfig } from './views/feed/viewFeed';
@@ -12,7 +12,7 @@ import { ViewProfileConfig } from './views/profile/viewProfile';
 import { ViewCreatePostConfig } from './views/createPost/viewCreatePost';
 import { ViewProfileEditConfig } from './views/profileEdit/viewProfileEdit';
 import { ViewPostEditConfig } from './views/PostEdit/viewPostEdit';
-import { IPostEditFormConfig } from './components/PostEditForm/PostEditForm';
+import { PostEditFormConfig } from './components/PostEditForm/PostEditForm';
 import Validator from './modules/validation';
 
 const DEBUG: boolean = false;
@@ -48,7 +48,7 @@ const homeConfig: HomeConfig = {
 				text: 'Лента',
 				href: PAGE_LINKS.feed,
 				icon: `
-				<svg claas="logo__feed" viewBox="0 0 20 21" fill="none">
+				<svg class="logo__feed" viewBox="0 0 20 21" fill="none">
 					<path d="M18.8256 8.92346L11.3256 1.42346C10.974 1.07195 10.4972 0.874481 10 0.874481C9.50283 0.874481 9.026 1.07195 8.67438 1.42346L1.17438 8.92346C0.999566 9.0972 0.860985 9.30393 0.766679 9.53165C0.672372 9.75937 0.624218 10.0035 0.62501 10.25V19.25C0.62501 19.5484 0.743536 19.8345 0.954515 20.0455C1.16549 20.2565 1.45164 20.375 1.75001 20.375H18.25C18.5484 20.375 18.8345 20.2565 19.0455 20.0455C19.2565 19.8345 19.375 19.5484 19.375 19.25V10.25C19.3758 10.0035 19.3276 9.75937 19.2333 9.53165C19.139 9.30393 19.0005 9.0972 18.8256 8.92346ZM17.125 18.125H2.87501V10.4047L10 3.27971L17.125 10.4047V18.125Z"/>
 				</svg>`,
 			},
@@ -95,16 +95,17 @@ const homeConfig: HomeConfig = {
 		content: {
 			key: 'content',
 			className: 'content',
+			message: '',
+			showLoader: false,
 		},
 		aside: {
 			key: 'aside',
 			className: 'aside',
 		},
 	},
-	errorMessage: '',
 };
 
-const signupConfig: ISignupFormConfig = {
+const signupConfig: SignupFormConfig = {
 	key: 'signupForm',
 	inputs: {
 		firstName: {
@@ -191,7 +192,7 @@ const createPostConfig: ViewCreatePostConfig = {
 		},
 		inputs: {
 			image: {
-				key: 'image',
+				key: 'image-input',
 				name: 'file',
 				type: 'file',
 				accept: 'image/*',
@@ -252,7 +253,7 @@ const feedConfig: ViewFeedConfig = {
 	pendingPostRequest: false,
 };
 
-const profileComponentConfig: IProfileConfig = {
+const profileComponentConfig: ProfileConfig = {
 	id: -1,
 	key: 'profile',
 	firstName: '',
@@ -266,6 +267,7 @@ const profileComponentConfig: IProfileConfig = {
 	isFriend: false,
 	isSubscriber: false,
 	isSubscription: false,
+	posts: [],
 };
 
 const profileConfig: ViewProfileConfig = {
@@ -274,14 +276,14 @@ const profileConfig: ViewProfileConfig = {
 	path: '/',
 };
 
-const messagesComponentConfig: IMessageConfig[] = [];
+const messagesComponentConfig: MessageConfig[] = [];
 
 const messagesConfig: ViewMessagesConfig = {
 	...homeConfig,
 	messages: messagesComponentConfig,
 };
 
-const emptyChatComponentConfig: IChatConfig = {
+const emptyChatComponentConfig: ChatConfig = {
 	companionId: -1,
 	key: 'chat',
 	companionAvatar: '',
@@ -292,7 +294,8 @@ const emptyChatComponentConfig: IChatConfig = {
 	myId: -1,
 	myName: '',
 	myAvatar: '',
-	text: '',
+	inputText: '',
+	inputKey: 'chat-input',
 };
 
 const chatConfig: ViewChatConfig = {
@@ -324,7 +327,7 @@ const friendsConfig: ViewFriendsConfig = {
 	},
 };
 
-const postEditFormConfig: IPostEditFormConfig = {
+const postEditFormConfig: PostEditFormConfig = {
 	key: 'postEditForm',
 	textAreas: {
 		text: {
@@ -434,7 +437,7 @@ export const validators: Record<string, (value: string | File) => string> = {
 	text: (value) => Validator.validatePost(value as string),
 	file: (value) => Validator.validateImg(value as File),
 	bio: (value) => Validator.validatePost(value as string),
-	// 'avatar': (value) => Validator.validateImg(value as File),
+	avatar: (value) => Validator.validateImg(value as File),
 };
 
 export default config;

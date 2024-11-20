@@ -1,6 +1,6 @@
-import { IChatConfig } from '../components/Chat/Chat';
-import { IFriendConfig } from '../components/Friend/Friend';
-import { IProfileConfig } from '../components/Profile/Profile';
+import { ChatConfig } from '../components/Chat/Chat';
+import { FriendConfig } from '../components/Friend/Friend';
+import { ProfileConfig } from '../components/Profile/Profile';
 import { PAGE_LINKS } from '../config';
 import deepClone from '../modules/deepClone';
 import parseImage from '../modules/parseImage';
@@ -24,19 +24,21 @@ export interface FullProfileResponse extends ShortProfileResponse {
 }
 
 export const toProfileConfig = (
-	config: IProfileConfig,
+	config: ProfileConfig,
 	profileResponse: FullProfileResponse,
-): IProfileConfig => {
-	const profileData: IProfileConfig = {
+): ProfileConfig => {
+	const profileData: ProfileConfig = {
 		id: profileResponse.id,
 		key: `profile-${profileResponse.id}`,
 		firstName: profileResponse.first_name,
 		secondName: profileResponse.last_name,
 		img: parseImage(profileResponse.avatar),
 		description: profileResponse.bio,
-		posts: profileResponse.posts?.map((postResponse) =>
-			toPostConfig(postResponse),
-		),
+		posts: profileResponse.posts
+			? profileResponse.posts.map((postResponse) =>
+					toPostConfig(postResponse),
+				)
+			: [],
 		createPostHref: PAGE_LINKS.createPost,
 		isAuthor: profileResponse.is_author,
 		isFriend: profileResponse.is_friend,
@@ -44,7 +46,7 @@ export const toProfileConfig = (
 		isSubscription: profileResponse.is_subscription,
 	};
 	if (profileData.isAuthor) {
-		profileData.posts?.forEach((post) => {
+		profileData.posts.forEach((post) => {
 			post.hasDeleteButton = true;
 			post.hasEditButton = true;
 		});
@@ -54,8 +56,8 @@ export const toProfileConfig = (
 
 export const toFriendConfig = (
 	profileResponse: ShortProfileResponse,
-): IFriendConfig => {
-	const newConfig: IFriendConfig = {
+): FriendConfig => {
+	const newConfig: FriendConfig = {
 		id: profileResponse.id,
 		key: `friend-${profileResponse.id}`,
 		name: `${profileResponse.first_name} ${profileResponse.last_name}`,
@@ -68,9 +70,9 @@ export const toFriendConfig = (
 };
 
 export const toChatConfig = (
-	chatConfig: IChatConfig,
+	chatConfig: ChatConfig,
 	response: FullProfileResponse,
-): IChatConfig => {
+): ChatConfig => {
 	const newChatConfig = deepClone(chatConfig);
 	newChatConfig.companionId = response.id;
 	newChatConfig.companionName = `${response.first_name} ${response.last_name}`;

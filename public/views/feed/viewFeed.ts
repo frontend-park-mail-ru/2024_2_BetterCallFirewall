@@ -4,13 +4,13 @@ import {
 	ActionFeedPostsRequest,
 	ActionFeedUpdate,
 } from '../../actions/actionFeed';
-import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
-import { IPostConfig, Post, Root } from '../../components';
+import { PostConfig, Post, Root } from '../../components';
+import { update } from '../../modules/vdom';
 import { ChangeFeed } from '../../stores/storeFeed';
 import { HomeConfig, ViewHome } from '../home/viewHome';
 
 export interface ViewFeedConfig extends HomeConfig {
-	posts: IPostConfig[];
+	posts: PostConfig[];
 	pendingPostRequest: boolean;
 }
 
@@ -27,17 +27,16 @@ export class ViewFeed extends ViewHome {
 	}
 
 	handleChange(change: ChangeFeed): void {
-		console.log('ViewFeed: handleChange:', change);
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_FEED_TYPES.update:
 				this.updateViewFeed(change.data);
 				break;
-			case ACTION_FEED_TYPES.postsRequest:
-				this.content.showLoader();
-				break;
 			case ACTION_APP_TYPES.goTo:
-				if (!this._configFeed.posts.length) {
+				if (
+					!this._configFeed.posts.length &&
+					!this._configFeed.pendingPostRequest
+				) {
 					this.sendAction(
 						new ActionFeedPostsRequest(this.lastPostId),
 					);
@@ -46,16 +45,17 @@ export class ViewFeed extends ViewHome {
 				break;
 			case ACTION_FEED_TYPES.postsRequestSuccess:
 			case ACTION_FEED_TYPES.postsRequestFail:
-				this.content.hideLoader();
 				this.updateViewFeed(change.data);
 				break;
+			default:
+				this.updateViewFeed(change.data);
 		}
 	}
 
 	render(): void {
 		this._render();
 
-		if (this._isNearBottom()) {
+		if (this._isNearBottom() && !this._configFeed.pendingPostRequest) {
 			this.sendAction(new ActionFeedPostsRequest(this.lastPostId));
 		}
 	}
@@ -66,15 +66,22 @@ export class ViewFeed extends ViewHome {
 		this._render();
 	}
 
-	update(config: object): void {
-		this.updateViewFeed(config as ViewFeedConfig);
-	}
-
 	protected _render(): void {
+		const rootNode = this._root.node;
+
 		super._render();
 		this._renderPosts();
-		this._printMessage();
+
+		const rootVNode = this._root.newVNode();
+
 		this._addHandlers();
+
+		update(rootNode, rootVNode);
+	}
+
+	protected _addHandlers() {
+		super._addHandlers();
+		this._addScrollHandler();
 	}
 
 	private get lastPostId(): number | undefined {
@@ -85,30 +92,15 @@ export class ViewFeed extends ViewHome {
 	}
 
 	private _renderPosts(): void {
-		this._configFeed.posts.forEach((postData) => {
-			const post = new Post(postData, this.content);
-			post.render();
-			this._addPostHandlers(post);
+		this._configFeed.posts.forEach((postConfig) => {
+			new Post(postConfig, this.content);
 		});
-	}
-
-	private _addPostHandlers(post: Post) {
-		if (post.config.hasEditButton) {
-			post.addHandler(post.editButton, 'click', (event) => {
-				event.preventDefault();
-				this.sendAction(new ActionPostEditGoTo(post.config));
-			});
-		}
-	}
-
-	private _addHandlers() {
-		this._addScrollHandler();
 	}
 
 	private _addScrollHandler() {
 		let debounceTimeout: NodeJS.Timeout;
 		const handler = () => {
-			if (this._isNearBottom()) {
+			if (this._isNearBottom() && !this._isOnBottom()) {
 				clearTimeout(debounceTimeout);
 				debounceTimeout = setTimeout(() => {
 					if (!this.config.pendingPostRequest) {
@@ -119,7 +111,6 @@ export class ViewFeed extends ViewHome {
 				}, 200);
 			}
 		};
-
-		this.content.addHandler(document, 'scroll', handler);
+		this._root.addDocumentHandler({ event: 'scroll', callback: handler });
 	}
 }

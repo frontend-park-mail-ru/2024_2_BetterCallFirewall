@@ -1,12 +1,15 @@
-import BaseComponent, {
-	IBaseComponent,
-	IBaseComponentConfig,
-} from '../BaseComponent';
-import { IPostConfig, Post } from '../Post/Post';
+import {
+	findVNodeByClass,
+	findVNodeByClassAll,
+	findVNodeByKey,
+	VNode,
+} from '../../modules/vdom';
+import Component, { ComponentConfig } from '../Component';
+import { PostConfig, Post } from '../Post/Post';
 
 type Posts = Post[];
 
-export interface IProfileConfig extends IBaseComponentConfig {
+export interface ProfileConfig extends ComponentConfig {
 	id: number;
 	firstName?: string;
 	secondName?: string;
@@ -15,7 +18,7 @@ export interface IProfileConfig extends IBaseComponentConfig {
 	groupsCount?: number;
 	img: string;
 	currentUser?: boolean;
-	posts?: IPostConfig[];
+	posts: PostConfig[];
 	createPostHref: string;
 	isAuthor: boolean;
 	isFriend: boolean;
@@ -23,115 +26,85 @@ export interface IProfileConfig extends IBaseComponentConfig {
 	isSubscription: boolean;
 }
 
-export class Profile extends BaseComponent {
-	protected override _config: IProfileConfig | null;
+export class Profile extends Component {
+	protected override _config: ProfileConfig;
 	private _posts: Posts = [];
 
-	constructor(config: IProfileConfig, parent: IBaseComponent) {
+	constructor(config: ProfileConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 	}
 
-	get config(): IProfileConfig {
+	get config(): ProfileConfig {
 		if (this._config) {
 			return this._config;
 		}
 		throw new Error('config not found');
 	}
 
-	set config(config: IProfileConfig) {
+	set config(config: ProfileConfig) {
 		this._config = config;
 	}
 
-	get postsContainer(): HTMLElement {
-		const container = this.htmlElement.querySelector(
-			'div.profile__posts',
-		) as HTMLElement;
-		if (!container) {
-			throw new Error('.profile__posts not found');
+	get createPostLinkVNode(): VNode {
+		const vnode = findVNodeByKey(this.vnode, 'createPost');
+		if (!vnode) {
+			throw new Error('createPostLink vnode not found');
 		}
-		return container;
+		return vnode;
 	}
 
-	get createPostLink(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'a.header__link',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('createPostLink not found');
+	get profileEditLinkVNode(): VNode {
+		const vnode = findVNodeByKey(this.vnode, 'profileEdit');
+		if (!vnode) {
+			throw new Error('profileEditLink vnode not found');
 		}
-		return html;
+		return vnode;
 	}
 
-	get profileEditLink(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'a.profile-edit',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('profileEditLink not found');
+	get writeMessageLinkVNode(): VNode {
+		const vnode = findVNodeByKey(this.vnode, 'writeMessage');
+		if (!vnode) {
+			throw new Error('writeMessageLink vnode not found');
 		}
-		return html;
+		return vnode;
 	}
 
-	get writeMessageLink(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.write-message',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('writeMessageLink not found');
+	get acceptFriendButtonVNode(): VNode {
+		const vnode = findVNodeByClass(this.vnode, 'accept-friend');
+		if (!vnode) {
+			throw new Error('acceptFriendButton vnode not found');
 		}
-		return html;
+		return vnode;
 	}
 
-	get acceptFriendButton(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.accept-friend',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('acceptFriendButton not found');
+	get postsVNodes(): VNode[] {
+		const vnode = findVNodeByClassAll(this.vnode, 'accept-friend');
+		if (!vnode) {
+			throw new Error('acceptFriendButton vnode not found');
 		}
-		return html;
+		return vnode;
 	}
 
 	get posts(): Post[] {
 		return this._posts;
 	}
 
-	render(show: boolean = true): string {
+	render(): string {
 		this._prerender();
-		this._render('Profile.hbs', show);
-
-		const postsItems = this._htmlElement?.querySelector(
-			'.profile__posts',
-		) as HTMLElement;
-		if (postsItems) {
-			this.config.posts?.forEach((config) => {
-				const post = new Post(config, this);
-				this._posts.push(post);
-				post.render(false);
-				post.appendToHTML(postsItems);
-			});
-		} else {
-			throw new Error('profile has no .profile__posts');
-		}
-
-		return this.htmlElement.outerHTML;
-	}
-
-	remove(): void {
-		super.remove();
-		this._posts = [];
-	}
-
-	removeForUpdate(): void {
-		super.removeForUpdate();
-		this._posts = [];
+		return this._render('Profile.hbs');
 	}
 
 	protected _prerender(): void {
 		super._prerender();
+		this._posts = this._config.posts.map((config) => {
+			return new Post(config, this);
+		});
 		this._templateContext = {
-			...this._config,
+			...this._templateContext,
+			posts: this._posts.map((post) => {
+				return post.render();
+			}),
 		};
 	}
 }

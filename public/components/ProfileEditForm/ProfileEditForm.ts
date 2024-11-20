@@ -1,20 +1,29 @@
-import { IBaseComponent } from '../BaseComponent';
-import { BaseForm, IBaseForm, IBaseFormConfig } from '../BaseForm/BaseForm';
+import { VNode } from '../../modules/vdom';
+import { BaseForm, BaseFormConfig, ConfigInputs } from '../BaseForm/BaseForm';
+import Component from '../Component';
+import { InputConfig } from '../Input/Input';
 
-export interface IProfileEditFormConfig extends IBaseFormConfig {}
+export interface ProfileEditFormInputs extends ConfigInputs {
+	firstName: InputConfig;
+	secondName: InputConfig;
+	description: InputConfig;
+	avatar: InputConfig;
+}
 
-export interface IProfileEditForm extends IBaseForm {}
+export interface IProfileEditFormConfig extends BaseFormConfig {
+	inputs: ProfileEditFormInputs;
+}
 
-export class ProfileEditForm extends BaseForm implements IProfileEditForm {
+export class ProfileEditForm extends BaseForm {
 	protected override _config: IProfileEditFormConfig;
 
-	constructor(config: IProfileEditFormConfig, parent: IBaseComponent) {
+	constructor(config: IProfileEditFormConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 	}
 
 	get form(): HTMLElement {
-		const html = this.htmlElement.querySelector('.form') as HTMLElement;
+		const html = document.querySelector('.form') as HTMLElement;
 		if (html) {
 			return html;
 		}
@@ -22,15 +31,21 @@ export class ProfileEditForm extends BaseForm implements IProfileEditForm {
 	}
 
 	get fileInput(): HTMLElement {
-		const html = this.htmlElement.querySelector('input[type="file"]') as HTMLElement;
+		const html = document.querySelector(
+			'input[type="file"]',
+		) as HTMLElement;
 		if (!html) {
 			throw new Error('input file not found');
 		}
 		return html;
 	}
 
+	get fileInputVNode(): VNode {
+		return this._findVNodeByKey(this._config.inputs.avatar.key);
+	}
+
 	get label(): HTMLElement {
-		const html = this.htmlElement.querySelector('.form__upload') as HTMLElement;
+		const html = document.querySelector('.form__upload') as HTMLElement;
 		if (!html) {
 			throw new Error('label not found');
 		}
@@ -38,7 +53,7 @@ export class ProfileEditForm extends BaseForm implements IProfileEditForm {
 	}
 
 	get img(): HTMLElement {
-		const html = this.htmlElement.querySelector('.form__img') as HTMLElement;
+		const html = document.querySelector('.form__img') as HTMLElement;
 		if (!html) {
 			throw new Error('label not found');
 		}
@@ -55,13 +70,6 @@ export class ProfileEditForm extends BaseForm implements IProfileEditForm {
 
 	render(): string {
 		this._prerender();
-		this._render('ProfileEditForm.hbs');
-		return this.htmlElement.outerHTML;
-	}
-
-	update(data: IProfileEditFormConfig): void {
-		this._config = { ...this._config, ...data };
-		this.removeForUpdate();
-		this.render();
+		return this._render('ProfileEditForm.hbs');
 	}
 }

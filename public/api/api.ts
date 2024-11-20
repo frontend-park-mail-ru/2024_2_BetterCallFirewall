@@ -101,6 +101,9 @@ class API {
 				this.getChatMessages(actionData.id, actionData.lastTime);
 				break;
 			}
+			case ACTION_PROFILE_TYPES.getYourOwnProfile:
+				this.requestYourOwnProfile();
+				break;
 		}
 	}
 

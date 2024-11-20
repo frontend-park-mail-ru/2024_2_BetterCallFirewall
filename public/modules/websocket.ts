@@ -29,6 +29,8 @@ export default class WebsocketClient {
 		this._socket.onerror = this._onError.bind(this);
 		this._socket.onclose = this._onClose.bind(this);
 
+		return; //
+
 		setInterval(() => {
 			this._reconnect();
 		}, checkInterval);

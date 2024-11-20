@@ -1,19 +1,19 @@
-import { BaseView } from '../views/view';
+import { View } from '../views/view';
 
 type Route = {
 	path: string;
-	view: BaseView;
+	view: View;
 };
 
 export type RouterConfig = Route[];
 
 export class Router {
 	private _config: RouterConfig;
-	private _defaultView: BaseView;
-	private _activeView?: BaseView;
+	private _defaultView: View;
+	private _activeView?: View;
 	private _path: string = '';
 
-	constructor(defaultView: BaseView, config: RouterConfig) {
+	constructor(defaultView: View, config: RouterConfig) {
 		this._defaultView = defaultView;
 		this._config = config;
 
@@ -57,7 +57,7 @@ export class Router {
 		this._activeView.active = true;
 	}
 
-	get activeView(): BaseView | undefined {
+	get activeView(): View | undefined {
 		return this._activeView;
 	}
 

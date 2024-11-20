@@ -1,3 +1,4 @@
+import { ActionAppGoTo } from '../../actions/actionApp';
 import { ActionChatGoToChat } from '../../actions/actionChat';
 import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
@@ -11,38 +12,26 @@ import {
 	ActionProfileRequest,
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
-import {
-	ACTION_PROFILE_EDIT_TYPES,
-	ActionProfileEditGoTo,
-	ActionProfileEditUpdate,
-} from '../../actions/actionProfileEdit';
+import { ACTION_PROFILE_EDIT_TYPES } from '../../actions/actionProfileEdit';
 import api from '../../api/api';
 import app from '../../app';
 import { Post, Root } from '../../components';
-import { IProfileConfig, Profile } from '../../components/Profile/Profile';
-import { PAGE_URLS } from '../../config';
+import { ProfileConfig, Profile } from '../../components/Profile/Profile';
+import { PAGE_LINKS, PAGE_URLS } from '../../config';
+import { update } from '../../modules/vdom';
 import { ChangeProfile } from '../../stores/storeProfile';
-import {
-	ComponentsHome,
-	HomeConfig,
-	IViewHome,
-	ViewHome,
-} from '../home/viewHome';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsProfile = {
 	profile?: Profile;
 } & ComponentsHome;
 
 export interface ViewProfileConfig extends HomeConfig {
-	profile: IProfileConfig;
+	profile: ProfileConfig;
 	path: string;
 }
 
-export interface IViewProfile extends IViewHome {
-	handleChange(change: ChangeProfile): void;
-}
-
-export class ViewProfile extends ViewHome implements IViewProfile {
+export class ViewProfile extends ViewHome {
 	protected _configProfile: ViewProfileConfig;
 	protected _components: ComponentsProfile = {};
 
@@ -66,31 +55,13 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	handleChange(change: ChangeProfile): void {
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_PROFILE_TYPES.getYourOwnProfile:
-				api.requestYourOwnProfile();
-				break;
 			case ACTION_PROFILE_TYPES.updateProfile:
 			case ACTION_FRIENDS_TYPES.acceptSuccess:
 			case ACTION_FEED_TYPES.postCreateSuccess:
-				if (this.active) {
-					this.updateViewProfile(change.data);
-				}
-				break;
 			case ACTION_PROFILE_EDIT_TYPES.requestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestSuccess:
 			case ACTION_PROFILE_TYPES.profileRequestFail:
-				this.sendAction(
-					new ActionProfileEditUpdate({
-						inputs: {
-							firstName: change.data.profile.firstName,
-							lastName: change.data.profile.secondName,
-							description: change.data.profile.description,
-						},
-					}),
-				);
-				if (this.active) {
-					this.updateViewProfile(change.data);
-				}
+				this.updateViewProfile(change.data);
 				break;
 			case ACTION_PROFILE_TYPES.deletePostSuccess:
 				this.updateViewProfile(change.data);
@@ -101,9 +72,6 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 	}
 
 	render(): void {
-		if (!this.active) {
-			return;
-		}
 		this._render();
 		this.sendAction(new ActionUpdateProfile());
 		this.sendAction(new ActionProfileRequest(app.router.path));
@@ -115,72 +83,92 @@ export class ViewProfile extends ViewHome implements IViewProfile {
 		this._render();
 	}
 
-	update(config: object): void {
-		this.updateViewProfile(config as ViewProfileConfig);
-	}
-
 	protected _render(): void {
+		const rootNode = this._root.node;
+
 		super._render();
 		this._renderProfile();
+
+		const rootVNode = this._root.newVNode();
+
+		this._addHandlers();
+
+		update(rootNode, rootVNode);
 	}
 
 	protected _renderProfile(): void {
-		const content = this.content;
-		const profile = new Profile(this._configProfile.profile, content);
-		profile.render();
-		this._components.profile = profile;
+		this._components.profile = new Profile(
+			this._configProfile.profile,
+			this.content,
+		);
+	}
 
+	protected _addHandlers(): void {
+		super._addHandlers();
 		this._addProfileHandlers();
 	}
 
 	private _addProfileHandlers() {
-		const profile = this.profile;
-		if (profile.config.isAuthor) {
-			const createPostLink = this.profile.createPostLink;
-			this.content.addHandler(createPostLink, 'click', (event) => {
-				event.preventDefault();
-				this.sendAction(new ActionCreatePostGoTo());
+		if (this.profile.config.isAuthor) {
+			this.profile.createPostLinkVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionCreatePostGoTo());
+				},
 			});
-			const profileEditLink = this.profile.profileEditLink;
-			this.content.addHandler(profileEditLink, 'click', (event) => {
-				event.preventDefault();
-				this.sendAction(new ActionProfileEditGoTo());
-			});
-		}
-
-		if (!profile.config.isAuthor) {
-			profile.addHandler(profile.writeMessageLink, 'click', (event) => {
-				event.preventDefault();
-				const config = profile.config;
-				this.sendAction(
-					new ActionChatGoToChat({
-						href: PAGE_URLS.chat + `/${config.id}`,
-					}),
-				);
+			this.profile.profileEditLinkVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionAppGoTo(PAGE_LINKS.profileEdit));
+				},
 			});
 		}
-
-		if (profile.config.isSubscriber) {
-			profile.addHandler(profile.acceptFriendButton, 'click', (event) => {
-				event.preventDefault();
-				this.sendAction(new ActionFriendsAccept(profile.config.id));
+		if (!this.profile.config.isAuthor) {
+			this.profile.writeMessageLinkVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionChatGoToChat({
+							href: PAGE_URLS.chat + `/${this.profile.config.id}`,
+						}),
+					);
+				},
 			});
 		}
-
+		if (this.profile.config.isSubscriber) {
+			this.profile.acceptFriendButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionFriendsAccept(this.profile.config.id),
+					);
+				},
+			});
+		}
 		this.profile.posts.forEach((post) => this._addPostHandlers(post));
 	}
 
 	private _addPostHandlers(post: Post) {
 		if (post.config.hasEditButton) {
-			post.addHandler(post.editButton, 'click', (event) => {
-				event.preventDefault();
-				this.sendAction(new ActionPostEditGoTo(post.config));
+			post.editButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionPostEditGoTo(post.config));
+				},
 			});
 		}
 		if (post.config.hasDeleteButton) {
-			post.addHandler(post.deleteButton, 'click', (event) => {
-				event.preventDefault();
-				api.deletePost(post.config.id);
+			post.deleteButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					api.deletePost(post.config.id);
+				},
 			});
 		}
 	}

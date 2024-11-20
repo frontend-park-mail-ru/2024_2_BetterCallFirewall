@@ -1,4 +1,4 @@
-import { IMessageConfig } from '../components/Message/Message';
+import { MessageConfig } from '../components/Message/Message';
 import { PAGE_URLS } from '../config';
 import parseImage from '../modules/parseImage';
 import parseTime from '../modules/parseTime';
@@ -10,7 +10,7 @@ export interface ChatResponse {
 	receiver: HeaderResponse;
 }
 
-export const toMessageConfig = (chatResponse: ChatResponse): IMessageConfig => {
+export const toMessageConfig = (chatResponse: ChatResponse): MessageConfig => {
 	const id = chatResponse.receiver.author_id;
 	return {
 		key: `message-${id}`,

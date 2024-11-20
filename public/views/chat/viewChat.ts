@@ -12,32 +12,23 @@ import {
 } from '../../actions/actionProfile';
 import app from '../../app';
 import { Root } from '../../components';
-import { Chat, IChatConfig } from '../../components/Chat/Chat';
-import { IChatMessageConfig } from '../../components/ChatMessage/ChatMessage';
+import { Chat, ChatConfig } from '../../components/Chat/Chat';
 import { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import { MessageSend } from '../../models/message';
+import { update } from '../../modules/vdom';
 import { ChangeChat } from '../../stores/storeChat';
-import {
-	ComponentsHome,
-	HomeConfig,
-	IViewHome,
-	ViewHome,
-} from '../home/viewHome';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsChat = {
 	chat?: Chat;
 } & ComponentsHome;
 
 export interface ViewChatConfig extends HomeConfig {
-	chat: IChatConfig;
+	chat: ChatConfig;
 }
 
-export interface IViewChat extends IViewHome {
-	handleChange(change: ChangeChat): void;
-}
-
-export class ViewChat extends ViewHome implements IViewChat {
+export class ViewChat extends ViewHome {
 	protected _configChat: ViewChatConfig;
 	protected _components: ComponentsChat = {};
 	private _chatScrollBottom: number = 0;
@@ -81,11 +72,10 @@ export class ViewChat extends ViewHome implements IViewChat {
 				this.updateViewChat(change.data);
 				this._scrollToBottom();
 				break;
-			case ACTION_MESSAGES_TYPES.newMessage: {
-				const messages = change.data.chat.messages;
-				this.addNewMessage(messages[messages.length - 1]);
+			case ACTION_MESSAGES_TYPES.newMessage:
+				this.updateViewChat(change.data);
+				this._scrollOnNewMessage();
 				break;
-			}
 			case ACTION_CHAT_TYPES.updateChat:
 				this.updateViewChat(change.data);
 				break;
@@ -103,29 +93,22 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._render();
 	}
 
-	update(config: object): void {
-		this.updateViewChat(config as ViewChatConfig);
-	}
-
-	addNewMessage(messageConfig?: IChatMessageConfig) {
-		this._chat.addMessage(messageConfig);
-		if (this._chatScrollBottom < 100) {
-			this._scrollToBottom();
-		}
-	}
-
 	protected _render(): void {
+		const rootNode = this._root.node;
+
 		super._render();
 		this._renderChat();
+
+		const rootVNode = this._root.newVNode();
+
 		this._addHandlers();
+
+		update(rootNode, rootVNode);
+		this._chat.textarea.focus();
 	}
 
 	protected _renderChat(): void {
-		const content = this.content;
-		const chat = new Chat(this._configChat.chat, content);
-		chat.render();
-		this._components.chat = chat;
-		chat.textarea.focus();
+		this._components.chat = new Chat(this._configChat.chat, this.content);
 	}
 
 	private _scrollToBottom(): void {
@@ -133,86 +116,76 @@ export class ViewChat extends ViewHome implements IViewChat {
 		this._scrollToOldPosition();
 	}
 
-	private _addHandlers() {
+	protected _addHandlers() {
+		super._addHandlers();
 		this._addBackButtonHandler();
 		this._addSendButtonHandler();
 		this._addEnterSendHandler();
 		this._addCompanionLink();
 		this._addScrollHandler();
 		this._addEscapeHandler();
-		this._chat.addHandler(this._chat.settingsButton, 'click', (event) =>
-			event.preventDefault(),
-		);
+		this._chat.settingsButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+			},
+		});
 	}
 
 	private _addBackButtonHandler() {
-		const backButtonHTML = this._chat.backButtonHTML;
-		this._chat.addHandler(backButtonHTML, 'click', (event) => {
-			event.preventDefault();
-			this.sendAction(
-				new ActionAppGoTo(this._configChat.chat.backButtonHref),
-			);
+		this._chat.backButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this.sendAction(
+					new ActionAppGoTo(this._configChat.chat.backButtonHref),
+				);
+			},
 		});
 	}
 
 	private _addSendButtonHandler() {
-		const form = this._chat.form;
-		this._chat.addHandler(form, 'submit', (event) => {
-			event.preventDefault();
-			const chatText = this._chat.text;
-			if (!chatText) {
-				return;
-			}
-			const message: MessageSend = {
-				content: chatText,
-				receiver: this._chat.config.companionId,
-			};
-			this.sendAction(new ActionChatSendMessage(message));
+		this._chat.formVNode.handlers.push({
+			event: 'submit',
+			callback: (event) => {
+				event.preventDefault();
+				this._sendMessage();
+			},
 		});
 	}
 
 	private _addEnterSendHandler() {
-		this._chat.addHandler(this._chat.textarea, 'keydown', (event) => {
-			const keyboardEvent = event as KeyboardEvent;
-			if (keyboardEvent.key === 'Enter') {
-				event.preventDefault();
-				const chatText = this._chat.text;
-				if (!chatText) {
-					return;
+		this._chat.textareaVNode.handlers.push({
+			event: 'keydown',
+			callback: (event) => {
+				const keyboardEvent = event as KeyboardEvent;
+				if (keyboardEvent.key === 'Enter') {
+					event.preventDefault();
+					this._sendMessage();
 				}
-				const message: MessageSend = {
-					content: chatText,
-					receiver: this._chat.config.companionId,
-				};
-				this.sendAction(new ActionChatSendMessage(message));
-			}
+			},
 		});
 	}
 
 	private _addCompanionLink() {
-		const chat = this._components.chat;
-		const companionLink = chat?.htmlElement?.querySelector(
-			'.chat__companion',
-		) as HTMLElement;
-		const companionId = this._components.chat?.config.companionId;
-		if (chat && companionId && companionLink) {
-			chat.addHandler(companionLink, 'click', (event) => {
+		this._chat.companionLinkVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
 				event.preventDefault();
-				this.sendAction(new ActionAppGoTo(`/${companionId}`));
-			});
-		}
+				this.sendAction(
+					new ActionAppGoTo(`/${this._chat.config.companionId}`),
+				);
+			},
+		});
 	}
 
 	private _addScrollHandler() {
-		const chatContent = this._chat.chatContentHTML;
-		const content = this.content;
-
 		let debounceTimeout: NodeJS.Timeout;
-
 		const handleScroll = () => {
 			if (!this._handleScroll) {
 				return;
 			}
+			const chatContent = this._chat.chatContentHTML;
 			this._chatScrollBottom =
 				chatContent.scrollHeight -
 				chatContent.scrollTop -
@@ -229,17 +202,28 @@ export class ViewChat extends ViewHome implements IViewChat {
 				}
 			}, 200);
 		};
-
-		content.addHandler(chatContent, 'scroll', handleScroll);
+		this._chat.chatContentVNode.handlers.push({
+			event: 'scroll',
+			callback: handleScroll,
+		});
 	}
 
 	private _addEscapeHandler() {
-		this.content.addHandler(document, 'keydown', (event) => {
-			const keyEvent = event as KeyboardEvent;
-			if (keyEvent.key === 'Escape') {
-				this.sendAction(new ActionAppGoTo(PAGE_LINKS.messages));
-			}
+		this._root.addDocumentHandler({
+			event: 'keydown',
+			callback: (event) => {
+				const keyEvent = event as KeyboardEvent;
+				if (keyEvent.key === 'Escape') {
+					this.sendAction(new ActionAppGoTo(PAGE_LINKS.messages));
+				}
+			},
 		});
+	}
+
+	private _scrollOnNewMessage() {
+		if (this._chatScrollBottom < 100) {
+			this._scrollToBottom();
+		}
 	}
 
 	private _scrollToOldPosition() {
@@ -256,5 +240,18 @@ export class ViewChat extends ViewHome implements IViewChat {
 			throw new Error('chat does not exist');
 		}
 		return chat;
+	}
+
+	private _sendMessage() {
+		const chatText = this._chat.text;
+		if (!chatText) {
+			return;
+		}
+		const message: MessageSend = {
+			content: chatText,
+			receiver: this._chat.config.companionId,
+		};
+		this._chat.textarea.value = '';
+		this.sendAction(new ActionChatSendMessage(message));
 	}
 }

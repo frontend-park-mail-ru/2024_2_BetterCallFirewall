@@ -1,25 +1,34 @@
-import BaseComponent, { IBaseComponent } from '../BaseComponent';
+import deepClone from '../../modules/deepClone';
+import { ExtendedNode, Handler } from '../../modules/vdom';
+import Component, { ComponentConfig } from '../Component';
 
-export interface IRoot extends IBaseComponent {}
+export class Root extends Component {
+	protected _config: ComponentConfig = { key: 'root' };
+	private _documentHandlers: Handler[] = [];
 
-export class Root extends BaseComponent implements IRoot {
-	/**
-	 * Возвращает html-элемент с id='root'
-	 * @returns {HTMLElement}
-	 */
-	override get htmlElement() {
-		const html = document.getElementById('root');
-		if (html) {
-			return html;
+	get node(): ExtendedNode {
+		const element = document.getElementById('root') as ExtendedNode;
+		if (!element) {
+			throw new Error('root no found');
 		}
-		throw new Error('root does not found');
+		element._vnode = deepClone(this.vnode);
+		return element;
 	}
 
-	/**
-	 * Не использовать этот метод, в нем нет смысла
-	 * @returns {string}
-	 */
+	addDocumentHandler(handler: Handler) {
+		document.addEventListener(handler.event, handler.callback);
+		this._documentHandlers.push(handler);
+	}
+
+	clear() {
+		this.removeChildren();
+		this._documentHandlers.forEach((handler) => {
+			document.removeEventListener(handler.event, handler.callback);
+		});
+	}
+
 	render(): string {
-		return '';
+		this._prerender();
+		return this._render('Root.hbs');
 	}
 }

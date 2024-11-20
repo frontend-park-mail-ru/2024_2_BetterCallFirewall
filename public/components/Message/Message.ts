@@ -1,9 +1,6 @@
-import BaseComponent, {
-	IBaseComponent,
-	IBaseComponentConfig,
-} from '../BaseComponent';
+import Component, { ComponentConfig } from '../Component';
 
-export interface IMessageConfig extends IBaseComponentConfig {
+export interface MessageConfig extends ComponentConfig {
 	authorId: number;
 	avatar: string;
 	name: string;
@@ -13,23 +10,21 @@ export interface IMessageConfig extends IBaseComponentConfig {
 	href: string;
 }
 
-export interface IMessages extends BaseComponent {}
-
-export class Message extends BaseComponent implements IMessages {
-	protected _config: IMessageConfig;
+export class Message extends Component {
+	protected _config: MessageConfig;
 
 	/**
 	 * Instance of messages
 	 *
-	 * @param {IMessageConfig} config - post data
-	 * @param {IBaseComponent} parent - parent element
+	 * @param {MessageConfig} config - post data
+	 * @param {Component} parent - parent element
 	 */
-	constructor(config: IMessageConfig, parent: IBaseComponent) {
+	constructor(config: MessageConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 	}
 
-	get config(): IMessageConfig {
+	get config(): MessageConfig {
 		return this._config;
 	}
 
@@ -41,16 +36,16 @@ export class Message extends BaseComponent implements IMessages {
 		return this.config.authorId;
 	}
 
-	render(show: boolean = true): string {
+	render(): string {
 		this._prerender();
-		return this._render('Message.hbs', show);
+		return this._render('Message.hbs');
 	}
 
 	protected _prerender(): void {
 		super._prerender();
 		this._templateContext = {
-			 ...this.config,
-			 hasUnreadMessages: this.config.unreadedCount > 0,
-			};
+			...this._templateContext,
+			hasUnreadMessages: this.config.unreadedCount > 0,
+		};
 	}
 }

@@ -1,9 +1,7 @@
-import BaseComponent, {
-	IBaseComponent,
-	IBaseComponentConfig,
-} from '../BaseComponent';
+import { VNode } from '../../modules/vdom';
+import Component, { ComponentConfig } from '../Component';
 
-export interface IFriendConfig extends IBaseComponentConfig {
+export interface FriendConfig extends ComponentConfig {
 	id: number;
 	avatar: string;
 	name: string;
@@ -12,18 +10,16 @@ export interface IFriendConfig extends IBaseComponentConfig {
 	isSubscription: boolean;
 }
 
-export interface IFriend extends BaseComponent {}
-
-export class Friend extends BaseComponent implements IFriend {
-	protected _config: IFriendConfig;
+export class Friend extends Component {
+	protected _config: FriendConfig;
 	protected isUnknown: boolean = false;
 	/**
 	 * Instance of friend
 	 *
-	 * @param {IFriendConfig} config - post data
-	 * @param {IBaseComponent} parent - parent element
+	 * @param {FriendConfig} config - post data
+	 * @param {Component} parent - parent element
 	 */
-	constructor(config: IFriendConfig, parent: IBaseComponent) {
+	constructor(config: FriendConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 		if (
@@ -35,80 +31,48 @@ export class Friend extends BaseComponent implements IFriend {
 		}
 	}
 
-	get config(): IFriendConfig {
+	get config(): FriendConfig {
 		return this._config;
 	}
 
-	render(show: boolean = true): string {
+	render(): string {
 		this._prerender();
-		return this._render('Friend.hbs', show);
+		return this._render('Friend.hbs');
 	}
 
 	protected _prerender(): void {
 		super._prerender();
 		this._templateContext = {
-			...this.config,
+			...this._templateContext,
 			isUnknown: this.isUnknown,
 		};
 	}
 
-	get removeFriendButton(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'button.remove-friend',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('removeFriendButton not found');
-		}
-		return html;
+	get removeFriendButtonVNode(): VNode {
+		return this._findVNodeByClass('remove-friend');
 	}
-	get acceptFriendButton(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'button.accept-friend',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('acceptFriendButton not found');
-		}
-		return html;
+
+	get acceptFriendButtonVNode(): VNode {
+		return this._findVNodeByClass('accept-friend');
 	}
-	get unsubscribeFriendButton(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'button.unsubscribe-friend',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('unsubscribeFriendButton not found');
-		}
-		return html;
+
+	get unsubscribeFriendButtonVNode(): VNode {
+		return this._findVNodeByClass('unsubscribe-friend');
 	}
-	get subscribeFriendButton(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'button.subscribe-friend',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('subscribeFriendButton not found');
-		}
-		return html;
+
+	get subscribeFriendButtonVNode(): VNode {
+		return this._findVNodeByClass('subscribe-friend');
 	}
-	get profileLink(): HTMLElement {
-		const html = this.htmlElement.querySelector('.link') as HTMLElement;
-		if (!html) {
-			throw new Error('profileLink not found');
-		}
-		return html;
+
+	get profileLinkVNode(): VNode {
+		return this._findVNodeByKey('profileLink');
 	}
-	get profileLinkAvatar(): HTMLElement {
-		const html = this.htmlElement.querySelector('.friend-avatar') as HTMLElement;
-		if (!html) {
-			throw new Error('profileLink not found');
-		}
-		return html;
+
+	get profileLinkAvatarVNode(): VNode {
+		return this._findVNodeByClass('friend-avatar');
 	}
-	get writeMessageLink(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.friend__link',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('writeMessageLink not found');
-		}
-		return html;
+
+	get writeMessageLinkVNode(): VNode {
+		return this._findVNodeByKey('writeMessage');
 	}
 }

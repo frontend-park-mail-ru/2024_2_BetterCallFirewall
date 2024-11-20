@@ -1,4 +1,4 @@
-<div class="profile">
+<div class="profile" data-key="{{this.key}}">
     <div class="profile__header">
         <div class="profile__header-img">
             <img class="avatar" src="{{img}}" alt="">
@@ -28,10 +28,10 @@
                 {{/if}}
 
                 {{#unless this.isAuthor}}
-                <a href="" class="write-message">Написать сообщение</a>
+                <a href="" class="write-message" data-key="writeMessage">Написать сообщение</a>
                 {{/unless}}
                 {{#if this.isAuthor}}
-                <a href="{{this.createPostHref}}" class="profile-edit">Редактировать профиль</a>
+                <a href="{{this.createPostHref}}" class="profile-edit" data-key="profileEdit">Редактировать профиль</a>
                 {{/if}}
             </div>
         </div>
@@ -42,10 +42,13 @@
         <div class="profile__posts-header">
             <h2>Посты</h2>
             {{#if this.isAuthor}}
-            <a class="header__link button-action button-no-decorations" href="{{this.createPostHref}}">Создать пост</a>
+            <a class="header__link button-action button-no-decorations" href="{{this.createPostHref}}" data-key="createPost">Создать пост</a>
             {{/if}}
             </div>
         <div class="profile__posts">
+            {{#each posts}}
+                {{{this}}}
+            {{/each}}
         </div>
     </div>
 </div>

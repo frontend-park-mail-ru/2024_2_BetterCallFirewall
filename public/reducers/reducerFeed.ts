@@ -30,10 +30,13 @@ export const reducerFeed = (
 		}
 		case ACTION_FEED_TYPES.postsRequest:
 			newState.pendingPostRequest = true;
+			newState.main.content.showLoader = true;
+			newState.main.content.message = '';
 			return newState;
 		case ACTION_FEED_TYPES.postsRequestSuccess: {
 			newState.pendingPostRequest = false;
-			newState.errorMessage = '';
+			newState.main.content.showLoader = false;
+			newState.main.content.message = '';
 			const newPosts = (
 				action.data as ActionPostsRequestSuccessData
 			).postsData.map((postResponse) => {
@@ -44,13 +47,14 @@ export const reducerFeed = (
 		}
 		case ACTION_FEED_TYPES.postsRequestFail: {
 			newState.pendingPostRequest = false;
+			newState.main.content.showLoader = false;
 			const data = action.data as ActionPostsRequestFailData;
 			if (data.message) {
-				newState.errorMessage = data.message;
+				newState.main.content.message = data.message;
 			} else if (data.status === STATUS.noMoreContent) {
-				newState.errorMessage = 'Постов больше нет';
+				newState.main.content.message = 'Постов больше нет';
 			} else if (data.status !== STATUS.ok) {
-				newState.errorMessage = 'Что-то пошло не так';
+				newState.main.content.message = 'Что-то пошло не так';
 			}
 			return newState;
 		}

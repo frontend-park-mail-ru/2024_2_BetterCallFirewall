@@ -1,4 +1,5 @@
 import { Action } from '../actions/action';
+import deepClone from '../modules/deepClone';
 import { reducerHome } from '../reducers/reducerHome';
 import { HomeConfig, ViewHome } from '../views/home/viewHome';
 import { BaseStore, Change, Store } from './store';
@@ -24,7 +25,10 @@ export class StoreHome extends BaseStore implements Store {
 		this._state = reducerHome(this._state, action);
 		this._registeredViews.forEach((view) => {
 			if (view.active) {
-				view.handleChange({ type: action.type, data: this._state });
+				view.handleChange({
+					type: action.type,
+					data: deepClone(this._state),
+				});
 			}
 		});
 	}

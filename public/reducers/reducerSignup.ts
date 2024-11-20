@@ -1,12 +1,12 @@
 import { Action } from '../actions/action';
 import { ACTION_FORM_TYPES, IFormErrorData } from '../actions/actionForm';
-import { ISignupFormConfig } from '../components';
+import { SignupFormConfig } from '../components';
 import config from '../config';
 import deepClone from '../modules/deepClone';
 
 const inititalState = deepClone(config.signupConfig);
 
-export const reducerSignup = (state?: ISignupFormConfig, action?: Action) => {
+export const reducerSignup = (state?: SignupFormConfig, action?: Action) => {
 	if (!state) {
 		return inititalState;
 	}

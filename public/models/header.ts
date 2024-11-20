@@ -1,5 +1,5 @@
-import { IHeaderConfig } from '../components';
-import { IProfileConfig } from '../components/Profile/Profile';
+import { HeaderConfig } from '../components';
+import { ProfileConfig } from '../components/Profile/Profile';
 import deepClone from '../modules/deepClone';
 import parseImage from '../modules/parseImage';
 
@@ -10,9 +10,9 @@ export interface HeaderResponse {
 }
 
 export const headerResponseToProfileConfig = (
-	profileData: IProfileConfig,
+	profileData: ProfileConfig,
 	headerResponse: HeaderResponse,
-): IProfileConfig => {
+): ProfileConfig => {
 	return Object.assign({}, profileData, {
 		id: headerResponse.author_id,
 		img: headerResponse.avatar,
@@ -20,9 +20,9 @@ export const headerResponseToProfileConfig = (
 };
 
 export const headerResponseToHeaderConfig = (
-	headerConfig: IHeaderConfig,
+	headerConfig: HeaderConfig,
 	headerResponse: HeaderResponse,
-): IHeaderConfig => {
+): HeaderConfig => {
 	const newHeaderConfig = deepClone(headerConfig);
 	newHeaderConfig.profile.id = headerResponse.author_id;
 	newHeaderConfig.profile.name = headerResponse.author;

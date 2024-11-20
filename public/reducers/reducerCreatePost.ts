@@ -4,12 +4,12 @@ import {
 	ActionUpdateCreatePostData,
 } from '../actions/actionCreatePost';
 import { ACTION_FEED_TYPES } from '../actions/actionFeed';
-import { ICreatePostFormConfig } from '../components/CreatePostForm/CreatePostForm';
+import { CreatePostFormConfig } from '../components/CreatePostForm/CreatePostForm';
 import config from '../config';
 import deepClone from '../modules/deepClone';
 import { ViewCreatePostConfig } from '../views/createPost/viewCreatePost';
 
-const initialCreatePostState: ICreatePostFormConfig = deepClone(
+const initialCreatePostState: CreatePostFormConfig = deepClone(
 	config.createPostConfig.createPostForm,
 );
 

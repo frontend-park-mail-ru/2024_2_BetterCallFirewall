@@ -1,6 +1,10 @@
-<div class="friends">
+<div class="friends" data-key="{{this.key}}">
     <div class="friends__header">
         <h2 class="friends__header-text">{{this.headerText}}</h2>
     </div>
-    <div class="friends__content"></div>
+    <div class="friends__content">
+        {{#each friends}}
+            {{{this}}}
+        {{/each}}
+    </div>
 </div>
