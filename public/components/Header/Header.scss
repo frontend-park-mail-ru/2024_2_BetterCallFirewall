@@ -1,3 +1,8 @@
+@media (max-width: 1200px) {
+    .header__menu-opener {
+        display: block;
+    }
+}
 .header {
     position: sticky;
     display: flex;
@@ -35,6 +40,12 @@
             fill: var(--main-text-color);
             stroke: var(--main-text-color);
         }
+    }
+    &__search {
+        display: flex;
+    }
+    &__menu-opener {
+        display: none;
     }
 }
 
