@@ -1,6 +1,6 @@
-@media (max-width: 1200px) {
-    .header__menu-opener {
-        visibility: visible;
+@media (max-width: 1199px) {
+    .header__search-opener {
+        display: block;
     }
 }
 .header {
@@ -46,7 +46,7 @@
     }
     &__menu-opener {
         margin-left: 2rem;
-        visibility: hidden;
+        display: none;
     }
 }
 
