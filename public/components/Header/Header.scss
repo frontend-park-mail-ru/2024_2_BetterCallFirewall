@@ -1,8 +1,3 @@
-@media (max-width: 1200px) {
-    .header__menu-opener {
-        display: block;
-    }
-}
 .header {
     position: sticky;
     display: flex;
@@ -46,7 +41,13 @@
     }
     &__menu-opener {
         margin-left: 2rem;
-        display: none;
+        visibility: hidden;
+    }
+
+    @media (max-width: 1200px) {
+        .header__menu-opener {
+            visibility: visible;
+        }
     }
 }
 
