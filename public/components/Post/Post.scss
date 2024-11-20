@@ -94,6 +94,25 @@
         height: 3rem;
         width: 3rem;
     }
+    &__like {
+        display: flex;
+        align-items: center;
+        &-button {
+            width: 2rem;
+            height: 2rem;
+            margin: 0.5rem;
+            svg {
+                &:hover path {
+                    stroke: var(--main-color); 
+                    fill: var(--main-color); 
+                }
+                &:active path {
+                    stroke: var(--main-text-color);
+                    fill: var(--main-text-color); 
+                }
+            }
+        }
+    }
 }
 
 .header-text {

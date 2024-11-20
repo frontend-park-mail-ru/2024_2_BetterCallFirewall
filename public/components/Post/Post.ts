@@ -11,6 +11,7 @@ export interface PostConfig extends ComponentConfig {
 	date: string;
 	hasDeleteButton: boolean;
 	hasEditButton: boolean;
+	likes: number;
 }
 
 /**
