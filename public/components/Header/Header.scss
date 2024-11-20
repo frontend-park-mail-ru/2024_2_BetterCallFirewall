@@ -44,6 +44,8 @@
         height: 1.4rem;
         width: 1.4rem;
         visibility: hidden;
+        fill: var(--main-text-color);
+        stroke: var(--main-text-color);
         svg {
             &:hover path {
                 fill: var(--main-color);
