@@ -41,7 +41,19 @@
     }
     &__menu-opener {
         margin-left: 2rem;
+        height: 1.4rem;
+        width: 1.4rem;
         visibility: hidden;
+        svg {
+            &:hover path {
+                fill: var(--main-color);
+                stroke: var(--main-color); 
+            }
+            &:active path{
+                fill: var(--main-text-color);
+                stroke: var(--main-text-color);
+            }
+        }
     }
 
     @media (max-width: 1200px) {
