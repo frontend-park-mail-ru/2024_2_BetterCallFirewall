@@ -1,6 +1,6 @@
 @media (max-width: 1200px) {
     .header__menu-opener {
-        display: block;
+        visibility: visible;
     }
 }
 .header {
@@ -45,7 +45,8 @@
         display: flex;
     }
     &__menu-opener {
-        display: none;
+        margin-left: 2rem;
+        visibility: hidden;
     }
 }
 
