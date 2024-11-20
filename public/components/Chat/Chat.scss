@@ -5,7 +5,8 @@
     height: 100%;
     margin-left: 2rem;
     height: calc(100vh - 4.5rem);
-    width: 42rem;
+    min-width: 42rem;
+    width: 90%;
     display: flex;
     flex-direction: column;
 
