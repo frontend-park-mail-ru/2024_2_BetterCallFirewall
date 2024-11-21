@@ -4,7 +4,7 @@ import parseImage from '../modules/parseImage';
 import parseTime from '../modules/parseTime';
 
 interface Header {
-	authorId: number;
+	author_id: number;
 	author: string;
 	avatar: string;
 }
@@ -34,6 +34,6 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		hasEditButton: false,
 		likes: 999, // todo
 		likedByUser: false, // todo
-		authorHref: `${PAGE_URLS.profile}/${postResponse.header.authorId}`,
+		authorHref: `${PAGE_URLS.profile}/${postResponse.header.author_id}`,
 	};
 };
