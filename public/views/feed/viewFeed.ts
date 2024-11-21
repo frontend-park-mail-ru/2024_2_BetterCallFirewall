@@ -1,5 +1,6 @@
 import { ACTION_APP_TYPES } from '../../actions/actionApp';
 import {
+	ACTION_FEED_TYPES,
 	ActionFeedPostsRequest,
 	ActionFeedUpdate,
 } from '../../actions/actionFeed';
@@ -45,6 +46,12 @@ export class ViewFeed extends ViewHome {
 				}
 				this.sendAction(new ActionFeedUpdate());
 				break;
+			case ACTION_FEED_TYPES.postsRequestSuccess:
+				this.updateViewFeed(change.data);
+				this._components.posts?.forEach((post) => {
+					this.sendAction(new ActionPostLikeCount(post.config.id));
+				});
+				break;
 			default:
 				this.updateViewFeed(change.data);
 		}
@@ -56,9 +63,6 @@ export class ViewFeed extends ViewHome {
 		if (this._isNearBottom() && !this._configFeed.pendingPostRequest) {
 			this.sendAction(new ActionFeedPostsRequest(this.lastPostId));
 		}
-		this._components.posts?.forEach((post) => {
-			this.sendAction(new ActionPostLikeCount(post.config.id));
-		});
 	}
 
 	updateViewFeed(data: ViewFeedConfig) {
