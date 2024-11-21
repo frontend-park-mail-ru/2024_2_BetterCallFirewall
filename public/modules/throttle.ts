@@ -5,7 +5,12 @@ export const throttle = (func: () => void, limit: number) => {
 			func();
 			last = Date.now();
 		}
-		if (Date.now() - last > limit) {
+		const now = Date.now();
+		console.log('now:', now);
+		console.log('last:', last);
+		console.log('now - last:', now - last);
+		if (now - last > limit) {
+			console.log('call');
 			func();
 			last = Date.now();
 		}
