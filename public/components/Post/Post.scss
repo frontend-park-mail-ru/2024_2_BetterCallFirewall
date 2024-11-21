@@ -98,16 +98,21 @@
         display: flex;
         align-items: center;
         &-button {
-            width: 2rem;
-            height: 2rem;
+            width: 1.5rem;
+            height: 1.5rem;
             margin: 1rem;
             svg {
                 &:hover {
                     cursor: pointer;
                 }
                 &:active path {
-                    fill: var(--main-color); 
+                    fill: var(--main-color);
+                    stroke: var(--main-color);
                 }
+            }
+            &_liked {
+                fill: var(--main-color);
+                stroke: var(--main-color);
             }
         }
     }
