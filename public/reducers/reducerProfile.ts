@@ -1,6 +1,11 @@
 import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
 import {
+	ACTION_POST_TYPES,
+	ActionPostLikeCountSuccessData,
+	ActionPostLikeSuccessData,
+} from '../actions/actionPost';
+import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileGetYourOwnProfileSuccessData,
 	ActionProfileRequestSuccessData,
@@ -11,6 +16,7 @@ import {
 } from '../actions/actionProfileEdit';
 import app from '../app';
 import config from '../config';
+import { likeCountResponseToPostConfig } from '../models/likeCount';
 import { toProfileConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
 import { ViewProfileConfig } from '../views/profile/viewProfile';
@@ -59,12 +65,35 @@ export const reducerProfile = (
 			newState.profile = Object.assign(newState.profile, profileConfig);
 			return newState;
 		}
-		case ACTION_PROFILE_TYPES.getHeaderSuccess:
-		case ACTION_PROFILE_TYPES.updateProfile:
-		case ACTION_PROFILE_TYPES.profileRequestFail:
-		case ACTION_PROFILE_TYPES.goToProfile:
-		case ACTION_PROFILE_TYPES.getYourOwnProfileFail:
-		case ACTION_PROFILE_TYPES.getYourOwnProfile:
+		case ACTION_POST_TYPES.likeSuccess: {
+			const actionData = action.data as ActionPostLikeSuccessData;
+			newState.profile.posts.forEach((postConfig) => {
+				if (postConfig.id === actionData.postId) {
+					postConfig.likedByUser = !postConfig.likedByUser;
+					if (postConfig.likedByUser) {
+						postConfig.likes++;
+					} else {
+						postConfig.likes--;
+					}
+				}
+			});
+			return newState;
+		}
+		case ACTION_POST_TYPES.likeCountSuccess: {
+			const actionData = action.data as ActionPostLikeCountSuccessData;
+			newState.profile.posts.forEach((postConfig) => {
+				if (postConfig.id === actionData.postId) {
+					Object.assign(
+						postConfig,
+						likeCountResponseToPostConfig(
+							postConfig,
+							actionData.likeCountResponse,
+						),
+					);
+				}
+			});
+			return newState;
+		}
 		default:
 			return newState;
 	}

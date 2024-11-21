@@ -100,15 +100,13 @@
         &-button {
             width: 2rem;
             height: 2rem;
-            margin: 0.5rem;
+            margin: 1rem;
             svg {
                 &:hover path {
-                    stroke: var(--main-color); 
-                    fill: var(--main-color); 
+                    cursor: pointer;
                 }
                 &:active path {
-                    stroke: var(--main-text-color);
-                    fill: var(--main-text-color); 
+                    fill: var(--main-color); 
                 }
             }
         }

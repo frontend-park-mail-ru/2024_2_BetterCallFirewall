@@ -1,18 +1,14 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
 import { ActionChatGoToChat } from '../../actions/actionChat';
 import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
-import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
-import {
-	ACTION_FRIENDS_TYPES,
-	ActionFriendsAccept,
-} from '../../actions/actionFriends';
+import { ActionFriendsAccept } from '../../actions/actionFriends';
+import { ActionPostLike, ActionPostLikeCount } from '../../actions/actionPost';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileRequest,
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
-import { ACTION_PROFILE_EDIT_TYPES } from '../../actions/actionProfileEdit';
 import api from '../../api/api';
 import app from '../../app';
 import { Post, Root } from '../../components';
@@ -55,19 +51,13 @@ export class ViewProfile extends ViewHome {
 	handleChange(change: ChangeProfile): void {
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_PROFILE_TYPES.updateProfile:
-			case ACTION_FRIENDS_TYPES.acceptSuccess:
-			case ACTION_FEED_TYPES.postCreateSuccess:
-			case ACTION_PROFILE_EDIT_TYPES.requestSuccess:
-			case ACTION_PROFILE_TYPES.profileRequestSuccess:
-			case ACTION_PROFILE_TYPES.profileRequestFail:
-				this.updateViewProfile(change.data);
-				break;
 			case ACTION_PROFILE_TYPES.deletePostSuccess:
 				this.updateViewProfile(change.data);
 				this.sendAction(new ActionUpdateProfile());
 				this.sendAction(new ActionProfileRequest(app.router.path));
 				break;
+			default:
+				this.updateViewProfile(change.data);
 		}
 	}
 
@@ -75,6 +65,9 @@ export class ViewProfile extends ViewHome {
 		this._render();
 		this.sendAction(new ActionUpdateProfile());
 		this.sendAction(new ActionProfileRequest(app.router.path));
+		this._components.profile?.posts.forEach((post) => {
+			this.sendAction(new ActionPostLikeCount(post.config.id));
+		});
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {
@@ -171,5 +164,12 @@ export class ViewProfile extends ViewHome {
 				},
 			});
 		}
+		post.likeButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionPostLike(post.config.id));
+			},
+		});
 	}
 }

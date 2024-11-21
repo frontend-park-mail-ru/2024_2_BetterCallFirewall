@@ -1,21 +1,26 @@
 import { ACTION_APP_TYPES } from '../../actions/actionApp';
 import {
-	ACTION_FEED_TYPES,
 	ActionFeedPostsRequest,
 	ActionFeedUpdate,
 } from '../../actions/actionFeed';
+import { ActionPostLike, ActionPostLikeCount } from '../../actions/actionPost';
 import { PostConfig, Post, Root } from '../../components';
 import { update } from '../../modules/vdom';
 import { ChangeFeed } from '../../stores/storeFeed';
-import { HomeConfig, ViewHome } from '../home/viewHome';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export interface ViewFeedConfig extends HomeConfig {
 	posts: PostConfig[];
 	pendingPostRequest: boolean;
 }
 
+export type FeedComponents = {
+	posts?: Post[];
+} & ComponentsHome;
+
 export class ViewFeed extends ViewHome {
 	protected _configFeed: ViewFeedConfig;
+	protected _components: FeedComponents = {};
 
 	constructor(config: ViewFeedConfig, root: Root) {
 		super(config, root);
@@ -29,9 +34,6 @@ export class ViewFeed extends ViewHome {
 	handleChange(change: ChangeFeed): void {
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_FEED_TYPES.update:
-				this.updateViewFeed(change.data);
-				break;
 			case ACTION_APP_TYPES.goTo:
 				if (
 					!this._configFeed.posts.length &&
@@ -42,10 +44,6 @@ export class ViewFeed extends ViewHome {
 					);
 				}
 				this.sendAction(new ActionFeedUpdate());
-				break;
-			case ACTION_FEED_TYPES.postsRequestSuccess:
-			case ACTION_FEED_TYPES.postsRequestFail:
-				this.updateViewFeed(change.data);
 				break;
 			default:
 				this.updateViewFeed(change.data);
@@ -58,6 +56,9 @@ export class ViewFeed extends ViewHome {
 		if (this._isNearBottom() && !this._configFeed.pendingPostRequest) {
 			this.sendAction(new ActionFeedPostsRequest(this.lastPostId));
 		}
+		this._components.posts?.forEach((post) => {
+			this.sendAction(new ActionPostLikeCount(post.config.id));
+		});
 	}
 
 	updateViewFeed(data: ViewFeedConfig) {
@@ -82,6 +83,7 @@ export class ViewFeed extends ViewHome {
 	protected _addHandlers() {
 		super._addHandlers();
 		this._addScrollHandler();
+		this._addPostsHandler();
 	}
 
 	private get lastPostId(): number | undefined {
@@ -92,8 +94,8 @@ export class ViewFeed extends ViewHome {
 	}
 
 	private _renderPosts(): void {
-		this._configFeed.posts.forEach((postConfig) => {
-			new Post(postConfig, this.content);
+		this._components.posts = this._configFeed.posts.map((postConfig) => {
+			return new Post(postConfig, this.content);
 		});
 	}
 
@@ -112,5 +114,17 @@ export class ViewFeed extends ViewHome {
 			}
 		};
 		this._root.addDocumentHandler({ event: 'scroll', callback: handler });
+	}
+
+	private _addPostsHandler() {
+		this._components.posts?.forEach((post) => {
+			post.likeButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionPostLike(post.config.id));
+				},
+			});
+		});
 	}
 }

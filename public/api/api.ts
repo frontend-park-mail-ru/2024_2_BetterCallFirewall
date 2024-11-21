@@ -37,6 +37,14 @@ import {
 	ActionMessagesRequestSuccess,
 } from '../actions/actionMessages';
 import {
+	ACTION_POST_TYPES,
+	ActionPostLikeCountFail,
+	ActionPostLikeCountSuccess,
+	ActionPostLikeData,
+	ActionPostLikeFail,
+	ActionPostLikeSuccess,
+} from '../actions/actionPost';
+import {
 	ActionPostEditRequestFail,
 	ActionPostEditRequestSuccess,
 } from '../actions/actionPostEdit';
@@ -103,6 +111,9 @@ class API {
 			}
 			case ACTION_PROFILE_TYPES.getYourOwnProfile:
 				this.requestYourOwnProfile();
+				break;
+			case ACTION_POST_TYPES.like:
+				this.likePost((action.data as ActionPostLikeData).postId);
 				break;
 		}
 	}
@@ -467,6 +478,34 @@ class API {
 				break;
 			default:
 				this.sendAction(new ActionChatRequestFail());
+		}
+	}
+
+	async likePost(postId: number) {
+		const response = await ajax.likePost(postId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionPostLikeSuccess(postId));
+				break;
+			default:
+				this.sendAction(new ActionPostLikeFail());
+		}
+	}
+
+	async postLikesCount(postId: number) {
+		const response = await ajax.postLikesCount(postId);
+		switch (response.status) {
+			case STATUS.ok:
+				if (response.data) {
+					this.sendAction(
+						new ActionPostLikeCountSuccess(response.data, postId),
+					);
+				} else {
+					this.sendAction(new ActionPostLikeCountFail());
+				}
+				break;
+			default:
+				this.sendAction(new ActionPostLikeCountFail());
 		}
 	}
 }

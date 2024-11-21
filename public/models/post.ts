@@ -31,6 +31,7 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		date: parseTime(postResponse.post_content.created_at),
 		hasDeleteButton: false,
 		hasEditButton: false,
-		likes: 999,
+		likes: 999, // todo
+		likedByUser: false, // todo
 	};
 };

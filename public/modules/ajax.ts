@@ -2,6 +2,7 @@ import { STATUS } from '../api/api';
 import app from '../app';
 import { ChatResponse } from '../models/chat';
 import { HeaderResponse } from '../models/header';
+import { LikeCountResponse } from '../models/likeCount';
 import { MessageResponse } from '../models/message';
 import { PostResponse } from '../models/post';
 import { FullProfileResponse, ShortProfileResponse } from '../models/profile';
@@ -124,6 +125,21 @@ class Ajax {
 	}
 
 	/**
+	 * Лайкнуть пост
+	 */
+	async likePost(postId: number): Promise<AjaxResponse<object>> {
+		const url = app.config.URL.postLike.replace('{id}', `${postId}`);
+		return await this._postObjectResponse(url);
+	}
+
+	async postLikesCount(
+		postId: number,
+	): Promise<AjaxResponse<LikeCountResponse>> {
+		const url = app.config.URL.postLikeCount.replace('{id}', `${postId}`);
+		return await this._genericRequestResponse(url, 'post');
+	}
+
+	/**
 	 * Получить профиль
 	 */
 	async getProfile(
@@ -198,7 +214,6 @@ class Ajax {
 				break;
 			}
 		}
-		console.log('get header: response:', headerResponse);
 		return headerResponse;
 	}
 
@@ -294,7 +309,7 @@ class Ajax {
 	 * Запрос списка чатов
 	 */
 	async getMessages(): Promise<AjaxResponse<ChatResponse[]>> {
-		return this._genericRequest(app.config.URL.messages, 'get');
+		return this._genericRequestResponse(app.config.URL.messages, 'get');
 	}
 
 	/**
@@ -307,7 +322,7 @@ class Ajax {
 		const url = lastTime
 			? insertQueryParams(app.config.URL.chat, { lastTime })
 			: app.config.URL.chat;
-		return this._genericRequest(replaceId(url, profileId), 'get');
+		return this._genericRequestResponse(replaceId(url, profileId), 'get');
 	}
 
 	/**
@@ -354,7 +369,7 @@ class Ajax {
 			.catch((error) => config.callback(null, error));
 	}
 
-	private async _genericRequest<T>(
+	private async _genericRequestResponse<T>(
 		baseUrl: string,
 		method: string,
 		data?: object,
@@ -433,7 +448,7 @@ class Ajax {
 	}
 
 	/**
-	 * post запрос и ответ в виде object
+	 * Пустой post запрос и ответ в виде object
 	 */
 	private async _postObjectResponse(
 		url: string,
@@ -442,6 +457,9 @@ class Ajax {
 		return await this._objectResponse(request);
 	}
 
+	/**
+	 * Пустой delete запрос и ответ в виде object
+	 */
 	private async _deleteObjectResponse(
 		url: string,
 	): Promise<AjaxResponse<object>> {
@@ -495,7 +513,7 @@ class Ajax {
 	}
 
 	/**
-	 * Запрос, содержащий jsons
+	 * Запрос, содержащий json
 	 */
 	private _jsonRequest(baseUrl: string, method: string, body?: object) {
 		return new Request(baseUrl, {
