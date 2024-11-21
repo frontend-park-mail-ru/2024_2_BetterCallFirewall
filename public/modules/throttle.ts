@@ -1,17 +1,16 @@
-export const throttle = (func: () => void, limit: number) => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const throttle = <T extends (...args: any[]) => void>(
+	func: T,
+	limit: number,
+) => {
 	let last: number;
-	return () => {
+	return (...args: Parameters<T>) => {
 		if (!last) {
-			func();
+			func(args);
 			last = Date.now();
 		}
-		const now = Date.now();
-		console.log('now:', now);
-		console.log('last:', last);
-		console.log('now - last:', now - last);
-		if (now - last > limit) {
-			console.log('call');
-			func();
+		if (Date.now() - last > limit) {
+			func(args);
 			last = Date.now();
 		}
 	};

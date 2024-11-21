@@ -165,15 +165,16 @@ export class ViewProfile extends ViewHome {
 				},
 			});
 		}
-		const like = throttle(() => {
-			this.sendAction(new ActionPostLike(post.config.id));
-		}, 2000);
 		post.likeButtonVNode.handlers.push({
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
-				like();
+				this._likePost(post.config.id);
 			},
 		});
 	}
+
+	private _likePost = throttle((postId: number) => {
+		this.sendAction(new ActionPostLike(postId));
+	}, 1000);
 }
