@@ -13,6 +13,7 @@ export interface PostConfig extends ComponentConfig {
 	hasEditButton: boolean;
 	likes: number;
 	likedByUser: boolean;
+	authorHref: string;
 }
 
 /**
@@ -54,6 +55,10 @@ export class Post extends Component {
 
 	get likeButtonVNode(): VNode {
 		return this._findVNodeByClass('post__like-button');
+	}
+
+	get authorLinkVNode(): VNode {
+		return this._findVNodeByClass('post__author-link');
 	}
 
 	render(): string {

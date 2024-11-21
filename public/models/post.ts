@@ -1,4 +1,5 @@
 import { PostConfig } from '../components';
+import { PAGE_URLS } from '../config';
 import parseImage from '../modules/parseImage';
 import parseTime from '../modules/parseTime';
 
@@ -33,5 +34,6 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		hasEditButton: false,
 		likes: 999, // todo
 		likedByUser: false, // todo
+		authorHref: `${PAGE_URLS.profile}/${postResponse.header.authorId}`,
 	};
 };

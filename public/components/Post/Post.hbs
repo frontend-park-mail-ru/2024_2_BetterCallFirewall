@@ -1,7 +1,9 @@
 <div class="post" data-key="{{this.key}}">
     <div class="post__header">
         <div class="post__header-avatar">
-            <img class="post__avatar avatar" src="{{this.avatar}}" alt="avatar">
+            <a class="post__author-link" href="{{this.authorHref}}">
+                <img class="post__avatar avatar" src="{{this.avatar}}" alt="avatar">
+            </a>
         </div>
         <div class="post__header-text">
             <span class="post__title header-text">{{this.title}}</span>

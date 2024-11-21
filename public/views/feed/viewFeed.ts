@@ -1,4 +1,4 @@
-import { ACTION_APP_TYPES } from '../../actions/actionApp';
+import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import {
 	ACTION_FEED_TYPES,
 	ActionFeedPostsRequest,
@@ -128,6 +128,13 @@ export class ViewFeed extends ViewHome {
 				callback: (event) => {
 					event.preventDefault();
 					this._likePost(post.config.id);
+				},
+			});
+			post.authorLinkVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionAppGoTo(post.config.authorHref));
 				},
 			});
 		});

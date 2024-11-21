@@ -28,8 +28,6 @@ export const PAGE_URLS = {
 	profileEdit: '/profile-edit',
 	profile: '',
 	postEdit: '/post-edit',
-	communities: '/communities',
-	community: '/community',
 };
 
 export const PAGE_LINKS = { ...PAGE_URLS };
