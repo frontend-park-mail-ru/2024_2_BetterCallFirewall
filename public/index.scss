@@ -36,6 +36,9 @@
     }
     .menu {
         display: none;
+        .show {
+            display: flex;
+        }
     }
     .main {
         margin-left: 0;
