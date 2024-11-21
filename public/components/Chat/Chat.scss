@@ -1,7 +1,7 @@
 .chat {
     background-color: var(--second-bg-color);
     border-radius: .7rem;
-    border: .5px solid rgba(255, 255, 255, 0.5);
+    border: .05rem solid rgba(255, 255, 255, 0.5);
     height: 100%;
     margin-left: 2rem;
     height: calc(100vh - 4.5rem);
@@ -40,7 +40,7 @@
         min-height: 4rem;
         align-items: center;
         justify-content: space-between;
-        border-bottom: .5px solid rgba(255, 255, 255, 0.5);
+        border-bottom: .05rem solid rgba(255, 255, 255, 0.5);
     }
 
     &__details {
@@ -89,7 +89,7 @@
     }
 
     &__bottom {
-        border-top: .5px solid rgba(255, 255, 255, 0.5);
+        border-top: .05rem solid rgba(255, 255, 255, 0.5);
         height: 3rem;
         padding: 1rem;
     }
