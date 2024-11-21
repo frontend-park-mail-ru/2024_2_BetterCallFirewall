@@ -38,6 +38,7 @@ import {
 } from '../actions/actionMessages';
 import {
 	ACTION_POST_TYPES,
+	ActionPostLikeCountData,
 	ActionPostLikeCountFail,
 	ActionPostLikeCountSuccess,
 	ActionPostLikeData,
@@ -114,6 +115,11 @@ class API {
 				break;
 			case ACTION_POST_TYPES.like:
 				this.likePost((action.data as ActionPostLikeData).postId);
+				break;
+			case ACTION_POST_TYPES.likeCount:
+				this.postLikesCount(
+					(action.data as ActionPostLikeCountData).postId,
+				);
 				break;
 		}
 	}
