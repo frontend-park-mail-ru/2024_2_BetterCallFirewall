@@ -111,8 +111,10 @@
                 }
             }
             &_liked {
-                fill: var(--main-color);
-                stroke: var(--main-color);
+                svg path {
+                    fill: var(--main-color);
+                    stroke: var(--main-color);
+                }
             }
         }
     }
