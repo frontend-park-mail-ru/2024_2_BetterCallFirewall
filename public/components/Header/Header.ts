@@ -112,6 +112,14 @@ export class Header extends Component {
 		return vnode;
 	}
 
+	get menuOpener(): VNode {
+		const vnode = findVNodeByClass(this.vnode, 'header__menu-opener');
+		if (!vnode) {
+			throw new Error('menu opener not found');
+		}
+		return vnode;
+	}
+
 	/**
 	 * Rendering header with handlebars
 	 *

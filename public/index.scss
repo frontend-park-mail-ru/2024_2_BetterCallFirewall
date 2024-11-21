@@ -25,6 +25,9 @@
     * {
         font-size: 1.2vw;
     }
+    .menu {
+        display: flex;
+    }
 }
 
 @media (max-width: 1200px) {
@@ -76,7 +79,7 @@ body {
 }
 
 .main {
-    margin-left: 15rem;
+    margin-left: 18rem;
     width: 100%;
 }
 

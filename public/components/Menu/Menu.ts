@@ -119,6 +119,7 @@ export interface MenuConfig extends ComponentConfig {
 		friends: MenuLinkConfig;
 		messages: MenuLinkConfig;
 	};
+	isShow?: boolean;
 }
 
 export default class Menu extends Component {
@@ -168,6 +169,7 @@ export default class Menu extends Component {
 			...this._templateContext,
 			title: this._config.title,
 			links: this._links.map((link) => link.render()),
+			isShow: this._config.isShow,
 		};
 	}
 }

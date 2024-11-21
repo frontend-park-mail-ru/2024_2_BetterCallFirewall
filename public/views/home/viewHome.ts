@@ -199,6 +199,14 @@ export abstract class ViewHome extends View {
 				this.sendAction(new ActionAppGoTo(`/${profile.profile.id}`));
 			},
 		});
+		this.header.menuOpener.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this._configHome.menu.isShow = true;
+				this._render();
+			}
+		});
 	}
 }
 
