@@ -56,6 +56,7 @@ import {
 import { ACTION_POST_EDIT_TYPES } from './actions/actionPostEdit';
 import { StorePostEdit } from './stores/storePostEdit';
 import WebsocketClient from './modules/websocket';
+import { ACTION_POST_TYPES } from './actions/actionPost';
 
 export const PAGES = {
 	home: 'home',
@@ -83,6 +84,8 @@ export interface URLInterface {
 	messages: string;
 	chat: string;
 	chatWS: string;
+	postLike: string;
+	postLikeCount: string;
 }
 
 export interface AppConfig {
@@ -271,6 +274,10 @@ class App {
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestSuccess);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.update);
+		this._stores.feed.subscribe(ACTION_POST_TYPES.likeSuccess);
+		this._stores.feed.subscribe(ACTION_POST_TYPES.likeFail);
+		this._stores.feed.subscribe(ACTION_POST_TYPES.likeCountSuccess);
+		this._stores.feed.subscribe(ACTION_POST_TYPES.likeCountFail);
 
 		this._stores.profile.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.profile.subscribe(ACTION_APP_TYPES.goTo);
@@ -295,6 +302,10 @@ class App {
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.deletePostSuccess);
 		this._stores.profile.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
 		this._stores.profile.subscribe(ACTION_FRIENDS_TYPES.acceptSuccess);
+		this._stores.profile.subscribe(ACTION_POST_TYPES.likeSuccess);
+		this._stores.profile.subscribe(ACTION_POST_TYPES.likeFail);
+		this._stores.profile.subscribe(ACTION_POST_TYPES.likeCountSuccess);
+		this._stores.profile.subscribe(ACTION_POST_TYPES.likeCountFail);
 
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.subscribeSuccess);

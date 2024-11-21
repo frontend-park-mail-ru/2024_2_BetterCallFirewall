@@ -11,6 +11,9 @@ export interface PostConfig extends ComponentConfig {
 	date: string;
 	hasDeleteButton: boolean;
 	hasEditButton: boolean;
+	likes: number;
+	likedByUser: boolean;
+	authorHref: string;
 }
 
 /**
@@ -48,6 +51,14 @@ export class Post extends Component {
 			throw new Error('deleteButton vnode not found');
 		}
 		return vnode;
+	}
+
+	get likeButtonVNode(): VNode {
+		return this._findVNodeByClass('post__like-button');
+	}
+
+	get authorLinkVNode(): VNode {
+		return this._findVNodeByClass('post__author-link');
 	}
 
 	render(): string {

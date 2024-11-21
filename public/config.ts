@@ -389,6 +389,8 @@ const URL: URLInterface = DEBUG
 			messages: '',
 			chat: '',
 			chatWS: '',
+			postLike: '',
+			postLikeCount: '',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -411,6 +413,8 @@ const URL: URLInterface = DEBUG
 			messages: ROOT + apiv1 + '/messages/chats',
 			chat: ROOT + apiv1 + '/messages/chat/{id}',
 			chatWS: ROOT_WS + apiv1 + '/ws',
+			postLike: ROOT + apiv1 + '/feed/{id}/like',
+			postLikeCount: ROOT + apiv1 + '/like/count/post/{id}',
 		};
 
 const config: AppConfig = {

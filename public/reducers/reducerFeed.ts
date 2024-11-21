@@ -5,8 +5,14 @@ import {
 	ActionPostsRequestFailData,
 	ActionPostsRequestSuccessData,
 } from '../actions/actionFeed';
+import {
+	ACTION_POST_TYPES,
+	ActionPostLikeCountSuccessData,
+	ActionPostLikeData,
+} from '../actions/actionPost';
 import { STATUS } from '../api/api';
 import config from '../config';
+import { likeCountResponseToPostConfig } from '../models/likeCount';
 import { toPostConfig } from '../models/post';
 import deepClone from '../modules/deepClone';
 import { ViewFeedConfig } from '../views/feed/viewFeed';
@@ -56,6 +62,35 @@ export const reducerFeed = (
 			} else if (data.status !== STATUS.ok) {
 				newState.main.content.message = 'Что-то пошло не так';
 			}
+			return newState;
+		}
+		case ACTION_POST_TYPES.likeSuccess: {
+			const actionData = action.data as ActionPostLikeData;
+			newState.posts.forEach((postConfig) => {
+				if (postConfig.id === actionData.postId) {
+					postConfig.likedByUser = !postConfig.likedByUser;
+					if (postConfig.likedByUser) {
+						postConfig.likes++;
+					} else {
+						postConfig.likes--;
+					}
+				}
+			});
+			return newState;
+		}
+		case ACTION_POST_TYPES.likeCountSuccess: {
+			const actionData = action.data as ActionPostLikeCountSuccessData;
+			newState.posts.forEach((postConfig) => {
+				if (postConfig.id === actionData.postId) {
+					Object.assign(
+						postConfig,
+						likeCountResponseToPostConfig(
+							postConfig,
+							actionData.likeCountResponse,
+						),
+					);
+				}
+			});
 			return newState;
 		}
 		default:
