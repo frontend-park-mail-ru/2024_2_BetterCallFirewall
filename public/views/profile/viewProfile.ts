@@ -167,7 +167,7 @@ export class ViewProfile extends ViewHome {
 		}
 		const like = throttle(() => {
 			this.sendAction(new ActionPostLike(post.config.id));
-		}, 1000);
+		}, 2000);
 		post.likeButtonVNode.handlers.push({
 			event: 'click',
 			callback: (event) => {
