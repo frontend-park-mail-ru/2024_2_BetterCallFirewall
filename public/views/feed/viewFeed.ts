@@ -6,6 +6,7 @@ import {
 } from '../../actions/actionFeed';
 import { ActionPostLike, ActionPostLikeCount } from '../../actions/actionPost';
 import { PostConfig, Post, Root } from '../../components';
+import { throttle } from '../../modules/throttle';
 import { update } from '../../modules/vdom';
 import { ChangeFeed } from '../../stores/storeFeed';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
@@ -122,11 +123,14 @@ export class ViewFeed extends ViewHome {
 
 	private _addPostsHandler() {
 		this._components.posts?.forEach((post) => {
+			const like = throttle(() => {
+				this.sendAction(new ActionPostLike(post.config.id));
+			}, 1000);
 			post.likeButtonVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					this.sendAction(new ActionPostLike(post.config.id));
+					like();
 				},
 			});
 		});

@@ -14,6 +14,7 @@ import app from '../../app';
 import { Post, Root } from '../../components';
 import { ProfileConfig, Profile } from '../../components/Profile/Profile';
 import { PAGE_LINKS, PAGE_URLS } from '../../config';
+import { throttle } from '../../modules/throttle';
 import { update } from '../../modules/vdom';
 import { ChangeProfile } from '../../stores/storeProfile';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
@@ -164,11 +165,14 @@ export class ViewProfile extends ViewHome {
 				},
 			});
 		}
+		const like = throttle(() => {
+			this.sendAction(new ActionPostLike(post.config.id));
+		}, 1000);
 		post.likeButtonVNode.handlers.push({
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
-				this.sendAction(new ActionPostLike(post.config.id));
+				like();
 			},
 		});
 	}
