@@ -233,10 +233,16 @@ const updateHandlers = (
 		const newHandler = newHandlers[i];
 		const prevHandler = prevHandlers[i];
 
-		if (!newHandler || newHandler.callback !== prevHandler.callback) {
+		if (
+			!newHandler ||
+			(prevHandler && newHandler.callback !== prevHandler.callback)
+		) {
 			node.removeEventListener(prevHandler.event, prevHandler.callback);
 		}
-		if (!prevHandler || newHandler.callback !== prevHandler.callback) {
+		if (
+			!prevHandler ||
+			(newHandler && newHandler.callback !== prevHandler.callback)
+		) {
 			node.addEventListener(newHandler.event, newHandler.callback);
 		}
 	}
