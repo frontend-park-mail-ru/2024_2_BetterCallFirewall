@@ -1,10 +1,12 @@
 .groups {
     width: 100%;
     &__header {
+        display: flex;
         margin-left: 2rem;
         margin-top: 1rem;
     }
     &__header-text {
         font-size: 1.5rem;
+        margin-right: 1.5rem;
     }
 }
