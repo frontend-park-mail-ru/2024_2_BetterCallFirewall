@@ -68,6 +68,7 @@ import {
 	ViewCreateGroup,
 	ViewCreateGroupConfig,
 } from './views/createGroup/viewCreateGroup';
+import { StoreCreateGroup } from './stores/storeCreateGroup';
 
 export const PAGES = {
 	home: 'home',
@@ -130,6 +131,7 @@ export interface AppStores {
 	groups: StoreGroups;
 	groupPage: StoreGroupPage;
 	createPost: StoreCreatePost;
+	createGroup: StoreCreateGroup;
 	profileEdit: StoreProfileEdit;
 	postEdit: StorePostEdit;
 }
@@ -266,6 +268,7 @@ class App {
 			messages: new StoreMessages(storeHome),
 			chat: new StoreChat(storeHome),
 			createPost: new StoreCreatePost(storeHome),
+			createGroup: new StoreCreateGroup(storeHome),
 			profileEdit: new StoreProfileEdit(storeHome),
 			postEdit: new StorePostEdit(storeHome),
 		};
@@ -443,6 +446,9 @@ class App {
 
 		groupPageView.register(this._stores.home);
 		groupPageView.register(this._stores.groupPage);
+
+		createGroupView.register(this._stores.home);
+		createGroupView.register(this._stores.createGroup);
 
 		postEditView.register(this._stores.home);
 		postEditView.register(this._stores.postEdit);
