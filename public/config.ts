@@ -99,6 +99,8 @@ const homeConfig: HomeConfig = {
 				name: '',
 				avatar: 'img/avatar.png',
 			},
+			showSearchResults: false,
+			profilesSearch: [],
 		},
 		content: {
 			key: 'content',
@@ -395,6 +397,7 @@ const URL: URLInterface = DEBUG
 			chatWS: '',
 			postLike: '',
 			postLikeCount: '',
+			profilesSearch: '',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -419,6 +422,7 @@ const URL: URLInterface = DEBUG
 			chatWS: ROOT_WS + apiv1 + '/ws',
 			postLike: ROOT + apiv1 + '/feed/{id}/like',
 			postLikeCount: ROOT + apiv1 + '/like/count/post/{id}',
+			profilesSearch: ROOT + apiv1 + '/profile/search',
 		};
 
 const config: AppConfig = {

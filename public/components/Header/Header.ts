@@ -1,5 +1,6 @@
 import { findVNodeByClass, VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
+import { SearchResult } from '../SearchResult/SearchResult';
 
 type Profile = {
 	id: number;
@@ -13,6 +14,8 @@ export interface HeaderConfig extends ComponentConfig {
 		placeholder: string;
 	};
 	profile: Profile;
+	showSearchResults: boolean;
+	profilesSearch: SearchResult[];
 }
 
 /**
@@ -51,12 +54,24 @@ export class Header extends Component {
 		return vnode;
 	}
 
-	get menuOpener(): VNode {
+	get menuOpenerVNode(): VNode {
 		const vnode = findVNodeByClass(this.vnode, 'header__menu-opener');
 		if (!vnode) {
 			throw new Error('menu opener not found');
 		}
 		return vnode;
+	}
+
+	get searchInputVNode(): VNode {
+		return this._findVNodeByClass('header__search-input');
+	}
+
+	get searchResultsVNode(): VNode {
+		return this._findVNodeByClass('header__search-pad');
+	}
+
+	get searchResultsHTML(): Element {
+		return this._findHTML('.header__search-pad');
 	}
 
 	/**
@@ -67,5 +82,13 @@ export class Header extends Component {
 	render(): string {
 		this._prerender();
 		return this._render('Header.hbs');
+	}
+
+	protected _prerender(): void {
+		super._prerender();
+		this._templateContext = {
+			...this._templateContext,
+			profilesSearch: this._config.profilesSearch,
+		};
 	}
 }

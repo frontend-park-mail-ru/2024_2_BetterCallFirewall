@@ -38,13 +38,11 @@ const replaceId = (url: string, id: number): string => {
 };
 
 const insertQueryParams = (baseUrl: string, params: QueryParams) => {
-	let url = baseUrl;
+	const url = new URL(baseUrl);
 	Object.entries(params).forEach(([key, value]) => {
-		if (value) {
-			url += `?${key}=${value}`;
-		}
+		url.searchParams.append(key, value);
 	});
-	return url;
+	return url.toString();
 };
 
 class Ajax {
@@ -325,6 +323,15 @@ class Ajax {
 		return this._genericRequestResponse(replaceId(url, profileId), 'get');
 	}
 
+	async profilesSearch(
+		str: string,
+	): Promise<AjaxResponse<ShortProfileResponse[]>> {
+		const url = insertQueryParams(app.config.URL.profilesSearch, {
+			q: str,
+		});
+		return this._genericRequestResponse(url, 'get');
+	}
+
 	/**
 	 * Sending data form data
 	 *
@@ -370,11 +377,11 @@ class Ajax {
 	}
 
 	private async _genericRequestResponse<T>(
-		baseUrl: string,
+		url: string,
 		method: string,
 		data?: object,
 	): Promise<AjaxResponse<T>> {
-		const request = this._jsonRequest(baseUrl, method, data);
+		const request = this._jsonRequest(url, method, data);
 		const response = await this._response(request);
 		try {
 			const body = await response.json();

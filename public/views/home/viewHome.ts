@@ -2,12 +2,16 @@ import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import {
 	ActionHeaderLogoutClickFail,
 	ActionHeaderLogoutClickSuccess,
+	ActionHeaderSearchResultsSwitch,
 } from '../../actions/actionHeader';
 import {
 	ACTION_MENU_TYPES,
 	ActionMenuTitleClick,
 } from '../../actions/actionMenu';
-import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
+import {
+	ACTION_PROFILE_TYPES,
+	ActionProfileSearch,
+} from '../../actions/actionProfile';
 import app from '../../app';
 import {
 	Header,
@@ -23,6 +27,7 @@ import Menu from '../../components/Menu/Menu';
 import { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
+import { debounce } from '../../modules/debounce';
 import { ChangeHome } from '../../stores/storeHome';
 import { Components, View } from '../view';
 
@@ -123,6 +128,18 @@ export abstract class ViewHome extends View {
 	protected _addHandlers() {
 		this._addMenuHandlers();
 		this._addHeaderHandlers();
+		this._root.addDocumentHandler({
+			event: 'click',
+			callback: (event) => {
+				if (
+					!this.header.searchResultsHTML.contains(
+						event.target as Node,
+					)
+				) {
+					this.sendAction(new ActionHeaderSearchResultsSwitch(false));
+				}
+			},
+		});
 	}
 
 	// true, если до конца документа осталось меньше экрана
@@ -193,7 +210,7 @@ export abstract class ViewHome extends View {
 				this.sendAction(new ActionAppGoTo(`/${profile.profile.id}`));
 			},
 		});
-		this.header.menuOpener.handlers.push({
+		this.header.menuOpenerVNode.handlers.push({
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
@@ -201,7 +218,30 @@ export abstract class ViewHome extends View {
 				this._render();
 			},
 		});
+		this.header.searchInputVNode.handlers.push(
+			{
+				event: 'input',
+				callback: (event) => {
+					event.preventDefault();
+					const input = event.currentTarget as HTMLInputElement;
+					if (input && input.value.length > 2) {
+						this._searchInputHandler(input.value);
+					}
+				},
+			},
+			{
+				event: 'focus',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionHeaderSearchResultsSwitch(true));
+				},
+			},
+		);
 	}
+
+	private _searchInputHandler = debounce((str: string) => {
+		this.sendAction(new ActionProfileSearch(str));
+	}, 200);
 }
 
 const logoutButtonClick = () => {

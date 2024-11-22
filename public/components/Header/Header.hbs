@@ -11,10 +11,14 @@
             <img src="{{this.search.img}}" alt="поиск">
             <input type="text" class="header__search-input" placeholder="{{this.search.placeholder}}">
         </div>
-        <div class="header__search-pad">
+        <div class="header__search-pad {{#unless this.showSearchResults}}header__search-pad_hidden{{/unless}}">
+            <span class="search__header">Люди</span>
             <div>Результат поиска</div>
             <div>Результат поиска</div>
             <div>Результат поиска</div>
+            {{#each this.profilesSearch}}
+                {{{this}}}
+            {{/each}}
         </div>
     </div>
     <div class="header__profile">
