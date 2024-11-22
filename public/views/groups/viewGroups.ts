@@ -4,7 +4,7 @@ import { update } from '../../modules/vdom';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsGroups = {
-	Groups?: Groups;
+	groups?: Groups;
 } & ComponentsHome;
 
 export interface ViewGroupsConfig extends HomeConfig {
@@ -58,7 +58,7 @@ export class ViewGroups extends ViewHome {
 				},
 			],
 		};
-		this._components.friends = new Groups(
+		this._components.groups = new Groups(
 			// this._configGroups.groups,
             exampleGroups,
 			this.content,
