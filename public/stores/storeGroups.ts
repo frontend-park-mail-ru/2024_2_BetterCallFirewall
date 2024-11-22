@@ -1,8 +1,8 @@
-import { Action } from "../actions/action";
-import { reducerGroups } from "../reducers/reducerGroups";
-import { ViewGroups, ViewGroupsConfig } from "../views/groups/viewGroups";
-import { BaseStore, Store } from "./store";
-import { ChangeHome, StoreHome } from "./storeHome";
+import { Action } from '../actions/action';
+import { reducerGroups } from '../reducers/reducerGroups';
+import { ViewGroups, ViewGroupsConfig } from '../views/groups/viewGroups';
+import { BaseStore, Store } from './store';
+import { ChangeHome, StoreHome } from './storeHome';
 
 export interface ChangeGroups extends ChangeHome {
 	data: ViewGroupsConfig;

@@ -59,6 +59,8 @@ import WebsocketClient from './modules/websocket';
 import { ACTION_POST_TYPES } from './actions/actionPost';
 import { ViewGroups, ViewGroupsConfig } from './views/groups/viewGroups';
 import { StoreGroups } from './stores/storeGroups';
+import { ViewGroupPage, ViewGroupPageConfig } from './views/groupPage/viewGroupPage';
+import { StoreGroupPage } from './stores/storeGroupPage';
 
 export const PAGES = {
 	home: 'home',
@@ -102,6 +104,7 @@ export interface AppConfig {
 	chatConfig: ViewChatConfig;
 	friendsConfig: ViewFriendsConfig;
 	groupsConfig: ViewGroupsConfig;
+	groupPageConfig: ViewGroupPageConfig;
 	createPostConfig: ViewCreatePostConfig;
 	editPostConfig: ViewPostEditConfig;
 }
@@ -117,6 +120,7 @@ export interface AppStores {
 	chat: StoreChat;
 	friends: StoreFriends;
 	groups: StoreGroups;
+	groupPage: StoreGroupPage;
 	createPost: StoreCreatePost;
 	profileEdit: StoreProfileEdit;
 	postEdit: StorePostEdit;
@@ -153,10 +157,8 @@ class App {
 			this._config.friendsConfig,
 			this._root,
 		);
-		const groupView = new ViewGroups (
-			this._config.groupsConfig,
-			this._root,
-		);
+		const groupView = new ViewGroups(this._config.groupsConfig, this._root);
+		const groupPageView = new ViewGroupPage(this._config.groupPageConfig, this._root);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
 		const signupView = new ViewSignup(
 			this._config.signupConfig,
@@ -217,6 +219,10 @@ class App {
 				view: groupView,
 			},
 			{
+				path: PAGE_LINKS.groupPage,
+				view: groupPageView,
+			},
+			{
 				path: PAGE_LINKS.postEdit,
 				view: postEditView,
 			},
@@ -237,6 +243,7 @@ class App {
 			profile: new StoreProfile(storeHome),
 			friends: new StoreFriends(storeHome),
 			groups: new StoreGroups(storeHome),
+			groupPage: new StoreGroupPage(storeHome),
 			messages: new StoreMessages(storeHome),
 			chat: new StoreChat(storeHome),
 			createPost: new StoreCreatePost(storeHome),
@@ -412,6 +419,9 @@ class App {
 
 		groupView.register(this._stores.home);
 		groupView.register(this._stores.groups);
+
+		groupPageView.register(this._stores.home);
+		groupPageView.register(this._stores.groupPage);
 
 		postEditView.register(this._stores.home);
 		postEditView.register(this._stores.postEdit);

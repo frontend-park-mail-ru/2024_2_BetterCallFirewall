@@ -15,6 +15,8 @@ import { ViewPostEditConfig } from './views/PostEdit/viewPostEdit';
 import { PostEditFormConfig } from './components/PostEditForm/PostEditForm';
 import Validator from './modules/validation';
 import { ViewGroupsConfig } from './views/groups/viewGroups';
+import { ViewGroupPageConfig } from './views/groupPage/viewGroupPage';
+import { GroupPageConfig } from './components/GroupPage/GroupPage';
 
 const DEBUG: boolean = false;
 
@@ -33,7 +35,8 @@ export const PAGE_URLS = {
 	profileEdit: '/profile-edit',
 	profile: '',
 	postEdit: '/post-edit',
-	groups: '/groups'
+	groups: '/groups',
+	groupPage: '/groups/1', // изменить
 };
 
 export const PAGE_LINKS = { ...PAGE_URLS };
@@ -352,6 +355,23 @@ const groupsConfig: ViewGroupsConfig = {
 	},
 };
 
+const groupPageComponentConfig: GroupPageConfig = {
+	id: -1,
+	key: 'group',
+	name: '',
+	description: '',
+	img: '',
+	posts: [],
+	createPostHref: PAGE_LINKS.createPost,
+	isAuthor: false,
+};
+
+const groupPageConfig: ViewGroupPageConfig = {
+	...homeConfig,
+	groupPage: groupPageComponentConfig,
+	path: '/', //??
+};
+
 const postEditFormConfig: PostEditFormConfig = {
 	key: 'postEditForm',
 	textAreas: {
@@ -451,6 +471,7 @@ const config: AppConfig = {
 	chatConfig,
 	friendsConfig,
 	groupsConfig,
+	groupPageConfig,
 	editPostConfig,
 };
 
