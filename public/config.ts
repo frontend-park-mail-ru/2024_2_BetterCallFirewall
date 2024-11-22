@@ -17,6 +17,10 @@ import Validator from './modules/validation';
 
 const DEBUG: boolean = false;
 
+export const ROOT: string = DEBUG
+	? 'http://127.0.0.1:8000'
+	: 'http://vilka.online';
+
 export const PAGE_URLS = {
 	feed: '/feed',
 	login: '/login',
@@ -87,7 +91,7 @@ const homeConfig: HomeConfig = {
 		header: {
 			key: 'header',
 			search: {
-				img: 'img/search.svg',
+				img: `${ROOT}/img/search.svg`,
 				placeholder: 'Поиск друзей, сообществ',
 			},
 			profile: {
@@ -363,10 +367,6 @@ const editPostConfig: ViewPostEditConfig = {
 	postEditForm: postEditFormConfig,
 	postId: -1,
 };
-
-export const ROOT: string = DEBUG
-	? 'http://127.0.0.1:8000'
-	: 'http://vilka.online';
 
 const ROOT_WS = ROOT.replace('http', 'ws');
 
