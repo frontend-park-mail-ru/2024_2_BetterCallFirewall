@@ -46,13 +46,6 @@ export class ViewLogin extends View {
 
 	render() {
 		this._render();
-
-		// this.clear();
-		// const config = this._config;
-		// const login = new LoginForm(config, this._root);
-		// login.render();
-		// this._components.login = login;
-		// this._addLoginHandlers();
 	}
 
 	protected _render() {

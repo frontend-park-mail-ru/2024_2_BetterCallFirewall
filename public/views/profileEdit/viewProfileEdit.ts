@@ -68,6 +68,7 @@ export class ViewProfileEdit extends ViewHome {
 	}
 
 	updateViewProfileEdit(data: ViewProfileEditConfig): void {
+		this.updateViewHome(data);
 		this._configProfileEdit = Object.assign(this._configProfileEdit, data);
 		this._render();
 	}

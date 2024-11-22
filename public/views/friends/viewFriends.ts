@@ -73,7 +73,8 @@ export class ViewFriends extends ViewHome {
 	}
 
 	updateViewFriends(data: ViewFriendsConfig) {
-		this._configFriends = data;
+		this.updateViewHome(data);
+		this._configFriends = Object.assign(this._configFriends, data);
 		this._render();
 	}
 
