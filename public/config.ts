@@ -86,6 +86,10 @@ const homeConfig: HomeConfig = {
 		className: 'main',
 		header: {
 			key: 'header',
+			search: {
+				img: 'img/search.svg',
+				placeholder: 'Поиск друзей, сообществ',
+			},
 			profile: {
 				id: -1,
 				name: '',
