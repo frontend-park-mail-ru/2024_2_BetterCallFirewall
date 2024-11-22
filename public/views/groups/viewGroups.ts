@@ -25,7 +25,7 @@ export class ViewGroups extends ViewHome {
 		return this._configGroups;
 	}
 
-    protected get groups(): Groups {
+	protected get groups(): Groups {
 		const groups = this._components.groups;
 		if (!groups) {
 			throw new Error('groups does not exist');
@@ -33,9 +33,15 @@ export class ViewGroups extends ViewHome {
 		return groups;
 	}
 
-    protected _addHandlers() {
+	protected _addHandlers() {
 		super._addHandlers();
-        this._addGroupsHandlers(this.groups);
+		this.groups.deleteGroupButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+			},
+		});
+		this._addGroupsHandlers(this.groups);
 	}
 
 	protected _render(): void {
@@ -56,25 +62,25 @@ export class ViewGroups extends ViewHome {
 			key: 'groups',
 			headerText: 'Группы',
 			groupsConfig: [
-                {
-                    id: 2,
-                    key: 'group',
+				{
+					id: 2,
+					key: 'group',
 					name: 'Рифмы и панчи',
 					avatar: './img.jpg',
-                    isFollow: true
+					isFollow: true,
 				},
 				{
-                    id: 1,
-                    key: 'group',
+					id: 1,
+					key: 'group',
 					name: 'Мысли джокера',
 					avatar: './img.jpg',
-                    isFollow: true
+					isFollow: true,
 				},
 			],
 		};
 		this._components.groups = new Groups(
 			// this._configGroups.groups,
-            exampleGroups,
+			exampleGroups,
 			this.content,
 		);
 	}
@@ -88,41 +94,44 @@ export class ViewGroups extends ViewHome {
 		this._render();
 	}
 
-    private _addGroupsHandlers(groups: Groups) {
-        groups.listGroups.forEach((group) => {
-            const groupConfig = group.config;
-            if (groupConfig.isFollow) {
-                group.unfollowGroupButtonVNode.handlers.push({
-                    event: 'click',
-                    callback: (event) => {
-                        event.preventDefault();
-                        // api.unfollowGroup(groupConfig.id);
-                    }
-                });
-            } else {
-                group.followGroupButtonVNode.handlers.push({
-                    event: 'click',
-                    callback: (event) => {
-                        event.preventDefault();
-                        // api.followGroup(groupConfig.id);
-                    }
-                });
-            }
-            group.groupLinkVNode.handlers.push({
+	private _addGroupsHandlers(groups: Groups) {
+		groups.listGroups.forEach((group) => {
+			const groupConfig = group.config;
+			if (groupConfig.isFollow) {
+				group.unfollowGroupButtonVNode.handlers.push({
+					event: 'click',
+					callback: (event) => {
+						event.preventDefault();
+						// api.unfollowGroup(groupConfig.id);
+					},
+				});
+			} else {
+				group.followGroupButtonVNode.handlers.push({
+					event: 'click',
+					callback: (event) => {
+						event.preventDefault();
+						// api.followGroup(groupConfig.id);
+					},
+				});
+			}
+			group.groupLinkVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					this.sendAction(new ActionAppGoTo(`/groups/${group.config.id}`));
+					this.sendAction(
+						new ActionAppGoTo(`/groups/${group.config.id}`),
+					);
 				},
 			});
 			group.groupLinkAvatarVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					this.sendAction(new ActionAppGoTo(`/groups/${group.config.id}`));
+					this.sendAction(
+						new ActionAppGoTo(`/groups/${group.config.id}`),
+					);
 				},
 			});
-        });
-        
-    }
+		});
+	}
 }

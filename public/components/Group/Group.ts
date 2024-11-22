@@ -46,10 +46,10 @@ export class Group extends Component {
 	}
 
 	get groupLinkVNode(): VNode {
-		return this._findVNodeByKey('groupLink'); //
+		return this._findVNodeByKey('groupLink');
 	}
 
 	get groupLinkAvatarVNode(): VNode {
-		return this._findVNodeByClass('group-avatar'); //
+		return this._findVNodeByClass('group-avatar');
 	}
 }

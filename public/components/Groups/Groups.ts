@@ -1,3 +1,4 @@
+import { VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
 import { Group, GroupConfig } from '../Group/Group';
 
@@ -35,5 +36,9 @@ export class Groups extends Component {
 				return group.render();
 			}),
 		};
+	}
+
+    get deleteGroupButtonVNode(): VNode {
+		return this._findVNodeByKey('createGroup');
 	}
 }

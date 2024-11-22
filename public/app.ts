@@ -59,8 +59,15 @@ import WebsocketClient from './modules/websocket';
 import { ACTION_POST_TYPES } from './actions/actionPost';
 import { ViewGroups, ViewGroupsConfig } from './views/groups/viewGroups';
 import { StoreGroups } from './stores/storeGroups';
-import { ViewGroupPage, ViewGroupPageConfig } from './views/groupPage/viewGroupPage';
+import {
+	ViewGroupPage,
+	ViewGroupPageConfig,
+} from './views/groupPage/viewGroupPage';
 import { StoreGroupPage } from './stores/storeGroupPage';
+import {
+	ViewCreateGroup,
+	ViewCreateGroupConfig,
+} from './views/createGroup/viewCreateGroup';
 
 export const PAGES = {
 	home: 'home',
@@ -105,6 +112,7 @@ export interface AppConfig {
 	friendsConfig: ViewFriendsConfig;
 	groupsConfig: ViewGroupsConfig;
 	groupPageConfig: ViewGroupPageConfig;
+	createGroupConfig: ViewCreateGroupConfig;
 	createPostConfig: ViewCreatePostConfig;
 	editPostConfig: ViewPostEditConfig;
 }
@@ -158,7 +166,14 @@ class App {
 			this._root,
 		);
 		const groupView = new ViewGroups(this._config.groupsConfig, this._root);
-		const groupPageView = new ViewGroupPage(this._config.groupPageConfig, this._root);
+		const groupPageView = new ViewGroupPage(
+			this._config.groupPageConfig,
+			this._root,
+		);
+		const createGroupView = new ViewCreateGroup(
+			this._config.createGroupConfig,
+			this.root,
+		);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
 		const signupView = new ViewSignup(
 			this._config.signupConfig,
@@ -221,6 +236,10 @@ class App {
 			{
 				path: PAGE_LINKS.groups,
 				view: groupView,
+			},
+			{
+				path: PAGE_LINKS.createGroup,
+				view: createGroupView,
 			},
 			{
 				path: PAGE_LINKS.postEdit,
