@@ -112,14 +112,14 @@ export class ViewGroups extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					this.sendAction(new ActionAppGoTo(`groups/${group.config.id}`));
+					this.sendAction(new ActionAppGoTo(`/groups/${group.config.id}`));
 				},
 			});
 			group.groupLinkAvatarVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					this.sendAction(new ActionAppGoTo(`groups/${group.config.id}`));
+					this.sendAction(new ActionAppGoTo(`/groups/${group.config.id}`));
 				},
 			});
         });
