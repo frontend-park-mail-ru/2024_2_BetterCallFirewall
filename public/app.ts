@@ -149,7 +149,7 @@ class App {
 			this._config.profileConfig,
 			this._root,
 		);
-		const friendView = new ViewFriends(
+		const friendsView = new ViewFriends(
 			this._config.friendsConfig,
 			this._root,
 		);
@@ -210,7 +210,7 @@ class App {
 			},
 			{
 				path: PAGE_LINKS.friends,
-				view: friendView,
+				view: friendsView,
 			},
 			{
 				path: PAGE_LINKS.groups,
@@ -407,8 +407,8 @@ class App {
 		profileEditView.register(this._stores.home);
 		profileEditView.register(this._stores.profileEdit);
 
-		friendView.register(this._stores.home);
-		friendView.register(this._stores.friends);
+		friendsView.register(this._stores.home);
+		friendsView.register(this._stores.friends);
 
 		groupView.register(this._stores.home);
 		groupView.register(this._stores.groups);
