@@ -2,7 +2,7 @@ import { ROOT } from '../config';
 
 const parseImage = (img: string): string => {
 	if (!img) {
-		return img;
+		return '';
 	}
 	if (img[0] !== '/') {
 		img = '/' + img;

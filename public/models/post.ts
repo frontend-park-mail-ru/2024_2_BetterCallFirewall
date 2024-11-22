@@ -1,9 +1,10 @@
 import { PostConfig } from '../components';
+import { PAGE_URLS } from '../config';
 import parseImage from '../modules/parseImage';
 import parseTime from '../modules/parseTime';
 
 interface Header {
-	authorId: number;
+	author_id: number;
 	author: string;
 	avatar: string;
 }
@@ -31,5 +32,8 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		date: parseTime(postResponse.post_content.created_at),
 		hasDeleteButton: false,
 		hasEditButton: false,
+		likes: 999, // todo
+		likedByUser: false, // todo
+		authorHref: `${PAGE_URLS.profile}/${postResponse.header.author_id}`,
 	};
 };
