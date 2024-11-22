@@ -36,13 +36,13 @@
             stroke: var(--main-text-color);
         }
     }
-    &__search {
+    &__search-bar {
         display: flex;
         background-color: var(--second-bg-color);
         padding: 0.5rem;
         border-radius: 2rem;
     }
-    &__search img {
+    &__search-bar img {
         width: 1rem;
         height: 1rem;
         margin-right: 0.5rem;
@@ -53,6 +53,16 @@
         border: none;
         outline: none;
         color: var(--main-text-color);
+    }
+    &__search-pad {
+        position: absolute;
+        background-color: var(--main-bg-color);
+        top: 100%;
+        left: 40%;
+        padding: 1rem;
+        padding-top: 1.5rem;
+        border-bottom-left-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
     }
     &__menu-opener {
         margin-left: 2rem;
