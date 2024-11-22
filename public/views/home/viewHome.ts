@@ -68,20 +68,14 @@ export abstract class ViewHome extends View {
 				break;
 			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_APP_TYPES.goTo:
-				this.render(change.data);
+				this._configHome = change.data;
+				this.render();
 				break;
 		}
 	}
 
 	updateViewHome(data: HomeConfig) {
 		this._configHome = data;
-		this._render();
-	}
-
-	render(data?: HomeConfig): void {
-		if (data) {
-			this._configHome = Object.assign(this._configHome, data);
-		}
 		this._render();
 	}
 
@@ -205,7 +199,7 @@ export abstract class ViewHome extends View {
 				event.preventDefault();
 				this._configHome.menu.isShow = true;
 				this._render();
-			}
+			},
 		});
 	}
 }
