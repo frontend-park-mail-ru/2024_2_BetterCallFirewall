@@ -236,6 +236,12 @@ export abstract class ViewHome extends View {
 					this.sendAction(new ActionHeaderSearchResultsSwitch(true));
 				},
 			},
+			{
+				event: 'click',
+				callback: (event) => {
+					event.stopPropagation();
+				},
+			},
 		);
 	}
 
