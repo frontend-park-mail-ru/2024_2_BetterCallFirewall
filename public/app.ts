@@ -392,6 +392,8 @@ class App {
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestSuccess);
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestFail);
 
+		this.stores.groupPage.subscribe(ACTION_APP_TYPES.goTo);
+
 		loginView.register(this._stores.login);
 
 		signupView.register(this._stores.signup);
