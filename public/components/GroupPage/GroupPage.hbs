@@ -12,7 +12,11 @@
                 <a href=""><span>Friends: {{friendsCount}}</span></a>
                 <a href=""><span>Groups: {{groupsCount}}</span></a>
             </div> --}}
-            <div class="group-page__actions"></div>
+            <div class="group-page__actions">
+                {{#if this.isAuthor}}
+                    <span class="header__link button-action-negative button-no-decorations" data-key="deleteGroup">Удалить группу</span>
+                {{/if}}
+            </div>
         </div>
         <div class="group-page__edit"></div>
     </div>

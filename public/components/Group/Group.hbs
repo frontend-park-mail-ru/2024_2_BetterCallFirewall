@@ -5,10 +5,14 @@
         </a>
     </div>
     <div class="group__info item__info">
-        <a class="link" href="" data-key="profileLink"><span>{{this.name}}</span></a>
+        <a class="link" href="" data-key="groupLink"><span>{{this.name}}</span></a>
         <span>{{this.description}}</span>
     </div>
     <div class="group__state item__state">
-        <button class="subscribe-group button-action button-no-decorations" href="">Подписаться</button>
+        {{#if this.isFollow}}
+            <button class="subscribe-group button-action-negative button-no-decorations unfollow-group" href="">Отписаться</button>
+        {{else}}
+            <button class="subscribe-group button-action button-no-decorations follow-group" href="">Подписаться</button>
+        {{/if}}
     </div>
 </div>

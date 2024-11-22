@@ -10,7 +10,6 @@ export interface GroupConfig extends ComponentConfig {
 
 export class Group extends Component {
 	protected _config: GroupConfig;
-	protected isUnknown: boolean = false;
 	/**
 	 * Instance of group
 	 *
@@ -47,10 +46,10 @@ export class Group extends Component {
 	}
 
 	get groupLinkVNode(): VNode {
-		return this._findVNodeByKey('profileLink');
+		return this._findVNodeByKey('groupLink'); //
 	}
 
 	get groupLinkAvatarVNode(): VNode {
-		return this._findVNodeByClass('group-avatar');
+		return this._findVNodeByClass('group-avatar'); //
 	}
 }

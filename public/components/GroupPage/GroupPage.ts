@@ -45,6 +45,14 @@ export class GroupPage extends Component {
 		return vnode;
 	}
 
+    get deleteGroupButtonVNode(): VNode {
+		const vnode = findVNodeByKey(this.vnode, 'deleteGroup');
+		if (!vnode) {
+			throw new Error('deleteButton vnode not found');
+		}
+		return vnode;
+	}
+
 	get posts(): Post[] {
 		return this._posts;
 	}
