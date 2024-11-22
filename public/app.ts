@@ -191,6 +191,10 @@ class App {
 				view: loginView,
 			},
 			{
+				path: PAGE_LINKS.groupPage,
+				view: groupPageView,
+			},
+			{
 				path: PAGE_LINKS.signup,
 				view: signupView,
 			},
@@ -217,10 +221,6 @@ class App {
 			{
 				path: PAGE_LINKS.groups,
 				view: groupView,
-			},
-			{
-				path: PAGE_LINKS.groupPage,
-				view: groupPageView,
 			},
 			{
 				path: PAGE_LINKS.postEdit,
@@ -392,7 +392,7 @@ class App {
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestSuccess);
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestFail);
 
-		this.stores.groupPage.subscribe(ACTION_APP_TYPES.goTo);
+		this._stores.groupPage.subscribe(ACTION_APP_TYPES.goTo);
 
 		loginView.register(this._stores.login);
 
