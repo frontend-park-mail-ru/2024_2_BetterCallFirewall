@@ -62,6 +62,7 @@ import {
 	ActionProfileRequestData,
 	ActionProfileSearchFail,
 	ActionProfileSearchSuccess,
+	ActionProfileSearchData,
 } from '../actions/actionProfile';
 import {
 	ActionProfileEditRequestFail,
@@ -124,6 +125,9 @@ class API {
 				);
 				break;
 			case ACTION_PROFILE_TYPES.search:
+				this.profileSearch(
+					(action.data as ActionProfileSearchData).str,
+				);
 				break;
 		}
 	}
