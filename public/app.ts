@@ -58,6 +58,7 @@ import { StorePostEdit } from './stores/storePostEdit';
 import WebsocketClient from './modules/websocket';
 import { ACTION_POST_TYPES } from './actions/actionPost';
 import { ViewGroups, ViewGroupsConfig } from './views/groups/viewGroups';
+import { StoreGroups } from './stores/storeGroups';
 
 export const PAGES = {
 	home: 'home',
@@ -115,6 +116,7 @@ export interface AppStores {
 	messages: StoreMessages;
 	chat: StoreChat;
 	friends: StoreFriends;
+	groups: StoreGroups;
 	createPost: StoreCreatePost;
 	profileEdit: StoreProfileEdit;
 	postEdit: StorePostEdit;
@@ -234,6 +236,7 @@ class App {
 			feed: new StoreFeed(storeHome),
 			profile: new StoreProfile(storeHome),
 			friends: new StoreFriends(storeHome),
+			groups: new StoreGroups(storeHome),
 			messages: new StoreMessages(storeHome),
 			chat: new StoreChat(storeHome),
 			createPost: new StoreCreatePost(storeHome),
@@ -406,6 +409,9 @@ class App {
 
 		friendView.register(this._stores.home);
 		friendView.register(this._stores.friends);
+
+		groupView.register(this._stores.home);
+		groupView.register(this._stores.groups);
 
 		postEditView.register(this._stores.home);
 		postEditView.register(this._stores.postEdit);
