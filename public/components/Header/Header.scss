@@ -38,18 +38,21 @@
     }
     &__search {
         display: flex;
-        img {
-            width: 1rem;
-            height: 1rem;
-            margin-left: 1rem;
-        }
-        &-input {
-            width: 15rem;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: var(--main-text-color);
-        }
+        background-color: var(--second-bg-color);
+        padding: 0.5rem;
+        border-radius: 2rem;
+    }
+    &__search img {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 0.5rem;
+    }
+    &__search-input {
+        width: 15rem;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--main-text-color);
     }
     &__menu-opener {
         margin-left: 2rem;
