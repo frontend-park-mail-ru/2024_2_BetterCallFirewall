@@ -14,6 +14,7 @@ import { ViewProfileEditConfig } from './views/profileEdit/viewProfileEdit';
 import { ViewPostEditConfig } from './views/PostEdit/viewPostEdit';
 import { PostEditFormConfig } from './components/PostEditForm/PostEditForm';
 import Validator from './modules/validation';
+import { ViewGroupsConfig } from './views/groups/viewGroups';
 
 const DEBUG: boolean = false;
 
@@ -32,6 +33,7 @@ export const PAGE_URLS = {
 	profileEdit: '/profile-edit',
 	profile: '',
 	postEdit: '/post-edit',
+	groups: '/groups'
 };
 
 export const PAGE_LINKS = { ...PAGE_URLS };
@@ -335,6 +337,15 @@ const friendsConfig: ViewFriendsConfig = {
 	},
 };
 
+const groupsConfig: ViewGroupsConfig = {
+	...homeConfig,
+	groups: {
+		key: 'groups',
+		headerText: 'Группы',
+		groupsConfig: [],
+	},
+};
+
 const postEditFormConfig: PostEditFormConfig = {
 	key: 'postEditForm',
 	textAreas: {
@@ -433,6 +444,7 @@ const config: AppConfig = {
 	messagesConfig,
 	chatConfig,
 	friendsConfig,
+	groupsConfig,
 	editPostConfig,
 };
 

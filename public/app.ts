@@ -57,6 +57,7 @@ import { ACTION_POST_EDIT_TYPES } from './actions/actionPostEdit';
 import { StorePostEdit } from './stores/storePostEdit';
 import WebsocketClient from './modules/websocket';
 import { ACTION_POST_TYPES } from './actions/actionPost';
+import { ViewGroups, ViewGroupsConfig } from './views/groups/viewGroups';
 
 export const PAGES = {
 	home: 'home',
@@ -99,6 +100,7 @@ export interface AppConfig {
 	messagesConfig: ViewMessagesConfig;
 	chatConfig: ViewChatConfig;
 	friendsConfig: ViewFriendsConfig;
+	groupsConfig: ViewGroupsConfig;
 	createPostConfig: ViewCreatePostConfig;
 	editPostConfig: ViewPostEditConfig;
 }
@@ -147,6 +149,10 @@ class App {
 		);
 		const friendView = new ViewFriends(
 			this._config.friendsConfig,
+			this._root,
+		);
+		const groupView = new ViewGroups (
+			this._config.groupsConfig,
 			this._root,
 		);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
@@ -203,6 +209,10 @@ class App {
 			{
 				path: PAGE_LINKS.friends,
 				view: friendView,
+			},
+			{
+				path: PAGE_LINKS.groups,
+				view: groupView,
 			},
 			{
 				path: PAGE_LINKS.postEdit,
