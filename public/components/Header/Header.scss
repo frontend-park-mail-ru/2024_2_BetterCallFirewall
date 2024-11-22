@@ -38,6 +38,7 @@
     }
     &__search-bar {
         display: flex;
+        align-items: center;
         background-color: var(--second-bg-color);
         padding: 0.5rem;
         border-radius: 2rem;
@@ -60,7 +61,6 @@
         top: 100%;
         left: 40%;
         padding: 1rem;
-        padding-top: 1.5rem;
         border-bottom-left-radius: 0.5rem;
         border-bottom-right-radius: 0.5rem;
     }
@@ -88,6 +88,9 @@
     @media (max-width: 1200px) {
         .header__menu-opener {
             visibility: visible;
+        }
+        .header__search-pad {
+            left: 30%;
         }
     }
 }
