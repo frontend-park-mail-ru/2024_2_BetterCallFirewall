@@ -57,6 +57,7 @@ export class ViewPostEdit extends ViewHome {
 	}
 
 	updateViewProfileEdit(data: ViewPostEditConfig): void {
+		this.updateViewHome(data);
 		this._configPostEdit = Object.assign(this._configPostEdit, data);
 		this._render();
 	}

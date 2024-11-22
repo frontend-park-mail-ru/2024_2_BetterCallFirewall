@@ -61,6 +61,7 @@ export class ViewCreatePost extends ViewHome {
 	}
 
 	updateViewCreatePost(data: ViewCreatePostConfig): void {
+		this.updateViewHome(data);
 		this._configCreatePost = Object.assign(this._configCreatePost, data);
 		this._render();
 	}
