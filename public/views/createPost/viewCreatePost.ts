@@ -105,10 +105,10 @@ export class ViewCreatePost extends ViewHome {
 						(formData.get('file') as File).name
 					) {
 						const text = formData.get('text') as string;
-						const file = formData.get('file');
+						const file = formData.get('file') as File;
 						let fileStr;
-						if (file) {
-							fileStr = await api.sendImage(file as File);
+						if (file.size) {
+							fileStr = await api.sendImage(file);
 							if (!fileStr) {
 								this._createPostForm.printError(
 									'Что-то пошло не так',
