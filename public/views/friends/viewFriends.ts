@@ -44,20 +44,17 @@ export class ViewFriends extends ViewHome {
 		switch (change.type) {
 			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_APP_TYPES.goTo:
+				this._configFriends = Object.assign(
+					this._configFriends,
+					change.data,
+				);
 				this.render();
-				this.sendAction(new ActionProfileGetFriends());
 				break;
 			case ACTION_FRIENDS_TYPES.subscribeSuccess:
 			case ACTION_FRIENDS_TYPES.removeSuccess:
 			case ACTION_FRIENDS_TYPES.unsubscribeSuccess:
 			case ACTION_FRIENDS_TYPES.acceptSuccess:
 				this.sendAction(new ActionProfileGetFriends());
-				break;
-			case ACTION_FRIENDS_TYPES.getUsersSuccess:
-			case ACTION_FRIENDS_TYPES.getSubscribersSuccess:
-			case ACTION_FRIENDS_TYPES.getFriendsSuccess:
-			case ACTION_FRIENDS_TYPES.getSubscriptionsSuccess:
-				this.updateViewFriends(change.data);
 				break;
 			case ACTION_FRIENDS_TYPES.getFriends:
 				this.updateViewFriends(change.data);
@@ -70,16 +67,20 @@ export class ViewFriends extends ViewHome {
 					this._configFriends.main.header.profile.id,
 				);
 				break;
+			default:
+				this.updateViewFriends(change.data);
 		}
 	}
 
 	updateViewFriends(data: ViewFriendsConfig) {
-		this._configFriends = data;
+		this.updateViewHome(data);
+		this._configFriends = Object.assign(this._configFriends, data);
 		this._render();
 	}
 
 	render(): void {
 		this._render();
+		this.sendAction(new ActionProfileGetFriends());
 	}
 
 	protected get friends(): Friends {

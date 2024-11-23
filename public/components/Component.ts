@@ -95,6 +95,10 @@ export default abstract class Component {
 		return checkVNode(findVNodeByClass(this.vnode, className));
 	}
 
+	protected _findHTML(selector: string) {
+		return checkElement(document.querySelector(selector));
+	}
+
 	abstract render(): string;
 }
 
@@ -103,4 +107,11 @@ const checkVNode = (vnode?: VNode) => {
 		throw new Error('vnode not found');
 	}
 	return vnode;
+};
+
+const checkElement = (node: Element | null) => {
+	if (!node) {
+		throw new Error('element not found');
+	}
+	return node;
 };

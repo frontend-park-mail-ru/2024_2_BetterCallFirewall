@@ -60,6 +60,9 @@ import {
 	ActionProfileDeletePostSuccess,
 	ACTION_PROFILE_TYPES,
 	ActionProfileRequestData,
+	ActionProfileSearchFail,
+	ActionProfileSearchSuccess,
+	ActionProfileSearchData,
 } from '../actions/actionProfile';
 import {
 	ActionProfileEditRequestFail,
@@ -119,6 +122,11 @@ class API {
 			case ACTION_POST_TYPES.likeCount:
 				this.postLikesCount(
 					(action.data as ActionPostLikeCountData).postId,
+				);
+				break;
+			case ACTION_PROFILE_TYPES.search:
+				this.profileSearch(
+					(action.data as ActionProfileSearchData).str,
 				);
 				break;
 		}
@@ -512,6 +520,23 @@ class API {
 				break;
 			default:
 				this.sendAction(new ActionPostLikeCountFail());
+		}
+	}
+
+	async profileSearch(str: string) {
+		const response = await ajax.profilesSearch(str);
+		switch (response.status) {
+			case STATUS.ok:
+				if (response.data) {
+					this.sendAction(
+						new ActionProfileSearchSuccess(response.data),
+					);
+				} else {
+					this.sendAction(new ActionProfileSearchFail());
+				}
+				break;
+			default:
+				this.sendAction(new ActionProfileSearchFail());
 		}
 	}
 }

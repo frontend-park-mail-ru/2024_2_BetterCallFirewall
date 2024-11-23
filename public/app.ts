@@ -86,6 +86,7 @@ export interface URLInterface {
 	chatWS: string;
 	postLike: string;
 	postLikeCount: string;
+	profilesSearch: string;
 }
 
 export interface AppConfig {
@@ -145,7 +146,7 @@ class App {
 			this._config.profileConfig,
 			this._root,
 		);
-		const friendView = new ViewFriends(
+		const friendsView = new ViewFriends(
 			this._config.friendsConfig,
 			this._root,
 		);
@@ -202,7 +203,7 @@ class App {
 			},
 			{
 				path: PAGE_LINKS.friends,
-				view: friendView,
+				view: friendsView,
 			},
 			{
 				path: PAGE_LINKS.postEdit,
@@ -250,11 +251,14 @@ class App {
 		this._stores.home.subscribe(ACTION_MENU_TYPES.titleClick);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.updateProfileLinkHref);
 		this._stores.home.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
+		this._stores.home.subscribe(ACTION_HEADER_TYPES.searchResultsSwitch);
 		this._stores.home.subscribe(
 			ACTION_PROFILE_TYPES.getYourOwnProfileSuccess,
 		);
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.getHeaderSuccess);
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.updateProfile);
+		this._stores.home.subscribe(ACTION_PROFILE_TYPES.searchSuccess);
+		this._stores.home.subscribe(ACTION_PROFILE_TYPES.searchFail);
 
 		this._stores.login.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.login.subscribe(ACTION_APP_TYPES.goTo);
@@ -282,7 +286,6 @@ class App {
 		this._stores.profile.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.profile.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
-		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.goToProfile);
 		this._stores.profile.subscribe(
 			ACTION_PROFILE_TYPES.profileRequestSuccess,
 		);
@@ -394,8 +397,8 @@ class App {
 		profileEditView.register(this._stores.home);
 		profileEditView.register(this._stores.profileEdit);
 
-		friendView.register(this._stores.home);
-		friendView.register(this._stores.friends);
+		friendsView.register(this._stores.home);
+		friendsView.register(this._stores.friends);
 
 		postEditView.register(this._stores.home);
 		postEditView.register(this._stores.postEdit);

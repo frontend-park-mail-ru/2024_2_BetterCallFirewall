@@ -32,6 +32,7 @@ export const PAGE_URLS = {
 	profileEdit: '/profile-edit',
 	profile: '',
 	postEdit: '/post-edit',
+	csat: '/csat',
 };
 
 export const PAGE_LINKS = { ...PAGE_URLS };
@@ -99,6 +100,8 @@ const homeConfig: HomeConfig = {
 				name: '',
 				avatar: 'img/avatar.png',
 			},
+			showSearchResults: false,
+			profilesSearch: [],
 		},
 		content: {
 			key: 'content',
@@ -110,6 +113,11 @@ const homeConfig: HomeConfig = {
 			key: 'aside',
 			className: 'aside',
 		},
+	},
+	csat: {
+		key: 'csat',
+		src: PAGE_LINKS.csat,
+		show: true,
 	},
 };
 
@@ -395,6 +403,7 @@ const URL: URLInterface = DEBUG
 			chatWS: '',
 			postLike: '',
 			postLikeCount: '',
+			profilesSearch: '',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -419,6 +428,7 @@ const URL: URLInterface = DEBUG
 			chatWS: ROOT_WS + apiv1 + '/ws',
 			postLike: ROOT + apiv1 + '/feed/{id}/like',
 			postLikeCount: ROOT + apiv1 + '/like/count/post/{id}',
+			profilesSearch: ROOT + apiv1 + '/profile/search',
 		};
 
 const config: AppConfig = {

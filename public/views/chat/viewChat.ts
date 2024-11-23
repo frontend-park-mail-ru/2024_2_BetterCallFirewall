@@ -89,6 +89,7 @@ export class ViewChat extends ViewHome {
 	}
 
 	updateViewChat(data: ViewChatConfig): void {
+		this.updateViewHome(data);
 		this._configChat = { ...this._configChat, ...data };
 		this._render();
 	}
