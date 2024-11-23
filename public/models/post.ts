@@ -37,3 +37,10 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		authorHref: `${PAGE_URLS.profile}/${postResponse.header.author_id}`,
 	};
 };
+
+export interface PostPayload {
+	post_content: {
+		text: string;
+		file: string;
+	};
+}

@@ -408,6 +408,7 @@ const URL: URLInterface = DEBUG
 			profilesSearch: '',
 			csat: '',
 			csatMetrics: '',
+			image: '',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -435,6 +436,7 @@ const URL: URLInterface = DEBUG
 			profilesSearch: ROOT + apiv1 + '/profile/search',
 			csat: ROOT + apiv1 + '/csat',
 			csatMetrics: ROOT + apiv1 + '/csat/metrics',
+			image: ROOT + '/image',
 		};
 
 const config: AppConfig = {

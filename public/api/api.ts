@@ -78,6 +78,7 @@ import {
 } from '../actions/actionUser';
 import app from '../app';
 import dispatcher from '../dispatcher/dispatcher';
+import { PostPayload } from '../models/post';
 import ajax, { QueryParams } from '../modules/ajax';
 
 export const STATUS = {
@@ -396,7 +397,7 @@ class API {
 		}
 	}
 
-	async createPost(formData: FormData) {
+	async createPost(formData: PostPayload) {
 		const response = await ajax.createPost(formData);
 		switch (response.status) {
 			case STATUS.ok:
@@ -560,6 +561,11 @@ class API {
 					this.sendAction(new ActionCsatMetrics(response.data));
 				}
 		}
+	}
+
+	async sendImage(image: File) {
+		const response = await ajax.sendImage(image);
+		return response.data;
 	}
 }
 

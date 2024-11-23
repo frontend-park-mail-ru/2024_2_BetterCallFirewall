@@ -91,6 +91,7 @@ export interface URLInterface {
 	profilesSearch: string;
 	csat: string;
 	csatMetrics: string;
+	image: string;
 }
 
 export interface AppConfig {

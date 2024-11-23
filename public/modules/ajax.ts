@@ -5,7 +5,7 @@ import { CsatResult } from '../models/csatResult';
 import { HeaderResponse } from '../models/header';
 import { LikeCountResponse } from '../models/likeCount';
 import { MessageResponse } from '../models/message';
-import { PostResponse } from '../models/post';
+import { PostPayload, PostResponse } from '../models/post';
 import { FullProfileResponse, ShortProfileResponse } from '../models/profile';
 
 type AjaxPromiseConfig = {
@@ -100,8 +100,10 @@ class Ajax {
 	/**
 	 * Создать пост
 	 */
-	async createPost(formData: FormData): Promise<AjaxResponse<PostResponse>> {
-		const request = this._postFormRequest(app.config.URL.feed, formData);
+	async createPost(
+		formData: PostPayload,
+	): Promise<AjaxResponse<PostResponse>> {
+		const request = this._postRequest(app.config.URL.feed, formData);
 		return this._postResponse(request);
 	}
 
@@ -327,6 +329,9 @@ class Ajax {
 		return this._genericRequestResponse(replaceId(url, profileId), 'get');
 	}
 
+	/**
+	 * Поиск профилей
+	 */
 	async profilesSearch(
 		str: string,
 	): Promise<AjaxResponse<ShortProfileResponse[]>> {
@@ -336,6 +341,9 @@ class Ajax {
 		return this._genericRequestResponse(url, 'get');
 	}
 
+	/**
+	 * Отправка результатов CSAT
+	 */
 	async csatSend(
 		inTotal: number,
 		feed: number,
@@ -346,8 +354,18 @@ class Ajax {
 		});
 	}
 
+	/**
+	 * Получение метрик CSAT
+	 */
 	async csatMetrics(): Promise<AjaxResponse<CsatResult>> {
 		return this._genericRequestResponse(app.config.URL.csatMetrics, 'get');
+	}
+
+	async sendImage(image: File): Promise<AjaxResponse<string>> {
+		const formData = new FormData();
+		formData.append('file', image);
+		const request = this._postFormRequest(app.config.URL.image, formData);
+		return this._genericResponse(request);
 	}
 
 	/**
@@ -400,6 +418,12 @@ class Ajax {
 		data?: object,
 	): Promise<AjaxResponse<T>> {
 		const request = this._jsonRequest(url, method, data);
+		return this._genericResponse(request);
+	}
+
+	private async _genericResponse<T>(
+		request: Request,
+	): Promise<AjaxResponse<T>> {
 		const response = await this._response(request);
 		try {
 			const body = await response.json();
