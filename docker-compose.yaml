@@ -9,7 +9,7 @@ services:
       - "8000:8000"
   csat:
     build:
-      context: .
+      context: ./public/csat
       dockerfile: ./public/csat/Dockerfile
     ports:
       - "8001:8001"

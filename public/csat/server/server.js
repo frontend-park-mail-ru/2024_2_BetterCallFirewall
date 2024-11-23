@@ -5,7 +5,7 @@ const port = 8001;
 
 const app = express();
 
-app.use(express.static('../../', { fallthrough: true }));
+app.use(express.static('../../'));
 
 app.get('/handlebars.runtime.js', (req, res) => {
 	res.sendFile(
