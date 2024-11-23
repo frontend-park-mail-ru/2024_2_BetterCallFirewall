@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const debounce = <T extends (...arg: any[]) => void>(
+export const debounce = <T extends (...arg: any) => void>(
 	func: T,
 	limit: number,
 ) => {

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const throttle = <T extends (...args: any[]) => void>(
+export const throttle = <T extends (...args: any) => void>(
 	func: T,
 	limit: number,
 ) => {
