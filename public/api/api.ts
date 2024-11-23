@@ -127,8 +127,7 @@ class API {
 				break;
 			}
 			case ACTION_POST_TYPES.unlike:
-				{
-				}
+				this.unlikePost((action.data as ActionPostLikeData).postId);
 				break;
 		}
 	}
