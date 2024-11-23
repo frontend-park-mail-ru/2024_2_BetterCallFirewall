@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 8001
 
-CMD [ "npm", "run start-csat"]
+CMD [ "npm", "run", "start-csat"]
