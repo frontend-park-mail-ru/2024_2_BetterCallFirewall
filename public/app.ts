@@ -57,6 +57,8 @@ import { ACTION_POST_EDIT_TYPES } from './actions/actionPostEdit';
 import { StorePostEdit } from './stores/storePostEdit';
 import WebsocketClient from './modules/websocket';
 import { ACTION_POST_TYPES } from './actions/actionPost';
+import { ViewQuestion, ViewQuestionConfig } from './views/viewQuestion';
+import { ViewMetrics, ViewMetricsConfig } from './views/viewMetrics';
 
 export const PAGES = {
 	home: 'home',
@@ -102,6 +104,8 @@ export interface AppConfig {
 	friendsConfig: ViewFriendsConfig;
 	createPostConfig: ViewCreatePostConfig;
 	editPostConfig: ViewPostEditConfig;
+	questionConfig: ViewQuestionConfig;
+	metricsConfig: ViewMetricsConfig;
 }
 
 export interface AppStores {
@@ -172,6 +176,14 @@ class App {
 			this._config.editPostConfig,
 			this._root,
 		);
+		const questionView = new ViewQuestion(
+			this._config.questionConfig,
+			this._root,
+		);
+		const metricsView = new ViewMetrics(
+			this._config.metricsConfig,
+			this._root,
+		);
 		const routerConfig: RouterConfig = [
 			{
 				path: PAGE_LINKS.feed,
@@ -208,6 +220,14 @@ class App {
 			{
 				path: PAGE_LINKS.postEdit,
 				view: postEditView,
+			},
+			{
+				path: PAGE_LINKS.question,
+				view: questionView,
+			},
+			{
+				path: PAGE_LINKS.metrics,
+				view: metricsView,
 			},
 			{
 				path: PAGE_LINKS.profile, // Должен быть последним
@@ -402,6 +422,10 @@ class App {
 
 		postEditView.register(this._stores.home);
 		postEditView.register(this._stores.postEdit);
+
+		questionView.register(this._stores.home);
+		
+		metricsView.register(this._stores.home);
 	}
 
 	get root(): Root {

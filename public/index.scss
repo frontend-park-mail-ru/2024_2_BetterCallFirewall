@@ -17,6 +17,10 @@
 @use 'components/Friends/Friends';
 @use 'components/Loader/Loader.scss';
 @use 'components/CSAT/CSAT.scss';
+@use 'components/Question/Question';
+@use 'components/Score/Score';
+@use 'components/Metrics/Metrics';
+@use 'components/Metric/Metric';
 
 * {
     box-sizing: border-box;
@@ -276,3 +280,23 @@ input::placeholder, textarea::placeholder {
     font-size: .8rem;
     color: var(--date-color);
 }
+
+// .score-1 {
+
+// }
+
+// .score-2 {
+
+// }
+
+// .score-3 {
+
+// }
+
+// .score-4 {
+
+// }
+
+// .score-5 {
+
+// }

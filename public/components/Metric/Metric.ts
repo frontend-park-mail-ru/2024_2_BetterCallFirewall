@@ -1,5 +1,4 @@
-import Component, { ComponentConfig } from "../../../components/Component";
-import { QuestionConfig } from "../Question/Question";
+import Component, { ComponentConfig } from "../Component";
 
 export interface MetricConfig extends ComponentConfig {
     id: number;

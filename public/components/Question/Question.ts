@@ -1,6 +1,6 @@
-import Component, { ComponentConfig } from '../../../components/Component';
-import { VNode } from '../../../modules/vdom';
-import { Score, ScoreConfig } from '../Score/Score';
+import { VNode } from "../../modules/vdom";
+import Component, { ComponentConfig } from "../Component";
+import { Score, ScoreConfig } from "../Score/Score";
 
 export interface QuestionConfig extends ComponentConfig {
 	id: number;

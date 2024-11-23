@@ -33,6 +33,8 @@ export const PAGE_URLS = {
 	profile: '',
 	postEdit: '/post-edit',
 	csat: '/csat',
+	question: '/csat/question',
+	metrics: '/csat/metrics',
 };
 
 export const PAGE_LINKS = { ...PAGE_URLS };
@@ -444,6 +446,32 @@ const config: AppConfig = {
 	chatConfig,
 	friendsConfig,
 	editPostConfig,
+	questionConfig: {
+		question: {
+			id: 1,
+			key: 'question',
+			name: 'Насколько вы готовы рекомендовать  Vilka друзьям и знакомым?',
+			scoresConfig: Array.from({ length: 5 }, (_, i) => ({
+				key: (i + 1).toString(),
+				id: i + 1,
+				color: `score-${i + 1}`,
+			})),
+		},
+	},
+	metricsConfig: {
+		metrics: {
+			key: 'metrics',
+			id: 1,
+			metricsConfig: [
+				{
+					key: 'score',
+					id: 1,
+					name: 'Насколько вы готовы рекомендовать  Vilka друзьям и знакомым?',
+					average: 4,
+				},
+			],
+		},
+	},
 };
 
 export const validators: Record<string, (value: string | File) => string> = {
@@ -457,5 +485,22 @@ export const validators: Record<string, (value: string | File) => string> = {
 	bio: (value) => Validator.validatePost(value as string),
 	avatar: (value) => Validator.validateImg(value as File),
 };
+
+
+// interface Question {
+//     name: string;
+//   }
+
+// const questionNames: Question[] = [
+//     {
+//         name: 'Насколько вы готовы рекомендовать Vilka друзьям и знакомым?'
+//     },
+//     {
+//         name: 'Оцените общение в сервисе'
+//     },
+//     {
+//         name: 'Оцените дизайн сервиса'
+//     },
+// ]
 
 export default config;

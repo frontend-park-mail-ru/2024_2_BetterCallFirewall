@@ -1,9 +1,9 @@
-import api from '../../api/api';
-import { Root } from '../../components';
-import { update } from '../../modules/vdom';
-import { Change } from '../../stores/store';
-import { Components, View } from '../../views/view';
+import { ACTION_APP_TYPES } from '../actions/actionApp';
+import { Root } from '../components';
 import { Question, QuestionConfig } from '../components/Question/Question';
+import { update } from '../modules/vdom';
+import { Change } from '../stores/store';
+import { Components, View } from './view';
 
 export type ComponentsQuestion = {
 	questions?: Question;
@@ -33,6 +33,10 @@ export class ViewQuestion extends View {
 
 	handleChange(change: Change): void {
 		switch (change.type) {
+			case ACTION_APP_TYPES.actionAppInit:
+			case ACTION_APP_TYPES.goTo:
+				this.render();
+				break;
 			default:
 				return;
 		}
@@ -81,7 +85,7 @@ export class ViewQuestion extends View {
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
-				api;
+				// api;
 				// api.removeFriend(personConfig.id);
 			},
 		});
