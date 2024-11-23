@@ -1,7 +1,7 @@
 import { Action, ActionType } from './action';
 
 export const ACTION_CREATE_GROUP_TYPES = {
-	goToCreateGroup: 'actionCreatePostGoTo',
+	goToCreateGroup: 'actionCreateGroupGoTo',
 };
 
 export class ActionCreateGroupGoTo implements Action {
