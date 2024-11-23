@@ -1,10 +1,9 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import {
-	ACTION_FEED_TYPES,
 	ActionFeedPostsRequest,
 	ActionFeedUpdate,
 } from '../../actions/actionFeed';
-import { ActionPostLike, ActionPostLikeCount } from '../../actions/actionPost';
+import { ActionPostLike } from '../../actions/actionPost';
 import { PostConfig, Post, Root } from '../../components';
 import { throttle } from '../../modules/throttle';
 import { update } from '../../modules/vdom';
@@ -46,12 +45,6 @@ export class ViewFeed extends ViewHome {
 					);
 				}
 				this.sendAction(new ActionFeedUpdate());
-				break;
-			case ACTION_FEED_TYPES.postsRequestSuccess:
-				this.updateViewFeed(change.data);
-				this._components.posts?.forEach((post) => {
-					this.sendAction(new ActionPostLikeCount(post.config.id));
-				});
 				break;
 			default:
 				this.updateViewFeed(change.data);

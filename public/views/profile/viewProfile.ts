@@ -2,7 +2,7 @@ import { ActionAppGoTo } from '../../actions/actionApp';
 import { ActionChatGoToChat } from '../../actions/actionChat';
 import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import { ActionFriendsAccept } from '../../actions/actionFriends';
-import { ActionPostLike, ActionPostLikeCount } from '../../actions/actionPost';
+import { ActionPostLike } from '../../actions/actionPost';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
@@ -66,9 +66,6 @@ export class ViewProfile extends ViewHome {
 		this._render();
 		this.sendAction(new ActionUpdateProfile());
 		this.sendAction(new ActionProfileRequest(app.router.path));
-		this._components.profile?.posts.forEach((post) => {
-			this.sendAction(new ActionPostLikeCount(post.config.id));
-		});
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {

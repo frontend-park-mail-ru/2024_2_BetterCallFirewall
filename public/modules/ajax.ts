@@ -3,7 +3,6 @@ import app from '../app';
 import { ChatResponse } from '../models/chat';
 import { CsatResult } from '../models/csatResult';
 import { HeaderResponse } from '../models/header';
-import { LikeCountResponse } from '../models/likeCount';
 import { MessageResponse } from '../models/message';
 import { PostPayload, PostResponse } from '../models/post';
 import { FullProfileResponse, ShortProfileResponse } from '../models/profile';
@@ -133,13 +132,6 @@ class Ajax {
 	async likePost(postId: number): Promise<AjaxResponse<object>> {
 		const url = app.config.URL.postLike.replace('{id}', `${postId}`);
 		return await this._postObjectResponse(url);
-	}
-
-	async postLikesCount(
-		postId: number,
-	): Promise<AjaxResponse<LikeCountResponse>> {
-		const url = app.config.URL.postLikeCount.replace('{id}', `${postId}`);
-		return await this._genericRequestResponse(url, 'post');
 	}
 
 	/**

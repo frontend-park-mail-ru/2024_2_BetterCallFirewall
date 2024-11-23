@@ -303,8 +303,6 @@ class App {
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.update);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.likeSuccess);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.likeFail);
-		this._stores.feed.subscribe(ACTION_POST_TYPES.likeCountSuccess);
-		this._stores.feed.subscribe(ACTION_POST_TYPES.likeCountFail);
 
 		this._stores.profile.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.profile.subscribe(ACTION_APP_TYPES.goTo);
@@ -330,8 +328,6 @@ class App {
 		this._stores.profile.subscribe(ACTION_FRIENDS_TYPES.acceptSuccess);
 		this._stores.profile.subscribe(ACTION_POST_TYPES.likeSuccess);
 		this._stores.profile.subscribe(ACTION_POST_TYPES.likeFail);
-		this._stores.profile.subscribe(ACTION_POST_TYPES.likeCountSuccess);
-		this._stores.profile.subscribe(ACTION_POST_TYPES.likeCountFail);
 
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.subscribeSuccess);

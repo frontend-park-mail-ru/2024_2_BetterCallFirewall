@@ -42,9 +42,6 @@ import {
 } from '../actions/actionMessages';
 import {
 	ACTION_POST_TYPES,
-	ActionPostLikeCountData,
-	ActionPostLikeCountFail,
-	ActionPostLikeCountSuccess,
 	ActionPostLikeData,
 	ActionPostLikeFail,
 	ActionPostLikeSuccess,
@@ -123,11 +120,6 @@ class API {
 				break;
 			case ACTION_POST_TYPES.like:
 				this.likePost((action.data as ActionPostLikeData).postId);
-				break;
-			case ACTION_POST_TYPES.likeCount:
-				this.postLikesCount(
-					(action.data as ActionPostLikeCountData).postId,
-				);
 				break;
 			case ACTION_PROFILE_TYPES.search: {
 				const actionData = action.data as ActionProfileSearchData;
@@ -508,23 +500,6 @@ class API {
 				break;
 			default:
 				this.sendAction(new ActionPostLikeFail());
-		}
-	}
-
-	async postLikesCount(postId: number) {
-		const response = await ajax.postLikesCount(postId);
-		switch (response.status) {
-			case STATUS.ok:
-				if (response.data) {
-					this.sendAction(
-						new ActionPostLikeCountSuccess(response.data, postId),
-					);
-				} else {
-					this.sendAction(new ActionPostLikeCountFail());
-				}
-				break;
-			default:
-				this.sendAction(new ActionPostLikeCountFail());
 		}
 	}
 
