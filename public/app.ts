@@ -69,6 +69,7 @@ import {
 	ViewCreateGroupConfig,
 } from './views/createGroup/viewCreateGroup';
 import { StoreCreateGroup } from './stores/storeCreateGroup';
+import { ACTION_CREATE_GROUP_TYPES } from './actions/actionCreateGroup';
 
 export const PAGES = {
 	home: 'home',
@@ -281,6 +282,7 @@ class App {
 		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 		this._stores.app.subscribe(ACTION_CHAT_TYPES.goToChat);
 		this._stores.app.subscribe(ACTION_CREATE_POST_TYPES.goToCreatePost);
+		this._stores.app.subscribe(ACTION_CREATE_GROUP_TYPES.goToCreateGroup);
 		this._stores.app.subscribe(ACTION_PROFILE_TYPES.getHeaderFail);
 		this._stores.app.subscribe(ACTION_PROFILE_EDIT_TYPES.goToProfileEdit);
 		this._stores.app.subscribe(ACTION_PROFILE_EDIT_TYPES.requestSuccess);
@@ -393,6 +395,8 @@ class App {
 		this._stores.createPost.subscribe(
 			ACTION_CREATE_POST_TYPES.goToCreatePost,
 		);
+
+		this._stores.createGroup.subscribe(ACTION_CREATE_GROUP_TYPES.goToCreateGroup);
 
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.updateProfileEdit,

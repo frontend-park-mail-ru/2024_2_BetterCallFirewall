@@ -1,4 +1,5 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
+import { ActionCreateGroupGoTo } from '../../actions/actionCreateGroup';
 import { Root } from '../../components';
 import { Groups, GroupsConfig } from '../../components/Groups/Groups';
 import { update } from '../../modules/vdom';
@@ -35,12 +36,6 @@ export class ViewGroups extends ViewHome {
 
 	protected _addHandlers() {
 		super._addHandlers();
-		this.groups.deleteGroupButtonVNode.handlers.push({
-			event: 'click',
-			callback: (event) => {
-				event.preventDefault();
-			},
-		});
 		this._addGroupsHandlers(this.groups);
 	}
 
@@ -133,5 +128,12 @@ export class ViewGroups extends ViewHome {
 				},
 			});
 		});
+        this.groups.createGroupButtonVNode.handlers.push({
+            event: 'click',
+            callback: (event) => {
+                event.preventDefault();
+                this.sendAction(new ActionCreateGroupGoTo());
+            },
+        });
 	}
 }

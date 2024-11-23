@@ -1,3 +1,4 @@
+import { ACTION_CREATE_GROUP_TYPES } from '../../actions/actionCreateGroup';
 import { Root } from '../../components';
 import {
 	CreateGroupForm,
@@ -5,6 +6,7 @@ import {
 } from '../../components/CreateGroupForm/CreateGroupForm';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
+import { ChangeCreateGroup } from '../../stores/storeCreateGroup';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsCreateGroup = {
@@ -36,9 +38,18 @@ export class ViewCreateGroup extends ViewHome {
 		return form;
 	}
 
-	// handleChange(change: ChangeCreateGroup): void {
-	// 	super.handleChange(change);
-	// }
+	handleChange(change: ChangeCreateGroup): void {
+		super.handleChange(change);
+		switch (change.type) {
+			case ACTION_CREATE_GROUP_TYPES.goToCreateGroup:
+				this._configCreateGroup = Object.assign(
+					this._configCreateGroup,
+					change.data,
+				);
+				this.render();
+				break;
+		}
+	}
 
 	render(): void {
 		this._render();

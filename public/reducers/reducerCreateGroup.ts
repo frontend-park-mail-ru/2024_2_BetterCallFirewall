@@ -1,4 +1,5 @@
 import { Action } from '../actions/action';
+import { ACTION_CREATE_GROUP_TYPES } from '../actions/actionCreateGroup';
 import { ICreateGroupFormConfig } from '../components/CreateGroupForm/CreateGroupForm';
 import config from '../config';
 import deepClone from '../modules/deepClone';
@@ -20,8 +21,10 @@ export const reducerCreateGroup = (
 	if (!action) {
 		return state;
 	}
-	// const newState = deepClone(state);
+	const newState = deepClone(state);
 	switch (action.type) {
+		case ACTION_CREATE_GROUP_TYPES.goToCreateGroup:
+            return newState;
 		default:
 			return state;
 	}

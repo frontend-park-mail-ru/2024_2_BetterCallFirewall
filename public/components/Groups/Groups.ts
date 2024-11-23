@@ -37,8 +37,7 @@ export class Groups extends Component {
 			}),
 		};
 	}
-
-    get deleteGroupButtonVNode(): VNode {
+    get createGroupButtonVNode(): VNode {
 		return this._findVNodeByKey('createGroup');
 	}
 }
