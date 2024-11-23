@@ -32,7 +32,7 @@ export const PAGE_URLS = {
 	profileEdit: '/profile-edit',
 	profile: '',
 	postEdit: '/post-edit',
-	csat: '/csat',
+	csat: '/csat/question',
 	question: '/csat/question',
 	metrics: '/csat/metrics',
 };
@@ -485,7 +485,6 @@ export const validators: Record<string, (value: string | File) => string> = {
 	bio: (value) => Validator.validatePost(value as string),
 	avatar: (value) => Validator.validateImg(value as File),
 };
-
 
 // interface Question {
 //     name: string;
