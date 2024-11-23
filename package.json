@@ -2,7 +2,6 @@
   "name": "vilka",
   "main": "index.js",
   "scripts": {
-    "start-csat": "npm run prestart && node ./public/csat/server/server.js",
     "prestart": "npm run compile:templates && npm run compile:bundle",
     "start": "node ./server/server.js",
     "compile:templates": "find public/ -name '*.hbs' | xargs handlebars -f public/precompiled.js",
