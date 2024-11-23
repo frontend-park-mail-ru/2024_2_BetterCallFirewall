@@ -4,7 +4,7 @@
   "main": "index.ts",
   "scripts": {
     "prestart": "npm run compile:templates && npm run compile:bundle",
-    "start": "node ./server/server.js",
+    "start-csat": "npm run prestart && node ./server/server.js",
     "compile:templates": "find components/ -name '*.hbs' | xargs handlebars -f ./precompiled.js",
     "compile:bundle": "npx webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
