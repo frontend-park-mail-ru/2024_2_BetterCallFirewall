@@ -430,7 +430,7 @@ const URL: URLInterface = DEBUG
 			post: ROOT + apiv1 + '/feed/{id}',
 			messages: ROOT + apiv1 + '/messages/chats',
 			chat: ROOT + apiv1 + '/messages/chat/{id}',
-			chatWS: ROOT_WS + apiv1 + '/ws',
+			chatWS: ROOT_WS + apiv1 + 'message/ws',
 			postLike: ROOT + apiv1 + '/feed/{id}/like',
 			postLikeCount: ROOT + apiv1 + '/like/count/post/{id}',
 			profilesSearch: ROOT + apiv1 + '/profile/search',
