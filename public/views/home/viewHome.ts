@@ -126,7 +126,6 @@ export abstract class ViewHome extends View {
 			this._configHome.main.aside,
 			this._components.main,
 		);
-		this._components.csat = new CSAT(this._configHome.csat, this._root);
 	}
 
 	protected _addHandlers() {
