@@ -1,6 +1,7 @@
 import { ACTION_APP_TYPES } from '../actions/actionApp';
 import { Root } from '../components';
 import { Question, QuestionConfig } from '../components/Question/Question';
+import { questionNames } from '../config';
 import { update } from '../modules/vdom';
 import { Change } from '../stores/store';
 import { Components, View } from './view';
@@ -17,10 +18,22 @@ export class ViewQuestion extends View {
 	protected _components: ComponentsQuestion = {};
 	private _configQuestion: ViewQuestionConfig;
 	private _btnTapped: number = -1;
+	private currentQuestion: number = 0;
 
 	constructor(config: ViewQuestionConfig, root: Root) {
 		super(root);
 		this._configQuestion = config;
+	}
+
+	updateConfig() {
+		this.currentQuestion += 1;
+		if (this.currentQuestion < questionNames.length) {
+			this._configQuestion.question.name = questionNames[this.currentQuestion].name;
+			this._configQuestion.question.id = this.currentQuestion + 1;
+		} else {
+			this._configQuestion.question.name = 'Спасибо за ответы!';
+			this._configQuestion.question.scoresConfig = [];
+		}
 	}
 
 	protected get question(): Question {
@@ -85,8 +98,10 @@ export class ViewQuestion extends View {
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
-				// api;
+				this.updateConfig();
 				// api.removeFriend(personConfig.id);
+				this.render();
+				// api
 			},
 		});
 		this.question.submitButtonVNode.handlers.push({
@@ -95,6 +110,8 @@ export class ViewQuestion extends View {
 				event.preventDefault();
 				if (this._btnTapped != -1) {
 					// api.removeFriend(personConfig.id);
+					this.updateConfig();
+					this.render();
 				}
 			},
 		});

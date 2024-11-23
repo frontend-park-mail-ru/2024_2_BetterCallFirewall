@@ -31,7 +31,7 @@ export class Question extends Component {
 		this._scores = this._config.scoresConfig.map((config) => {
 			return new Score(config, this);
 		});
-		this._templateContext = {
+		this._templateContext = { 
 			...this._templateContext,
 			score: this._scores.map((score) => {
 				return score.render();

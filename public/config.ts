@@ -487,20 +487,17 @@ export const validators: Record<string, (value: string | File) => string> = {
 };
 
 
-// interface Question {
-//     name: string;
-//   }
+interface Question {
+    name: string;
+  }
 
-// const questionNames: Question[] = [
-//     {
-//         name: 'Насколько вы готовы рекомендовать Vilka друзьям и знакомым?'
-//     },
-//     {
-//         name: 'Оцените общение в сервисе'
-//     },
-//     {
-//         name: 'Оцените дизайн сервиса'
-//     },
-// ]
+export const questionNames: Question[] = [
+    {
+        name: 'Насколько вы довольны Vilka?'
+    },
+    {
+        name: 'Оцените общение в сервисе'
+    },
+];
 
 export default config;

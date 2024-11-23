@@ -22,6 +22,14 @@ export class ViewMetrics extends View {
 		this._configMetrics = config;
 	}
 
+	// protected get metrics(): Metrics {
+	// 	const metrics = this._components.metrics;
+	// 	if (!metrics) {
+	// 		throw new Error('users does not exist');
+	// 	}
+	// 	return metrics;
+	// }
+
 	handleChange(change: Change): void {
 		switch (change.type) {
 			case ACTION_APP_TYPES.actionAppInit:
@@ -57,5 +65,6 @@ export class ViewMetrics extends View {
 		update(rootNode, rootVNode);
 	}
 
-	protected _addHandlers() {}
+	protected _addHandlers() {
+	}
 }

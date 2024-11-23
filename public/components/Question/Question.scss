@@ -1,5 +1,10 @@
 .question {
     padding: .5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    min-height: 15rem;
+    width: 42rem;
     &__scoring {
         width: 100%;
         display: flex;
@@ -9,6 +14,7 @@
         display: flex;
         width: 100%;
         justify-content: flex-end;
+        align-items: center;
     }
     &__skip {
         margin-right: 1rem;
