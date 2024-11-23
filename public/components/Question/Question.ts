@@ -33,7 +33,7 @@ export class Question extends Component {
 		});
 		this._templateContext = {
 			...this._templateContext,
-			friends: this._scores.map((score) => {
+			score: this._scores.map((score) => {
 				return score.render();
 			}),
 		};
