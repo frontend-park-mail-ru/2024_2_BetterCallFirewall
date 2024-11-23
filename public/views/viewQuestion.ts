@@ -83,19 +83,20 @@ export class ViewQuestion extends View {
 	}
 
 	protected _addHandlers() {
+		let btnTapped = this._btnTapped;
 		this.question.listScores.forEach((score) => {
 			score.vnode.handlers.push({
 				event: 'click',
-
 				callback: (event) => {
 					event.preventDefault();
-					if (this._btnTapped != -1) {
-						this._btnTapped = -1;
+					if (btnTapped!= -1) {
+						btnTapped = -1;
 					} else {
-						this._btnTapped = score.id;
+						btnTapped = score.id;
 					}
 				},
 			});
+			this._btnTapped = btnTapped;
 		});
 		this.question.skipButtonVNode.handlers.push({
 			event: 'click',

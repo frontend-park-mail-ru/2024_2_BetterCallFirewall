@@ -470,7 +470,13 @@ const config: AppConfig = {
 				{
 					key: 'score',
 					id: 1,
-					name: 'Насколько вы готовы рекомендовать  Vilka друзьям и знакомым?',
+					name: 'Насколько вы довольны Vilka?',
+					average: 4,
+				},
+				{
+					key: 'score',
+					id: 2,
+					name: 'Оцените общение в сервисе',
 					average: 4,
 				},
 			],
