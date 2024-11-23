@@ -1,0 +1,60 @@
+@use 'components/Question/Question';
+@use 'components/Score/Score';
+@use 'components/Metrics/Metrics';
+@use 'components/Metric/Metric';
+
+* {
+    box-sizing: border-box;
+}
+
+@media (max-width: 2560px) {
+    * {
+        font-size: 1.2vw;
+    }
+}
+
+@media (max-width: 1200px) {
+    * {
+        font-size: 2.9vw;
+    }
+}
+
+// .score-1 {
+
+// }
+
+// .score-2 {
+
+// }
+
+// .score-3 {
+
+// }
+
+// .score-4 {
+
+// }
+
+// .score-5 {
+
+// }
+
+// .score-6 {
+
+// }
+
+// .score-7 {
+
+// }
+
+// .score-8 {
+    
+// }
+
+// .score-9 {
+
+// }
+
+// .score-10 {
+
+// }

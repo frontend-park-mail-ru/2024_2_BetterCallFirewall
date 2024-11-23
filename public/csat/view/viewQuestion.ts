@@ -1,3 +1,4 @@
+import api from '../../api/api';
 import { Root } from '../../components';
 import { update } from '../../modules/vdom';
 import { Change } from '../../stores/store';
@@ -15,16 +16,25 @@ export interface ViewQuestionConfig {
 export class ViewQuestion extends View {
 	protected _components: ComponentsQuestion = {};
 	private _configQuestion: ViewQuestionConfig;
+	private _btnTapped: number = -1;
 
 	constructor(config: ViewQuestionConfig, root: Root) {
 		super(root);
 		this._configQuestion = config;
 	}
 
+	protected get question(): Question {
+		const question = this._components.questions;
+		if (!question) {
+			throw new Error('users does not exist');
+		}
+		return question;
+	}
+
 	handleChange(change: Change): void {
 		switch (change.type) {
-            default:
-                return;
+			default:
+				return;
 		}
 	}
 
@@ -40,17 +50,49 @@ export class ViewQuestion extends View {
 	}
 
 	protected _render() {
-        const rootNode = this._root.node;
+		const rootNode = this._root.node;
 		this._root.clear();
 		this._components.questions = new Question(
 			this._configQuestion.question,
 			this._root,
 		);
 
-        const rootVNode = this._root.newVNode();
-        this._addHandlers();
-        update(rootNode, rootVNode);
+		const rootVNode = this._root.newVNode();
+		this._addHandlers();
+		update(rootNode, rootVNode);
 	}
 
-    protected _addHandlers() {}
+	protected _addHandlers() {
+		this.question.listScores.forEach((score) => {
+			score.scoreButton.handlers.push({
+				event: 'click',
+
+				callback: (event) => {
+					event.preventDefault();
+					if (this._btnTapped != -1) {
+						this._btnTapped = -1;
+					} else {
+						this._btnTapped = score.id;
+					}
+				},
+			});
+		});
+		this.question.skipButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				api;
+				// api.removeFriend(personConfig.id);
+			},
+		});
+		this.question.submitButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				if (this._btnTapped != -1) {
+					// api.removeFriend(personConfig.id);
+				}
+			},
+		});
+	}
 }

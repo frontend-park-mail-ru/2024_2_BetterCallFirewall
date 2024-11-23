@@ -1,4 +1,5 @@
 import Component, { ComponentConfig } from "../../../components/Component";
+import { VNode } from "../../../modules/vdom";
 
 
 export interface ScoreConfig extends ComponentConfig {
@@ -18,4 +19,12 @@ export class Score extends Component {
         this._prerender();
         return this._render('Score.hbs');
     }
+
+    get scoreButton(): VNode {
+		return this._findVNodeByClass('score');
+	}
+
+    get id(): number {
+		return this.id;
+	}
 }

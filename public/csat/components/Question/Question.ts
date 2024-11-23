@@ -1,7 +1,9 @@
 import Component, { ComponentConfig } from '../../../components/Component';
+import { VNode } from '../../../modules/vdom';
 import { Score, ScoreConfig } from '../Score/Score';
 
 export interface QuestionConfig extends ComponentConfig {
+	id: number;
 	name: string;
 	scoresConfig: ScoreConfig[];
 }
@@ -13,6 +15,10 @@ export class Question extends Component {
 	constructor(config: QuestionConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
+	}
+
+	get listScores(): Score[] {
+		return this._scores;
 	}
 
 	render(): string {
@@ -31,5 +37,12 @@ export class Question extends Component {
 				return score.render();
 			}),
 		};
+	}
+
+	get skipButtonVNode(): VNode {
+		return this._findVNodeByClass('question__skip');
+	}
+	get submitButtonVNode(): VNode {
+		return this._findVNodeByClass('question__button');
 	}
 }

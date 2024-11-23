@@ -1,30 +1,54 @@
-import { AppConfig } from "./app";
+import { AppConfig } from './app';
 
 export const PAGE_LINKS = {
 	question: '/csat/question',
 	metrics: '/csat/metrics',
 };
 
-const config: AppConfig = {
-    URL: {},
-    questionConfig: {
-        question: {
-            key: 'question',
-            name: 'Насколько вы готовы рекомендовать  Vilka друзьям и знакомым?',
-            scoresConfig: [
-                {
-                    key: '1',
-                    id: 1,
-                    color: '3',
-                },
-                {
-                    key: '2 ',
-                    id: 2,
-                    color: '4',
-                },
-            ],
-        }
+interface Question {
+    name: string;
+  }
+
+const questionNames: Question[] = [
+    {
+        name: 'Насколько вы готовы рекомендовать Vilka друзьям и знакомым?'
     },
+    {
+        name: 'Оцените общение в сервисе'
+    },
+    {
+        name: 'Оцените дизайн сервиса'
+    },
+]
+
+const config: AppConfig = {
+	URL: {},
+	questionConfig: {
+		question: {
+			id: 1,
+			key: 'question',
+			name: 'Насколько вы готовы рекомендовать  Vilka друзьям и знакомым?',
+			scoresConfig: Array.from({ length: 5 }, (_, i) => ({
+				key: (i + 1).toString(),
+				id: i + 1,
+				color: `score-${i + 1}`,
+			})),
+		},
+	},
+	metricsConfig: {
+		metrics: {
+			key: 'metrics',
+			id: 1,
+			metricsConfig: [
+				{
+					key: 'score',
+					id: 1,
+					name: 'Насколько вы готовы рекомендовать  Vilka друзьям и знакомым?',
+					average: 4,
+				},
+			],
+		},
+	},
 };
 
 export default config;

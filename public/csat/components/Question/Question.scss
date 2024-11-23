@@ -1,4 +1,5 @@
 .question {
+    padding: .5rem;
     &__scoring {
         width: 100%;
         display: flex;
@@ -8,5 +9,29 @@
         display: flex;
         width: 100%;
         justify-content: flex-end;
+    }
+    &__skip {
+        margin-right: 1rem;
+    }
+}
+
+.question__button {
+    background: var(--button-color);
+    border: none;
+    border-radius: 7rem;
+    padding: .9rem 8rem;
+    text-decoration: none;
+    cursor: pointer;
+    font: inherit;
+    color: var(--main-text-color);
+    font-size: 1rem;
+    &:hover {
+        background: #00c77b;
+    }
+    &:active {
+        background: var(--button-color);
+    }
+    &:focus-visible {
+        outline: 1px solid white;
     }
 }
