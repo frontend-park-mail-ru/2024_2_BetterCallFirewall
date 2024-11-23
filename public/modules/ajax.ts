@@ -38,7 +38,10 @@ const replaceId = (url: string, id: number): string => {
 	return url.replace('{id}', `${id}`);
 };
 
-const insertQueryParams = (baseUrl: string, params: QueryParams) => {
+const insertQueryParams = (baseUrl: string, params?: QueryParams) => {
+	if (!params) {
+		return baseUrl;
+	}
 	const url = new URL(baseUrl);
 	Object.entries(params).forEach(([key, value]) => {
 		url.searchParams.append(key, value);
@@ -512,8 +515,7 @@ class Ajax {
 	 * get запрос
 	 */
 	private _getRequest(baseUrl: string, queryParams?: QueryParams) {
-		const params = new URLSearchParams(queryParams);
-		const url = queryParams ? `${baseUrl}?${params}` : `${baseUrl}`;
+		const url = insertQueryParams(baseUrl, queryParams);
 		return new Request(url, {
 			method: 'get',
 			credentials: 'include',
