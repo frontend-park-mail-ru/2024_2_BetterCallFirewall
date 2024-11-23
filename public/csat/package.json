@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "prestart": "npm run compile:templates && npm run compile:bundle",
-    "start-csat": "npm run prestart && node ./server/server.js",
-    "compile:templates": "find components/ -name '*.hbs' | xargs handlebars -f ./precompiled.js",
-    "compile:bundle": "npx webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prestart-csat": "npm run compile:templates-csat && npm run compile:bundle-csat",
+    "start-csat": "npm run prestart-csat && node ./server/server.js",
+    "compile:templates-csat": "find components/ -name '*.hbs' | xargs handlebars -f ./precompiled.js",
+    "compile:bundle-csat": "npx webpack"
   },
   "author": "",
   "license": "ISC",
