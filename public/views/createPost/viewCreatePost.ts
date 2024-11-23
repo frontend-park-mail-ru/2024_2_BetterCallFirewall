@@ -12,6 +12,7 @@ import {
 } from '../../components/CreatePostForm/CreatePostForm';
 import dispatcher from '../../dispatcher/dispatcher';
 import { PostPayload } from '../../models/post';
+import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangeCreatePost } from '../../stores/storeCreatePost';
@@ -104,23 +105,18 @@ export class ViewCreatePost extends ViewHome {
 						formData.get('text') ||
 						(formData.get('file') as File).name
 					) {
-						const text = formData.get('text') as string;
-						const file = formData.get('file') as File;
-						let fileStr;
-						if (file.size) {
-							fileStr = await api.sendImage(file);
-							if (!fileStr) {
-								this._createPostForm.printError(
-									'Что-то пошло не так',
-								);
-								return;
-							}
-						} else {
-							fileStr = '';
+						const fileStr = await fileToString(
+							formData.get('file') as File,
+						);
+						if (fileStr === null) {
+							this._createPostForm.printError(
+								'Что-то пошло не так',
+							);
+							return;
 						}
 						const postPayload: PostPayload = {
 							post_content: {
-								text: text,
+								text: formData.get('text') as string,
 								file: fileStr,
 							},
 						};

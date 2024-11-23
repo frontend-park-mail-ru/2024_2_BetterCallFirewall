@@ -111,12 +111,11 @@ class Ajax {
 	 * Отредактировать пост
 	 */
 	async editPost(
-		formData: FormData,
+		formData: PostPayload,
 		postId: number,
 	): Promise<AjaxResponse<PostResponse>> {
 		const url = app.config.URL.post.replace('{id}', `${postId}`);
-		const request = this._putFormRequest(url, formData);
-		return this._postResponse(request);
+		return this._genericRequestResponse(url, 'put', formData);
 	}
 
 	/**

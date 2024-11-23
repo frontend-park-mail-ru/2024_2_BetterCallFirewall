@@ -413,7 +413,7 @@ class API {
 		}
 	}
 
-	async editPost(formData: FormData, postId: number) {
+	async editPost(formData: PostPayload, postId: number) {
 		const response = await ajax.editPost(formData, postId);
 		switch (response.status) {
 			case STATUS.ok:

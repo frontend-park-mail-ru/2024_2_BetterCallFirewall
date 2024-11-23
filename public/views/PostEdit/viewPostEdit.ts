@@ -6,6 +6,8 @@ import {
 	PostEditFormConfig,
 	PostEditForm,
 } from '../../components/PostEditForm/PostEditForm';
+import { PostPayload } from '../../models/post';
+import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangePostEdit } from '../../stores/storePostEdit';
@@ -86,7 +88,7 @@ export class ViewPostEdit extends ViewHome {
 		super._addHandlers();
 		this._postEditForm.vnode.handlers.push({
 			event: 'submit',
-			callback: (event) => {
+			callback: async (event) => {
 				event.preventDefault();
 				const validator = new Validator();
 				const formData = validator.validateForm(
@@ -94,7 +96,24 @@ export class ViewPostEdit extends ViewHome {
 					this._postEditForm.form,
 				);
 				if (formData) {
-					api.editPost(formData, this._configPostEdit.postId);
+					if (
+						formData.get('text') ||
+						(formData.get('file') as File).name
+					) {
+						const fileStr = await fileToString(
+							formData.get('file') as File,
+						);
+						if (fileStr === null) {
+							return;
+						}
+						const postPayload: PostPayload = {
+							post_content: {
+								text: formData.get('text') as string,
+								file: fileStr,
+							},
+						};
+						api.editPost(postPayload, this._configPostEdit.postId);
+					}
 				}
 			},
 		});
