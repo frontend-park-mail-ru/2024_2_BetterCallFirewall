@@ -23,6 +23,7 @@ import {
 	ContentConfig,
 	Content,
 } from '../../components';
+import { CSAT, CSATConfig } from '../../components/CSAT/CSAT';
 import Menu from '../../components/Menu/Menu';
 import { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
@@ -42,6 +43,7 @@ export interface MainConfig {
 export interface HomeConfig {
 	menu: MenuConfig;
 	main: MainConfig;
+	csat: CSATConfig;
 }
 
 export type ComponentsHome = {
@@ -50,6 +52,7 @@ export type ComponentsHome = {
 	header?: Header;
 	content?: Content;
 	aside?: Container;
+	csat?: CSAT;
 } & Components;
 
 export abstract class ViewHome extends View {
@@ -123,6 +126,7 @@ export abstract class ViewHome extends View {
 			this._configHome.main.aside,
 			this._components.main,
 		);
+		this._components.csat = new CSAT(this._configHome.csat, this._root);
 	}
 
 	protected _addHandlers() {

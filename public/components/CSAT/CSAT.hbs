@@ -1,8 +1,8 @@
-<div class="csat" data-key="{{this.key}}">
+<div class="csat {{#unless this.show}}csat_hidden{{/unless}}" data-key="{{this.key}}">
     <div class="csat__header">
-        <button class="csat__close-button"></button>
+        <button class="csat__close-button btn">Закрыть</button>
     </div>
     <div class="csat__content">
-        <iframe src="{{this.src}}" frameborder="0"></iframe>
+        <iframe class="csat__iframe" src="{{this.src}}" frameborder="0"></iframe>
     </div>
 </div>
