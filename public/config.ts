@@ -455,11 +455,33 @@ const config: AppConfig = {
 			id: 1,
 			key: 'question',
 			name: 'Насколько вы готовы рекомендовать  Vilka друзьям и знакомым?',
-			scoresConfig: Array.from({ length: 5 }, (_, i) => ({
-				key: (i + 1).toString(),
-				id: i + 1,
-				color: `score-${i + 1}`,
-			})),
+			scoresConfig: [
+				{
+					key: '1',
+					id: 1,
+					color: `score-${1}`,
+				},
+				{
+					key: '2',
+					id: 2,
+					color: `score-${2}`,
+				},
+				{
+					key: '3',
+					id: 3,
+					color: `score-${3}`,
+				},
+				{
+					key: '4',
+					id: 4,
+					color: `score-${4}`,
+				},
+				{
+					key: '5',
+					id: 5,
+					color: `score-${5}`,
+				},
+			]
 		},
 	},
 	metricsConfig: {
