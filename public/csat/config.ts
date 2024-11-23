@@ -18,7 +18,7 @@ const config: AppConfig = {
                     color: '3',
                 },
                 {
-                    key: '2',
+                    key: '2 ',
                     id: 2,
                     color: '4',
                 },
