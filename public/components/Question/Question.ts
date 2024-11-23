@@ -1,6 +1,6 @@
-import { VNode } from "../../modules/vdom";
-import Component, { ComponentConfig } from "../Component";
-import { Score, ScoreConfig } from "../Score/Score";
+import { VNode } from '../../modules/vdom';
+import Component, { ComponentConfig } from '../Component';
+import { Score, ScoreConfig } from '../Score/Score';
 
 export interface QuestionConfig extends ComponentConfig {
 	id: number;
@@ -33,7 +33,7 @@ export class Question extends Component {
 		});
 		this._templateContext = { 
 			...this._templateContext,
-			score: this._scores.map((score) => {
+			scores: this._scores.map((score) => {
 				return score.render();
 			}),
 		};

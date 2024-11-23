@@ -1,6 +1,7 @@
 import { STATUS } from '../api/api';
 import app from '../app';
 import { ChatResponse } from '../models/chat';
+import { CsatResult } from '../models/csatResult';
 import { HeaderResponse } from '../models/header';
 import { LikeCountResponse } from '../models/likeCount';
 import { MessageResponse } from '../models/message';
@@ -330,6 +331,20 @@ class Ajax {
 			q: str,
 		});
 		return this._genericRequestResponse(url, 'get');
+	}
+
+	async csatSend(
+		inTotal: number,
+		feed: number,
+	): Promise<AjaxResponse<object>> {
+		return this._genericRequestResponse(app.config.URL.csat, 'post', {
+			in_total: inTotal,
+			feed,
+		});
+	}
+
+	async csatMetrics(): Promise<AjaxResponse<CsatResult>> {
+		return this._genericRequestResponse(app.config.URL.csatMetrics, 'get');
 	}
 
 	/**

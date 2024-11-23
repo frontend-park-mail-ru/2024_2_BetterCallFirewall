@@ -7,6 +7,10 @@ import {
 	ActionChatRequestSuccess,
 } from '../actions/actionChat';
 import {
+	ActionCsatMetrics,
+	ActionCsatSendSuccess,
+} from '../actions/actionCsat';
+import {
 	ACTION_FEED_TYPES,
 	ActionFeedPostCreateFail,
 	ActionFeedPostCreateSuccess,
@@ -537,6 +541,24 @@ class API {
 				break;
 			default:
 				this.sendAction(new ActionProfileSearchFail());
+		}
+	}
+
+	async csatSend(inTotal: number, feed: number) {
+		const response = await ajax.csatSend(inTotal, feed);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionCsatSendSuccess());
+		}
+	}
+
+	async csatMetrics() {
+		const response = await ajax.csatMetrics();
+		switch (response.status) {
+			case STATUS.ok:
+				if (response.data) {
+					this.sendAction(new ActionCsatMetrics(response.data));
+				}
 		}
 	}
 }

@@ -32,7 +32,7 @@ export const PAGE_URLS = {
 	profileEdit: '/profile-edit',
 	profile: '',
 	postEdit: '/post-edit',
-	csat: '/csat',
+	csat: '/csat/question',
 	question: '/csat/question',
 	metrics: '/csat/metrics',
 };
@@ -406,6 +406,8 @@ const URL: URLInterface = DEBUG
 			postLike: '',
 			postLikeCount: '',
 			profilesSearch: '',
+			csat: '',
+			csatMetrics: '',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -431,6 +433,8 @@ const URL: URLInterface = DEBUG
 			postLike: ROOT + apiv1 + '/feed/{id}/like',
 			postLikeCount: ROOT + apiv1 + '/like/count/post/{id}',
 			profilesSearch: ROOT + apiv1 + '/profile/search',
+			csat: ROOT + apiv1 + '/csat',
+			csatMetrics: ROOT + apiv1 + '/csat/metrics',
 		};
 
 const config: AppConfig = {
