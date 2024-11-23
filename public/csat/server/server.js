@@ -13,7 +13,7 @@ app.use(express.static('./public', { fallthrough: true }));
 app.use(express.static('./node_modules'));
 
 app.get('/dist/bundle.js', (req, res) => {
-	res.sendFile(path.join(__dirname, '../../../dist', 'bundle.js'));
+	res.sendFile(path.join(__dirname, '../dist', 'bundle.js'));
 });
 
 app.get('*', (req, res) => {

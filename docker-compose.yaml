@@ -10,7 +10,7 @@ services:
   csat:
     build:
       context: .
-      dockerfile: DockerfileCsat
+      dockerfile: ./public/csat/Dockerfile
     ports:
       - "8001:8001"
   nginx:
