@@ -129,11 +129,11 @@ class API {
 					(action.data as ActionPostLikeCountData).postId,
 				);
 				break;
-			case ACTION_PROFILE_TYPES.search:
-				this.profileSearch(
-					(action.data as ActionProfileSearchData).str,
-				);
+			case ACTION_PROFILE_TYPES.search: {
+				const actionData = action.data as ActionProfileSearchData;
+				this.profileSearch(actionData.str, actionData.userId);
 				break;
+			}
 		}
 	}
 
@@ -528,8 +528,8 @@ class API {
 		}
 	}
 
-	async profileSearch(str: string) {
-		const response = await ajax.profilesSearch(str);
+	async profileSearch(str: string, userId: number) {
+		const response = await ajax.profilesSearch(str, userId);
 		switch (response.status) {
 			case STATUS.ok:
 				if (response.data) {

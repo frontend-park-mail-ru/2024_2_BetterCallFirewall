@@ -334,9 +334,11 @@ class Ajax {
 	 */
 	async profilesSearch(
 		str: string,
+		userId: number,
 	): Promise<AjaxResponse<ShortProfileResponse[]>> {
 		const url = insertQueryParams(app.config.URL.profilesSearch, {
 			q: str,
+			id: `${userId}`,
 		});
 		return this._genericRequestResponse(url, 'get');
 	}
