@@ -2,10 +2,10 @@ import { STATUS } from '../api/api';
 import app from '../app';
 import { ChatResponse } from '../models/chat';
 import { ShortGroupResponse } from '../models/group';
+import { CsatResult } from '../models/csatResult';
 import { HeaderResponse } from '../models/header';
-import { LikeCountResponse } from '../models/likeCount';
 import { MessageResponse } from '../models/message';
-import { PostResponse } from '../models/post';
+import { PostPayload, PostResponse } from '../models/post';
 import { FullProfileResponse, ShortProfileResponse } from '../models/profile';
 
 type AjaxPromiseConfig = {
@@ -38,14 +38,15 @@ const replaceId = (url: string, id: number): string => {
 	return url.replace('{id}', `${id}`);
 };
 
-const insertQueryParams = (baseUrl: string, params: QueryParams) => {
-	let url = baseUrl;
+const insertQueryParams = (baseUrl: string, params?: QueryParams) => {
+	if (!params) {
+		return baseUrl;
+	}
+	const url = new URL(baseUrl);
 	Object.entries(params).forEach(([key, value]) => {
-		if (value) {
-			url += `?${key}=${value}`;
-		}
+		url.searchParams.append(key, value);
 	});
-	return url;
+	return url.toString();
 };
 
 class Ajax {
@@ -99,8 +100,10 @@ class Ajax {
 	/**
 	 * Создать пост
 	 */
-	async createPost(formData: FormData): Promise<AjaxResponse<PostResponse>> {
-		const request = this._postFormRequest(app.config.URL.feed, formData);
+	async createPost(
+		formData: PostPayload,
+	): Promise<AjaxResponse<PostResponse>> {
+		const request = this._postRequest(app.config.URL.feed, formData);
 		return this._postResponse(request);
 	}
 
@@ -108,12 +111,11 @@ class Ajax {
 	 * Отредактировать пост
 	 */
 	async editPost(
-		formData: FormData,
+		formData: PostPayload,
 		postId: number,
 	): Promise<AjaxResponse<PostResponse>> {
 		const url = app.config.URL.post.replace('{id}', `${postId}`);
-		const request = this._putFormRequest(url, formData);
-		return this._postResponse(request);
+		return this._genericRequestResponse(url, 'put', formData);
 	}
 
 	/**
@@ -130,14 +132,15 @@ class Ajax {
 	 */
 	async likePost(postId: number): Promise<AjaxResponse<object>> {
 		const url = app.config.URL.postLike.replace('{id}', `${postId}`);
-		return await this._postObjectResponse(url);
+		return await this._postRequestObjectResponse(url);
 	}
 
-	async postLikesCount(
-		postId: number,
-	): Promise<AjaxResponse<LikeCountResponse>> {
-		const url = app.config.URL.postLikeCount.replace('{id}', `${postId}`);
-		return await this._genericRequestResponse(url, 'post');
+	/**
+	 * Убрать лайк с поста
+	 */
+	async unlikePost(postId: number): Promise<AjaxResponse<object>> {
+		const url = app.config.URL.postUnlike.replace('{id}', `${postId}`);
+		return await this._postRequestObjectResponse(url);
 	}
 
 	/**
@@ -274,7 +277,7 @@ class Ajax {
 	async subscribeToProfile(profileId: number): Promise<AjaxResponse<object>> {
 		let url = app.config.URL.subscribeToProfile;
 		url = url.replace('{id}', `${profileId}`);
-		return this._postObjectResponse(url);
+		return this._postRequestObjectResponse(url);
 	}
 
 	/**
@@ -283,7 +286,7 @@ class Ajax {
 	async acceptFriend(profileId: number): Promise<AjaxResponse<object>> {
 		let url = app.config.URL.acceptFriend;
 		url = url.replace('{id}', `${profileId}`);
-		return this._postObjectResponse(url);
+		return this._postRequestObjectResponse(url);
 	}
 
 	/**
@@ -294,7 +297,7 @@ class Ajax {
 	): Promise<AjaxResponse<object>> {
 		let url = app.config.URL.unsubscribeFromProfile;
 		url = url.replace('{id}', `${profileId}`);
-		return this._postObjectResponse(url);
+		return this._postRequestObjectResponse(url);
 	}
 
 	/**
@@ -329,6 +332,47 @@ class Ajax {
 			? insertQueryParams(app.config.URL.chat, { lastTime })
 			: app.config.URL.chat;
 		return this._genericRequestResponse(replaceId(url, profileId), 'get');
+	}
+
+	/**
+	 * Поиск профилей
+	 */
+	async profilesSearch(
+		str: string,
+		userId: number,
+	): Promise<AjaxResponse<ShortProfileResponse[]>> {
+		const url = insertQueryParams(app.config.URL.profilesSearch, {
+			q: str,
+			id: `${userId}`,
+		});
+		return this._genericRequestResponse(url, 'get');
+	}
+
+	/**
+	 * Отправка результатов CSAT
+	 */
+	async csatSend(
+		inTotal: number,
+		feed: number,
+	): Promise<AjaxResponse<object>> {
+		return this._genericRequestResponse(app.config.URL.csat, 'post', {
+			in_total: inTotal,
+			feed,
+		});
+	}
+
+	/**
+	 * Получение метрик CSAT
+	 */
+	async csatMetrics(): Promise<AjaxResponse<CsatResult>> {
+		return this._genericRequestResponse(app.config.URL.csatMetrics, 'get');
+	}
+
+	async sendImage(image: File): Promise<AjaxResponse<string>> {
+		const formData = new FormData();
+		formData.append('file', image);
+		const request = this._postFormRequest(app.config.URL.image, formData);
+		return this._genericResponse(request);
 	}
 
 	/**
@@ -376,11 +420,17 @@ class Ajax {
 	}
 
 	private async _genericRequestResponse<T>(
-		baseUrl: string,
+		url: string,
 		method: string,
 		data?: object,
 	): Promise<AjaxResponse<T>> {
-		const request = this._jsonRequest(baseUrl, method, data);
+		const request = this._jsonRequest(url, method, data);
+		return this._genericResponse(request);
+	}
+
+	private async _genericResponse<T>(
+		request: Request,
+	): Promise<AjaxResponse<T>> {
 		const response = await this._response(request);
 		try {
 			const body = await response.json();
@@ -479,7 +529,7 @@ class Ajax {
 	/**
 	 * Пустой post запрос и ответ в виде object
 	 */
-	private async _postObjectResponse(
+	private async _postRequestObjectResponse(
 		url: string,
 	): Promise<AjaxResponse<object>> {
 		const request = this._postRequest(url, {});
@@ -519,8 +569,7 @@ class Ajax {
 	 * get запрос
 	 */
 	private _getRequest(baseUrl: string, queryParams?: QueryParams) {
-		const params = new URLSearchParams(queryParams);
-		const url = queryParams ? `${baseUrl}?${params}` : `${baseUrl}`;
+		const url = insertQueryParams(baseUrl, queryParams);
 		return new Request(url, {
 			method: 'get',
 			credentials: 'include',

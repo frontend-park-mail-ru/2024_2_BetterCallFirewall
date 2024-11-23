@@ -3,6 +3,7 @@ import { Action, ActionType } from './action';
 export const ACTION_HEADER_TYPES = {
 	logoutClickSuccess: 'logoutClickSuccess',
 	logoutClickFail: 'logoutClickFail',
+	searchResultsSwitch: 'actionHeaderSearchResultsSwitch',
 };
 
 export class ActionHeaderLogoutClickSuccess implements Action {
@@ -22,5 +23,18 @@ export class ActionHeaderLogoutClickFail implements Action {
 	constructor() {
 		this.type = ACTION_HEADER_TYPES.logoutClickFail;
 		this.data = {};
+	}
+}
+
+export interface ActionHeaderSearchResultsSwitchData {
+	show: boolean;
+}
+
+export class ActionHeaderSearchResultsSwitch implements Action {
+	type: ActionType = ACTION_HEADER_TYPES.searchResultsSwitch;
+	data: ActionHeaderSearchResultsSwitchData;
+
+	constructor(show: boolean) {
+		this.data = { show };
 	}
 }

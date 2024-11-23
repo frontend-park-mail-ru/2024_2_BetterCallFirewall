@@ -64,6 +64,9 @@
         padding: 1rem;
         border-bottom-left-radius: 0.5rem;
         border-bottom-right-radius: 0.5rem;
+        &_hidden {
+            display: none;
+        }
     }
     &__menu-opener {
         margin-left: 2rem;

@@ -7,6 +7,10 @@ import {
 	ActionChatRequestSuccess,
 } from '../actions/actionChat';
 import {
+	ActionCsatMetrics,
+	ActionCsatSendSuccess,
+} from '../actions/actionCsat';
+import {
 	ACTION_FEED_TYPES,
 	ActionFeedPostCreateFail,
 	ActionFeedPostCreateSuccess,
@@ -38,9 +42,6 @@ import {
 } from '../actions/actionMessages';
 import {
 	ACTION_POST_TYPES,
-	ActionPostLikeCountData,
-	ActionPostLikeCountFail,
-	ActionPostLikeCountSuccess,
 	ActionPostLikeData,
 	ActionPostLikeFail,
 	ActionPostLikeSuccess,
@@ -60,6 +61,9 @@ import {
 	ActionProfileDeletePostSuccess,
 	ACTION_PROFILE_TYPES,
 	ActionProfileRequestData,
+	ActionProfileSearchFail,
+	ActionProfileSearchSuccess,
+	ActionProfileSearchData,
 } from '../actions/actionProfile';
 import {
 	ActionProfileEditRequestFail,
@@ -71,6 +75,7 @@ import {
 } from '../actions/actionUser';
 import app from '../app';
 import dispatcher from '../dispatcher/dispatcher';
+import { PostPayload } from '../models/post';
 import ajax, { QueryParams } from '../modules/ajax';
 
 export const STATUS = {
@@ -116,10 +121,13 @@ class API {
 			case ACTION_POST_TYPES.like:
 				this.likePost((action.data as ActionPostLikeData).postId);
 				break;
-			case ACTION_POST_TYPES.likeCount:
-				this.postLikesCount(
-					(action.data as ActionPostLikeCountData).postId,
-				);
+			case ACTION_PROFILE_TYPES.search: {
+				const actionData = action.data as ActionProfileSearchData;
+				this.profileSearch(actionData.str, actionData.userId);
+				break;
+			}
+			case ACTION_POST_TYPES.unlike:
+				this.unlikePost((action.data as ActionPostLikeData).postId);
 				break;
 		}
 	}
@@ -384,7 +392,7 @@ class API {
 		}
 	}
 
-	async createPost(formData: FormData) {
+	async createPost(formData: PostPayload) {
 		const response = await ajax.createPost(formData);
 		switch (response.status) {
 			case STATUS.ok:
@@ -400,7 +408,7 @@ class API {
 		}
 	}
 
-	async editPost(formData: FormData, postId: number) {
+	async editPost(formData: PostPayload, postId: number) {
 		const response = await ajax.editPost(formData, postId);
 		switch (response.status) {
 			case STATUS.ok:
@@ -498,21 +506,55 @@ class API {
 		}
 	}
 
-	async postLikesCount(postId: number) {
-		const response = await ajax.postLikesCount(postId);
+	async unlikePost(postId: number) {
+		const response = await ajax.unlikePost(postId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionPostLikeSuccess(postId));
+				break;
+			default:
+				this.sendAction(new ActionPostLikeFail());
+		}
+	}
+
+	async profileSearch(str: string, userId: number) {
+		const response = await ajax.profilesSearch(str, userId);
 		switch (response.status) {
 			case STATUS.ok:
 				if (response.data) {
 					this.sendAction(
-						new ActionPostLikeCountSuccess(response.data, postId),
+						new ActionProfileSearchSuccess(response.data),
 					);
 				} else {
-					this.sendAction(new ActionPostLikeCountFail());
+					this.sendAction(new ActionProfileSearchFail());
 				}
 				break;
 			default:
-				this.sendAction(new ActionPostLikeCountFail());
+				this.sendAction(new ActionProfileSearchFail());
 		}
+	}
+
+	async csatSend(inTotal: number, feed: number) {
+		const response = await ajax.csatSend(inTotal, feed);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionCsatSendSuccess());
+		}
+	}
+
+	async csatMetrics() {
+		const response = await ajax.csatMetrics();
+		switch (response.status) {
+			case STATUS.ok:
+				if (response.data) {
+					this.sendAction(new ActionCsatMetrics(response.data));
+				}
+		}
+	}
+
+	async sendImage(image: File) {
+		const response = await ajax.sendImage(image);
+		return response.data;
 	}
 }
 

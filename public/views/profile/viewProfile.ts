@@ -2,7 +2,7 @@ import { ActionAppGoTo } from '../../actions/actionApp';
 import { ActionChatGoToChat } from '../../actions/actionChat';
 import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import { ActionFriendsAccept } from '../../actions/actionFriends';
-import { ActionPostLike, ActionPostLikeCount } from '../../actions/actionPost';
+import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
@@ -66,9 +66,6 @@ export class ViewProfile extends ViewHome {
 		this._render();
 		this.sendAction(new ActionUpdateProfile());
 		this.sendAction(new ActionProfileRequest(app.router.path));
-		this._components.profile?.posts.forEach((post) => {
-			this.sendAction(new ActionPostLikeCount(post.config.id));
-		});
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {
@@ -169,12 +166,16 @@ export class ViewProfile extends ViewHome {
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
-				this._likePost(post.config.id);
+				this._likePost(post);
 			},
 		});
 	}
 
-	private _likePost = throttle((postId: number) => {
-		this.sendAction(new ActionPostLike(postId));
+	private _likePost = throttle((post: Post) => {
+		if (post.config.likedByUser) {
+			this.sendAction(new ActionPostUnlike(post.config.id));
+		} else {
+			this.sendAction(new ActionPostLike(post.config.id));
+		}
 	}, 1000);
 }

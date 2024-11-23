@@ -1,9 +1,8 @@
 import { HeaderResponse } from '../models/header';
-import { FullProfileResponse } from '../models/profile';
+import { FullProfileResponse, ShortProfileResponse } from '../models/profile';
 import { Action, ActionType } from './action';
 
 export const ACTION_PROFILE_TYPES = {
-	goToProfile: 'goToProfile',
 	updateProfile: 'updateProfile',
 	profileRequest: 'actionProfileRequest',
 	profileRequestSuccess: 'profileRequestSuccess',
@@ -16,6 +15,9 @@ export const ACTION_PROFILE_TYPES = {
 	getHeaderFail: 'getHeaderFail',
 	deletePostSuccess: 'actionProfileDeletePostSuccess',
 	deletePostFail: 'actionProfileDeletePostFail',
+	search: 'actionProfileSearch',
+	searchSuccess: 'actionProfileSearchSuccess',
+	searchFail: 'actionProfileSearchFail',
 };
 
 export interface ActionUpdateProfileData {}
@@ -151,5 +153,37 @@ export class ActionProfileDeletePostSuccess implements Action {
 
 export class ActionProfileDeletePostFail implements Action {
 	type: ActionType = ACTION_PROFILE_TYPES.deletePostFail;
+	data: object = {};
+}
+
+export interface ActionProfileSearchData {
+	str: string;
+	userId: number;
+}
+
+export class ActionProfileSearch implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.search;
+	data: ActionProfileSearchData;
+
+	constructor(str: string, userId: number) {
+		this.data = { str, userId };
+	}
+}
+
+export interface ActionProfileSearchSuccessData {
+	profilesResponses: ShortProfileResponse[];
+}
+
+export class ActionProfileSearchSuccess implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.searchSuccess;
+	data: ActionProfileSearchSuccessData;
+
+	constructor(profilesResponses: ShortProfileResponse[]) {
+		this.data = { profilesResponses };
+	}
+}
+
+export class ActionProfileSearchFail implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.searchFail;
 	data: object = {};
 }

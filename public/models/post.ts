@@ -19,6 +19,8 @@ export interface PostResponse {
 	id: number;
 	header: Header;
 	post_content: PostContent;
+	likes_count: number;
+	is_liked: boolean;
 }
 
 export const toPostConfig = (postResponse: PostResponse): PostConfig => {
@@ -32,8 +34,15 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		date: parseTime(postResponse.post_content.created_at),
 		hasDeleteButton: false,
 		hasEditButton: false,
-		likes: 999, // todo
-		likedByUser: false, // todo
+		likes: postResponse.likes_count,
+		likedByUser: postResponse.is_liked,
 		authorHref: `${PAGE_URLS.profile}/${postResponse.header.author_id}`,
 	};
 };
+
+export interface PostPayload {
+	post_content: {
+		text: string;
+		file: string;
+	};
+}

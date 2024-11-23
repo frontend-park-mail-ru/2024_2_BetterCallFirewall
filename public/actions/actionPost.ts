@@ -1,13 +1,10 @@
-import { LikeCountResponse } from '../models/likeCount';
 import { Action, ActionType } from './action';
 
 export const ACTION_POST_TYPES = {
 	like: 'actionPostLike',
+	unlike: 'actionPostUnlike',
 	likeSuccess: 'actionPostLikeSuccess',
 	likeFail: 'actionPostLikeFail',
-	likeCount: 'actionPostLikeCount',
-	likeCountSuccess: 'actionPostLikeCountSuccess',
-	likeCountFail: 'actionPostLikeCountFail',
 };
 
 export interface ActionPostLikeData {
@@ -17,6 +14,18 @@ export interface ActionPostLikeData {
 export class ActionPostLike implements Action {
 	type: ActionType = ACTION_POST_TYPES.like;
 	data: ActionPostLikeData;
+
+	constructor(postId: number) {
+		this.data = { postId };
+	}
+}
+
+export interface ActionPostUnlikeData {
+	postId: number;
+}
+export class ActionPostUnlike implements Action {
+	type: ActionType = ACTION_POST_TYPES.unlike;
+	data: ActionPostUnlikeData;
 
 	constructor(postId: number) {
 		this.data = { postId };
@@ -38,37 +47,5 @@ export class ActionPostLikeSuccess implements Action {
 
 export class ActionPostLikeFail implements Action {
 	type: ActionType = ACTION_POST_TYPES.likeFail;
-	data: object = {};
-}
-
-export interface ActionPostLikeCountData {
-	postId: number;
-}
-
-export class ActionPostLikeCount implements Action {
-	type: ActionType = ACTION_POST_TYPES.likeCount;
-	data: ActionPostLikeCountData;
-
-	constructor(postId: number) {
-		this.data = { postId };
-	}
-}
-
-export interface ActionPostLikeCountSuccessData {
-	likeCountResponse: LikeCountResponse;
-	postId: number;
-}
-
-export class ActionPostLikeCountSuccess implements Action {
-	type: ActionType = ACTION_POST_TYPES.likeCountSuccess;
-	data: ActionPostLikeCountSuccessData;
-
-	constructor(likeCountResponse: LikeCountResponse, postId: number) {
-		this.data = { likeCountResponse, postId };
-	}
-}
-
-export class ActionPostLikeCountFail implements Action {
-	type: ActionType = ACTION_POST_TYPES.likeCountFail;
 	data: object = {};
 }

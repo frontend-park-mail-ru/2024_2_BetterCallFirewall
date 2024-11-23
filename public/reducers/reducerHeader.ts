@@ -1,5 +1,8 @@
 import { Action } from '../actions/action';
-import { ACTION_HEADER_TYPES } from '../actions/actionHeader';
+import {
+	ACTION_HEADER_TYPES,
+	ActionHeaderSearchResultsSwitchData,
+} from '../actions/actionHeader';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileGetHeaderSuccessData,
@@ -28,8 +31,11 @@ export const reducerHeader = (
 			);
 			break;
 		}
-		case ACTION_HEADER_TYPES.logoutClickFail:
-			break;
+		case ACTION_HEADER_TYPES.searchResultsSwitch:
+			newState.showSearchResults = (
+				action.data as ActionHeaderSearchResultsSwitchData
+			).show;
+			return newState;
 	}
 	return newState;
 };

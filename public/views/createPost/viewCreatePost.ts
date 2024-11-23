@@ -11,6 +11,8 @@ import {
 	CreatePostFormConfig,
 } from '../../components/CreatePostForm/CreatePostForm';
 import dispatcher from '../../dispatcher/dispatcher';
+import { PostPayload } from '../../models/post';
+import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangeCreatePost } from '../../stores/storeCreatePost';
@@ -91,7 +93,7 @@ export class ViewCreatePost extends ViewHome {
 
 		this._createPostForm.vnode.handlers.push({
 			event: 'submit',
-			callback: (event) => {
+			callback: async (event) => {
 				event.preventDefault();
 				const validator = new Validator();
 				const formData = validator.validateForm(
@@ -103,7 +105,22 @@ export class ViewCreatePost extends ViewHome {
 						formData.get('text') ||
 						(formData.get('file') as File).name
 					) {
-						api.createPost(formData);
+						const fileStr = await fileToString(
+							formData.get('file') as File,
+						);
+						if (fileStr === null) {
+							this._createPostForm.printError(
+								'Что-то пошло не так',
+							);
+							return;
+						}
+						const postPayload: PostPayload = {
+							post_content: {
+								text: formData.get('text') as string,
+								file: fileStr,
+							},
+						};
+						api.createPost(postPayload);
 						this._createPostForm.clearError();
 					} else {
 						this._createPostForm.printError(

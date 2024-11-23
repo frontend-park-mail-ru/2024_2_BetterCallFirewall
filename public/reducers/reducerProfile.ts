@@ -2,7 +2,6 @@ import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
 import {
 	ACTION_POST_TYPES,
-	ActionPostLikeCountSuccessData,
 	ActionPostLikeSuccessData,
 } from '../actions/actionPost';
 import {
@@ -16,7 +15,6 @@ import {
 } from '../actions/actionProfileEdit';
 import app from '../app';
 import config from '../config';
-import { likeCountResponseToPostConfig } from '../models/likeCount';
 import { toProfileConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
 import { ViewProfileConfig } from '../views/profile/viewProfile';
@@ -75,21 +73,6 @@ export const reducerProfile = (
 					} else {
 						postConfig.likes--;
 					}
-				}
-			});
-			return newState;
-		}
-		case ACTION_POST_TYPES.likeCountSuccess: {
-			const actionData = action.data as ActionPostLikeCountSuccessData;
-			newState.profile.posts.forEach((postConfig) => {
-				if (postConfig.id === actionData.postId) {
-					Object.assign(
-						postConfig,
-						likeCountResponseToPostConfig(
-							postConfig,
-							actionData.likeCountResponse,
-						),
-					);
 				}
 			});
 			return newState;

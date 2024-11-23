@@ -70,6 +70,8 @@ import {
 } from './views/createGroup/viewCreateGroup';
 import { StoreCreateGroup } from './stores/storeCreateGroup';
 import { ACTION_CREATE_GROUP_TYPES } from './actions/actionCreateGroup';
+import { ViewQuestion, ViewQuestionConfig } from './views/viewQuestion';
+import { ViewMetrics, ViewMetricsConfig } from './views/viewMetrics';
 
 export const PAGES = {
 	home: 'home',
@@ -98,11 +100,16 @@ export interface URLInterface {
 	chat: string;
 	chatWS: string;
 	postLike: string;
+	postUnlike: string;
 	postLikeCount: string;
 	groups: string;
 	group: string;
 	groupJoin: string;
 	groupLeave: string;
+	profilesSearch: string;
+	csat: string;
+	csatMetrics: string;
+	image: string;
 }
 
 export interface AppConfig {
@@ -121,6 +128,8 @@ export interface AppConfig {
 	createGroupConfig: ViewCreateGroupConfig;
 	createPostConfig: ViewCreatePostConfig;
 	editPostConfig: ViewPostEditConfig;
+	questionConfig: ViewQuestionConfig;
+	metricsConfig: ViewMetricsConfig;
 }
 
 export interface AppStores {
@@ -203,6 +212,14 @@ class App {
 			this._config.editPostConfig,
 			this._root,
 		);
+		const questionView = new ViewQuestion(
+			this._config.questionConfig,
+			this._root,
+		);
+		const metricsView = new ViewMetrics(
+			this._config.metricsConfig,
+			this._root,
+		);
 		const routerConfig: RouterConfig = [
 			{
 				path: PAGE_LINKS.feed,
@@ -253,6 +270,14 @@ class App {
 				view: postEditView,
 			},
 			{
+				path: PAGE_LINKS.question,
+				view: questionView,
+			},
+			{
+				path: PAGE_LINKS.metrics,
+				view: metricsView,
+			},
+			{
 				path: PAGE_LINKS.profile, // Должен быть последним
 				view: profileView,
 			},
@@ -298,11 +323,14 @@ class App {
 		this._stores.home.subscribe(ACTION_MENU_TYPES.titleClick);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.updateProfileLinkHref);
 		this._stores.home.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
+		this._stores.home.subscribe(ACTION_HEADER_TYPES.searchResultsSwitch);
 		this._stores.home.subscribe(
 			ACTION_PROFILE_TYPES.getYourOwnProfileSuccess,
 		);
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.getHeaderSuccess);
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.updateProfile);
+		this._stores.home.subscribe(ACTION_PROFILE_TYPES.searchSuccess);
+		this._stores.home.subscribe(ACTION_PROFILE_TYPES.searchFail);
 
 		this._stores.login.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.login.subscribe(ACTION_APP_TYPES.goTo);
@@ -324,13 +352,10 @@ class App {
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.update);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.likeSuccess);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.likeFail);
-		this._stores.feed.subscribe(ACTION_POST_TYPES.likeCountSuccess);
-		this._stores.feed.subscribe(ACTION_POST_TYPES.likeCountFail);
 
 		this._stores.profile.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.profile.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
-		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.goToProfile);
 		this._stores.profile.subscribe(
 			ACTION_PROFILE_TYPES.profileRequestSuccess,
 		);
@@ -352,8 +377,6 @@ class App {
 		this._stores.profile.subscribe(ACTION_FRIENDS_TYPES.acceptSuccess);
 		this._stores.profile.subscribe(ACTION_POST_TYPES.likeSuccess);
 		this._stores.profile.subscribe(ACTION_POST_TYPES.likeFail);
-		this._stores.profile.subscribe(ACTION_POST_TYPES.likeCountSuccess);
-		this._stores.profile.subscribe(ACTION_POST_TYPES.likeCountFail);
 
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.subscribeSuccess);
@@ -460,6 +483,10 @@ class App {
 
 		postEditView.register(this._stores.home);
 		postEditView.register(this._stores.postEdit);
+
+		questionView.register(this._stores.home);
+
+		metricsView.register(this._stores.home);
 	}
 
 	get root(): Root {

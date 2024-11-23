@@ -40,6 +40,9 @@ export const PAGE_URLS = {
 	groups: '/groups',
 	createGroup: '/create-group',
 	groupPage: '/groups', // изменить
+	csat: '/csat/question',
+	question: '/csat/question',
+	metrics: '/csat/metrics',
 };
 
 export const PAGE_LINKS = { ...PAGE_URLS };
@@ -117,6 +120,8 @@ const homeConfig: HomeConfig = {
 				name: '',
 				avatar: 'img/avatar.png',
 			},
+			showSearchResults: false,
+			profilesSearch: [],
 		},
 		content: {
 			key: 'content',
@@ -128,6 +133,11 @@ const homeConfig: HomeConfig = {
 			key: 'aside',
 			className: 'aside',
 		},
+	},
+	csat: {
+		key: 'csat',
+		src: PAGE_LINKS.csat,
+		show: false,
 	},
 };
 
@@ -472,11 +482,16 @@ const URL: URLInterface = DEBUG
 			chat: '',
 			chatWS: '',
 			postLike: '',
+			postUnlike: '',
 			postLikeCount: '',
 			groups: '',
 			group: '',
 			groupJoin: '',
 			groupLeave: '',
+			profilesSearch: '',
+			csat: '',
+			csatMetrics: '',
+			image: '',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -498,13 +513,18 @@ const URL: URLInterface = DEBUG
 			post: ROOT + apiv1 + '/feed/{id}',
 			messages: ROOT + apiv1 + '/messages/chats',
 			chat: ROOT + apiv1 + '/messages/chat/{id}',
-			chatWS: ROOT_WS + apiv1 + '/ws',
+			chatWS: ROOT_WS + apiv1 + 'message/ws',
 			postLike: ROOT + apiv1 + '/feed/{id}/like',
+			postUnlike: ROOT + apiv1 + '/feed/{id}/unlike',
 			postLikeCount: ROOT + apiv1 + '/like/count/post/{id}',
 			groups: ROOT + apiv1 + '/community',
 			group: ROOT + apiv1 + '/community/{id}',
 			groupJoin: ROOT + apiv1 + '/community/{id}/join',
 			groupLeave: ROOT + apiv1 + '/community/{id}/leave',
+			profilesSearch: ROOT + apiv1 + '/profile/search',
+			csat: ROOT + apiv1 + '/csat',
+			csatMetrics: ROOT + apiv1 + '/csat/metrics',
+			image: ROOT + '/image',
 		};
 
 const config: AppConfig = {
@@ -523,6 +543,60 @@ const config: AppConfig = {
 	createGroupConfig,
 	groupPageConfig,
 	editPostConfig,
+	questionConfig: {
+		question: {
+			id: 1,
+			key: 'question',
+			name: 'Насколько вы готовы рекомендовать  Vilka друзьям и знакомым?',
+			scoresConfig: [
+				{
+					key: '1',
+					id: 1,
+					color: `score-${1}`,
+				},
+				{
+					key: '2',
+					id: 2,
+					color: `score-${2}`,
+				},
+				{
+					key: '3',
+					id: 3,
+					color: `score-${3}`,
+				},
+				{
+					key: '4',
+					id: 4,
+					color: `score-${4}`,
+				},
+				{
+					key: '5',
+					id: 5,
+					color: `score-${5}`,
+				},
+			],
+		},
+	},
+	metricsConfig: {
+		metrics: {
+			key: 'metrics',
+			id: 1,
+			metricsConfig: [
+				{
+					key: 'score',
+					id: 1,
+					name: 'Насколько вы довольны Vilka?',
+					average: 4,
+				},
+				{
+					key: 'score',
+					id: 2,
+					name: 'Оцените общение в сервисе',
+					average: 4,
+				},
+			],
+		},
+	},
 };
 
 export const validators: Record<string, (value: string | File) => string> = {
@@ -536,5 +610,18 @@ export const validators: Record<string, (value: string | File) => string> = {
 	bio: (value) => Validator.validatePost(value as string),
 	avatar: (value) => Validator.validateImg(value as File),
 };
+
+interface Question {
+	name: string;
+}
+
+export const questionNames: Question[] = [
+	{
+		name: 'Насколько вы довольны Vilka?',
+	},
+	{
+		name: 'Оцените общение в сервисе',
+	},
+];
 
 export default config;
