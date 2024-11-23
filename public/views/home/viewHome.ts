@@ -148,8 +148,7 @@ export abstract class ViewHome extends View {
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
-				if (this._components.csat)
-					this._components.csat.config.show = false;
+				if (this._components.csat) this._configHome.csat.show = false;
 				this._render();
 			},
 		});
