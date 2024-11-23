@@ -68,7 +68,7 @@ export class ViewQuestion extends View {
 
 	protected _addHandlers() {
 		this.question.listScores.forEach((score) => {
-			score.scoreButton.handlers.push({
+			score.vnode.handlers.push({
 				event: 'click',
 
 				callback: (event) => {
