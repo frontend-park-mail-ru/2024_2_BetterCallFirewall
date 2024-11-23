@@ -119,7 +119,7 @@ const homeConfig: HomeConfig = {
 	csat: {
 		key: 'csat',
 		src: PAGE_LINKS.csat,
-		show: true,
+		show: false,
 	},
 };
 
@@ -481,7 +481,7 @@ const config: AppConfig = {
 					id: 5,
 					color: `score-${5}`,
 				},
-			]
+			],
 		},
 	},
 	metricsConfig: {
@@ -518,18 +518,17 @@ export const validators: Record<string, (value: string | File) => string> = {
 	avatar: (value) => Validator.validateImg(value as File),
 };
 
-
 interface Question {
-    name: string;
-  }
+	name: string;
+}
 
 export const questionNames: Question[] = [
-    {
-        name: 'Насколько вы довольны Vilka?'
-    },
-    {
-        name: 'Оцените общение в сервисе'
-    },
+	{
+		name: 'Насколько вы довольны Vilka?',
+	},
+	{
+		name: 'Оцените общение в сервисе',
+	},
 ];
 
 export default config;
