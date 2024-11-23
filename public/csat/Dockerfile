@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY package.json .
 
-RUN yarn install
-# RUN npm install
+RUN npm install webpack-cli
+RUN npm install
 
 COPY . .
 
