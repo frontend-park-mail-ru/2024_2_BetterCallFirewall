@@ -1,0 +1,12 @@
+.question {
+    &__scoring {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+    &__bottom {
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+    }
+}

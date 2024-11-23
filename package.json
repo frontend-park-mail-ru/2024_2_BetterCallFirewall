@@ -3,7 +3,7 @@
   "main": "index.js",
   "scripts": {
     "prestart": "npm run compile:templates && npm run compile:bundle",
-    "start": "node ./server/server.js",
+    "start": "node ./server/server.js && node ./public/csat/server/server.js",
     "compile:templates": "find public/ -name '*.hbs' | xargs handlebars -f public/precompiled.js",
     "compile:bundle": "npx webpack",
     "build": "npm run prestart"
