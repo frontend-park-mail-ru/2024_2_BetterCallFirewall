@@ -27,9 +27,9 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			case ACTION_MENU_TYPES.titleClick:
 				router.goToPage(PAGE_LINKS.feed);
 				break;
-			case ACTION_USER_TYPES.unauthorized:
-				router.goToPage(PAGE_LINKS.login);
-				break;
+			// case ACTION_USER_TYPES.unauthorized:
+			// 	router.goToPage(PAGE_LINKS.login);
+			// 	break;
 			case ACTION_CHAT_TYPES.goToChat:
 				router.goToPage((action.data as ActionChatGoToChatData).href);
 				break;
