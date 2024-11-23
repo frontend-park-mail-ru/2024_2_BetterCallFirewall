@@ -7,7 +7,7 @@ export const debounce = <T extends (...arg: any) => void>(
 	return (...args: Parameters<T>) => {
 		clearTimeout(debounceTimeout);
 		debounceTimeout = setTimeout(() => {
-			func(args);
+			func(...args);
 		}, limit);
 	};
 };

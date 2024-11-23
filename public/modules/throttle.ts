@@ -6,11 +6,11 @@ export const throttle = <T extends (...args: any) => void>(
 	let last: number;
 	return (...args: Parameters<T>) => {
 		if (!last) {
-			func(args);
+			func(...args);
 			last = Date.now();
 		}
 		if (Date.now() - last > limit) {
-			func(args);
+			func(...args);
 			last = Date.now();
 		}
 	};
