@@ -101,13 +101,13 @@ export class ViewGroups extends ViewHome {
 					},
 				});
 			} else {
-				group.followGroupButtonVNode.handlers.push({
-					event: 'click',
-					callback: (event) => {
-						event.preventDefault();
-						// api.followGroup(groupConfig.id);
-					},
-				});
+				// group.followGroupButtonVNode.handlers.push({
+				// 	event: 'click',
+				// 	callback: (event) => {
+				// 		event.preventDefault();
+				// 		// api.followGroup(groupConfig.id);
+				// 	},
+				// });
 			}
 			group.groupLinkVNode.handlers.push({
 				event: 'click',
