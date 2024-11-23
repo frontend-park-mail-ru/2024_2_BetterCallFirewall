@@ -1,3 +1,4 @@
+import { VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
 
 export interface CSATConfig extends ComponentConfig {
@@ -10,6 +11,14 @@ export class CSAT extends Component {
 	constructor(config: CSATConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
+	}
+
+	get config(): CSATConfig {
+		return this._config;
+	}
+
+	get exitButtonVNode(): VNode {
+		return this._findVNodeByClass('csat__close-button');
 	}
 
 	render(): string {
