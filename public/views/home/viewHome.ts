@@ -144,6 +144,15 @@ export abstract class ViewHome extends View {
 				}
 			},
 		});
+		this._components.csat?.exitButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				if (this._components.csat)
+					this._components.csat.config.show = false;
+				this._render();
+			},
+		});
 	}
 
 	// true, если до конца документа осталось меньше экрана
