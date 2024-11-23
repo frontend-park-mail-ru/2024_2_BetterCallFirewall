@@ -99,6 +99,10 @@ export interface URLInterface {
 	chatWS: string;
 	postLike: string;
 	postLikeCount: string;
+	groups: string;
+	group: string;
+	groupJoin: string;
+	groupLeave: string;
 }
 
 export interface AppConfig {

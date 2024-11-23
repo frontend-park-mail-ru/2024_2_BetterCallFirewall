@@ -1,6 +1,7 @@
 import { STATUS } from '../api/api';
 import app from '../app';
 import { ChatResponse } from '../models/chat';
+import { ShortGroupResponse } from '../models/group';
 import { HeaderResponse } from '../models/header';
 import { LikeCountResponse } from '../models/likeCount';
 import { MessageResponse } from '../models/message';
@@ -305,6 +306,11 @@ class Ajax {
 		return this._deleteObjectResponse(url);
 	}
 
+	async getGroups(): Promise<AjaxResponse<ShortGroupResponse[]>> {
+		const url = app.config.URL.groups;
+		return this._getShortGroupResponse(url);
+	}
+
 	/**
 	 * Запрос списка чатов
 	 */
@@ -384,6 +390,29 @@ class Ajax {
 		} catch {
 			return { status: response.status, success: false };
 		}
+	}
+
+	private async _getShortGroupResponse(
+		url: string,
+	): Promise<AjaxResponse<ShortGroupResponse[]>> {
+		const request = this._getRequest(url);
+		const response = await this._response(request);
+		let shortGroupResponse: AjaxResponse<ShortGroupResponse[]> = {
+			status: response.status,
+			success: false,
+		};
+		switch (shortGroupResponse.status) {
+			case STATUS.ok: {
+				const body = (await response.json()) as FetchResponse<
+					ShortGroupResponse[]
+				>;
+				shortGroupResponse = Object.assign(
+					shortGroupResponse,
+					body,
+				);
+			}
+		};
+		return shortGroupResponse;
 	}
 
 	/**

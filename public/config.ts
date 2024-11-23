@@ -39,10 +39,11 @@ export const PAGE_URLS = {
 	postEdit: '/post-edit',
 	groups: '/groups',
 	createGroup: '/create-group',
-	groupPage: '/groups/1', // изменить
+	groupPage: '/groups', // изменить
 };
 
 export const PAGE_LINKS = { ...PAGE_URLS };
+PAGE_LINKS.groupPage = '/\\d+';
 PAGE_LINKS.chat += '/\\d+';
 PAGE_LINKS.profile += '/([\\w-]+)';
 
@@ -472,6 +473,10 @@ const URL: URLInterface = DEBUG
 			chatWS: '',
 			postLike: '',
 			postLikeCount: '',
+			groups: '',
+			group: '',
+			groupJoin: '',
+			groupLeave: '',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -496,6 +501,10 @@ const URL: URLInterface = DEBUG
 			chatWS: ROOT_WS + apiv1 + '/ws',
 			postLike: ROOT + apiv1 + '/feed/{id}/like',
 			postLikeCount: ROOT + apiv1 + '/like/count/post/{id}',
+			groups: ROOT + apiv1 + '/community',
+			group: ROOT + apiv1 + '/community/{id}',
+			groupJoin: ROOT + apiv1 + '/community/{id}/join',
+			groupLeave: ROOT + apiv1 + '/community/{id}/leave',
 		};
 
 const config: AppConfig = {
