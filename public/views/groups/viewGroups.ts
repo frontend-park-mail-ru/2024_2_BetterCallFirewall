@@ -92,24 +92,24 @@ export class ViewGroups extends ViewHome {
 	private _addGroupsHandlers(groups: Groups) {
 		groups.listGroups.forEach((group) => {
 			const groupConfig = group.config;
-			// if (groupConfig.isFollow) {
-			// 	group.unfollowGroupButtonVNode.handlers.push({
-			// 		event: 'click',
-			// 		callback: (event) => {
-			// 			event.preventDefault();
-			// 			// api.unfollowGroup(groupConfig.id);
-			// 		},
-			// 	});
-			// }
-            if (!groupConfig.isFollow) {
-				group.followGroupButtonVNode.handlers.push({
+			if (groupConfig.isFollow) {
+				group.unfollowGroupButtonVNode.handlers.push({
 					event: 'click',
 					callback: (event) => {
 						event.preventDefault();
-						// api.followGroup(groupConfig.id);
+						// api.unfollowGroup(groupConfig.id);
 					},
 				});
 			}
+            // if (!groupConfig.isFollow) {
+			// 	group.followGroupButtonVNode.handlers.push({
+			// 		event: 'click',
+			// 		callback: (event) => {
+			// 			event.preventDefault();
+			// 			// api.followGroup(groupConfig.id);
+			// 		},
+			// 	});
+			// }
 			group.groupLinkVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {
