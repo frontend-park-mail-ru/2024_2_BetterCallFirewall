@@ -1,4 +1,5 @@
 import { ACTION_APP_TYPES } from '../actions/actionApp';
+import api from '../api/api';
 import { Root } from '../components';
 import { Question, QuestionConfig } from '../components/Question/Question';
 import { questionNames } from '../config';
@@ -19,6 +20,7 @@ export class ViewQuestion extends View {
 	private _configQuestion: ViewQuestionConfig;
 	private _btnTapped: number = -1;
 	private currentQuestion: number = 0;
+	private arrScores: number[] = [];
 
 	constructor(config: ViewQuestionConfig, root: Root) {
 		super(root);
@@ -33,6 +35,7 @@ export class ViewQuestion extends View {
 		} else {
 			this._configQuestion.question.name = 'Спасибо за ответы!';
 			this._configQuestion.question.scoresConfig = [];
+			api.csatSend(this.arrScores[0], this.arrScores[1]);
 		}
 	}
 
@@ -109,6 +112,8 @@ export class ViewQuestion extends View {
 			callback: (event) => {
 				event.preventDefault();
 				if (this._btnTapped != -1) {
+					this.arrScores.push(this._btnTapped);
+					this._btnTapped = -1;
 					// api.removeFriend(personConfig.id);
 					this.updateConfig();
 					this.render();
