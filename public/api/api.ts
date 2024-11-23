@@ -75,6 +75,7 @@ import {
 } from '../actions/actionUser';
 import app from '../app';
 import dispatcher from '../dispatcher/dispatcher';
+import { GroupPayload } from '../models/group';
 import { PostPayload } from '../models/post';
 import ajax, { QueryParams } from '../modules/ajax';
 
@@ -389,6 +390,39 @@ class API {
 				break;
 			default:
 				this.sendAction(new actionFriendsRemoveFail());
+		}
+	}
+
+	async createGroup(formData: GroupPayload) {
+		const response = await ajax.createGroup(formData);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					return;
+				}
+				// this.sendAction(
+				// 	new ActionGroupsCreateGroupSuccess(),
+				// );
+				break;
+			default:
+				// this.sendAction();
+		}
+	}
+
+	async getGroups() {
+		const response = await ajax.getGroups();
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					// this.sendAction();
+					break;
+				}
+			// this.sendAction(
+			// 	new ActionGroupsGetGroupsSuccess({
+			// 		groups: response.data,
+			// 	}),
+			// );
+			break;
 		}
 	}
 

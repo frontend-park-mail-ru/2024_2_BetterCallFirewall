@@ -1,9 +1,12 @@
 import { ACTION_CREATE_GROUP_TYPES } from '../../actions/actionCreateGroup';
+import api from '../../api/api';
 import { Root } from '../../components';
 import {
 	CreateGroupForm,
 	ICreateGroupFormConfig,
 } from '../../components/CreateGroupForm/CreateGroupForm';
+import { GroupPayload } from '../../models/group';
+import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangeCreateGroup } from '../../stores/storeCreateGroup';
@@ -88,7 +91,7 @@ export class ViewCreateGroup extends ViewHome {
 		super._addHandlers();
 		this._createGroupForm.vnode.handlers.push({
 			event: 'submit',
-			callback: (event) => {
+			callback: async (event) => {
 				event.preventDefault();
 				const validator = new Validator();
 				const formData = validator.validateForm(
@@ -97,10 +100,25 @@ export class ViewCreateGroup extends ViewHome {
 				);
 				if (formData) {
 					if (
-						formData.get('text') ||
-						(formData.get('file') as File).name
+						formData.get('name')
 					) {
-						// api.createGroup(formData);
+						const fileStr = await fileToString(
+							formData.get('file') as File,
+						);
+						if (fileStr === null) {
+							this._createGroupForm.printError(
+								'Что-то пошло не так',
+							);
+							return;
+						}
+						const groupPayload: GroupPayload = {
+							group_content: {
+								name: formData.get('name') as string,
+								about: formData.get('about') as string,
+								avatar: fileStr,
+							},
+						};
+						api.createGroup(groupPayload);
 						this._createGroupForm.clearError();
 					} else {
 						this._createGroupForm.printError(

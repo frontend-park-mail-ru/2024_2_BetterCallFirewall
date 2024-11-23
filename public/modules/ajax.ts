@@ -1,7 +1,7 @@
 import { STATUS } from '../api/api';
 import app from '../app';
 import { ChatResponse } from '../models/chat';
-import { ShortGroupResponse } from '../models/group';
+import { GroupPayload, ShortGroupResponse } from '../models/group';
 import { CsatResult } from '../models/csatResult';
 import { HeaderResponse } from '../models/header';
 import { MessageResponse } from '../models/message';
@@ -312,6 +312,13 @@ class Ajax {
 	async getGroups(): Promise<AjaxResponse<ShortGroupResponse[]>> {
 		const url = app.config.URL.groups;
 		return this._getShortGroupResponse(url);
+	}
+	// async deletePost(postId: number): Promise<AjaxResponse<object>> {
+	async createGroup(
+		formData: GroupPayload,
+	): Promise<AjaxResponse<object>> {
+		const request = this._postRequest(app.config.URL.groups, formData);
+		return this._postResponse(request);
 	}
 
 	/**
