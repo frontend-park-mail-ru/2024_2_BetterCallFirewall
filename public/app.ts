@@ -89,6 +89,8 @@ export interface URLInterface {
 	postLike: string;
 	postLikeCount: string;
 	profilesSearch: string;
+	csat: string;
+	csatMetrics: string;
 }
 
 export interface AppConfig {
@@ -424,7 +426,7 @@ class App {
 		postEditView.register(this._stores.postEdit);
 
 		questionView.register(this._stores.home);
-		
+
 		metricsView.register(this._stores.home);
 	}
 
