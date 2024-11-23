@@ -131,7 +131,15 @@ class Ajax {
 	 */
 	async likePost(postId: number): Promise<AjaxResponse<object>> {
 		const url = app.config.URL.postLike.replace('{id}', `${postId}`);
-		return await this._postObjectResponse(url);
+		return await this._postRequestObjectResponse(url);
+	}
+
+	/**
+	 * Убрать лайк с поста
+	 */
+	async unlikePost(postId: number): Promise<AjaxResponse<object>> {
+		const url = app.config.URL.postUnlike.replace('{id}', `${postId}`);
+		return await this._postRequestObjectResponse(url);
 	}
 
 	/**
@@ -268,7 +276,7 @@ class Ajax {
 	async subscribeToProfile(profileId: number): Promise<AjaxResponse<object>> {
 		let url = app.config.URL.subscribeToProfile;
 		url = url.replace('{id}', `${profileId}`);
-		return this._postObjectResponse(url);
+		return this._postRequestObjectResponse(url);
 	}
 
 	/**
@@ -277,7 +285,7 @@ class Ajax {
 	async acceptFriend(profileId: number): Promise<AjaxResponse<object>> {
 		let url = app.config.URL.acceptFriend;
 		url = url.replace('{id}', `${profileId}`);
-		return this._postObjectResponse(url);
+		return this._postRequestObjectResponse(url);
 	}
 
 	/**
@@ -288,7 +296,7 @@ class Ajax {
 	): Promise<AjaxResponse<object>> {
 		let url = app.config.URL.unsubscribeFromProfile;
 		url = url.replace('{id}', `${profileId}`);
-		return this._postObjectResponse(url);
+		return this._postRequestObjectResponse(url);
 	}
 
 	/**
@@ -492,7 +500,7 @@ class Ajax {
 	/**
 	 * Пустой post запрос и ответ в виде object
 	 */
-	private async _postObjectResponse(
+	private async _postRequestObjectResponse(
 		url: string,
 	): Promise<AjaxResponse<object>> {
 		const request = this._postRequest(url, {});

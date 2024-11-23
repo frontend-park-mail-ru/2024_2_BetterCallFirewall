@@ -126,6 +126,10 @@ class API {
 				this.profileSearch(actionData.str, actionData.userId);
 				break;
 			}
+			case ACTION_POST_TYPES.unlike:
+				{
+				}
+				break;
 		}
 	}
 
@@ -494,6 +498,17 @@ class API {
 
 	async likePost(postId: number) {
 		const response = await ajax.likePost(postId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionPostLikeSuccess(postId));
+				break;
+			default:
+				this.sendAction(new ActionPostLikeFail());
+		}
+	}
+
+	async unlikePost(postId: number) {
+		const response = await ajax.unlikePost(postId);
 		switch (response.status) {
 			case STATUS.ok:
 				this.sendAction(new ActionPostLikeSuccess(postId));

@@ -87,6 +87,7 @@ export interface URLInterface {
 	chat: string;
 	chatWS: string;
 	postLike: string;
+	postUnlike: string;
 	postLikeCount: string;
 	profilesSearch: string;
 	csat: string;

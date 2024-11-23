@@ -3,7 +3,7 @@ import {
 	ActionFeedPostsRequest,
 	ActionFeedUpdate,
 } from '../../actions/actionFeed';
-import { ActionPostLike } from '../../actions/actionPost';
+import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
 import { PostConfig, Post, Root } from '../../components';
 import { throttle } from '../../modules/throttle';
 import { update } from '../../modules/vdom';
@@ -120,7 +120,7 @@ export class ViewFeed extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					this._likePost(post.config.id);
+					this._likePost(post);
 				},
 			});
 			post.authorLinkVNode.handlers.push({
@@ -133,7 +133,11 @@ export class ViewFeed extends ViewHome {
 		});
 	}
 
-	private _likePost = throttle((postId: number) => {
-		this.sendAction(new ActionPostLike(postId));
+	private _likePost = throttle((post: Post) => {
+		if (post.config.likedByUser) {
+			this.sendAction(new ActionPostUnlike(post.config.id));
+		} else {
+			this.sendAction(new ActionPostLike(post.config.id));
+		}
 	}, 1000);
 }
