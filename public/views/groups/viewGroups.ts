@@ -69,7 +69,7 @@ export class ViewGroups extends ViewHome {
 					key: 'group',
 					name: 'Мысли джокера',
 					avatar: './img.jpg',
-					isFollow: true,
+					isFollow: false,
 				},
 			],
 		};
