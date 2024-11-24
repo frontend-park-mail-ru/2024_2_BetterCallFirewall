@@ -1,9 +1,7 @@
-
 import { Action } from '../actions/action';
 import config from '../config';
 import deepClone from '../modules/deepClone';
 import { ViewGroupsConfig } from '../views/groups/viewGroups';
-
 
 const initialState = deepClone(config.groupsConfig);
 
@@ -14,5 +12,6 @@ export const reducerGroups = (
 	if (!action) {
 		return state;
 	}
-	return state;
+	const newState = deepClone(state);
+	return newState;
 };

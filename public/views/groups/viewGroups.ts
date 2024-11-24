@@ -90,7 +90,7 @@ export class ViewGroups extends ViewHome {
 	}
 
 	updateViewGroups(data: ViewGroupsConfig) {
-		this._configGroups = data;
+		this._configGroups = Object.assign(this._configGroups, data);
 		this._render();
 	}
 
