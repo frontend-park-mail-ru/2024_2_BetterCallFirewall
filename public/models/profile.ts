@@ -1,6 +1,7 @@
 import { ChatConfig } from '../components/Chat/Chat';
 import { FriendConfig } from '../components/Friend/Friend';
 import { ProfileConfig } from '../components/Profile/Profile';
+import { SearchResultConfig } from '../components/SearchResult/SearchResult';
 import { PAGE_LINKS } from '../config';
 import deepClone from '../modules/deepClone';
 import parseImage from '../modules/parseImage';
@@ -78,4 +79,15 @@ export const toChatConfig = (
 	newChatConfig.companionName = `${response.first_name} ${response.last_name}`;
 	newChatConfig.companionAvatar = parseImage(response.avatar);
 	return newChatConfig;
+};
+
+export const shortProfileResponseToSearchResultConfig = (
+	respone: ShortProfileResponse,
+): SearchResultConfig => {
+	return {
+		id: respone.id,
+		key: `search-result-${respone.id}`,
+		avatar: parseImage(respone.avatar),
+		name: `${respone.first_name} ${respone.last_name}`,
+	};
 };

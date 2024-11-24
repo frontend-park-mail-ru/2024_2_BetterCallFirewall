@@ -32,7 +32,7 @@ export interface AjaxResponse<T> extends FetchResponse<T> {
 	status: number;
 }
 
-export type QueryParams = Record<string, string>;
+export type QueryParams = Record<string, string | undefined>;
 
 const replaceId = (url: string, id: number): string => {
 	return url.replace('{id}', `${id}`);
@@ -44,7 +44,9 @@ const insertQueryParams = (baseUrl: string, params?: QueryParams) => {
 	}
 	const url = new URL(baseUrl);
 	Object.entries(params).forEach(([key, value]) => {
-		url.searchParams.append(key, value);
+		if (value) {
+			url.searchParams.append(key, value);
+		}
 	});
 	return url.toString();
 };
@@ -314,9 +316,7 @@ class Ajax {
 		return this._getShortGroupResponse(url);
 	}
 	// async deletePost(postId: number): Promise<AjaxResponse<object>> {
-	async createGroup(
-		formData: GroupPayload,
-	): Promise<AjaxResponse<object>> {
+	async createGroup(formData: GroupPayload): Promise<AjaxResponse<object>> {
 		const request = this._postRequest(app.config.URL.groups, formData);
 		return this._postResponse(request);
 	}
@@ -346,11 +346,11 @@ class Ajax {
 	 */
 	async profilesSearch(
 		str: string,
-		userId: number,
+		userId?: number,
 	): Promise<AjaxResponse<ShortProfileResponse[]>> {
 		const url = insertQueryParams(app.config.URL.profilesSearch, {
 			q: str,
-			id: `${userId}`,
+			id: userId ? `${userId}` : undefined,
 		});
 		return this._genericRequestResponse(url, 'get');
 	}
@@ -463,12 +463,9 @@ class Ajax {
 				const body = (await response.json()) as FetchResponse<
 					ShortGroupResponse[]
 				>;
-				shortGroupResponse = Object.assign(
-					shortGroupResponse,
-					body,
-				);
+				shortGroupResponse = Object.assign(shortGroupResponse, body);
 			}
-		};
+		}
 		return shortGroupResponse;
 	}
 

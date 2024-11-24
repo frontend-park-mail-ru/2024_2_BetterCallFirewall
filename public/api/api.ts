@@ -124,7 +124,7 @@ class API {
 				break;
 			case ACTION_PROFILE_TYPES.search: {
 				const actionData = action.data as ActionProfileSearchData;
-				this.profileSearch(actionData.str, actionData.userId);
+				this.profileSearch(actionData.str, actionData.lastId);
 				break;
 			}
 			case ACTION_POST_TYPES.unlike:
@@ -405,7 +405,7 @@ class API {
 				// );
 				break;
 			default:
-				// this.sendAction();
+			// this.sendAction();
 		}
 	}
 
@@ -417,12 +417,12 @@ class API {
 					// this.sendAction();
 					break;
 				}
-			// this.sendAction(
-			// 	new ActionGroupsGetGroupsSuccess({
-			// 		groups: response.data,
-			// 	}),
-			// );
-			break;
+				// this.sendAction(
+				// 	new ActionGroupsGetGroupsSuccess({
+				// 		groups: response.data,
+				// 	}),
+				// );
+				break;
 		}
 	}
 
@@ -551,7 +551,7 @@ class API {
 		}
 	}
 
-	async profileSearch(str: string, userId: number) {
+	async profileSearch(str: string, userId?: number) {
 		const response = await ajax.profilesSearch(str, userId);
 		switch (response.status) {
 			case STATUS.ok:
