@@ -53,8 +53,12 @@ export const reducerHeader = (
 					);
 				}),
 			);
+			newState.showSearchResults = true;
 			return newState;
 		}
+		case ACTION_PROFILE_TYPES.searchFail:
+			newState.showSearchResults = true;
+			return newState;
 	}
 	return newState;
 };
