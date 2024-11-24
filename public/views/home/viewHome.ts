@@ -274,6 +274,7 @@ export abstract class ViewHome extends View {
 							PAGE_URLS.profile + `/${profileSearch.config.id}`,
 						),
 					);
+					this.sendAction(new ActionHeaderSearchResultsSwitch(false));
 				},
 			});
 		});
