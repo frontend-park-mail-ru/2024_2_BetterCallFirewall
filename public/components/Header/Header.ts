@@ -16,6 +16,7 @@ export interface HeaderConfig extends ComponentConfig {
 	profile: Profile;
 	showSearchResults: boolean;
 	profilesSearch: SearchResultConfig[];
+	groupsSearch: SearchResultConfig[];
 }
 
 /**
@@ -24,6 +25,7 @@ export interface HeaderConfig extends ComponentConfig {
 export class Header extends Component {
 	protected _config: HeaderConfig;
 	private _profilesSearch: SearchResult[] = [];
+	private _groupsSearch: SearchResult[] = [];
 
 	/**
 	 * Instance of Header
@@ -95,10 +97,16 @@ export class Header extends Component {
 		this._profilesSearch = this._config.profilesSearch.map((config) => {
 			return new SearchResult(config, this);
 		});
+		this._groupsSearch = this._config.groupsSearch.map((config) => {
+			return new SearchResult(config, this);
+		});
 		this._templateContext = {
 			...this._templateContext,
 			profilesSearch: this._profilesSearch.map((profileSearch) => {
 				return profileSearch.render();
+			}),
+			groupsSearch: this._groupsSearch.map((groupSearch) => {
+				return groupSearch.render();
 			}),
 		};
 	}

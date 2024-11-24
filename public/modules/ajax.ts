@@ -1,7 +1,11 @@
 import { STATUS } from '../api/api';
 import app from '../app';
 import { ChatResponse } from '../models/chat';
-import { FullGroupResponse, GroupPayload, ShortGroupResponse } from '../models/group';
+import {
+	FullGroupResponse,
+	GroupPayload,
+	ShortGroupResponse,
+} from '../models/group';
 import { CsatResult } from '../models/csatResult';
 import { HeaderResponse } from '../models/header';
 import { MessageResponse } from '../models/message';
@@ -321,7 +325,9 @@ class Ajax {
 		return this._postResponse(request);
 	}
 
-	async getGroupPage(groupPagePath: string): Promise<AjaxResponse<FullGroupResponse>> {
+	async getGroupPage(
+		groupPagePath: string,
+	): Promise<AjaxResponse<FullGroupResponse>> {
 		const request = this._getRequest(app.config.URL.group + groupPagePath);
 		const response = await this._response(request);
 		let groupPageResponse: AjaxResponse<FullGroupResponse> = {
@@ -330,7 +336,8 @@ class Ajax {
 		};
 		switch (groupPageResponse.status) {
 			case STATUS.ok: {
-				const body = (await response.json()) as FetchResponse<FullGroupResponse>;
+				const body =
+					(await response.json()) as FetchResponse<FullGroupResponse>;
 				groupPageResponse = Object.assign(groupPageResponse, body);
 			}
 		}
@@ -367,6 +374,20 @@ class Ajax {
 		const url = insertQueryParams(app.config.URL.profilesSearch, {
 			q: str,
 			id: userId ? `${userId}` : undefined,
+		});
+		return this._genericRequestResponse(url, 'get');
+	}
+
+	/**
+	 * Поиск групп
+	 */
+	async groupsSearch(
+		str: string,
+		lastId?: number,
+	): Promise<AjaxResponse<ShortGroupResponse[]>> {
+		const url = insertQueryParams(app.config.URL.groupsSearch, {
+			q: str,
+			id: lastId ? `${lastId}` : undefined,
 		});
 		return this._genericRequestResponse(url, 'get');
 	}

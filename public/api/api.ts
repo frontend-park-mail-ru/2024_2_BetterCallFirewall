@@ -34,8 +34,18 @@ import {
 	ActionFriendsGetSubscriptionsSuccess,
 	ActionFriendsGetUsersSuccess,
 } from '../actions/actionFriends';
-import { ACTION_GROUP_PAGE_TYPES, ActionGroupPageRequestData, ActionGroupPageRequestSuccess } from '../actions/actionGroupPage';
-import { ACTION_GROUPS_TYPES, ActionGroupsGetGroupsSuccess } from '../actions/actionGroups';
+import {
+	ACTION_GROUP_PAGE_TYPES,
+	ActionGroupPageRequestData,
+	ActionGroupPageRequestSuccess,
+} from '../actions/actionGroupPage';
+import {
+	ACTION_GROUPS_TYPES,
+	ActionGroupSearchFail,
+	ActionGroupsGetGroupsSuccess,
+	ActionGroupsSearch,
+	ActionGroupsSearchSuccess,
+} from '../actions/actionGroups';
 import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
 	ACTION_MESSAGES_TYPES,
@@ -140,6 +150,10 @@ class API {
 					(action.data as ActionGroupPageRequestData).href,
 				);
 				break;
+		}
+		switch (true) {
+			case action instanceof ActionGroupsSearch:
+				this.groupsSearch(action.data.str, action.data.lastId);
 		}
 	}
 
@@ -444,14 +458,14 @@ class API {
 	async requestGroupPage(href: string) {
 		const response = await ajax.getGroupPage(href);
 		switch (response.status) {
-			case STATUS.ok: 
+			case STATUS.ok:
 				if (!response.data) {
 					return;
 				}
 				this.sendAction(
 					new ActionGroupPageRequestSuccess({
 						groupPageResponse: response.data,
-					})
+					}),
 				);
 				return;
 		}
@@ -596,6 +610,23 @@ class API {
 				break;
 			default:
 				this.sendAction(new ActionProfileSearchFail());
+		}
+	}
+
+	async groupsSearch(str: string, lastId?: number) {
+		const respone = await ajax.groupsSearch(str, lastId);
+		switch (respone.status) {
+			case STATUS.ok:
+				if (respone.data) {
+					this.sendAction(
+						new ActionGroupsSearchSuccess(respone.data),
+					);
+				} else {
+					this.sendAction(new ActionGroupSearchFail());
+				}
+				break;
+			default:
+				this.sendAction(new ActionGroupSearchFail());
 		}
 	}
 

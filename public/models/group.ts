@@ -1,5 +1,6 @@
 import { GroupConfig } from '../components/Group/Group';
 import { GroupPageConfig } from '../components/GroupPage/GroupPage';
+import { SearchResultConfig } from '../components/SearchResult/SearchResult';
 import { PAGE_LINKS } from '../config';
 
 export interface ShortGroupResponse {
@@ -32,10 +33,10 @@ export const toGroupPageConfig = (
 		// 			toPostConfig(postResponse),
 		// 		)
 		// 	: [],
-        posts: [],
+		posts: [],
 		createPostHref: PAGE_LINKS.createPost,
 		// isAuthor: groupResponse.isAuthor,
-        isAdmin: groupResponse.isAdmin,
+		isAdmin: groupResponse.isAdmin,
 	};
 	if (groupPageData.isAdmin) {
 		groupPageData.posts.forEach((post) => {
@@ -56,9 +57,21 @@ export const toGroupsConfig = (
 		name: groupResponse.name,
 		description: groupResponse.about,
 		// isFollow: groupResponse.isFollow,
-        isFollow: false, //
+		isFollow: false, //
 	};
 	return newConfig;
+};
+
+export const shortGroupResponseToSearchResultConfig = (
+	groupResponse: ShortGroupResponse,
+): SearchResultConfig => {
+	return {
+		id: groupResponse.id,
+		key: `group-${groupResponse.id}`,
+		avatar: groupResponse.avatar,
+		name: groupResponse.name,
+		description: groupResponse.about,
+	};
 };
 
 export interface GroupPayload {

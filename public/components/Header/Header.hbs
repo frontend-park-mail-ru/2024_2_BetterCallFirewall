@@ -18,6 +18,12 @@
                     {{{this}}}
                 {{/each}}
             {{/if}}
+            {{#if this.groupsSearch.length}}
+                <span class="search__header">Группы</span>
+                {{#each this.groupsSearch}}
+                    {{{this}}}
+                {{/each}}
+            {{/if}}
         </div>
     </div>
     <div class="header__profile">
