@@ -1,3 +1,4 @@
+import { HeaderProfile } from '../components';
 import { ChatConfig } from '../components/Chat/Chat';
 import { FriendConfig } from '../components/Friend/Friend';
 import { ProfileConfig } from '../components/Profile/Profile';
@@ -80,6 +81,16 @@ export const toChatConfig = (
 	newChatConfig.companionName = `${response.first_name} ${response.last_name}`;
 	newChatConfig.companionAvatar = parseImage(response.avatar);
 	return newChatConfig;
+};
+
+export const toHeaderProfile = (
+	profileResponse: ShortProfileResponse,
+): HeaderProfile => {
+	return {
+		id: profileResponse.id,
+		name: `${profileResponse.first_name} ${profileResponse.last_name}`,
+		avatar: parseImage(profileResponse.avatar),
+	};
 };
 
 export const shortProfileResponseToSearchResultConfig = (
