@@ -183,7 +183,10 @@ class App {
 			this._config.friendsConfig,
 			this._root,
 		);
-		const groupsView = new ViewGroups(this._config.groupsConfig, this._root);
+		const groupsView = new ViewGroups(
+			this._config.groupsConfig,
+			this._root,
+		);
 		const groupPageView = new ViewGroupPage(
 			this._config.groupPageConfig,
 			this._root,
@@ -312,7 +315,6 @@ class App {
 		this._stores.app.subscribe(ACTION_MENU_TYPES.titleClick);
 		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 		this._stores.app.subscribe(ACTION_CHAT_TYPES.goToChat);
-		this._stores.app.subscribe(ACTION_CREATE_POST_TYPES.goToCreatePost);
 		this._stores.app.subscribe(ACTION_CREATE_GROUP_TYPES.goToCreateGroup);
 		this._stores.app.subscribe(ACTION_PROFILE_TYPES.getHeaderFail);
 		this._stores.app.subscribe(ACTION_PROFILE_EDIT_TYPES.goToProfileEdit);
@@ -423,9 +425,6 @@ class App {
 		);
 		this._stores.createPost.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
 		this._stores.createPost.subscribe(ACTION_FEED_TYPES.postCreateFail);
-		this._stores.createPost.subscribe(
-			ACTION_CREATE_POST_TYPES.goToCreatePost,
-		);
 
 		this._stores.createGroup.subscribe(
 			ACTION_CREATE_GROUP_TYPES.goToCreateGroup,
@@ -465,7 +464,6 @@ class App {
 
 		this._stores.groups.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.groups.subscribe(ACTION_GROUPS_TYPES.getGroupsSuccess);
-
 
 		loginView.register(this._stores.login);
 

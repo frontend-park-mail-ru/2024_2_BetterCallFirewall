@@ -1,7 +1,5 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
-import {
-	ActionUpdateCreatePost,
-} from '../../actions/actionCreatePost';
+import { ActionUpdateCreatePost } from '../../actions/actionCreatePost';
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
 import api from '../../api/api';
 import { Root } from '../../components';
