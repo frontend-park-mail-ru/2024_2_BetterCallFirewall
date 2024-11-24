@@ -49,7 +49,6 @@ export const PAGE_LINKS = { ...PAGE_URLS };
 PAGE_LINKS.groupPage += '/\\d+';
 PAGE_LINKS.chat += '/\\d+';
 PAGE_LINKS.profile += '/([\\w-]+)';
-PAGE_LINKS.profileEdit += '/\\d+';
 
 const homeConfig: HomeConfig = {
 	menu: {
