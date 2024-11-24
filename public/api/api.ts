@@ -37,7 +37,8 @@ import {
 import {
 	ActionGroupsEditFail,
 	ActionGroupsEditSuccess,
-	ActionGroupsUnfollowGroupData,
+	ActionGroupsFollowGroupData,
+	ActionGroupsFollowGroupSuccess,
 	ActionGroupsUnfollowGroupSuccess,
 } from '../actions/actionGroups';
 import {
@@ -159,7 +160,12 @@ class API {
 				break;
 			case ACTION_GROUPS_TYPES.groupsUnfollowGroup:
 				this.unfollowGroup(
-					(action.data as ActionGroupsUnfollowGroupData).groupId,
+					(action.data as ActionGroupsFollowGroupData).groupId,
+				);
+				break;
+			case ACTION_GROUPS_TYPES.groupsFollowGroup:
+				this.followGroup(
+					(action.data as ActionGroupsFollowGroupData).groupId,
 				);
 				break;
 		}
@@ -507,6 +513,14 @@ class API {
 		switch (response.status) {
 			case STATUS.ok:
 				this.sendAction(new ActionGroupsUnfollowGroupSuccess());
+		}
+	}
+
+	async followGroup(groupId: number) {
+		const response = await ajax.followGroup(groupId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionGroupsFollowGroupSuccess());
 		}
 	}
 

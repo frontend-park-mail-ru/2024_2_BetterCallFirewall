@@ -487,6 +487,9 @@ class App {
 		this._stores.groups.subscribe(
 			ACTION_GROUPS_TYPES.groupsUnfollowGroupSuccess,
 		);
+		this._stores.groups.subscribe(
+			ACTION_GROUPS_TYPES.groupsFollowGroupSuccess,
+		);
 		this._stores.groups.subscribe(ACTION_GROUPS_TYPES.getGroupsSuccess);
 
 		this._stores.groupEdit.subscribe(ACTION_GROUPS_TYPES.editSuccess);

@@ -6,6 +6,8 @@ export const ACTION_GROUPS_TYPES = {
 	getGroupsSuccess: 'actionGroupsGetGroupsSuccess',
 	groupsUnfollowGroup: 'actionGroupsUnfollowGroup',
 	groupsUnfollowGroupSuccess: 'actionGroupUnfollowSuccess',
+	groupsFollowGroup: 'actionGroupsFollowGroup',
+	groupsFollowGroupSuccess: 'actionGroupFollowSuccess',
 	search: 'actionGroupsSearch',
 	searchSuccess: 'actionGroupsSearchSuccess',
 	searchFail: 'actionGroupsSearchFail',
@@ -50,13 +52,13 @@ export class ActionGroupsSearch implements Action {
 	}
 }
 
-export interface ActionGroupsUnfollowGroupData {
+export interface ActionGroupsFollowGroupData {
 	groupId: number;
 }
 
 export class ActionGroupsUnfollowGroup implements Action {
 	type: ActionType;
-	data: ActionGroupsUnfollowGroupData;
+	data: ActionGroupsFollowGroupData;
 	constructor(groupId: number) {
 		this.type = ACTION_GROUPS_TYPES.groupsUnfollowGroup;
 		this.data = { groupId: groupId };
@@ -66,10 +68,32 @@ export class ActionGroupsUnfollowGroup implements Action {
 export class ActionGroupsUnfollowGroupSuccess implements Action {
 	type: ActionType;
 	data: object = {};
+
 	constructor() {
 		this.type = ACTION_GROUPS_TYPES.groupsUnfollowGroupSuccess;
 	}
 }
+
+export class ActionGroupsFollowGroup implements Action {
+	type: ActionType;
+	data: ActionGroupsFollowGroupData;
+
+	constructor(groupId: number) {
+		this.type = ACTION_GROUPS_TYPES.groupsFollowGroup;
+		this.data = { groupId: groupId };
+	}
+}
+
+export class ActionGroupsFollowGroupSuccess implements Action {
+	type: ActionType;
+	data: object = {};
+
+	constructor() {
+		this.type = ACTION_GROUPS_TYPES.groupsFollowGroupSuccess;
+	}
+} 
+
+
 export interface ActionGroupsSearchSuccessData {
 	groupsResponses: ShortGroupResponse[];
 }

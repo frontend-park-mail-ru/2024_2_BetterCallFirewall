@@ -1,5 +1,5 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
-import { ACTION_GROUPS_TYPES, ActionGroupsGetGroups, ActionGroupsUnfollowGroup } from '../../actions/actionGroups';
+import { ACTION_GROUPS_TYPES, ActionGroupsFollowGroup, ActionGroupsGetGroups, ActionGroupsUnfollowGroup } from '../../actions/actionGroups';
 import { Root } from '../../components';
 import { Groups, GroupsConfig } from '../../components/Groups/Groups';
 import { PAGE_LINKS, PAGE_URLS } from '../../config';
@@ -39,6 +39,7 @@ export class ViewGroups extends ViewHome {
 	handleChange(change: ChangeGroups): void {
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_GROUPS_TYPES.groupsFollowGroupSuccess:
 			case ACTION_GROUPS_TYPES.groupsUnfollowGroupSuccess:
 				this.sendAction(new ActionGroupsGetGroups());
 				break;
@@ -101,6 +102,7 @@ export class ViewGroups extends ViewHome {
 					event: 'click',
 					callback: (event) => {
 						event.preventDefault();
+						this.sendAction(new ActionGroupsFollowGroup(group.id));
 						// api.followGroup(groupConfig.id);
 					},
 				});
