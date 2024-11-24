@@ -41,7 +41,7 @@ export const toProfileConfig = (
 				)
 			: [],
 		createPostHref: PAGE_LINKS.createPost,
-		editProfileHref: PAGE_URLS.profileEdit + `/${profileResponse.id}`,
+		editProfileHref: PAGE_URLS.profileEdit,
 		isAuthor: profileResponse.is_author,
 		isFriend: profileResponse.is_friend,
 		isSubscriber: profileResponse.is_subscriber,
