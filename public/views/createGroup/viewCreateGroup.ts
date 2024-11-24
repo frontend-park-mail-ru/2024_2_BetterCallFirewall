@@ -114,7 +114,7 @@ export class ViewCreateGroup extends ViewHome {
 						const groupPayload: GroupPayload = {
 							group_content: {
 								name: formData.get('name') as string,
-								about: formData.get('about') as string,
+								about: formData.get('description') as string,
 								avatar: fileStr,
 							},
 						};

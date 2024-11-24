@@ -396,13 +396,13 @@ const groupFormConfig: ICreateGroupFormConfig = {
 			key: 'name',
 			type: 'text',
 			placeholder: 'Название группы',
-			name: 'Название группы',
+			name: 'name',
 		},
 		description: {
 			key: 'description',
 			type: 'text',
 			placeholder: 'Описание группы',
-			name: 'Описание группы',
+			name: 'description',
 		},
 		avatar: {
 			key: 'avatar',
