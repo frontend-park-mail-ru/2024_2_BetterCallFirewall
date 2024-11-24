@@ -303,6 +303,7 @@ const profileComponentConfig: ProfileConfig = {
 	groupsCount: -1,
 	img: '',
 	createPostHref: PAGE_LINKS.createPost,
+	editProfileHref: PAGE_LINKS.profileEdit,
 	isAuthor: false,
 	isFriend: false,
 	isSubscriber: false,

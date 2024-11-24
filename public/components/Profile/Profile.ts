@@ -20,6 +20,7 @@ export interface ProfileConfig extends ComponentConfig {
 	currentUser?: boolean;
 	posts: PostConfig[];
 	createPostHref: string;
+	editProfileHref: string;
 	isAuthor: boolean;
 	isFriend: boolean;
 	isSubscriber: boolean;

@@ -94,6 +94,7 @@ import dispatcher from '../dispatcher/dispatcher';
 import { GroupPayload } from '../models/group';
 import { PostPayload } from '../models/post';
 import ajax, { QueryParams } from '../modules/ajax';
+import { ProfilePayload } from '../models/profile';
 
 export const STATUS = {
 	ok: 200,
@@ -496,8 +497,8 @@ class API {
 		}
 	}
 
-	async createPost(formData: PostPayload) {
-		const response = await ajax.createPost(formData);
+	async createPost(formData: PostPayload, query: string) {
+		const response = await ajax.createPost(formData, query);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
@@ -541,7 +542,7 @@ class API {
 		}
 	}
 
-	async editProfile(formData: FormData) {
+	async editProfile(formData: ProfilePayload) {
 		const response = await ajax.editProfile(formData);
 		switch (response.status) {
 			case STATUS.ok:

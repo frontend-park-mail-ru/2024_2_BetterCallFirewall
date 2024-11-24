@@ -477,7 +477,9 @@ class App {
 		this._stores.groupPage.subscribe(ACTION_APP_TYPES.goTo);
 
 		this._stores.groups.subscribe(ACTION_APP_TYPES.goTo);
-		this._stores.groups.subscribe(ACTION_GROUPS_TYPES.groupsUnfollowGroupSuccess);
+		this._stores.groups.subscribe(
+			ACTION_GROUPS_TYPES.groupsUnfollowGroupSuccess,
+		);
 		this._stores.groups.subscribe(ACTION_GROUPS_TYPES.getGroupsSuccess);
 
 		loginView.register(this._stores.login);

@@ -1,8 +1,9 @@
+import { HeaderProfile } from '../components';
 import { ChatConfig } from '../components/Chat/Chat';
 import { FriendConfig } from '../components/Friend/Friend';
 import { ProfileConfig } from '../components/Profile/Profile';
 import { SearchResultConfig } from '../components/SearchResult/SearchResult';
-import { PAGE_LINKS } from '../config';
+import { PAGE_LINKS, PAGE_URLS } from '../config';
 import deepClone from '../modules/deepClone';
 import parseImage from '../modules/parseImage';
 import { PostResponse, toPostConfig } from './post';
@@ -41,6 +42,7 @@ export const toProfileConfig = (
 				)
 			: [],
 		createPostHref: PAGE_LINKS.createPost,
+		editProfileHref: PAGE_URLS.profileEdit,
 		isAuthor: profileResponse.is_author,
 		isFriend: profileResponse.is_friend,
 		isSubscriber: profileResponse.is_subscriber,
@@ -81,6 +83,16 @@ export const toChatConfig = (
 	return newChatConfig;
 };
 
+export const toHeaderProfile = (
+	profileResponse: ShortProfileResponse,
+): HeaderProfile => {
+	return {
+		id: profileResponse.id,
+		name: `${profileResponse.first_name} ${profileResponse.last_name}`,
+		avatar: parseImage(profileResponse.avatar),
+	};
+};
+
 export const shortProfileResponseToSearchResultConfig = (
 	respone: ShortProfileResponse,
 ): SearchResultConfig => {
@@ -91,3 +103,10 @@ export const shortProfileResponseToSearchResultConfig = (
 		name: `${respone.first_name} ${respone.last_name}`,
 	};
 };
+
+export interface ProfilePayload {
+	first_name: string;
+	last_name: string;
+	bio: string;
+	avatar: string;
+}

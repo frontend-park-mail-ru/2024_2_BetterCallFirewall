@@ -10,7 +10,11 @@ import { CsatResult } from '../models/csatResult';
 import { HeaderResponse } from '../models/header';
 import { MessageResponse } from '../models/message';
 import { PostPayload, PostResponse } from '../models/post';
-import { FullProfileResponse, ShortProfileResponse } from '../models/profile';
+import {
+	FullProfileResponse,
+	ProfilePayload,
+	ShortProfileResponse,
+} from '../models/profile';
 
 type AjaxPromiseConfig = {
 	request: Request;
@@ -108,8 +112,12 @@ class Ajax {
 	 */
 	async createPost(
 		formData: PostPayload,
+		query: string,
 	): Promise<AjaxResponse<PostResponse>> {
-		const request = this._postRequest(app.config.URL.feed, formData);
+		const request = this._postRequest(
+			app.config.URL.feed + query,
+			formData,
+		);
 		return this._postResponse(request);
 	}
 
@@ -196,14 +204,13 @@ class Ajax {
 	 * Редактировать профиль
 	 */
 	async editProfile(
-		formData: FormData,
+		formData: ProfilePayload,
 	): Promise<AjaxResponse<FullProfileResponse>> {
-		const request = this._formRequest(
+		return this._genericRequestResponse(
 			app.config.URL.profile,
-			formData,
 			'put',
+			formData,
 		);
-		return this._fullProfileResponse(request);
 	}
 
 	/**

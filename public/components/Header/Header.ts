@@ -2,7 +2,7 @@ import { findVNodeByClass, VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
 import { SearchResult, SearchResultConfig } from '../SearchResult/SearchResult';
 
-type Profile = {
+export type HeaderProfile = {
 	id: number;
 	name: string;
 	avatar: string;
@@ -13,7 +13,7 @@ export interface HeaderConfig extends ComponentConfig {
 		img: string;
 		placeholder: string;
 	};
-	profile: Profile;
+	profile: HeaderProfile;
 	showSearchResults: boolean;
 	profilesSearch: SearchResultConfig[];
 	groupsSearch: SearchResultConfig[];
