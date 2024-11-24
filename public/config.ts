@@ -49,6 +49,7 @@ export const PAGE_LINKS = { ...PAGE_URLS };
 PAGE_LINKS.groupPage += '/\\d+';
 PAGE_LINKS.chat += '/\\d+';
 PAGE_LINKS.profile += '/([\\w-]+)';
+PAGE_LINKS.profileEdit += '/\\d+';
 
 const homeConfig: HomeConfig = {
 	menu: {
@@ -300,6 +301,7 @@ const profileComponentConfig: ProfileConfig = {
 	groupsCount: -1,
 	img: '',
 	createPostHref: PAGE_LINKS.createPost,
+	editProfileHref: PAGE_LINKS.profileEdit,
 	isAuthor: false,
 	isFriend: false,
 	isSubscriber: false,
