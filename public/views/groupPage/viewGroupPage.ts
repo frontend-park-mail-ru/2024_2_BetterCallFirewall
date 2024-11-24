@@ -6,7 +6,7 @@ import {
 	GroupPage,
 	GroupPageConfig,
 } from '../../components/GroupPage/GroupPage';
-import { PAGE_LINKS } from '../../config';
+import { PAGE_LINKS, ROOT } from '../../config';
 import { update } from '../../modules/vdom';
 import { ChangeGroupPage } from '../../stores/storeGroupPage';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
@@ -104,7 +104,7 @@ export class ViewGroupPage extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					const url = new URL(PAGE_LINKS.createPost);
+					const url = new URL(PAGE_LINKS.createPost, ROOT);
 					url.searchParams.append(
 						'community',
 						`${this._configGroupPage.groupPage.id}`,

@@ -5,7 +5,6 @@ import {
 	ActionChatGoToChatData,
 } from '../actions/actionChat';
 import { ACTION_CREATE_GROUP_TYPES } from '../actions/actionCreateGroup';
-import { ACTION_CREATE_POST_TYPES } from '../actions/actionCreatePost';
 import { ACTION_MENU_TYPES } from '../actions/actionMenu';
 import { ACTION_POST_EDIT_TYPES } from '../actions/actionPostEdit';
 import { ACTION_PROFILE_EDIT_TYPES } from '../actions/actionProfileEdit';
