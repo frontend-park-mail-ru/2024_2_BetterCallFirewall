@@ -32,7 +32,7 @@ export class Router {
 	goToPage(path: string, pushState: boolean = true) {
 		this._path = path;
 		for (const route of this._config) {
-			const regex = new RegExp(`^${route.path}$`);
+			const regex = new RegExp(`^${route.path}(/?.*)?$`);
 			const match = path.match(regex);
 			if (match) {
 				if (this._activeView) {
