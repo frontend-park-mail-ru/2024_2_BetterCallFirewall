@@ -44,6 +44,9 @@
     }
     .menu.show {
         display: flex;
+        height: auto;
+        border-bottom-right-radius: 1rem;
+        border: 0.05rem solid rgba(255, 255, 255, 0.5);
     }
     .main {
         margin-left: 0;
@@ -280,23 +283,3 @@ input::placeholder, textarea::placeholder {
     font-size: .8rem;
     color: var(--date-color);
 }
-
-// .score-1 {
-
-// }
-
-// .score-2 {
-
-// }
-
-// .score-3 {
-
-// }
-
-// .score-4 {
-
-// }
-
-// .score-5 {
-
-// }
