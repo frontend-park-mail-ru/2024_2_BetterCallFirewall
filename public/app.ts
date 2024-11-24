@@ -109,6 +109,7 @@ export interface URLInterface {
 	groupJoin: string;
 	groupLeave: string;
 	profilesSearch: string;
+	groupsSearch: string;
 	csat: string;
 	csatMetrics: string;
 	image: string;
@@ -337,6 +338,9 @@ class App {
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.search);
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.searchSuccess);
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.searchFail);
+		this._stores.home.subscribe(ACTION_GROUPS_TYPES.search);
+		this._stores.home.subscribe(ACTION_GROUPS_TYPES.searchSuccess);
+		this._stores.home.subscribe(ACTION_GROUPS_TYPES.searchFail);
 
 		this._stores.login.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.login.subscribe(ACTION_APP_TYPES.goTo);
@@ -431,13 +435,13 @@ class App {
 		);
 
 		this._stores.groupPage.subscribe(
-			ACTION_GROUP_PAGE_TYPES.groupPageRequest
+			ACTION_GROUP_PAGE_TYPES.groupPageRequest,
 		);
 		this._stores.groupPage.subscribe(
-			ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess
+			ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess,
 		);
 		this._stores.groupPage.subscribe(
-			ACTION_GROUP_PAGE_TYPES.updateGroupPage
+			ACTION_GROUP_PAGE_TYPES.updateGroupPage,
 		);
 
 		this._stores.profileEdit.subscribe(

@@ -394,6 +394,20 @@ class Ajax {
 	}
 
 	/**
+	 * Поиск групп
+	 */
+	async groupsSearch(
+		str: string,
+		lastId?: number,
+	): Promise<AjaxResponse<ShortGroupResponse[]>> {
+		const url = insertQueryParams(app.config.URL.groupsSearch, {
+			q: str,
+			id: lastId ? `${lastId}` : undefined,
+		});
+		return this._genericRequestResponse(url, 'get');
+	}
+
+	/**
 	 * Отправка результатов CSAT
 	 */
 	async csatSend(

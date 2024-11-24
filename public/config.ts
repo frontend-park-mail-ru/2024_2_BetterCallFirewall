@@ -122,6 +122,7 @@ const homeConfig: HomeConfig = {
 			},
 			showSearchResults: false,
 			profilesSearch: [],
+			groupsSearch: [],
 		},
 		content: {
 			key: 'content',
@@ -491,6 +492,7 @@ const URL: URLInterface = DEBUG
 			groupJoin: '',
 			groupLeave: '',
 			profilesSearch: '',
+			groupsSearch: '',
 			csat: '',
 			csatMetrics: '',
 			image: '',
@@ -524,6 +526,7 @@ const URL: URLInterface = DEBUG
 			groupJoin: ROOT + apiv1 + '/community/{id}/join',
 			groupLeave: ROOT + apiv1 + '/community/{id}/leave',
 			profilesSearch: ROOT + apiv1 + '/profile/search/',
+			groupsSearch: ROOT + apiv1 + '/community/search/',
 			csat: ROOT + apiv1 + '/csat',
 			csatMetrics: ROOT + apiv1 + '/csat/metrics',
 			image: ROOT + '/image',
