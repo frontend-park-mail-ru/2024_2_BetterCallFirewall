@@ -58,14 +58,14 @@ export class ViewGroups extends ViewHome {
 			headerText: 'Группы',
 			groupsConfig: [
 				{
-					id: 2,
+					id: 1,
 					key: 'group',
 					name: 'Рифмы и панчи',
 					avatar: './img.jpg',
 					isFollow: true,
 				},
 				{
-					id: 1,
+					id: 2,
 					key: 'group',
 					name: 'Мысли джокера',
 					avatar: './img.jpg',
