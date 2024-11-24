@@ -1,6 +1,7 @@
 import { Action } from '../actions/action';
 import {
-	ActionGroupSearchFail,
+	ActionGroupsSearchFail,
+	ActionGroupsSearch,
 	ActionGroupsSearchSuccess,
 } from '../actions/actionGroups';
 import {
@@ -66,6 +67,11 @@ export const reducerHeader = (
 			return newState;
 	}
 	switch (true) {
+		case action instanceof ActionGroupsSearch:
+			if (!action.data.lastId) {
+				newState.groupsSearch = [];
+			}
+			return newState;
 		case action instanceof ActionGroupsSearchSuccess:
 			newState.groupsSearch = newState.groupsSearch.concat(
 				action.data.groupsResponses.map((groupResponse) => {
@@ -76,7 +82,7 @@ export const reducerHeader = (
 			);
 			newState.showSearchResults = true;
 			return newState;
-		case action instanceof ActionGroupSearchFail:
+		case action instanceof ActionGroupsSearchFail:
 			newState.showSearchResults = true;
 			return newState;
 	}

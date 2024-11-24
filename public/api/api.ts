@@ -34,7 +34,10 @@ import {
 	ActionFriendsGetSubscriptionsSuccess,
 	ActionFriendsGetUsersSuccess,
 } from '../actions/actionFriends';
-import { ActionGroupsUnfollowGroupData, ActionGroupsUnfollowGroupSuccess } from '../actions/actionGroups';
+import {
+	ActionGroupsUnfollowGroupData,
+	ActionGroupsUnfollowGroupSuccess,
+} from '../actions/actionGroups';
 import {
 	ACTION_GROUP_PAGE_TYPES,
 	ActionGroupPageRequestData,
@@ -42,7 +45,7 @@ import {
 } from '../actions/actionGroupPage';
 import {
 	ACTION_GROUPS_TYPES,
-	ActionGroupSearchFail,
+	ActionGroupsSearchFail,
 	ActionGroupsGetGroupsSuccess,
 	ActionGroupsSearch,
 	ActionGroupsSearchSuccess,
@@ -480,7 +483,7 @@ class API {
 	// async followGroup() {
 	// 	const response = await ajax.followGroup(groupId);
 	// 	switch (response.status) {
-	// 		case STATUS.ok: 
+	// 		case STATUS.ok:
 	// 			this.sendAction(new ActionGroupsFollowGroup());
 	// 	}
 	// }
@@ -488,7 +491,7 @@ class API {
 	async unfollowGroup(groupId: number) {
 		const response = await ajax.unfollowGroup(groupId);
 		switch (response.status) {
-			case STATUS.ok: 
+			case STATUS.ok:
 				this.sendAction(new ActionGroupsUnfollowGroupSuccess());
 		}
 	}
@@ -644,11 +647,11 @@ class API {
 						new ActionGroupsSearchSuccess(respone.data),
 					);
 				} else {
-					this.sendAction(new ActionGroupSearchFail());
+					this.sendAction(new ActionGroupsSearchFail());
 				}
 				break;
 			default:
-				this.sendAction(new ActionGroupSearchFail());
+				this.sendAction(new ActionGroupsSearchFail());
 		}
 	}
 
