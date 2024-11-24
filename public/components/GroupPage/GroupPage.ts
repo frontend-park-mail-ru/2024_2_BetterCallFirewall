@@ -1,7 +1,4 @@
-import {
-	findVNodeByKey,
-	VNode,
-} from '../../modules/vdom';
+import { findVNodeByKey, VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
 import { PostConfig, Post } from '../Post/Post';
 
@@ -46,7 +43,7 @@ export class GroupPage extends Component {
 		return vnode;
 	}
 
-    get deleteGroupButtonVNode(): VNode {
+	get deleteGroupButtonVNode(): VNode {
 		const vnode = findVNodeByKey(this.vnode, 'deleteGroup');
 		if (!vnode) {
 			throw new Error('deleteButton vnode not found');

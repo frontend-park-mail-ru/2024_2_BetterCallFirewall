@@ -1,9 +1,13 @@
 import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
-import { ACTION_GROUP_PAGE_TYPES, ActionGroupPageRequestSuccessData } from '../actions/actionGroupPage';
+import {
+	ACTION_GROUP_PAGE_TYPES,
+	ActionGroupPageRequestSuccessData,
+} from '../actions/actionGroupPage';
 import app from '../app';
-import config from '../config';
+import config, { PAGE_LINKS, ROOT } from '../config';
 import { toGroupPageConfig } from '../models/group';
+import { insertQueryParams } from '../modules/ajax';
 import deepClone from '../modules/deepClone';
 import { ViewGroupPageConfig } from '../views/groupPage/viewGroupPage';
 
@@ -26,7 +30,14 @@ export const reducerGroupPage = (
 				actionData.groupPageResponse,
 			);
 			newState.path = `/${actionData.groupPageResponse.id}`;
-			newState.groupPage = Object.assign(newState.groupPage, groupPageConfig);
+			newState.groupPage = Object.assign(
+				newState.groupPage,
+				groupPageConfig,
+			);
+			newState.groupPage.createPostHref = insertQueryParams(
+				ROOT + PAGE_LINKS.createPost,
+				{ community: `${newState.groupPage.id}` },
+			);
 			return newState;
 		}
 		default:

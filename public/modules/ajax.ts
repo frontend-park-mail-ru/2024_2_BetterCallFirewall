@@ -42,7 +42,7 @@ const replaceId = (url: string, id: number): string => {
 	return url.replace('{id}', `${id}`);
 };
 
-const insertQueryParams = (baseUrl: string, params?: QueryParams) => {
+export const insertQueryParams = (baseUrl: string, params?: QueryParams) => {
 	if (!params) {
 		return baseUrl;
 	}
