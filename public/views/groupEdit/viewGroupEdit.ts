@@ -41,6 +41,10 @@ export class ViewGroupEdit extends ViewHome {
 		switch (change.type) {
 			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_APP_TYPES.goTo:
+				this._configGroupEdit = Object.assign(
+					this._configGroupEdit,
+					change.data,
+				);
 				this.render();
 				break;
 			case ACTION_GROUPS_TYPES.editSuccess:

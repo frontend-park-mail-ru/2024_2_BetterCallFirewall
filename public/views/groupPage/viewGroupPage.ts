@@ -15,6 +15,7 @@ import {
 import { update } from '../../modules/vdom';
 import { ChangeGroupPage } from '../../stores/storeGroupPage';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
+import { PAGE_URLS } from '../../config';
 
 export type ComponentsGroupPage = {
 	groupPage?: GroupPage;
@@ -107,13 +108,33 @@ export class ViewGroupPage extends ViewHome {
 					);
 				},
 			});
-			this.groupPage.deleteGroupButtonVNode.handlers.push({
+			this.groupPage.groupEditButtonVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
 					this.sendAction(
-						new ActionGroupPageDeleteGroup(this.groupPage.id),
+						new ActionAppGoTo(
+							PAGE_URLS.groupEdit +
+								`/${this._configGroupPage.groupPage.id}`,
+						),
 					);
+					this.groupPage.deleteGroupButtonVNode.handlers.push({
+						event: 'click',
+						callback: (event) => {
+							event.preventDefault();
+							this.sendAction(
+								new ActionAppGoTo(
+									PAGE_URLS.groupEdit +
+										`/${this._configGroupPage.groupPage.id}`,
+								),
+							);
+							this.sendAction(
+								new ActionGroupPageDeleteGroup(
+									this.groupPage.id,
+								),
+							);
+						},
+					});
 				},
 			});
 		}

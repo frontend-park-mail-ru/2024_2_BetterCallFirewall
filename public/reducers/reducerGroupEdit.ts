@@ -1,5 +1,7 @@
 import { Action } from '../actions/action';
-import config from '../config';
+import { ActionAppGoTo, ActionAppInit } from '../actions/actionApp';
+import app from '../app';
+import config, { PAGE_URLS } from '../config';
 import deepClone from '../modules/deepClone';
 import { ViewGroupEditConfig } from '../views/groupEdit/viewGroupEdit';
 
@@ -13,9 +15,14 @@ export const reducerGroupEdit = (
 		return state;
 	}
 	const newState = deepClone(state);
-	switch (action.type) {
-		default:
-			return state;
+	switch (true) {
+		case action instanceof ActionAppInit:
+		case action instanceof ActionAppGoTo: {
+			const id = app.router.idFromPath(PAGE_URLS.groupEdit);
+			if (id) {
+				newState.groupId = id;
+			}
+		}
 	}
 	return newState;
 };
