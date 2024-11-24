@@ -34,6 +34,7 @@ import {
 	ActionFriendsGetSubscriptionsSuccess,
 	ActionFriendsGetUsersSuccess,
 } from '../actions/actionFriends';
+import { ActionGroupsGetGroupsSuccess } from '../actions/actionGroups';
 import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
 	ACTION_MESSAGES_TYPES,
@@ -409,7 +410,7 @@ class API {
 		}
 	}
 
-	async getGroups() {
+	async requestGroups() {
 		const response = await ajax.getGroups();
 		switch (response.status) {
 			case STATUS.ok:
@@ -417,11 +418,16 @@ class API {
 					// this.sendAction();
 					break;
 				}
-				// this.sendAction(
-				// 	new ActionGroupsGetGroupsSuccess({
-				// 		groups: response.data,
-				// 	}),
-				// );
+				this.sendAction(
+					new ActionGroupsGetGroupsSuccess({
+						groups: response.data,
+					}),
+				);
+				break;
+			case STATUS.noMoreContent:
+					this.sendAction(
+						new ActionGroupsGetGroupsSuccess({ groups: [] }),
+					);
 				break;
 		}
 	}

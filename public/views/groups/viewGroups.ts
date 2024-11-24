@@ -1,4 +1,6 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
+import { ACTION_GROUPS_TYPES, ActionGroupsGetGroups } from '../../actions/actionGroups';
+import api from '../../api/api';
 import { Root } from '../../components';
 import { Groups, GroupsConfig } from '../../components/Groups/Groups';
 import { PAGE_LINKS } from '../../config';
@@ -38,6 +40,10 @@ export class ViewGroups extends ViewHome {
 	handleChange(change: ChangeGroups): void {
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_GROUPS_TYPES.getGroups:
+				this.updateViewGroups(change.data);
+				api.requestGroups();
+				break;
 			default:
 				this.updateViewGroups(change.data);
 		}
@@ -96,6 +102,8 @@ export class ViewGroups extends ViewHome {
 
 	render(): void {
 		this._render();
+		// this.sendAction(new ActionFriendsGetFriends());
+		this.sendAction(new ActionGroupsGetGroups());
 	}
 
 	private _addGroupsHandlers(groups: Groups) {

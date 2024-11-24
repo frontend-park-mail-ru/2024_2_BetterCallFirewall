@@ -72,6 +72,7 @@ import { StoreCreateGroup } from './stores/storeCreateGroup';
 import { ACTION_CREATE_GROUP_TYPES } from './actions/actionCreateGroup';
 import { ViewQuestion, ViewQuestionConfig } from './views/viewQuestion';
 import { ViewMetrics, ViewMetricsConfig } from './views/viewMetrics';
+import { ACTION_GROUPS_TYPES } from './actions/actionGroups';
 
 export const PAGES = {
 	home: 'home',
@@ -181,7 +182,7 @@ class App {
 			this._config.friendsConfig,
 			this._root,
 		);
-		const groupView = new ViewGroups(this._config.groupsConfig, this._root);
+		const groupsView = new ViewGroups(this._config.groupsConfig, this._root);
 		const groupPageView = new ViewGroupPage(
 			this._config.groupPageConfig,
 			this._root,
@@ -259,7 +260,7 @@ class App {
 			},
 			{
 				path: PAGE_LINKS.groups,
-				view: groupView,
+				view: groupsView,
 			},
 			{
 				path: PAGE_LINKS.createGroup,
@@ -451,6 +452,11 @@ class App {
 
 		this._stores.groupPage.subscribe(ACTION_APP_TYPES.goTo);
 
+		this._stores.groups.subscribe(ACTION_APP_TYPES.goTo);
+		this._stores.groups.subscribe(ACTION_GROUPS_TYPES.getGroups);
+		this._stores.groups.subscribe(ACTION_GROUPS_TYPES.getGroupsSuccess);
+
+
 		loginView.register(this._stores.login);
 
 		signupView.register(this._stores.signup);
@@ -476,8 +482,8 @@ class App {
 		friendsView.register(this._stores.home);
 		friendsView.register(this._stores.friends);
 
-		groupView.register(this._stores.home);
-		groupView.register(this._stores.groups);
+		groupsView.register(this._stores.home);
+		groupsView.register(this._stores.groups);
 
 		groupPageView.register(this._stores.home);
 		groupPageView.register(this._stores.groupPage);
