@@ -1,7 +1,7 @@
 import { GroupConfig } from '../components/Group/Group';
 import { GroupPageConfig } from '../components/GroupPage/GroupPage';
 import { SearchResultConfig } from '../components/SearchResult/SearchResult';
-import { PAGE_LINKS } from '../config';
+import { PAGE_LINKS, PAGE_URLS } from '../config';
 
 export interface ShortGroupResponse {
 	id: number;
@@ -22,8 +22,8 @@ export const toGroupPageConfig = (
 	config: GroupPageConfig,
 	groupResponse: FullGroupResponse,
 ): GroupPageConfig => {
-	const isAdmin = groupResponse.isAdmin ? groupResponse.isAdmin: false;
-	const isFollow = groupResponse.isFollow ? groupResponse.isFollow: false;
+	const isAdmin = groupResponse.isAdmin ? groupResponse.isAdmin : false;
+	const isFollow = groupResponse.isFollow ? groupResponse.isFollow : false;
 	const groupPageData: GroupPageConfig = {
 		id: groupResponse.id,
 		key: `groupPage-${groupResponse.id}`,
@@ -52,7 +52,7 @@ export const toGroupPageConfig = (
 export const toGroupsConfig = (
 	groupResponse: ShortGroupResponse,
 ): GroupConfig => {
-	const isFollow = groupResponse.isFollow ? groupResponse.isFollow: false;
+	const isFollow = groupResponse.isFollow ? groupResponse.isFollow : false;
 	const newConfig: GroupConfig = {
 		id: groupResponse.id,
 		key: `group-${groupResponse.id}`,
@@ -60,6 +60,7 @@ export const toGroupsConfig = (
 		name: groupResponse.name,
 		description: groupResponse.about,
 		isFollow: isFollow,
+		href: PAGE_URLS.groups + `/${groupResponse.id}`,
 	};
 	return newConfig;
 };

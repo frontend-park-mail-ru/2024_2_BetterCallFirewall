@@ -7,6 +7,7 @@ export interface GroupConfig extends ComponentConfig {
 	description: string;
 	name: string;
 	isFollow: boolean;
+	href: string;
 }
 
 export class Group extends Component {
