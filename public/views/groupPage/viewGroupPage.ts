@@ -1,4 +1,5 @@
 import {
+	ACTION_GROUP_PAGE_TYPES,
 	ActionGroupPageDeleteGroup,
 	ActionGroupPageRequest,
 	ActionUpdateGroupPage,
@@ -15,7 +16,8 @@ import {
 import { update } from '../../modules/vdom';
 import { ChangeGroupPage } from '../../stores/storeGroupPage';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
-import { PAGE_URLS } from '../../config';
+import { PAGE_LINKS, PAGE_URLS } from '../../config';
+import { ACTION_GROUPS_TYPES } from '../../actions/actionGroups';
 
 export type ComponentsGroupPage = {
 	groupPage?: GroupPage;
@@ -48,21 +50,20 @@ export class ViewGroupPage extends ViewHome {
 	}
 
 	handleChange(change: ChangeGroupPage): void {
-		//
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_GROUP_PAGE_TYPES.deleteGroupSuccess:
+				this.sendAction(new ActionAppGoTo(PAGE_LINKS.groups));
+				break;
 			default:
 				this.updateViewGroupPage(change.data);
 		}
-	} //
+	}
 
 	render(): void {
 		this._render();
 		this.sendAction(new ActionUpdateGroupPage());
 		this.sendAction(new ActionGroupPageRequest(app.router.path));
-		// this._components.groupPage?.posts.forEach((post) => {
-		// 	this.sendAction(new ActionPostLikeCount(post.config.id));
-		// });
 	}
 
 	updateViewGroupPage(data: ViewGroupPageConfig): void {
