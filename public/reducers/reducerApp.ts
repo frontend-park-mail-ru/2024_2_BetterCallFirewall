@@ -37,9 +37,6 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			case ACTION_CREATE_GROUP_TYPES.goToCreateGroup:
 				router.goToPage(PAGE_LINKS.createGroup);
 				break;
-			case ACTION_CREATE_POST_TYPES.goToCreatePost:
-				router.goToPage(PAGE_LINKS.createPost);
-				break;
 			case ACTION_PROFILE_EDIT_TYPES.goToProfileEdit:
 				router.goToPage(PAGE_LINKS.profileEdit);
 				break;
