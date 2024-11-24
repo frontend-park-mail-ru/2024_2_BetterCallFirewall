@@ -5,9 +5,8 @@ import {
 	ActionGroupPageRequestSuccessData,
 } from '../actions/actionGroupPage';
 import app from '../app';
-import config, { PAGE_LINKS } from '../config';
+import config, { PAGE_LINKS, ROOT } from '../config';
 import { toGroupPageConfig } from '../models/group';
-import { insertQueryParams } from '../modules/ajax';
 import deepClone from '../modules/deepClone';
 import { ViewGroupPageConfig } from '../views/groupPage/viewGroupPage';
 
@@ -34,10 +33,9 @@ export const reducerGroupPage = (
 				newState.groupPage,
 				groupPageConfig,
 			);
-			newState.groupPage.createPostHref = insertQueryParams(
-				PAGE_LINKS.createPost,
-				{ community: `${newState.groupPage.id}` },
-			);
+			const url = new URL(ROOT + PAGE_LINKS.createPost);
+			url.searchParams.append('community', `${newState.groupPage.id}`);
+			newState.groupPage.createPostHref = url.pathname;
 			return newState;
 		}
 		default:
