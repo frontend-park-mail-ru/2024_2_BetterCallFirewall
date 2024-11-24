@@ -496,8 +496,8 @@ class API {
 		}
 	}
 
-	async createPost(formData: PostPayload) {
-		const response = await ajax.createPost(formData);
+	async createPost(formData: PostPayload, query: string) {
+		const response = await ajax.createPost(formData, query);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {

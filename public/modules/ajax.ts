@@ -108,8 +108,12 @@ class Ajax {
 	 */
 	async createPost(
 		formData: PostPayload,
+		query: string,
 	): Promise<AjaxResponse<PostResponse>> {
-		const request = this._postRequest(app.config.URL.feed, formData);
+		const request = this._postRequest(
+			app.config.URL.feed + query,
+			formData,
+		);
 		return this._postResponse(request);
 	}
 

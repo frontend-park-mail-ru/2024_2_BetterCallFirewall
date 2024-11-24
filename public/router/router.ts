@@ -65,6 +65,10 @@ export class Router {
 		return this._path;
 	}
 
+	get href() {
+		return window.location.href;
+	}
+
 	get chatId(): number | undefined {
 		const regex = /^\/chat\/(\d+)$/;
 		const match = this.path.match(regex);
