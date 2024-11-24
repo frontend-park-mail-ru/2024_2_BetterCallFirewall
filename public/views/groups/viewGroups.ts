@@ -93,19 +93,18 @@ export class ViewGroups extends ViewHome {
 					callback: (event) => {
 						event.preventDefault();
 						this.sendAction(new ActionGroupsUnfollowGroup(group.id));
-						// api.unfollowGroup(groupConfig.id);
 					},
 				});
 			}
-			// if (!groupConfig.isFollow) {
-			// 	group.followGroupButtonVNode.handlers.push({
-			// 		event: 'click',
-			// 		callback: (event) => {
-			// 			event.preventDefault();
-			// 			// api.followGroup(groupConfig.id);
-			// 		},
-			// 	});
-			// }
+			if (!groupConfig.isFollow) {
+				group.followGroupButtonVNode.handlers.push({
+					event: 'click',
+					callback: (event) => {
+						event.preventDefault();
+						// api.followGroup(groupConfig.id);
+					},
+				});
+			}
 			group.groupLinkVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {

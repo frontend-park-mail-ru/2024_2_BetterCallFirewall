@@ -19,6 +19,8 @@ import { ViewGroupPageConfig } from './views/groupPage/viewGroupPage';
 import { GroupPageConfig } from './components/GroupPage/GroupPage';
 import { ViewCreateGroupConfig } from './views/createGroup/viewCreateGroup';
 import { ICreateGroupFormConfig } from './components/CreateGroupForm/CreateGroupForm';
+import { IGroupEditFormConfig } from './components/GroupEditForm/GroupEditForm';
+import { ViewGroupEditConfig } from './views/groupEdit/viewGroupEdit';
 
 const DEBUG: boolean = false;
 
@@ -40,6 +42,7 @@ export const PAGE_URLS = {
 	groups: '/groups',
 	createGroup: '/create-group',
 	groupPage: '/groups', // изменить
+	groupEdit: '/group-edit',
 	csat: '/csat/question',
 	question: '/csat/question',
 	metrics: '/csat/metrics',
@@ -385,6 +388,7 @@ const groupPageComponentConfig: GroupPageConfig = {
 	isFollow: false,
 	createPostHref: PAGE_LINKS.createPost,
 	isAdmin: false,
+	countSubscribers: 0,
 };
 
 const groupPageConfig: ViewGroupPageConfig = {
@@ -425,6 +429,41 @@ const groupFormConfig: ICreateGroupFormConfig = {
 const createGroupConfig: ViewCreateGroupConfig = {
 	...homeConfig,
 	createGroupForm: groupFormConfig,
+};
+
+const editGroupFormConfig: IGroupEditFormConfig = {
+	key: 'editGroupForm',
+	inputs: {
+		name: {
+			key: 'name',
+			type: 'text',
+			placeholder: 'Название группы',
+			name: 'name',
+		},
+		description: {
+			key: 'description',
+			type: 'text',
+			placeholder: 'Описание группы',
+			name: 'description',
+		},
+		avatar: {
+			key: 'avatar',
+			name: 'file',
+			type: 'file',
+			accept: 'image/*',
+			placeholder: 'Изменить фото',
+		},
+	},
+	button: {
+		key: 'submitButton',
+		text: 'Изменить группу',
+	},
+};
+
+const editGroupConfig: ViewGroupEditConfig = {
+	...homeConfig,
+	groupEditForm: editGroupFormConfig,
+	groupId: -1,
 };
 
 const postEditFormConfig: PostEditFormConfig = {
@@ -549,6 +588,7 @@ const config: AppConfig = {
 	createGroupConfig,
 	groupPageConfig,
 	editPostConfig,
+	editGroupConfig,
 	questionConfig: {
 		question: {
 			id: 1,
