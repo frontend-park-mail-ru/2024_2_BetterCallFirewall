@@ -332,6 +332,17 @@ class Ajax {
 		return this._postResponse(request);
 	}
 
+	async groupEdit(
+		groupPayload: GroupPayload,
+		id: number,
+	): Promise<AjaxResponse<object>> {
+		return this._genericRequestResponse(
+			replaceId(app.config.URL.groupEdit, id),
+			'put',
+			groupPayload,
+		);
+	}
+
 	async getGroupPage(
 		groupPagePath: string,
 	): Promise<AjaxResponse<FullGroupResponse>> {

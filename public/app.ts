@@ -111,6 +111,7 @@ export interface URLInterface {
 	postLikeCount: string;
 	groups: string;
 	group: string;
+	groupEdit: string;
 	groupJoin: string;
 	groupLeave: string;
 	profilesSearch: string;
@@ -490,6 +491,9 @@ class App {
 			ACTION_GROUPS_TYPES.groupsFollowGroupSuccess,
 		);
 		this._stores.groups.subscribe(ACTION_GROUPS_TYPES.getGroupsSuccess);
+
+		this._stores.groupEdit.subscribe(ACTION_GROUPS_TYPES.editSuccess);
+		this._stores.groupEdit.subscribe(ACTION_GROUPS_TYPES.editFail);
 
 		loginView.register(this._stores.login);
 
