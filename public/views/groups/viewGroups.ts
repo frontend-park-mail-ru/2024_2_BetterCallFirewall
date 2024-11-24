@@ -68,29 +68,8 @@ export class ViewGroups extends ViewHome {
 	}
 
 	private _renderGroups(): void {
-		const exampleGroups: GroupsConfig = {
-			key: 'groups',
-			headerText: 'Группы',
-			groupsConfig: [
-				{
-					id: 1,
-					key: 'group-1',
-					name: 'Рифмы и панчи',
-					avatar: './img.jpg',
-					isFollow: true,
-				},
-				{
-					id: 2,
-					key: 'group-2',
-					name: 'Мысли джокера',
-					avatar: './img.jpg',
-					isFollow: false,
-				},
-			],
-		};
 		this._components.groups = new Groups(
-			// this._configGroups.groups,
-			exampleGroups,
+			this._configGroups.groups,
 			this.content,
 		);
 	}
