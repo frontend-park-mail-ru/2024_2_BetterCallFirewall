@@ -360,6 +360,7 @@ const friendsConfig: ViewFriendsConfig = {
 		headerText: 'Поиск друзей',
 		friendsConfig: [],
 	},
+	pendingUsersRequest: false,
 };
 
 const groupsConfig: ViewGroupsConfig = {
@@ -520,7 +521,7 @@ const URL: URLInterface = DEBUG
 			group: ROOT + apiv1 + '/community/{id}',
 			groupJoin: ROOT + apiv1 + '/community/{id}/join',
 			groupLeave: ROOT + apiv1 + '/community/{id}/leave',
-			profilesSearch: ROOT + apiv1 + '/profile/search',
+			profilesSearch: ROOT + apiv1 + '/profile/search/',
 			csat: ROOT + apiv1 + '/csat',
 			csatMetrics: ROOT + apiv1 + '/csat/metrics',
 			image: ROOT + '/image',

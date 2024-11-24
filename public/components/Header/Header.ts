@@ -1,6 +1,6 @@
 import { findVNodeByClass, VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
-import { SearchResult } from '../SearchResult/SearchResult';
+import { SearchResult, SearchResultConfig } from '../SearchResult/SearchResult';
 
 type Profile = {
 	id: number;
@@ -15,7 +15,7 @@ export interface HeaderConfig extends ComponentConfig {
 	};
 	profile: Profile;
 	showSearchResults: boolean;
-	profilesSearch: SearchResult[];
+	profilesSearch: SearchResultConfig[];
 }
 
 /**
@@ -86,9 +86,14 @@ export class Header extends Component {
 
 	protected _prerender(): void {
 		super._prerender();
+		const profilesSearch = this._config.profilesSearch.map((config) => {
+			return new SearchResult(config, this);
+		});
 		this._templateContext = {
 			...this._templateContext,
-			profilesSearch: this._config.profilesSearch,
+			profilesSearch: profilesSearch.map((profileSearch) => {
+				return profileSearch.render();
+			}),
 		};
 	}
 }

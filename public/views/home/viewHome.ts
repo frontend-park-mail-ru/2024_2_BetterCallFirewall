@@ -6,6 +6,7 @@ import {
 } from '../../actions/actionHeader';
 import {
 	ACTION_MENU_TYPES,
+	ActionMenuOpenSwitch,
 	ActionMenuTitleClick,
 } from '../../actions/actionMenu';
 import {
@@ -135,11 +136,18 @@ export abstract class ViewHome extends View {
 			event: 'click',
 			callback: (event) => {
 				if (
+					this.header.config.showSearchResults &&
 					!this.header.searchResultsHTML.contains(
 						event.target as Node,
 					)
 				) {
 					this.sendAction(new ActionHeaderSearchResultsSwitch(false));
+				}
+				if (
+					this.menu.config.isShow &&
+					!this.menu.html.contains(event.target as Node)
+				) {
+					this.sendAction(new ActionMenuOpenSwitch(false));
 				}
 			},
 		});
@@ -225,8 +233,10 @@ export abstract class ViewHome extends View {
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
-				this._configHome.menu.isShow = true;
-				this._render();
+				event.stopImmediatePropagation();
+				this.sendAction(
+					new ActionMenuOpenSwitch(!this._configHome.menu.isShow),
+				);
 			},
 		});
 		this.header.searchInputVNode.handlers.push(
@@ -256,11 +266,14 @@ export abstract class ViewHome extends View {
 		);
 	}
 
-	private _searchInputHandler = debounce((str: string) => {
+	private _searchInputHandler = debounce((str: string, append?: boolean) => {
+		const profilesSearch = this._configHome.main.header.profilesSearch;
 		this.sendAction(
 			new ActionProfileSearch(
 				str,
-				this._configHome.main.header.profile.id,
+				append
+					? profilesSearch[profilesSearch.length - 1]?.id
+					: undefined,
 			),
 		);
 	}, 200);

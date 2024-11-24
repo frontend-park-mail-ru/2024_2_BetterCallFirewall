@@ -1,8 +1,9 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
-import { ActionCreateGroupGoTo } from '../../actions/actionCreateGroup';
 import { Root } from '../../components';
 import { Groups, GroupsConfig } from '../../components/Groups/Groups';
+import { PAGE_LINKS } from '../../config';
 import { update } from '../../modules/vdom';
+import { ChangeGroups } from '../../stores/storeGroups';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsGroups = {
@@ -34,6 +35,14 @@ export class ViewGroups extends ViewHome {
 		return groups;
 	}
 
+	handleChange(change: ChangeGroups): void {
+		super.handleChange(change);
+		switch (change.type) {
+			default:
+				this.updateViewGroups(change.data);
+		}
+	}
+
 	protected _addHandlers() {
 		super._addHandlers();
 		this._addGroupsHandlers(this.groups);
@@ -59,14 +68,14 @@ export class ViewGroups extends ViewHome {
 			groupsConfig: [
 				{
 					id: 1,
-					key: 'group',
+					key: 'group-1',
 					name: 'Рифмы и панчи',
 					avatar: './img.jpg',
 					isFollow: true,
 				},
 				{
 					id: 2,
-					key: 'group',
+					key: 'group-2',
 					name: 'Мысли джокера',
 					avatar: './img.jpg',
 					isFollow: false,
@@ -81,7 +90,7 @@ export class ViewGroups extends ViewHome {
 	}
 
 	updateViewGroups(data: ViewGroupsConfig) {
-		this._configGroups = data;
+		this._configGroups = Object.assign(this._configGroups, data);
 		this._render();
 	}
 
@@ -101,7 +110,7 @@ export class ViewGroups extends ViewHome {
 					},
 				});
 			}
-            // if (!groupConfig.isFollow) {
+			// if (!groupConfig.isFollow) {
 			// 	group.followGroupButtonVNode.handlers.push({
 			// 		event: 'click',
 			// 		callback: (event) => {
@@ -129,12 +138,12 @@ export class ViewGroups extends ViewHome {
 				},
 			});
 		});
-        this.groups.createGroupButtonVNode.handlers.push({
-            event: 'click',
-            callback: (event) => {
-                event.preventDefault();
-                this.sendAction(new ActionCreateGroupGoTo());
-            },
-        });
+		this.groups.createGroupButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionAppGoTo(PAGE_LINKS.createGroup));
+			},
+		});
 	}
 }

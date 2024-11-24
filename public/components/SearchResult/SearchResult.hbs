@@ -1,13 +1,13 @@
 <div class="search-result" data-key="{{this.key}}">
-    <div class="search-result__avatar">
-        <img src="{{this.avatar}}" alt="" class="avatar item__img">
+    <div class="search-result__avatar-container">
+        <img src="{{this.avatar}}" alt="" class="avatar search-result__avatar">
     </div>
     <div class="search-result__content">
         <div class="search-result__name-container">
             <span class="search-result__name">{{this.name}}</span>
         </div>
         <div class="search-result__description-container">
-            <span class="search-result__description">{{this.description}}</span>
+            <span class="search-result__description">{{#if this.description}}{{this.description}}{{/if}}</span>
         </div>
     </div>
 </div>

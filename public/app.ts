@@ -324,11 +324,13 @@ class App {
 		this._stores.home.subscribe(ACTION_MENU_TYPES.updateProfileLinkHref);
 		this._stores.home.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
 		this._stores.home.subscribe(ACTION_HEADER_TYPES.searchResultsSwitch);
+		this._stores.home.subscribe(ACTION_MENU_TYPES.openSwitch);
 		this._stores.home.subscribe(
 			ACTION_PROFILE_TYPES.getYourOwnProfileSuccess,
 		);
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.getHeaderSuccess);
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.updateProfile);
+		this._stores.home.subscribe(ACTION_PROFILE_TYPES.search);
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.searchSuccess);
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.searchFail);
 
@@ -423,7 +425,9 @@ class App {
 			ACTION_CREATE_POST_TYPES.goToCreatePost,
 		);
 
-		this._stores.createGroup.subscribe(ACTION_CREATE_GROUP_TYPES.goToCreateGroup);
+		this._stores.createGroup.subscribe(
+			ACTION_CREATE_GROUP_TYPES.goToCreateGroup,
+		);
 
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.updateProfileEdit,

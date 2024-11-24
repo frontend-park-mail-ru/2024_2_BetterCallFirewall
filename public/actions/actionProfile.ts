@@ -158,15 +158,15 @@ export class ActionProfileDeletePostFail implements Action {
 
 export interface ActionProfileSearchData {
 	str: string;
-	userId: number;
+	lastId?: number;
 }
 
 export class ActionProfileSearch implements Action {
 	type: ActionType = ACTION_PROFILE_TYPES.search;
 	data: ActionProfileSearchData;
 
-	constructor(str: string, userId: number) {
-		this.data = { str, userId };
+	constructor(str: string, lastId?: number) {
+		this.data = { str, lastId };
 	}
 }
 
