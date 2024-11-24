@@ -71,6 +71,13 @@ export abstract class ViewHome extends View {
 
 	handleChange(change: ChangeHome): void {
 		switch (change.type) {
+			case ACTION_PROFILE_TYPES.searchFail:
+			case ACTION_PROFILE_TYPES.searchSuccess:
+				this.updateViewHome(change.data);
+				if (!this._configHome.main.header.showSearchResults) {
+					this.sendAction(new ActionHeaderSearchResultsSwitch(true));
+				}
+				break;
 			case ACTION_PROFILE_TYPES.getHeaderSuccess:
 			case ACTION_MENU_TYPES.updateProfileLinkHref:
 				this.updateViewHome(change.data);
@@ -254,7 +261,12 @@ export abstract class ViewHome extends View {
 				event: 'focus',
 				callback: (event) => {
 					event.preventDefault();
-					this.sendAction(new ActionHeaderSearchResultsSwitch(true));
+					const input = event.currentTarget as HTMLInputElement;
+					if (input?.value.length) {
+						this.sendAction(
+							new ActionHeaderSearchResultsSwitch(true),
+						);
+					}
 				},
 			},
 			{
