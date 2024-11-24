@@ -52,6 +52,10 @@ export class GroupPage extends Component {
 		return vnode;
 	}
 
+	get groupEditButtonVNode(): VNode {
+		return this._findVNodeByKey('groupEdit');
+	}
+
 	get posts(): Post[] {
 		return this._posts;
 	}

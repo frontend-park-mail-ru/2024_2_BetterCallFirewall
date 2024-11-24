@@ -14,6 +14,7 @@ import {
 import { update } from '../../modules/vdom';
 import { ChangeGroupPage } from '../../stores/storeGroupPage';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
+import { PAGE_URLS } from '../../config';
 
 export type ComponentsGroupPage = {
 	groupPage?: GroupPage;
@@ -103,6 +104,18 @@ export class ViewGroupPage extends ViewHome {
 					event.preventDefault();
 					this.sendAction(
 						new ActionAppGoTo(this.groupPage.config.createPostHref),
+					);
+				},
+			});
+			this.groupPage.groupEditButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionAppGoTo(
+							PAGE_URLS.groupEdit +
+								`/${this._configGroupPage.groupPage.id}`,
+						),
 					);
 				},
 			});
