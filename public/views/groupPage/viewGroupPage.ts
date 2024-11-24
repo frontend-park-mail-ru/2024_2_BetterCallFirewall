@@ -1,6 +1,8 @@
 import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
+import { ActionGroupPageRequest, ActionUpdateGroupPage } from '../../actions/actionGroupPage';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import api from '../../api/api';
+import app from '../../app';
 import { Post, Root } from '../../components';
 import {
 	GroupPage,
@@ -35,7 +37,7 @@ export class ViewGroupPage extends ViewHome {
 	get groupPage(): GroupPage {
 		const groupPage = this._components.groupPage;
 		if (!groupPage) {
-			throw new Error('profile on ViewGroupPage does not exist');
+			throw new Error('groupPage on ViewGroupPage does not exist');
 		}
 		return groupPage;
 	}
@@ -50,8 +52,8 @@ export class ViewGroupPage extends ViewHome {
 
 	render(): void {
 		this._render();
-		// this.sendAction(new ActionUpdateProfile());
-		// this.sendAction(new ActionProfileRequest(app.router.path));
+		this.sendAction(new ActionUpdateGroupPage());
+		this.sendAction(new ActionGroupPageRequest(app.router.path));
 		// this._components.groupPage?.posts.forEach((post) => {
 		// 	this.sendAction(new ActionPostLikeCount(post.config.id));
 		// });
@@ -77,17 +79,9 @@ export class ViewGroupPage extends ViewHome {
 	}
 
 	protected _renderGroupPage(): void {
-		const exampleGroups: GroupPageConfig = {
-			key: 'groups',
-			id: 1,
-			name: 'Рифмы и панчи',
-			description: 'Про рифмы и панчи',
-			img: './img',
-			posts: [],
-			createPostHref: './create--post',
-			isAdmin: true,
-		};
-		this._components.groupPage = new GroupPage(exampleGroups, this.content);
+		this._components.groupPage = new GroupPage(
+			this._configGroupPage.groupPage,
+			this.content);
 	}
 
 	protected _addHandlers(): void { //

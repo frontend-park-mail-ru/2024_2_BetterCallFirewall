@@ -34,6 +34,7 @@ import {
 	ActionFriendsGetSubscriptionsSuccess,
 	ActionFriendsGetUsersSuccess,
 } from '../actions/actionFriends';
+import { ACTION_GROUP_PAGE_TYPES, ActionGroupPageRequestData, ActionGroupPageRequestSuccess } from '../actions/actionGroupPage';
 import { ACTION_GROUPS_TYPES, ActionGroupsGetGroupsSuccess } from '../actions/actionGroups';
 import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
@@ -133,6 +134,11 @@ class API {
 				break;
 			case ACTION_GROUPS_TYPES.getGroups:
 				this.requestGroups();
+				break;
+			case ACTION_GROUP_PAGE_TYPES.groupPageRequest:
+				this.requestGroupPage(
+					(action.data as ActionGroupPageRequestData).href,
+				);
 				break;
 		}
 	}
@@ -432,6 +438,22 @@ class API {
 					new ActionGroupsGetGroupsSuccess({ groups: [] }),
 				);
 				break;
+		}
+	}
+
+	async requestGroupPage(href: string) {
+		const response = await ajax.getGroupPage(href);
+		switch (response.status) {
+			case STATUS.ok: 
+				if (!response.data) {
+					return;
+				}
+				this.sendAction(
+					new ActionGroupPageRequestSuccess({
+						groupPageResponse: response.data,
+					})
+				);
+				return;
 		}
 	}
 

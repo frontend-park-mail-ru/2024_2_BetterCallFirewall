@@ -1,7 +1,9 @@
 import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
+import { ACTION_GROUP_PAGE_TYPES, ActionGroupPageRequestSuccessData } from '../actions/actionGroupPage';
 import app from '../app';
 import config from '../config';
+import { toGroupPageConfig } from '../models/group';
 import deepClone from '../modules/deepClone';
 import { ViewGroupPageConfig } from '../views/groupPage/viewGroupPage';
 
@@ -17,6 +19,16 @@ export const reducerGroupPage = (
 		case ACTION_APP_TYPES.goTo:
 			newState.path = app.router.path;
 			return newState;
+		case ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess: {
+			const actionData = action.data as ActionGroupPageRequestSuccessData;
+			const groupPageConfig = toGroupPageConfig(
+				newState.groupPage,
+				actionData.groupPageResponse,
+			);
+			newState.path = `/${actionData.groupPageResponse.id}`;
+			newState.groupPage = Object.assign(newState.groupPage, groupPageConfig);
+			return newState;
+		}
 		default:
 			return newState;
 	}

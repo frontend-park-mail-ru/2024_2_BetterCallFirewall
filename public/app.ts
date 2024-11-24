@@ -73,6 +73,7 @@ import { ACTION_CREATE_GROUP_TYPES } from './actions/actionCreateGroup';
 import { ViewQuestion, ViewQuestionConfig } from './views/viewQuestion';
 import { ViewMetrics, ViewMetricsConfig } from './views/viewMetrics';
 import { ACTION_GROUPS_TYPES } from './actions/actionGroups';
+import { ACTION_GROUP_PAGE_TYPES } from './actions/actionGroupPage';
 
 export const PAGES = {
 	home: 'home',
@@ -428,6 +429,16 @@ class App {
 
 		this._stores.createGroup.subscribe(
 			ACTION_CREATE_GROUP_TYPES.goToCreateGroup,
+		);
+
+		this._stores.groupPage.subscribe(
+			ACTION_GROUP_PAGE_TYPES.groupPageRequest
+		);
+		this._stores.groupPage.subscribe(
+			ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess
+		);
+		this._stores.groupPage.subscribe(
+			ACTION_GROUP_PAGE_TYPES.updateGroupPage
 		);
 
 		this._stores.profileEdit.subscribe(

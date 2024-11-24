@@ -54,6 +54,7 @@ export const toGroupsConfig = (
 		key: `group-${groupResponse.id}`,
 		avatar: groupResponse.avatar,
 		name: groupResponse.name,
+		description: groupResponse.about,
 		// isFollow: groupResponse.isFollow,
         isFollow: false, //
 	};

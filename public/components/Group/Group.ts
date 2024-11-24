@@ -4,6 +4,7 @@ import Component, { ComponentConfig } from '../Component';
 export interface GroupConfig extends ComponentConfig {
 	id: number;
 	avatar: string;
+	description: string;
 	name: string;
 	isFollow: boolean;
 }

@@ -70,6 +70,7 @@ export class ViewGroups extends ViewHome {
 	}
 
 	updateViewGroups(data: ViewGroupsConfig) {
+		super.updateViewHome(data); //??
 		this._configGroups = Object.assign(this._configGroups, data);
 		this._render();
 	}
