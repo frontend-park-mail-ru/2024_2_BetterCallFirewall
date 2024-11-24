@@ -1,4 +1,7 @@
-import { ActionGroupPageRequest, ActionUpdateGroupPage } from '../../actions/actionGroupPage';
+import {
+	ActionGroupPageRequest,
+	ActionUpdateGroupPage,
+} from '../../actions/actionGroupPage';
 import { ActionAppGoTo } from '../../actions/actionApp';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import api from '../../api/api';
@@ -8,7 +11,6 @@ import {
 	GroupPage,
 	GroupPageConfig,
 } from '../../components/GroupPage/GroupPage';
-import { PAGE_LINKS, ROOT } from '../../config';
 import { update } from '../../modules/vdom';
 import { ChangeGroupPage } from '../../stores/storeGroupPage';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
@@ -83,7 +85,8 @@ export class ViewGroupPage extends ViewHome {
 	protected _renderGroupPage(): void {
 		this._components.groupPage = new GroupPage(
 			this._configGroupPage.groupPage,
-			this.content);
+			this.content,
+		);
 	}
 
 	protected _addHandlers(): void {
@@ -98,12 +101,9 @@ export class ViewGroupPage extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					const url = new URL(PAGE_LINKS.createPost, ROOT);
-					url.searchParams.append(
-						'community',
-						`${this._configGroupPage.groupPage.id}`,
+					this.sendAction(
+						new ActionAppGoTo(this.groupPage.config.createPostHref),
 					);
-					this.sendAction(new ActionAppGoTo(url.toString()));
 				},
 			});
 		}

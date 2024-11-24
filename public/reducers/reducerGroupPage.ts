@@ -35,7 +35,7 @@ export const reducerGroupPage = (
 			);
 			const url = new URL(ROOT + PAGE_LINKS.createPost);
 			url.searchParams.append('community', `${newState.groupPage.id}`);
-			newState.groupPage.createPostHref = url.pathname;
+			newState.groupPage.createPostHref = url.pathname + url.search;
 			return newState;
 		}
 		default:
