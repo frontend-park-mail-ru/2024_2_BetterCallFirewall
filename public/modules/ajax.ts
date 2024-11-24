@@ -43,7 +43,7 @@ export interface AjaxResponse<T> extends FetchResponse<T> {
 export type QueryParams = Record<string, string | undefined>;
 
 const replaceId = (url: string, id: number): string => {
-	return url.replace('{id}', `${id}`);
+	return url.replace('{id}', `${id}`).replace('%7Bid%7D', `${id}`);
 };
 
 export const insertQueryParams = (baseUrl: string, params?: QueryParams) => {
