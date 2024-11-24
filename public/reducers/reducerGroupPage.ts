@@ -5,7 +5,7 @@ import {
 	ActionGroupPageRequestSuccessData,
 } from '../actions/actionGroupPage';
 import app from '../app';
-import config, { PAGE_LINKS, ROOT } from '../config';
+import config, { PAGE_LINKS } from '../config';
 import { toGroupPageConfig } from '../models/group';
 import { insertQueryParams } from '../modules/ajax';
 import deepClone from '../modules/deepClone';
@@ -35,7 +35,7 @@ export const reducerGroupPage = (
 				groupPageConfig,
 			);
 			newState.groupPage.createPostHref = insertQueryParams(
-				ROOT + PAGE_LINKS.createPost,
+				PAGE_LINKS.createPost,
 				{ community: `${newState.groupPage.id}` },
 			);
 			return newState;
