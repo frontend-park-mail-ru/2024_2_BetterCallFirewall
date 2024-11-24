@@ -1,8 +1,5 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
-import {
-	ACTION_CREATE_POST_TYPES,
-	ActionUpdateCreatePost,
-} from '../../actions/actionCreatePost';
+import { ActionUpdateCreatePost } from '../../actions/actionCreatePost';
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
 import api from '../../api/api';
 import { Root } from '../../components';
@@ -42,13 +39,13 @@ export class ViewCreatePost extends ViewHome {
 	handleChange(change: ChangeCreatePost): void {
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_CREATE_POST_TYPES.goToCreatePost:
-				this._configCreatePost = Object.assign(
-					this._configCreatePost,
-					change.data,
-				);
-				this.render();
-				break;
+			// case ACTION_CREATE_POST_TYPES.goToCreatePost:
+			// 	this._configCreatePost = Object.assign(
+			// 		this._configCreatePost,
+			// 		change.data,
+			// 	);
+			// 	this.render();
+			// 	break;
 			case ACTION_FEED_TYPES.postCreateSuccess:
 				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
