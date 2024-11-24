@@ -494,6 +494,9 @@ class App {
 
 		this._stores.groupEdit.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.groupEdit.subscribe(ACTION_APP_TYPES.goTo);
+		this._stores.groupEdit.subscribe(
+			ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess,
+		);
 		this._stores.groupEdit.subscribe(ACTION_GROUPS_TYPES.editSuccess);
 		this._stores.groupEdit.subscribe(ACTION_GROUPS_TYPES.editFail);
 

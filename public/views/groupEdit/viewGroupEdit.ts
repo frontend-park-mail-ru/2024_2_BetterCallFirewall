@@ -1,4 +1,5 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
+import { ActionGroupPageRequest } from '../../actions/actionGroupPage';
 import { ACTION_GROUPS_TYPES } from '../../actions/actionGroups';
 import api from '../../api/api';
 import { Root } from '../../components';
@@ -6,7 +7,7 @@ import {
 	GroupEditForm,
 	IGroupEditFormConfig,
 } from '../../components/GroupEditForm/GroupEditForm';
-import { PAGE_LINKS } from '../../config';
+import { PAGE_LINKS, PAGE_URLS } from '../../config';
 import { GroupPayload } from '../../models/group';
 import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
@@ -62,6 +63,11 @@ export class ViewGroupEdit extends ViewHome {
 
 	render(): void {
 		this._render();
+		this.sendAction(
+			new ActionGroupPageRequest(
+				PAGE_URLS.groupPage + `/${this._configGroupEdit.groupId}`,
+			),
+		);
 	}
 
 	updateViewGroupEdit(data: ViewGroupEditConfig): void {
