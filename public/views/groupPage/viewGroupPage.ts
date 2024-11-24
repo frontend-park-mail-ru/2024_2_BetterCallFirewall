@@ -1,4 +1,5 @@
 import {
+	ActionGroupPageDeleteGroup,
 	ActionGroupPageRequest,
 	ActionUpdateGroupPage,
 } from '../../actions/actionGroupPage';
@@ -103,6 +104,15 @@ export class ViewGroupPage extends ViewHome {
 					event.preventDefault();
 					this.sendAction(
 						new ActionAppGoTo(this.groupPage.config.createPostHref),
+					);
+				},
+			});
+			this.groupPage.deleteGroupButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionGroupPageDeleteGroup(this.groupPage.id),
 					);
 				},
 			});

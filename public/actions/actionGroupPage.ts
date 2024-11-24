@@ -2,9 +2,11 @@ import { FullGroupResponse } from '../models/group';
 import { Action, ActionType } from './action';
 
 export const ACTION_GROUP_PAGE_TYPES = {
-	groupPageRequest: 'groupPageRequest',
-    groupPageRequestSuccess: 'groupPageRequestSuccess',
-    updateGroupPage: 'updateGroupPage',
+	groupPageRequest: 'actionGroupPageRequest',
+	groupPageRequestSuccess: 'actionGroupPageRequestSuccess',
+	updateGroupPage: 'actionUpdateGroupPage',
+	deleteGroup: 'actionDeleteGroup',
+	deleteGroupSuccess: 'actionDeleteGroup',
 };
 
 export interface ActionUpdateGroupPageData {}
@@ -39,5 +41,28 @@ export class ActionGroupPageRequestSuccess implements Action {
 	constructor(data: ActionGroupPageRequestSuccessData) {
 		this.type = ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess;
 		this.data = data;
+	}
+}
+
+export interface ActionGroupPageDeleteData {
+	groupId: number;
+}
+
+export class ActionGroupPageDeleteGroup implements Action {
+	type: ActionType;
+	data: ActionGroupPageDeleteData;
+
+	constructor(groupId: number) {
+		this.type = ACTION_GROUP_PAGE_TYPES.deleteGroup;
+		this.data = { groupId: groupId };
+	}
+}
+
+export class ActionGroupPageDeleteGroupSuccess implements Action {
+	type: ActionType;
+	data: object = {};
+
+	constructor() {
+		this.type = ACTION_GROUP_PAGE_TYPES.deleteGroupSuccess;
 	}
 }

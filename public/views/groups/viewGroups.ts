@@ -103,7 +103,6 @@ export class ViewGroups extends ViewHome {
 					callback: (event) => {
 						event.preventDefault();
 						this.sendAction(new ActionGroupsFollowGroup(group.id));
-						// api.followGroup(groupConfig.id);
 					},
 				});
 			}
