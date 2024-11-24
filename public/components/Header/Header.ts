@@ -23,6 +23,8 @@ export interface HeaderConfig extends ComponentConfig {
  */
 export class Header extends Component {
 	protected _config: HeaderConfig;
+	private _profilesSearch: SearchResult[] = [];
+
 	/**
 	 * Instance of Header
 	 *
@@ -36,6 +38,10 @@ export class Header extends Component {
 
 	get config(): HeaderConfig {
 		return this._config;
+	}
+
+	get profilesSearch(): SearchResult[] {
+		return this._profilesSearch;
 	}
 
 	get logoutButtonVNode(): VNode {
@@ -86,12 +92,12 @@ export class Header extends Component {
 
 	protected _prerender(): void {
 		super._prerender();
-		const profilesSearch = this._config.profilesSearch.map((config) => {
+		this._profilesSearch = this._config.profilesSearch.map((config) => {
 			return new SearchResult(config, this);
 		});
 		this._templateContext = {
 			...this._templateContext,
-			profilesSearch: profilesSearch.map((profileSearch) => {
+			profilesSearch: this._profilesSearch.map((profileSearch) => {
 				return profileSearch.render();
 			}),
 		};
