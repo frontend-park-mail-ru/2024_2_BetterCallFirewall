@@ -59,12 +59,7 @@ export const toGroupsConfig = (
 		avatar: groupResponse.avatar,
 		name: groupResponse.name,
 		description: groupResponse.about,
-<<<<<<< HEAD
 		isFollow: isFollow,
-=======
-		// isFollow: groupResponse.isFollow,
-		isFollow: false, //
->>>>>>> d247f011f92402cc926ec5506c2ff426aaf4c198
 	};
 	return newConfig;
 };
