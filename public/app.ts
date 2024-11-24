@@ -74,6 +74,8 @@ import { ViewQuestion, ViewQuestionConfig } from './views/viewQuestion';
 import { ViewMetrics, ViewMetricsConfig } from './views/viewMetrics';
 import { ACTION_GROUPS_TYPES } from './actions/actionGroups';
 import { ACTION_GROUP_PAGE_TYPES } from './actions/actionGroupPage';
+import { ViewGroupEdit, ViewGroupEditConfig } from './views/groupEdit/viewGroupEdit';
+import { StoreGroupEdit } from './stores/storeGroupEdit';
 
 export const PAGES = {
 	home: 'home',
@@ -131,6 +133,7 @@ export interface AppConfig {
 	createGroupConfig: ViewCreateGroupConfig;
 	createPostConfig: ViewCreatePostConfig;
 	editPostConfig: ViewPostEditConfig;
+	editGroupConfig: ViewGroupEditConfig;
 	questionConfig: ViewQuestionConfig;
 	metricsConfig: ViewMetricsConfig;
 }
@@ -151,6 +154,7 @@ export interface AppStores {
 	createGroup: StoreCreateGroup;
 	profileEdit: StoreProfileEdit;
 	postEdit: StorePostEdit;
+	groupEdit: StoreGroupEdit;
 }
 
 /**
@@ -196,6 +200,7 @@ class App {
 			this._config.createGroupConfig,
 			this.root,
 		);
+		const editGroupView = new ViewGroupEdit(this._config.editGroupConfig, this.root);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
 		const signupView = new ViewSignup(
 			this._config.signupConfig,
@@ -272,6 +277,10 @@ class App {
 				view: createGroupView,
 			},
 			{
+				path: PAGE_LINKS.groupEdit,
+				view: editGroupView,
+			},
+			{
 				path: PAGE_LINKS.postEdit,
 				view: postEditView,
 			},
@@ -307,6 +316,7 @@ class App {
 			createGroup: new StoreCreateGroup(storeHome),
 			profileEdit: new StoreProfileEdit(storeHome),
 			postEdit: new StorePostEdit(storeHome),
+			groupEdit: new StoreGroupEdit(storeHome),
 		};
 
 		this._stores.app.subscribe(ACTION_APP_TYPES.actionAppInit);
@@ -503,6 +513,9 @@ class App {
 
 		createGroupView.register(this._stores.home);
 		createGroupView.register(this._stores.createGroup);
+
+		editGroupView.register(this._stores.home);
+		editGroupView.register(this._stores.groupEdit);
 
 		postEditView.register(this._stores.home);
 		postEditView.register(this._stores.postEdit);
