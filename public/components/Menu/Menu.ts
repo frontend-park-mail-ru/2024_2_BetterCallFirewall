@@ -118,6 +118,7 @@ export interface MenuConfig extends ComponentConfig {
 		profile: MenuLinkConfig;
 		friends: MenuLinkConfig;
 		messages: MenuLinkConfig;
+		groups: MenuLinkConfig;
 	};
 	isShow?: boolean;
 }

@@ -1,0 +1,11 @@
+<div class="groups" data-key="{{this.key}}">
+    <div class="groups__header">
+        <h2 class="groups__header-text">{{this.headerText}}</h2>
+        <a class="header__link button-action button-no-decorations" href="" data-key="createGroup">Создать группу</a>
+    </div>
+    <div class="groups__content">
+        {{#each groups}}
+            {{{this}}}
+        {{/each}}
+    </div>
+</div>

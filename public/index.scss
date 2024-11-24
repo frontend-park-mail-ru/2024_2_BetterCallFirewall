@@ -15,6 +15,9 @@
 @use 'components/ChatMessage/ChatMessage';
 @use 'components/ProfileEditForm/ProfileEditForm';
 @use 'components/Friends/Friends';
+@use 'components/Groups/Groups';
+@use 'components/Group/Group';
+@use 'components/GroupPage/GroupPage';
 @use 'components/Loader/Loader.scss';
 @use 'components/CSAT/CSAT.scss';
 @use 'components/Question/Question';

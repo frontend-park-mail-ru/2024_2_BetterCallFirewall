@@ -4,6 +4,7 @@ import {
 	ACTION_CHAT_TYPES,
 	ActionChatGoToChatData,
 } from '../actions/actionChat';
+import { ACTION_CREATE_GROUP_TYPES } from '../actions/actionCreateGroup';
 import { ACTION_CREATE_POST_TYPES } from '../actions/actionCreatePost';
 import { ACTION_MENU_TYPES } from '../actions/actionMenu';
 import { ACTION_POST_EDIT_TYPES } from '../actions/actionPostEdit';
@@ -32,6 +33,9 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 				break;
 			case ACTION_CHAT_TYPES.goToChat:
 				router.goToPage((action.data as ActionChatGoToChatData).href);
+				break;
+			case ACTION_CREATE_GROUP_TYPES.goToCreateGroup:
+				router.goToPage(PAGE_LINKS.createGroup);
 				break;
 			case ACTION_CREATE_POST_TYPES.goToCreatePost:
 				router.goToPage(PAGE_LINKS.createPost);

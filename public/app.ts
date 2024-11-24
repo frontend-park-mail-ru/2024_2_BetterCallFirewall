@@ -57,6 +57,19 @@ import { ACTION_POST_EDIT_TYPES } from './actions/actionPostEdit';
 import { StorePostEdit } from './stores/storePostEdit';
 import WebsocketClient from './modules/websocket';
 import { ACTION_POST_TYPES } from './actions/actionPost';
+import { ViewGroups, ViewGroupsConfig } from './views/groups/viewGroups';
+import { StoreGroups } from './stores/storeGroups';
+import {
+	ViewGroupPage,
+	ViewGroupPageConfig,
+} from './views/groupPage/viewGroupPage';
+import { StoreGroupPage } from './stores/storeGroupPage';
+import {
+	ViewCreateGroup,
+	ViewCreateGroupConfig,
+} from './views/createGroup/viewCreateGroup';
+import { StoreCreateGroup } from './stores/storeCreateGroup';
+import { ACTION_CREATE_GROUP_TYPES } from './actions/actionCreateGroup';
 import { ViewQuestion, ViewQuestionConfig } from './views/viewQuestion';
 import { ViewMetrics, ViewMetricsConfig } from './views/viewMetrics';
 
@@ -89,6 +102,10 @@ export interface URLInterface {
 	postLike: string;
 	postUnlike: string;
 	postLikeCount: string;
+	groups: string;
+	group: string;
+	groupJoin: string;
+	groupLeave: string;
 	profilesSearch: string;
 	csat: string;
 	csatMetrics: string;
@@ -106,6 +123,9 @@ export interface AppConfig {
 	messagesConfig: ViewMessagesConfig;
 	chatConfig: ViewChatConfig;
 	friendsConfig: ViewFriendsConfig;
+	groupsConfig: ViewGroupsConfig;
+	groupPageConfig: ViewGroupPageConfig;
+	createGroupConfig: ViewCreateGroupConfig;
 	createPostConfig: ViewCreatePostConfig;
 	editPostConfig: ViewPostEditConfig;
 	questionConfig: ViewQuestionConfig;
@@ -122,7 +142,10 @@ export interface AppStores {
 	messages: StoreMessages;
 	chat: StoreChat;
 	friends: StoreFriends;
+	groups: StoreGroups;
+	groupPage: StoreGroupPage;
 	createPost: StoreCreatePost;
+	createGroup: StoreCreateGroup;
 	profileEdit: StoreProfileEdit;
 	postEdit: StorePostEdit;
 }
@@ -157,6 +180,15 @@ class App {
 		const friendsView = new ViewFriends(
 			this._config.friendsConfig,
 			this._root,
+		);
+		const groupView = new ViewGroups(this._config.groupsConfig, this._root);
+		const groupPageView = new ViewGroupPage(
+			this._config.groupPageConfig,
+			this._root,
+		);
+		const createGroupView = new ViewCreateGroup(
+			this._config.createGroupConfig,
+			this.root,
 		);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
 		const signupView = new ViewSignup(
@@ -198,6 +230,10 @@ class App {
 				view: loginView,
 			},
 			{
+				path: PAGE_LINKS.groupPage,
+				view: groupPageView,
+			},
+			{
 				path: PAGE_LINKS.signup,
 				view: signupView,
 			},
@@ -220,6 +256,14 @@ class App {
 			{
 				path: PAGE_LINKS.friends,
 				view: friendsView,
+			},
+			{
+				path: PAGE_LINKS.groups,
+				view: groupView,
+			},
+			{
+				path: PAGE_LINKS.createGroup,
+				view: createGroupView,
 			},
 			{
 				path: PAGE_LINKS.postEdit,
@@ -249,9 +293,12 @@ class App {
 			feed: new StoreFeed(storeHome),
 			profile: new StoreProfile(storeHome),
 			friends: new StoreFriends(storeHome),
+			groups: new StoreGroups(storeHome),
+			groupPage: new StoreGroupPage(storeHome),
 			messages: new StoreMessages(storeHome),
 			chat: new StoreChat(storeHome),
 			createPost: new StoreCreatePost(storeHome),
+			createGroup: new StoreCreateGroup(storeHome),
 			profileEdit: new StoreProfileEdit(storeHome),
 			postEdit: new StorePostEdit(storeHome),
 		};
@@ -264,6 +311,7 @@ class App {
 		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 		this._stores.app.subscribe(ACTION_CHAT_TYPES.goToChat);
 		this._stores.app.subscribe(ACTION_CREATE_POST_TYPES.goToCreatePost);
+		this._stores.app.subscribe(ACTION_CREATE_GROUP_TYPES.goToCreateGroup);
 		this._stores.app.subscribe(ACTION_PROFILE_TYPES.getHeaderFail);
 		this._stores.app.subscribe(ACTION_PROFILE_EDIT_TYPES.goToProfileEdit);
 		this._stores.app.subscribe(ACTION_PROFILE_EDIT_TYPES.requestSuccess);
@@ -376,6 +424,8 @@ class App {
 			ACTION_CREATE_POST_TYPES.goToCreatePost,
 		);
 
+		this._stores.createGroup.subscribe(ACTION_CREATE_GROUP_TYPES.goToCreateGroup);
+
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.updateProfileEdit,
 		);
@@ -395,6 +445,8 @@ class App {
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.goToPostEdit);
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestSuccess);
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestFail);
+
+		this._stores.groupPage.subscribe(ACTION_APP_TYPES.goTo);
 
 		loginView.register(this._stores.login);
 
@@ -420,6 +472,15 @@ class App {
 
 		friendsView.register(this._stores.home);
 		friendsView.register(this._stores.friends);
+
+		groupView.register(this._stores.home);
+		groupView.register(this._stores.groups);
+
+		groupPageView.register(this._stores.home);
+		groupPageView.register(this._stores.groupPage);
+
+		createGroupView.register(this._stores.home);
+		createGroupView.register(this._stores.createGroup);
 
 		postEditView.register(this._stores.home);
 		postEditView.register(this._stores.postEdit);

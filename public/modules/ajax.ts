@@ -1,6 +1,7 @@
 import { STATUS } from '../api/api';
 import app from '../app';
 import { ChatResponse } from '../models/chat';
+import { GroupPayload, ShortGroupResponse } from '../models/group';
 import { CsatResult } from '../models/csatResult';
 import { HeaderResponse } from '../models/header';
 import { MessageResponse } from '../models/message';
@@ -308,6 +309,18 @@ class Ajax {
 		return this._deleteObjectResponse(url);
 	}
 
+	async getGroups(): Promise<AjaxResponse<ShortGroupResponse[]>> {
+		const url = app.config.URL.groups;
+		return this._getShortGroupResponse(url);
+	}
+	// async deletePost(postId: number): Promise<AjaxResponse<object>> {
+	async createGroup(
+		formData: GroupPayload,
+	): Promise<AjaxResponse<object>> {
+		const request = this._postRequest(app.config.URL.groups, formData);
+		return this._postResponse(request);
+	}
+
 	/**
 	 * Запрос списка чатов
 	 */
@@ -434,6 +447,29 @@ class Ajax {
 		} catch {
 			return { status: response.status, success: false };
 		}
+	}
+
+	private async _getShortGroupResponse(
+		url: string,
+	): Promise<AjaxResponse<ShortGroupResponse[]>> {
+		const request = this._getRequest(url);
+		const response = await this._response(request);
+		let shortGroupResponse: AjaxResponse<ShortGroupResponse[]> = {
+			status: response.status,
+			success: false,
+		};
+		switch (shortGroupResponse.status) {
+			case STATUS.ok: {
+				const body = (await response.json()) as FetchResponse<
+					ShortGroupResponse[]
+				>;
+				shortGroupResponse = Object.assign(
+					shortGroupResponse,
+					body,
+				);
+			}
+		};
+		return shortGroupResponse;
 	}
 
 	/**
