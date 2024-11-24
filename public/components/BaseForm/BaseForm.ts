@@ -90,6 +90,24 @@ export abstract class BaseForm extends Component {
 		return vnodes;
 	}
 
+	clearError() {
+		const messageElement = document.querySelector('.form__error');
+		if (!messageElement) {
+			throw new Error('message element not found');
+		}
+		messageElement.textContent = '';
+	}
+
+	printError(error: string) {
+		if (error) {
+			const messageElement = document.querySelector('.form__error');
+			if (!messageElement) {
+				throw new Error('message element not found');
+			}
+			messageElement.textContent = error;
+		}
+	}
+
 	protected _prerender(): void {
 		super._prerender();
 		this.configInputsItems.forEach(([key, config]) => {

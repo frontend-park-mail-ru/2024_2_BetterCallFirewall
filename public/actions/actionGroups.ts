@@ -9,6 +9,8 @@ export const ACTION_GROUPS_TYPES = {
 	search: 'actionGroupsSearch',
 	searchSuccess: 'actionGroupsSearchSuccess',
 	searchFail: 'actionGroupsSearchFail',
+	editSuccess: 'actionGroupsEditSuccess',
+	editFail: 'actionGroupsEditFail',
 };
 
 export class ActionGroupsGetGroups implements Action {
@@ -82,5 +84,15 @@ export class ActionGroupsSearchSuccess implements Action {
 
 export class ActionGroupsSearchFail implements Action {
 	type: ActionType = ACTION_GROUPS_TYPES.searchSuccess;
+	data: object = {};
+}
+
+export class ActionGroupsEditSuccess implements Action {
+	type: ActionType = ACTION_GROUPS_TYPES.editSuccess;
+	data: object = {};
+}
+
+export class ActionGroupsEditFail implements Action {
+	type: ActionType = ACTION_GROUPS_TYPES.editFail;
 	data: object = {};
 }

@@ -35,6 +35,8 @@ import {
 	ActionFriendsGetUsersSuccess,
 } from '../actions/actionFriends';
 import {
+	ActionGroupsEditFail,
+	ActionGroupsEditSuccess,
 	ActionGroupsUnfollowGroupData,
 	ActionGroupsUnfollowGroupSuccess,
 } from '../actions/actionGroups';
@@ -440,6 +442,17 @@ class API {
 				break;
 			default:
 			// this.sendAction();
+		}
+	}
+
+	async groupEdit(groupPayload: GroupPayload, id: number) {
+		const respone = await ajax.groupEdit(groupPayload, id);
+		switch (respone.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionGroupsEditSuccess());
+				break;
+			default:
+				this.sendAction(new ActionGroupsEditFail());
 		}
 	}
 

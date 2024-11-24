@@ -74,7 +74,10 @@ import { ViewQuestion, ViewQuestionConfig } from './views/viewQuestion';
 import { ViewMetrics, ViewMetricsConfig } from './views/viewMetrics';
 import { ACTION_GROUPS_TYPES } from './actions/actionGroups';
 import { ACTION_GROUP_PAGE_TYPES } from './actions/actionGroupPage';
-import { ViewGroupEdit, ViewGroupEditConfig } from './views/groupEdit/viewGroupEdit';
+import {
+	ViewGroupEdit,
+	ViewGroupEditConfig,
+} from './views/groupEdit/viewGroupEdit';
 import { StoreGroupEdit } from './stores/storeGroupEdit';
 
 export const PAGES = {
@@ -108,6 +111,7 @@ export interface URLInterface {
 	postLikeCount: string;
 	groups: string;
 	group: string;
+	groupEdit: string;
 	groupJoin: string;
 	groupLeave: string;
 	profilesSearch: string;
@@ -200,7 +204,10 @@ class App {
 			this._config.createGroupConfig,
 			this.root,
 		);
-		const editGroupView = new ViewGroupEdit(this._config.editGroupConfig, this.root);
+		const editGroupView = new ViewGroupEdit(
+			this._config.editGroupConfig,
+			this.root,
+		);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
 		const signupView = new ViewSignup(
 			this._config.signupConfig,
@@ -481,6 +488,9 @@ class App {
 			ACTION_GROUPS_TYPES.groupsUnfollowGroupSuccess,
 		);
 		this._stores.groups.subscribe(ACTION_GROUPS_TYPES.getGroupsSuccess);
+
+		this._stores.groupEdit.subscribe(ACTION_GROUPS_TYPES.editSuccess);
+		this._stores.groupEdit.subscribe(ACTION_GROUPS_TYPES.editFail);
 
 		loginView.register(this._stores.login);
 
