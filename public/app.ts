@@ -466,7 +466,9 @@ class App {
 		this._stores.groupPage.subscribe(
 			ACTION_GROUP_PAGE_TYPES.updateGroupPage,
 		);
-		this._stores.groupPage.subscribe(ACTION_GROUP_PAGE_TYPES.deleteGroup);
+		this._stores.groupPage.subscribe(
+			ACTION_GROUP_PAGE_TYPES.deleteGroupSuccess,
+		);
 
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.updateProfileEdit,
