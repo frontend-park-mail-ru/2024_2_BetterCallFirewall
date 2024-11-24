@@ -284,6 +284,19 @@ export abstract class ViewHome extends View {
 				},
 			});
 		});
+		this.header.groupsSearch.forEach((groupSearch) => {
+			groupSearch.vnode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionAppGoTo(
+							PAGE_URLS.groups + `/${groupSearch.config.id}`,
+						),
+					);
+				},
+			});
+		});
 	}
 
 	private _searchInputHandler = debounce((str: string, append?: boolean) => {

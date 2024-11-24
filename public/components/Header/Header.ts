@@ -46,6 +46,10 @@ export class Header extends Component {
 		return this._profilesSearch;
 	}
 
+	get groupsSearch(): SearchResult[] {
+		return this._groupsSearch;
+	}
+
 	get logoutButtonVNode(): VNode {
 		const vnode = findVNodeByClass(this.vnode, 'header__logout');
 		if (!vnode) {
