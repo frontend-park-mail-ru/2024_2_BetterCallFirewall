@@ -142,6 +142,9 @@ export abstract class ViewHome extends View {
 				) {
 					this.sendAction(new ActionHeaderSearchResultsSwitch(false));
 				}
+				if (!this.menu.html.contains(event.target as Node)) {
+					this.sendAction(new ActionMenuOpenSwitch(false));
+				}
 			},
 		});
 		this._components.csat?.exitButtonVNode.handlers.push({

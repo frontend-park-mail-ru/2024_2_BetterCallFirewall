@@ -147,6 +147,10 @@ export default class Menu extends Component {
 		return vnode;
 	}
 
+	get html(): Element {
+		return this._findHTML('.menu');
+	}
+
 	menuLinkVNode(key: string): VNode {
 		const vnode = findVNodeByKey(this.vnode, key);
 		if (!vnode) {
