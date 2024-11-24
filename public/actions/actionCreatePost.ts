@@ -3,7 +3,6 @@ import { Action, ActionType } from './action';
 
 export const ACTION_CREATE_POST_TYPES = {
 	updateCreatePost: 'actionUpdateCreatePost',
-	goToCreatePost: 'actionCreatePostGoTo',
 };
 
 export interface ActionUpdateCreatePostData extends CreatePostFormConfig {}
@@ -16,9 +15,4 @@ export class ActionUpdateCreatePost implements Action {
 		this.type = ACTION_CREATE_POST_TYPES.updateCreatePost;
 		this.data = data;
 	}
-}
-
-export class ActionCreatePostGoTo implements Action {
-	type: ActionType = ACTION_CREATE_POST_TYPES.goToCreatePost;
-	data: object = {};
 }

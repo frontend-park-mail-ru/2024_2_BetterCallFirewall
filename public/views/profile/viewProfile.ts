@@ -1,6 +1,5 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
 import { ActionChatGoToChat } from '../../actions/actionChat';
-import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import { ActionFriendsAccept } from '../../actions/actionFriends';
 import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
@@ -105,7 +104,7 @@ export class ViewProfile extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					this.sendAction(new ActionCreatePostGoTo());
+					this.sendAction(new ActionAppGoTo(PAGE_LINKS.createPost));
 				},
 			});
 			this.profile.profileEditLinkVNode.handlers.push({
