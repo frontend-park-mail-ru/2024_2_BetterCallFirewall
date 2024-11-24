@@ -1,4 +1,5 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
+import { ActionGroupsSearch } from '../../actions/actionGroups';
 import {
 	ActionHeaderLogoutClickFail,
 	ActionHeaderLogoutClickSuccess,
@@ -287,12 +288,19 @@ export abstract class ViewHome extends View {
 
 	private _searchInputHandler = debounce((str: string, append?: boolean) => {
 		const profilesSearch = this._configHome.main.header.profilesSearch;
+		const groupsSearch = this._configHome.main.header.groupsSearch;
 		this.sendAction(
 			new ActionProfileSearch(
 				str,
 				append
 					? profilesSearch[profilesSearch.length - 1]?.id
 					: undefined,
+			),
+		);
+		this.sendAction(
+			new ActionGroupsSearch(
+				str,
+				append ? groupsSearch[groupsSearch.length - 1]?.id : undefined,
 			),
 		);
 	}, 200);
