@@ -123,7 +123,7 @@ export class ViewProfileEdit extends ViewHome {
 					const fileStr = await fileToString(
 						formData.get('file') as File,
 					);
-					if (!fileStr) {
+					if (fileStr === null) {
 						return;
 					}
 					const profilePayload: ProfilePayload = {
