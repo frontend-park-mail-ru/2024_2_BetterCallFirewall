@@ -27,6 +27,10 @@ export class Group extends Component {
 		return this._config;
 	}
 
+	get id(): number {
+		return this._config.id;
+	}
+
 	render(): string {
 		this._prerender();
 		return this._render('Group.hbs');

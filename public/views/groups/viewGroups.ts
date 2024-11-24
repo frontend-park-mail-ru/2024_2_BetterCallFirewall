@@ -1,5 +1,5 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
-import { ACTION_GROUPS_TYPES, ActionGroupsGetGroups } from '../../actions/actionGroups';
+import { ACTION_GROUPS_TYPES, ActionGroupsGetGroups, ActionGroupsUnfollowGroup } from '../../actions/actionGroups';
 import { Root } from '../../components';
 import { Groups, GroupsConfig } from '../../components/Groups/Groups';
 import { PAGE_LINKS, PAGE_URLS } from '../../config';
@@ -92,6 +92,7 @@ export class ViewGroups extends ViewHome {
 					event: 'click',
 					callback: (event) => {
 						event.preventDefault();
+						this.sendAction(new ActionGroupsUnfollowGroup(group.id));
 						// api.unfollowGroup(groupConfig.id);
 					},
 				});
