@@ -388,6 +388,7 @@ const groupPageComponentConfig: GroupPageConfig = {
 	isFollow: false,
 	createPostHref: PAGE_LINKS.createPost,
 	isAdmin: false,
+	countSubscribers: 0,
 };
 
 const groupPageConfig: ViewGroupPageConfig = {

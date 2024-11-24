@@ -37,6 +37,7 @@ export const toGroupPageConfig = (
 		// 			toPostConfig(postResponse),
 		// 		)
 		// 	: [],
+		countSubscribers: groupResponse.count_subscribers,
 		posts: [],
 		createPostHref: PAGE_LINKS.createPost,
 		isAdmin: isAdmin,

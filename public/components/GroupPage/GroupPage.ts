@@ -13,6 +13,7 @@ export interface GroupPageConfig extends ComponentConfig {
 	createPostHref: string;
 	isAdmin: boolean;
 	isFollow: boolean;
+	countSubscribers: number;
 }
 
 export class GroupPage extends Component {
