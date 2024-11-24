@@ -379,7 +379,7 @@ const groupPageComponentConfig: GroupPageConfig = {
 	img: '',
 	posts: [],
 	createPostHref: PAGE_LINKS.createPost,
-	isAuthor: false,
+	isAdmin: false,
 };
 
 const groupPageConfig: ViewGroupPageConfig = {

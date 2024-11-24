@@ -85,7 +85,7 @@ export class ViewGroupPage extends ViewHome {
 			img: './img',
 			posts: [],
 			createPostHref: './create--post',
-			isAuthor: true,
+			isAdmin: true,
 		};
 		this._components.groupPage = new GroupPage(exampleGroups, this.content);
 	}
@@ -96,7 +96,7 @@ export class ViewGroupPage extends ViewHome {
 	}
 
 	private _addGroupPageHandlers() {
-		if (this.groupPage.config.isAuthor) {
+		if (this.groupPage.config.isAdmin) {
 			this.groupPage.createPostLinkVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {

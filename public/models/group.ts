@@ -13,6 +13,7 @@ export interface ShortGroupResponse {
 
 export interface FullGroupResponse extends ShortGroupResponse {
 	countSubscribers: number;
+	isAdmin: boolean;
 	// posts?: PostResponse[]; //
 }
 
@@ -34,9 +35,9 @@ export const toGroupPageConfig = (
         posts: [],
 		createPostHref: PAGE_LINKS.createPost,
 		// isAuthor: groupResponse.isAuthor,
-        isAuthor: true,
+        isAdmin: groupResponse.isAdmin,
 	};
-	if (groupPageData.isAuthor) {
+	if (groupPageData.isAdmin) {
 		groupPageData.posts.forEach((post) => {
 			post.hasDeleteButton = true;
 			post.hasEditButton = true;
