@@ -33,5 +33,7 @@ export const reducerCreateGroup = (
 		case action instanceof ActionCreateGroupSuccess:
 			newState.createdGroupId = action.data.id;
 			return newState;
+		default:
+			return newState;
 	}
 };
