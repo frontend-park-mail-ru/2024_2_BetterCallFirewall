@@ -1,5 +1,5 @@
-import { ActionCreatePostGoTo } from '../../actions/actionCreatePost';
 import { ActionGroupPageRequest, ActionUpdateGroupPage } from '../../actions/actionGroupPage';
+import { ActionAppGoTo } from '../../actions/actionApp';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import api from '../../api/api';
 import app from '../../app';
@@ -8,6 +8,7 @@ import {
 	GroupPage,
 	GroupPageConfig,
 } from '../../components/GroupPage/GroupPage';
+import { PAGE_LINKS } from '../../config';
 import { update } from '../../modules/vdom';
 import { ChangeGroupPage } from '../../stores/storeGroupPage';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
@@ -42,7 +43,8 @@ export class ViewGroupPage extends ViewHome {
 		return groupPage;
 	}
 
-	handleChange(change: ChangeGroupPage): void { //
+	handleChange(change: ChangeGroupPage): void {
+		//
 		super.handleChange(change);
 		switch (change.type) {
 			default:
@@ -84,7 +86,8 @@ export class ViewGroupPage extends ViewHome {
 			this.content);
 	}
 
-	protected _addHandlers(): void { //
+	protected _addHandlers(): void {
+		//
 		super._addHandlers();
 		this._addGroupPageHandlers();
 	}
@@ -95,10 +98,15 @@ export class ViewGroupPage extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					this.sendAction(new ActionCreatePostGoTo());
+					const url = new URL(PAGE_LINKS.createPost);
+					url.searchParams.append(
+						'community',
+						`${this._configGroupPage.groupPage.id}`,
+					);
+					this.sendAction(new ActionAppGoTo(url.toString()));
 				},
 			});
-		};
+		}
 		this.groupPage.posts.forEach((post) => this._addPostHandlers(post));
 	}
 

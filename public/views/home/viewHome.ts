@@ -26,7 +26,7 @@ import {
 } from '../../components';
 import { CSAT, CSATConfig } from '../../components/CSAT/CSAT';
 import Menu from '../../components/Menu/Menu';
-import { PAGE_LINKS } from '../../config';
+import { PAGE_LINKS, PAGE_URLS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import { debounce } from '../../modules/debounce';
@@ -254,7 +254,12 @@ export abstract class ViewHome extends View {
 				event: 'focus',
 				callback: (event) => {
 					event.preventDefault();
-					this.sendAction(new ActionHeaderSearchResultsSwitch(true));
+					const input = event.currentTarget as HTMLInputElement;
+					if (input?.value.length) {
+						this.sendAction(
+							new ActionHeaderSearchResultsSwitch(true),
+						);
+					}
 				},
 			},
 			{
@@ -264,6 +269,20 @@ export abstract class ViewHome extends View {
 				},
 			},
 		);
+		this.header.profilesSearch.forEach((profileSearch) => {
+			profileSearch.vnode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionAppGoTo(
+							PAGE_URLS.profile + `/${profileSearch.config.id}`,
+						),
+					);
+					this.sendAction(new ActionHeaderSearchResultsSwitch(false));
+				},
+			});
+		});
 	}
 
 	private _searchInputHandler = debounce((str: string, append?: boolean) => {

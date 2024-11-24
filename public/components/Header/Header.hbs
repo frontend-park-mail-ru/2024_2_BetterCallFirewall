@@ -12,10 +12,12 @@
             <input type="text" class="header__search-input" placeholder="{{this.search.placeholder}}">
         </div>
         <div class="header__search-pad {{#unless this.showSearchResults}}header__search-pad_hidden{{/unless}}">
-            <span class="search__header">Люди</span>
-            {{#each this.profilesSearch}}
-                {{{this}}}
-            {{/each}}
+            {{#if this.profilesSearch.length}}
+                <span class="search__header">Люди</span>
+                {{#each this.profilesSearch}}
+                    {{{this}}}
+                {{/each}}
+            {{/if}}
         </div>
     </div>
     <div class="header__profile">
