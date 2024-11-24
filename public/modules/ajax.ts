@@ -328,7 +328,10 @@ class Ajax {
 	async getGroupPage(
 		groupPagePath: string,
 	): Promise<AjaxResponse<FullGroupResponse>> {
-		const request = this._getRequest(app.config.URL.group + groupPagePath);
+		let url = app.config.URL.group;
+		const groupId = groupPagePath.split('/').pop();
+		url = url.replace('{id}', `${groupId}`);
+		const request = this._getRequest(url);
 		const response = await this._response(request);
 		let groupPageResponse: AjaxResponse<FullGroupResponse> = {
 			status: response.status,
