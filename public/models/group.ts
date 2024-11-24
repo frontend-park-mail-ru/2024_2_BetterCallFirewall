@@ -60,9 +60,7 @@ export const toGroupsConfig = (
 };
 
 export interface GroupPayload {
-	group_content: {
-		name: string;
-		about: string;
-		avatar: string;
-	};
+	name: string;
+	about: string;
+	avatar: string;
 }
