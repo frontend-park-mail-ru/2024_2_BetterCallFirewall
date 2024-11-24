@@ -17,7 +17,6 @@ import { update } from '../../modules/vdom';
 import { ChangeGroupPage } from '../../stores/storeGroupPage';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 import { PAGE_LINKS, PAGE_URLS } from '../../config';
-import { ACTION_GROUPS_TYPES } from '../../actions/actionGroups';
 
 export type ComponentsGroupPage = {
 	groupPage?: GroupPage;

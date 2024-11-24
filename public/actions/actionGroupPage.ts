@@ -6,7 +6,7 @@ export const ACTION_GROUP_PAGE_TYPES = {
 	groupPageRequestSuccess: 'actionGroupPageRequestSuccess',
 	updateGroupPage: 'actionUpdateGroupPage',
 	deleteGroup: 'actionDeleteGroup',
-	deleteGroupSuccess: 'actionDeleteGroup',
+	deleteGroupSuccess: 'actionDeleteGroupSuccess',
 };
 
 export interface ActionUpdateGroupPageData {}
