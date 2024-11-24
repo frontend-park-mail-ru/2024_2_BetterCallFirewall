@@ -39,13 +39,14 @@ export const PAGE_URLS = {
 	postEdit: '/post-edit',
 	groups: '/groups',
 	createGroup: '/create-group',
-	groupPage: '/groups/1', // изменить
+	groupPage: '/groups', // изменить
 	csat: '/csat/question',
 	question: '/csat/question',
 	metrics: '/csat/metrics',
 };
 
 export const PAGE_LINKS = { ...PAGE_URLS };
+PAGE_LINKS.groupPage += '/\\d+';
 PAGE_LINKS.chat += '/\\d+';
 PAGE_LINKS.profile += '/([\\w-]+)';
 

@@ -1,9 +1,8 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
-import { ACTION_GROUPS_TYPES, ActionGroupsGetGroups } from '../../actions/actionGroups';
-import api from '../../api/api';
+import { ActionGroupsGetGroups } from '../../actions/actionGroups';
 import { Root } from '../../components';
 import { Groups, GroupsConfig } from '../../components/Groups/Groups';
-import { PAGE_LINKS } from '../../config';
+import { PAGE_LINKS, PAGE_URLS } from '../../config';
 import { update } from '../../modules/vdom';
 import { ChangeGroups } from '../../stores/storeGroups';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
@@ -40,10 +39,6 @@ export class ViewGroups extends ViewHome {
 	handleChange(change: ChangeGroups): void {
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_GROUPS_TYPES.getGroups:
-				this.updateViewGroups(change.data);
-				api.requestGroups();
-				break;
 			default:
 				this.updateViewGroups(change.data);
 		}
@@ -111,7 +106,7 @@ export class ViewGroups extends ViewHome {
 				callback: (event) => {
 					event.preventDefault();
 					this.sendAction(
-						new ActionAppGoTo(`/groups/${group.config.id}`),
+						new ActionAppGoTo(PAGE_URLS.groups + `/${group.config.id}`),
 					);
 				},
 			});
@@ -120,7 +115,7 @@ export class ViewGroups extends ViewHome {
 				callback: (event) => {
 					event.preventDefault();
 					this.sendAction(
-						new ActionAppGoTo(`/groups/${group.config.id}`),
+						new ActionAppGoTo(PAGE_URLS.groups + `/${group.config.id}`),
 					);
 				},
 			});

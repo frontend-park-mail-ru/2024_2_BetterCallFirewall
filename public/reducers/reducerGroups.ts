@@ -24,7 +24,7 @@ export const reducerGroups = (
 			return newState;
 		case ACTION_GROUPS_TYPES.getGroupsSuccess: {
 			const actionData = action.data as ActionGroupsGetGroupsSuccessData;
-			newState.groups.groupsConfig = newState.groups.groupsConfig =
+			newState.groups.groupsConfig =
 				actionData.groups.map((group) => {
 					return toGroupsConfig(group);
 				});

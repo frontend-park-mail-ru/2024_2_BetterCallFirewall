@@ -453,7 +453,6 @@ class App {
 		this._stores.groupPage.subscribe(ACTION_APP_TYPES.goTo);
 
 		this._stores.groups.subscribe(ACTION_APP_TYPES.goTo);
-		this._stores.groups.subscribe(ACTION_GROUPS_TYPES.getGroups);
 		this._stores.groups.subscribe(ACTION_GROUPS_TYPES.getGroupsSuccess);
 
 

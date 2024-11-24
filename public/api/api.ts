@@ -34,7 +34,7 @@ import {
 	ActionFriendsGetSubscriptionsSuccess,
 	ActionFriendsGetUsersSuccess,
 } from '../actions/actionFriends';
-import { ActionGroupsGetGroupsSuccess } from '../actions/actionGroups';
+import { ACTION_GROUPS_TYPES, ActionGroupsGetGroupsSuccess } from '../actions/actionGroups';
 import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
 	ACTION_MESSAGES_TYPES,
@@ -130,6 +130,9 @@ class API {
 			}
 			case ACTION_POST_TYPES.unlike:
 				this.unlikePost((action.data as ActionPostLikeData).postId);
+				break;
+			case ACTION_GROUPS_TYPES.getGroups:
+				this.requestGroups();
 				break;
 		}
 	}
@@ -425,9 +428,9 @@ class API {
 				);
 				break;
 			case STATUS.noMoreContent:
-					this.sendAction(
-						new ActionGroupsGetGroupsSuccess({ groups: [] }),
-					);
+				this.sendAction(
+					new ActionGroupsGetGroupsSuccess({ groups: [] }),
+				);
 				break;
 		}
 	}
