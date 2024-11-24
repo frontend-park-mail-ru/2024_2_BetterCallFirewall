@@ -136,6 +136,7 @@ export abstract class ViewHome extends View {
 			event: 'click',
 			callback: (event) => {
 				if (
+					this.header.config.showSearchResults &&
 					!this.header.searchResultsHTML.contains(
 						event.target as Node,
 					)
