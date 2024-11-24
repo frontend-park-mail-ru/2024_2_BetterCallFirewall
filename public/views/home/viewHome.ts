@@ -294,6 +294,7 @@ export abstract class ViewHome extends View {
 							PAGE_URLS.groups + `/${groupSearch.config.id}`,
 						),
 					);
+					this.sendAction(new ActionHeaderSearchResultsSwitch(false));
 				},
 			});
 		});
