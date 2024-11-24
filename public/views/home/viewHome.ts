@@ -232,6 +232,7 @@ export abstract class ViewHome extends View {
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
+				event.stopImmediatePropagation();
 				this.sendAction(
 					new ActionMenuOpenSwitch(!this._configHome.menu.isShow),
 				);
