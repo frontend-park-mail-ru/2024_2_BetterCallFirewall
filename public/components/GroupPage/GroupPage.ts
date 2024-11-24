@@ -15,6 +15,7 @@ export interface GroupPageConfig extends ComponentConfig {
 	posts: PostConfig[];
 	createPostHref: string;
 	isAdmin: boolean;
+	isFollow: boolean;
 }
 
 export class GroupPage extends Component {
