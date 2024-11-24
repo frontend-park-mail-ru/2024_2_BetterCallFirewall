@@ -6,6 +6,7 @@ import {
 } from '../../actions/actionHeader';
 import {
 	ACTION_MENU_TYPES,
+	ActionMenuOpenSwitch,
 	ActionMenuTitleClick,
 } from '../../actions/actionMenu';
 import {
@@ -225,8 +226,9 @@ export abstract class ViewHome extends View {
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
-				this._configHome.menu.isShow = true;
-				this._render();
+				this.sendAction(
+					new ActionMenuOpenSwitch(!this._configHome.menu.isShow),
+				);
 			},
 		});
 		this.header.searchInputVNode.handlers.push(

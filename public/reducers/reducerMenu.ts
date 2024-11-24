@@ -2,6 +2,7 @@ import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
 import {
 	ACTION_MENU_TYPES,
+	ActionMenuOpenSwitchData,
 	ActionUpdateProfileLinkHrefData,
 } from '../actions/actionMenu';
 import {
@@ -42,6 +43,10 @@ export const reducerMenu = (
 				newState.links.profile.href = `/${actionData.profile.id}`;
 				break;
 			}
+			case ACTION_MENU_TYPES.openSwitch:
+				newState.isShow = (
+					action.data as ActionMenuOpenSwitchData
+				).show;
 		}
 	}
 	return newState;

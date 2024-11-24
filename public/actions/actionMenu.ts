@@ -3,6 +3,7 @@ import { Action, ActionType } from './action';
 export const ACTION_MENU_TYPES = {
 	titleClick: 'menuTitleClick',
 	updateProfileLinkHref: 'menuUpdateProfileLinkHref',
+	openSwitch: 'actionMenuOpenSwitch',
 };
 
 export interface ActionMenuLinkClickData {
@@ -30,5 +31,18 @@ export class ActionMenuUpdateProfileLinkHref implements Action {
 	constructor(href: string) {
 		this.type = ACTION_MENU_TYPES.updateProfileLinkHref;
 		this.data = { href };
+	}
+}
+
+export interface ActionMenuOpenSwitchData {
+	show: boolean;
+}
+
+export class ActionMenuOpenSwitch implements Action {
+	type: ActionType = ACTION_MENU_TYPES.openSwitch;
+	data: ActionMenuOpenSwitchData;
+
+	constructor(show: boolean) {
+		this.data = { show };
 	}
 }

@@ -276,6 +276,7 @@ class App {
 		this._stores.home.subscribe(ACTION_MENU_TYPES.updateProfileLinkHref);
 		this._stores.home.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
 		this._stores.home.subscribe(ACTION_HEADER_TYPES.searchResultsSwitch);
+		this._stores.home.subscribe(ACTION_MENU_TYPES.openSwitch);
 		this._stores.home.subscribe(
 			ACTION_PROFILE_TYPES.getYourOwnProfileSuccess,
 		);
