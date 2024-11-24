@@ -118,23 +118,15 @@ export class ViewGroupPage extends ViewHome {
 								`/${this._configGroupPage.groupPage.id}`,
 						),
 					);
-					this.groupPage.deleteGroupButtonVNode.handlers.push({
-						event: 'click',
-						callback: (event) => {
-							event.preventDefault();
-							this.sendAction(
-								new ActionAppGoTo(
-									PAGE_URLS.groupEdit +
-										`/${this._configGroupPage.groupPage.id}`,
-								),
-							);
-							this.sendAction(
-								new ActionGroupPageDeleteGroup(
-									this.groupPage.id,
-								),
-							);
-						},
-					});
+				},
+			});
+			this.groupPage.deleteGroupButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionGroupPageDeleteGroup(this.groupPage.id),
+					);
 				},
 			});
 		}
