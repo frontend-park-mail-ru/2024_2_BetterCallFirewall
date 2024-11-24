@@ -331,7 +331,7 @@ class Ajax {
 		let url = app.config.URL.group;
 		const groupId = groupPagePath.split('/').pop();
 		url = url.replace('{id}', `${groupId}`);
-		const request = this._getRequest(url + groupPagePath);
+		const request = this._getRequest(url);
 		const response = await this._response(request);
 		let groupPageResponse: AjaxResponse<FullGroupResponse> = {
 			status: response.status,
