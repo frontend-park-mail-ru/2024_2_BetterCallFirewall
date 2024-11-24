@@ -343,6 +343,7 @@ const friendsConfig: ViewFriendsConfig = {
 		headerText: 'Поиск друзей',
 		friendsConfig: [],
 	},
+	pendingUsersRequest: false,
 };
 
 const postEditFormConfig: PostEditFormConfig = {

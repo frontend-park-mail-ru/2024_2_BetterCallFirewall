@@ -24,6 +24,7 @@ export interface ViewFriendsConfig extends HomeConfig {
 	subscribers: FriendsConfig;
 	users: FriendsConfig;
 	subscriptions: FriendsConfig;
+	pendingUsersRequest: boolean;
 }
 
 export class ViewFriends extends ViewHome {
@@ -62,10 +63,12 @@ export class ViewFriends extends ViewHome {
 				api.requestSubscribers(
 					this._configFriends.main.header.profile.id,
 				);
-				api.requestUsers();
 				api.requestSubscriptions(
 					this._configFriends.main.header.profile.id,
 				);
+				if (!this._configFriends.pendingUsersRequest) {
+					api.requestUsers();
+				}
 				break;
 			default:
 				this.updateViewFriends(change.data);

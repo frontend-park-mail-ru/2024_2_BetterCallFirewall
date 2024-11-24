@@ -27,6 +27,7 @@ export const reducerFriends = (
 			newState.subscribers.friendsConfig = [];
 			newState.subscriptions.friendsConfig = [];
 			newState.users.friendsConfig = [];
+			newState.pendingUsersRequest = true;
 			return newState;
 		case ACTION_FRIENDS_TYPES.getUsersSuccess: {
 			const actionData = action.data as ActionProfileGetUsersSuccessData;
@@ -42,6 +43,7 @@ export const reducerFriends = (
 						return toFriendConfig(user);
 					}),
 			);
+			newState.pendingUsersRequest = false;
 			return newState;
 		}
 		case ACTION_FRIENDS_TYPES.getSubscribersSuccess: {
