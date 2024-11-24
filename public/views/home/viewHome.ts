@@ -271,7 +271,7 @@ export abstract class ViewHome extends View {
 					event.preventDefault();
 					this.sendAction(
 						new ActionAppGoTo(
-							PAGE_URLS + `${profileSearch.config.id}`,
+							PAGE_URLS.profile + `${profileSearch.config.id}`,
 						),
 					);
 				},
