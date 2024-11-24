@@ -380,6 +380,7 @@ const groupPageComponentConfig: GroupPageConfig = {
 	description: '',
 	img: '',
 	posts: [],
+	isFollow: false,
 	createPostHref: PAGE_LINKS.createPost,
 	isAdmin: false,
 };

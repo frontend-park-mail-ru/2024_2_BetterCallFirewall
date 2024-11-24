@@ -4,6 +4,8 @@ import { Action, ActionType } from './action';
 export const ACTION_GROUPS_TYPES = {
     getGroups: 'actionGroupsGetGroups',
     getGroupsSuccess: 'actionGroupsGetGroupsSuccess',
+    groupsUnfollowGroup: 'actionGroupsUnfollowGroup',
+    groupsUnfollowGroupSuccess: 'actionGroupUnfollowSuccess',
 };
 
 export class ActionGroupsGetGroups implements Action {
@@ -30,3 +32,23 @@ export class ActionGroupsGetGroupsSuccess implements Action {
     }
 }
 
+export interface ActionGroupsUnfollowGroupData {
+    groupId: number;
+}
+
+export class ActionGroupsUnfollowGroup implements Action {
+    type: ActionType;
+    data: ActionGroupsUnfollowGroupData;
+    constructor(groupId: number) {
+        this.type = ACTION_GROUPS_TYPES.groupsUnfollowGroup;
+        this.data = { groupId: groupId };
+    }
+}
+
+export class ActionGroupsUnfollowGroupSuccess implements Action {
+    type: ActionType;
+    data: object = {};
+    constructor() {
+        this.type = ACTION_GROUPS_TYPES.groupsUnfollowGroupSuccess;
+    }
+}

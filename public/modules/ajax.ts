@@ -347,6 +347,18 @@ class Ajax {
 		return groupPageResponse;
 	}
 
+	async unfollowGroup(groupId: number): Promise<AjaxResponse<object>> {
+		let url = app.config.URL.groupLeave;
+		url = url.replace('{id}', `${groupId}`);
+		return this._postRequestObjectResponse(url);
+	}
+
+	async followGroup(groupId: number): Promise<AjaxResponse<object>> {
+		let url = app.config.URL.groupJoin;
+		url = url.replace('{id}', `${groupId}`);
+		return this._postRequestObjectResponse(url);
+	}
+
 	/**
 	 * Запрос списка чатов
 	 */

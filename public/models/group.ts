@@ -8,12 +8,12 @@ export interface ShortGroupResponse {
 	avatar: string;
 	about: string;
 	// isAuthor: boolean; //
-	// isFollow: boolean; //
+	isFollow?: boolean; //
 }
 
 export interface FullGroupResponse extends ShortGroupResponse {
 	countSubscribers: number;
-	isAdmin: boolean;
+	isAdmin?: boolean;
 	// posts?: PostResponse[]; //
 }
 
@@ -21,6 +21,8 @@ export const toGroupPageConfig = (
 	config: GroupPageConfig,
 	groupResponse: FullGroupResponse,
 ): GroupPageConfig => {
+	const isAdmin = groupResponse.isAdmin ? groupResponse.isAdmin: false;
+	const isFollow = groupResponse.isFollow ? groupResponse.isFollow: false;
 	const groupPageData: GroupPageConfig = {
 		id: groupResponse.id,
 		key: `groupPage-${groupResponse.id}`,
@@ -34,8 +36,8 @@ export const toGroupPageConfig = (
 		// 	: [],
         posts: [],
 		createPostHref: PAGE_LINKS.createPost,
-		// isAuthor: groupResponse.isAuthor,
-        isAdmin: groupResponse.isAdmin,
+		isAdmin: isAdmin,
+		isFollow: isFollow,
 	};
 	if (groupPageData.isAdmin) {
 		groupPageData.posts.forEach((post) => {
@@ -49,14 +51,14 @@ export const toGroupPageConfig = (
 export const toGroupsConfig = (
 	groupResponse: ShortGroupResponse,
 ): GroupConfig => {
+	const isFollow = groupResponse.isFollow ? groupResponse.isFollow: false;
 	const newConfig: GroupConfig = {
 		id: groupResponse.id,
 		key: `group-${groupResponse.id}`,
 		avatar: groupResponse.avatar,
 		name: groupResponse.name,
 		description: groupResponse.about,
-		// isFollow: groupResponse.isFollow,
-        isFollow: false, //
+		isFollow: isFollow,
 	};
 	return newConfig;
 };
