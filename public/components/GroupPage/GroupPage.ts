@@ -32,6 +32,10 @@ export class GroupPage extends Component {
 		throw new Error('config not found');
 	}
 
+	get id(): number {
+		return this._config.id;
+	}
+
 	set config(config: GroupPageConfig) {
 		this._config = config;
 	}

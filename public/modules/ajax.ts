@@ -377,6 +377,12 @@ class Ajax {
 		return this._postRequestObjectResponse(url);
 	}
 
+	async deleteGroup(groupId: number): Promise<AjaxResponse<object>> {
+		let url = app.config.URL.group;
+		url = url.replace('{id}', `${groupId}`);
+		return this._deleteObjectResponse(url);
+	}
+
 	/**
 	 * Запрос списка чатов
 	 */

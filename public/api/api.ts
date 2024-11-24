@@ -45,6 +45,8 @@ import {
 	ACTION_GROUP_PAGE_TYPES,
 	ActionGroupPageRequestData,
 	ActionGroupPageRequestSuccess,
+	ActionGroupPageDeleteData,
+	ActionGroupPageDeleteGroupSuccess,
 } from '../actions/actionGroupPage';
 import {
 	ACTION_GROUPS_TYPES,
@@ -168,6 +170,10 @@ class API {
 					(action.data as ActionGroupsFollowGroupData).groupId,
 				);
 				break;
+			case ACTION_GROUP_PAGE_TYPES.deleteGroup:
+				this.deleteGroup(
+					(action.data as ActionGroupPageDeleteData).groupId,
+				);
 		}
 		switch (true) {
 			case action instanceof ActionGroupsSearch:
@@ -521,6 +527,14 @@ class API {
 		switch (response.status) {
 			case STATUS.ok:
 				this.sendAction(new ActionGroupsFollowGroupSuccess());
+		}
+	}
+
+	async deleteGroup(groupId: number) {
+		const response = await ajax.deleteGroup(groupId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionGroupPageDeleteGroupSuccess());
 		}
 	}
 
