@@ -1,7 +1,11 @@
 import { STATUS } from '../api/api';
 import app from '../app';
 import { ChatResponse } from '../models/chat';
-import { FullGroupResponse, GroupPayload, ShortGroupResponse } from '../models/group';
+import {
+	FullGroupResponse,
+	GroupPayload,
+	ShortGroupResponse,
+} from '../models/group';
 import { CsatResult } from '../models/csatResult';
 import { HeaderResponse } from '../models/header';
 import { MessageResponse } from '../models/message';
@@ -321,8 +325,13 @@ class Ajax {
 		return this._postResponse(request);
 	}
 
-	async getGroupPage(groupPagePath: string): Promise<AjaxResponse<FullGroupResponse>> {
-		const request = this._getRequest(app.config.URL.group + groupPagePath);
+	async getGroupPage(
+		groupPagePath: string,
+	): Promise<AjaxResponse<FullGroupResponse>> {
+		let url = app.config.URL.group;
+		const groupId = groupPagePath.split('/').pop();
+		url = url.replace('{id}', `${groupId}`);
+		const request = this._getRequest(url + groupPagePath);
 		const response = await this._response(request);
 		let groupPageResponse: AjaxResponse<FullGroupResponse> = {
 			status: response.status,
@@ -330,7 +339,8 @@ class Ajax {
 		};
 		switch (groupPageResponse.status) {
 			case STATUS.ok: {
-				const body = (await response.json()) as FetchResponse<FullGroupResponse>;
+				const body =
+					(await response.json()) as FetchResponse<FullGroupResponse>;
 				groupPageResponse = Object.assign(groupPageResponse, body);
 			}
 		}
