@@ -51,7 +51,7 @@ export class ViewLogin extends View {
 	protected _render() {
 		const rootNode = this._root.node;
 
-		this._root.removeChildren();
+		this._root.clear();
 		this._components.login = new LoginForm(this._config, this._root);
 		const rootVNode = this._root.newVNode();
 		this._addLoginHandlers();
