@@ -83,7 +83,9 @@ export class ViewFriends extends ViewHome {
 
 	render(): void {
 		this._render();
-		this.sendAction(new ActionFriendsGetFriends());
+		if (!this._configFriends.pendingUsersRequest) {
+			this.sendAction(new ActionFriendsGetFriends());
+		}
 	}
 
 	protected get friends(): Friends {
