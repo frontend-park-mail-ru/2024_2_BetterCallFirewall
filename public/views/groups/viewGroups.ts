@@ -1,8 +1,10 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
-import { ActionCreateGroupGoTo } from '../../actions/actionCreateGroup';
 import { Root } from '../../components';
 import { Groups, GroupsConfig } from '../../components/Groups/Groups';
+import { PAGE_LINKS } from '../../config';
 import { update } from '../../modules/vdom';
+import { ChangeGroups } from '../../stores/storeGroups';
+import { ChangeHome } from '../../stores/storeHome';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsGroups = {
@@ -32,6 +34,14 @@ export class ViewGroups extends ViewHome {
 			throw new Error('groups does not exist');
 		}
 		return groups;
+	}
+
+	handleChange(change: ChangeGroups): void {
+		super.handleChange(change);
+		switch (change.type) {
+			default:
+				this.updateViewGroups(change.data);
+		}
 	}
 
 	protected _addHandlers() {
@@ -101,7 +111,7 @@ export class ViewGroups extends ViewHome {
 					},
 				});
 			}
-            // if (!groupConfig.isFollow) {
+			// if (!groupConfig.isFollow) {
 			// 	group.followGroupButtonVNode.handlers.push({
 			// 		event: 'click',
 			// 		callback: (event) => {
@@ -129,12 +139,12 @@ export class ViewGroups extends ViewHome {
 				},
 			});
 		});
-        this.groups.createGroupButtonVNode.handlers.push({
-            event: 'click',
-            callback: (event) => {
-                event.preventDefault();
-                this.sendAction(new ActionCreateGroupGoTo());
-            },
-        });
+		this.groups.createGroupButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionAppGoTo(PAGE_LINKS.createGroup));
+			},
+		});
 	}
 }
