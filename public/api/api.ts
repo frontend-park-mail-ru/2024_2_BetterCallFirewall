@@ -101,6 +101,7 @@ import { GroupPayload } from '../models/group';
 import { PostPayload } from '../models/post';
 import ajax, { QueryParams } from '../modules/ajax';
 import { ProfilePayload } from '../models/profile';
+import { ActionCreateGroupSuccess } from '../actions/actionCreateGroup';
 
 export const STATUS = {
 	ok: 200,
@@ -449,9 +450,7 @@ class API {
 				if (!response.data) {
 					return;
 				}
-				// this.sendAction(
-				// 	new ActionGroupsCreateGroupSuccess(),
-				// );
+				this.sendAction(new ActionCreateGroupSuccess(response.data));
 				break;
 			default:
 			// this.sendAction();

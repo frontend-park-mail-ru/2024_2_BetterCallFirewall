@@ -453,6 +453,9 @@ class App {
 		this._stores.createGroup.subscribe(
 			ACTION_CREATE_GROUP_TYPES.goToCreateGroup,
 		);
+		this._stores.createGroup.subscribe(
+			ACTION_CREATE_GROUP_TYPES.createSuccess,
+		);
 
 		this._stores.groupPage.subscribe(
 			ACTION_GROUP_PAGE_TYPES.groupPageRequest,

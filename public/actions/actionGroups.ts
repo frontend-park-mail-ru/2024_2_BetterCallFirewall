@@ -91,8 +91,7 @@ export class ActionGroupsFollowGroupSuccess implements Action {
 	constructor() {
 		this.type = ACTION_GROUPS_TYPES.groupsFollowGroupSuccess;
 	}
-} 
-
+}
 
 export interface ActionGroupsSearchSuccessData {
 	groupsResponses: ShortGroupResponse[];

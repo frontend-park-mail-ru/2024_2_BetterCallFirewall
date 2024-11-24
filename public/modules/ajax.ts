@@ -327,9 +327,12 @@ class Ajax {
 		return this._getShortGroupResponse(url);
 	}
 
-	async createGroup(formData: GroupPayload): Promise<AjaxResponse<object>> {
-		const request = this._postRequest(app.config.URL.groups, formData);
-		return this._postResponse(request);
+	async createGroup(formData: GroupPayload): Promise<AjaxResponse<number>> {
+		return this._genericRequestResponse(
+			app.config.URL.groups,
+			'post',
+			formData,
+		);
 	}
 
 	async groupEdit(
