@@ -1,4 +1,15 @@
 .search-result {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    margin-top: 0.5rem;
+    &__avatar-container {
+        width: 3rem;
+        height: 3rem;
+        margin-right: 1rem;
+    }
+    &__avatar {
+        width: 100%;
+        height: 100%;
+    }
 }

@@ -266,12 +266,14 @@ export abstract class ViewHome extends View {
 		);
 	}
 
-	private _searchInputHandler = debounce((str: string) => {
+	private _searchInputHandler = debounce((str: string, append?: boolean) => {
 		const profilesSearch = this._configHome.main.header.profilesSearch;
 		this.sendAction(
 			new ActionProfileSearch(
 				str,
-				profilesSearch[profilesSearch.length - 1]?.id,
+				append
+					? profilesSearch[profilesSearch.length - 1]?.id
+					: undefined,
 			),
 		);
 	}, 200);
