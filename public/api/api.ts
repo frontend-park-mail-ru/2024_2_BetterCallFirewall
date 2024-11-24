@@ -29,10 +29,10 @@ import {
 	ActionFriendsSubscribeSuccess,
 	actionFriendsUnsubscribeFail,
 	ActionFriendsUnsubscribeSuccess,
-	ActionProfileGetFriendsSuccess,
-	ActionProfileGetSubscribersSuccess,
-	ActionProfileGetSubscriptionsSuccess,
-	ActionProfileGetUsersSuccess,
+	ActionFriendsGetFriendsSuccess,
+	ActionFriendsGetSubscribersSuccess,
+	ActionFriendsGetSubscriptionsSuccess,
+	ActionFriendsGetUsersSuccess,
 } from '../actions/actionFriends';
 import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
@@ -276,14 +276,14 @@ class API {
 					break;
 				}
 				this.sendAction(
-					new ActionProfileGetFriendsSuccess({
+					new ActionFriendsGetFriendsSuccess({
 						friends: response.data,
 					}),
 				);
 				break;
 			case STATUS.noMoreContent:
 				this.sendAction(
-					new ActionProfileGetFriendsSuccess({ friends: [] }),
+					new ActionFriendsGetFriendsSuccess({ friends: [] }),
 				);
 				break;
 		}
@@ -297,14 +297,14 @@ class API {
 					break;
 				}
 				this.sendAction(
-					new ActionProfileGetSubscribersSuccess({
+					new ActionFriendsGetSubscribersSuccess({
 						subscribers: response.data,
 					}),
 				);
 				break;
 			case STATUS.noMoreContent:
 				this.sendAction(
-					new ActionProfileGetSubscribersSuccess({ subscribers: [] }),
+					new ActionFriendsGetSubscribersSuccess({ subscribers: [] }),
 				);
 				break;
 		}
@@ -318,7 +318,7 @@ class API {
 					break;
 				}
 				this.sendAction(
-					new ActionProfileGetUsersSuccess({
+					new ActionFriendsGetUsersSuccess({
 						users: response.data,
 					}),
 				);
@@ -333,14 +333,14 @@ class API {
 					break;
 				}
 				this.sendAction(
-					new ActionProfileGetSubscriptionsSuccess({
+					new ActionFriendsGetSubscriptionsSuccess({
 						subscriptions: response.data,
 					}),
 				);
 				break;
 			case STATUS.noMoreContent:
 				this.sendAction(
-					new ActionProfileGetSubscriptionsSuccess({
+					new ActionFriendsGetSubscriptionsSuccess({
 						subscriptions: [],
 					}),
 				);

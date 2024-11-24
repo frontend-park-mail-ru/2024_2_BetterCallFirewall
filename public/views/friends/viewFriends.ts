@@ -2,7 +2,7 @@ import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import { ActionChatGoToChat } from '../../actions/actionChat';
 import {
 	ACTION_FRIENDS_TYPES,
-	ActionProfileGetFriends,
+	ActionFriendsGetFriends,
 } from '../../actions/actionFriends';
 import api from '../../api/api';
 import { Root } from '../../components';
@@ -55,7 +55,9 @@ export class ViewFriends extends ViewHome {
 			case ACTION_FRIENDS_TYPES.removeSuccess:
 			case ACTION_FRIENDS_TYPES.unsubscribeSuccess:
 			case ACTION_FRIENDS_TYPES.acceptSuccess:
-				this.sendAction(new ActionProfileGetFriends());
+				if (!this._configFriends.pendingUsersRequest) {
+					this.sendAction(new ActionFriendsGetFriends());
+				}
 				break;
 			case ACTION_FRIENDS_TYPES.getFriends:
 				this.updateViewFriends(change.data);
@@ -66,9 +68,7 @@ export class ViewFriends extends ViewHome {
 				api.requestSubscriptions(
 					this._configFriends.main.header.profile.id,
 				);
-				if (!this._configFriends.pendingUsersRequest) {
-					api.requestUsers();
-				}
+				api.requestUsers();
 				break;
 			default:
 				this.updateViewFriends(change.data);
@@ -83,7 +83,7 @@ export class ViewFriends extends ViewHome {
 
 	render(): void {
 		this._render();
-		this.sendAction(new ActionProfileGetFriends());
+		this.sendAction(new ActionFriendsGetFriends());
 	}
 
 	protected get friends(): Friends {
