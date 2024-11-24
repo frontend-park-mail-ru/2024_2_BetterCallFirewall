@@ -4,7 +4,6 @@ import { Groups, GroupsConfig } from '../../components/Groups/Groups';
 import { PAGE_LINKS } from '../../config';
 import { update } from '../../modules/vdom';
 import { ChangeGroups } from '../../stores/storeGroups';
-import { ChangeHome } from '../../stores/storeHome';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsGroups = {
@@ -69,14 +68,14 @@ export class ViewGroups extends ViewHome {
 			groupsConfig: [
 				{
 					id: 1,
-					key: 'group',
+					key: 'group-1',
 					name: 'Рифмы и панчи',
 					avatar: './img.jpg',
 					isFollow: true,
 				},
 				{
 					id: 2,
-					key: 'group',
+					key: 'group-2',
 					name: 'Мысли джокера',
 					avatar: './img.jpg',
 					isFollow: false,
