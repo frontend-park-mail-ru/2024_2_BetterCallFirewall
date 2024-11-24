@@ -14,6 +14,7 @@ import {
 	ACTION_FEED_TYPES,
 	ActionFeedPostCreateFail,
 	ActionFeedPostCreateSuccess,
+	ActionFeedPostGroupCreateSuccess,
 	ActionFeedPostsRequestData,
 	ActionPostsRequestFail,
 	ActionPostsRequestSuccess,
@@ -545,9 +546,19 @@ class API {
 				if (!response.data) {
 					return;
 				}
-				this.sendAction(
-					new ActionFeedPostCreateSuccess({ post: response.data }),
-				);
+				if (response.data.header.community_id) {
+					this.sendAction(
+						new ActionFeedPostGroupCreateSuccess({
+							post: response.data,
+						}),
+					);
+				} else {
+					this.sendAction(
+						new ActionFeedPostCreateSuccess({
+							post: response.data,
+						}),
+					);
+				}
 				break;
 			default:
 				this.sendAction(new ActionFeedPostCreateFail());

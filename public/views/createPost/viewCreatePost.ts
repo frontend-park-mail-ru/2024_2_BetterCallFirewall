@@ -8,6 +8,7 @@ import {
 	CreatePostForm,
 	CreatePostFormConfig,
 } from '../../components/CreatePostForm/CreatePostForm';
+import { PAGE_URLS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import { PostPayload } from '../../models/post';
 import fileToString from '../../modules/fileToString';
@@ -43,6 +44,18 @@ export class ViewCreatePost extends ViewHome {
 			case ACTION_FEED_TYPES.postCreateSuccess:
 				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
+			case ACTION_FEED_TYPES.postGroupCreateSuccess: {
+				const url = new URL(app.router.href);
+				const groupId = url.searchParams.get('community');
+				if (groupId) {
+					this.sendAction(
+						new ActionAppGoTo(PAGE_URLS.groupPage + `/${groupId}`),
+					);
+				}
+				break;
+			}
+			default:
+				this.updateViewCreatePost(change.data);
 		}
 	}
 

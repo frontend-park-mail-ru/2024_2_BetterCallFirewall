@@ -6,6 +6,7 @@ export const ACTION_FEED_TYPES = {
 	postsRequestSuccess: 'actionFeedPostsRequestSuccess',
 	postsRequestFail: 'actionFeedPostsRequestFail',
 	postCreateSuccess: 'actionFeedPostCreateSuccess',
+	postGroupCreateSuccess: 'actionFeedPostGroupCreateSuccess',
 	postCreateFail: 'actionFeedPostCreateFail',
 	update: 'actionFeedUpdate',
 };
@@ -49,6 +50,19 @@ export class ActionFeedPostCreateSuccess implements Action {
 
 	constructor(data: ActionFeedPostCreateSuccessData) {
 		this.type = ACTION_FEED_TYPES.postCreateSuccess;
+		this.data = data;
+	}
+}
+
+export interface ActionFeedPostGroupCreateSuccessData {
+	post: PostResponse;
+}
+export class ActionFeedPostGroupCreateSuccess implements Action {
+	type: ActionType;
+	data: ActionFeedPostGroupCreateSuccessData;
+
+	constructor(data: ActionFeedPostGroupCreateSuccessData) {
+		this.type = ACTION_FEED_TYPES.postGroupCreateSuccess;
 		this.data = data;
 	}
 }

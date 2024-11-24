@@ -7,6 +7,7 @@ interface Header {
 	author_id: number;
 	author: string;
 	avatar: string;
+	community_id?: string;
 }
 
 interface PostContent {

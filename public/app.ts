@@ -446,6 +446,9 @@ class App {
 		);
 		this._stores.createPost.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
 		this._stores.createPost.subscribe(ACTION_FEED_TYPES.postCreateFail);
+		this._stores.createPost.subscribe(
+			ACTION_FEED_TYPES.postGroupCreateSuccess,
+		);
 
 		this._stores.createGroup.subscribe(
 			ACTION_CREATE_GROUP_TYPES.goToCreateGroup,
