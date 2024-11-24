@@ -46,7 +46,7 @@ export const reducerHeader = (
 			return newState;
 		case ACTION_PROFILE_TYPES.searchSuccess: {
 			const actionData = action.data as ActionProfileSearchSuccessData;
-			newState.profilesSearch.concat(
+			newState.profilesSearch = newState.profilesSearch.concat(
 				actionData.profilesResponses.map((profileResponse) => {
 					return shortProfileResponseToSearchResultConfig(
 						profileResponse,
