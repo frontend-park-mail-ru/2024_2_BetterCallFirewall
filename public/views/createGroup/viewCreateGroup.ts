@@ -56,6 +56,8 @@ export class ViewCreateGroup extends ViewHome {
 				);
 				this.render();
 				break;
+			default:
+				this.updateViewCreatePost(change.data);
 		}
 	}
 
