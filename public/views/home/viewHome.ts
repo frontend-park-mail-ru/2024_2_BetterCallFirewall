@@ -1,5 +1,6 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import {
+	ACTION_HEADER_TYPES,
 	ActionHeaderLogoutClickFail,
 	ActionHeaderLogoutClickSuccess,
 	ActionHeaderSearchResultsSwitch,
@@ -78,6 +79,7 @@ export abstract class ViewHome extends View {
 					this.sendAction(new ActionHeaderSearchResultsSwitch(true));
 				}
 				break;
+			case ACTION_HEADER_TYPES.searchResultsSwitch:
 			case ACTION_PROFILE_TYPES.getHeaderSuccess:
 			case ACTION_MENU_TYPES.updateProfileLinkHref:
 				this.updateViewHome(change.data);
