@@ -122,6 +122,7 @@ const homeConfig: HomeConfig = {
 			},
 			showSearchResults: false,
 			profilesSearch: [],
+			groupsSearch: [],
 		},
 		content: {
 			key: 'content',
