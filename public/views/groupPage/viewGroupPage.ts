@@ -152,10 +152,10 @@ export class ViewGroupPage extends ViewHome {
 						'community',
 						`${this._configGroupPage.groupPage.id}`,
 					);
+					this.sendAction(new ActionPostEditGoTo(post.config));
 					this.sendAction(
 						new ActionAppGoTo(url.pathname + url.search),
 					);
-					this.sendAction(new ActionPostEditGoTo(post.config));
 				},
 			});
 		}
