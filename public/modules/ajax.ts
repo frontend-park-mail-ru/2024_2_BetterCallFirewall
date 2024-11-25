@@ -136,9 +136,12 @@ class Ajax {
 	/**
 	 * Удалить пост
 	 */
-	async deletePost(postId: number): Promise<AjaxResponse<object>> {
+	async deletePost(
+		postId: number,
+		query?: string,
+	): Promise<AjaxResponse<object>> {
 		const url = app.config.URL.post.replace('{id}', `${postId}`);
-		const request = this._deleteRequest(url);
+		const request = this._deleteRequest(query ? url + query : url);
 		return await this._objectResponse(request);
 	}
 

@@ -550,8 +550,8 @@ class API {
 		}
 	}
 
-	async deleteGroup(groupId: number) {
-		const response = await ajax.deleteGroup(groupId);
+	async deleteGroup(groupId: number, query?: string) {
+		const response = await ajax.deleteGroup(groupId, query);
 		switch (response.status) {
 			case STATUS.ok:
 				this.sendAction(new ActionGroupPageDeleteGroupSuccess());
@@ -602,8 +602,8 @@ class API {
 		}
 	}
 
-	async deletePost(postId: number) {
-		const response = await ajax.deletePost(postId);
+	async deletePost(postId: number, query: string) {
+		const response = await ajax.deletePost(postId, query);
 		switch (response.status) {
 			case STATUS.ok:
 				this.sendAction(new ActionProfileDeletePostSuccess());

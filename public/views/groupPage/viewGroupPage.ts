@@ -164,7 +164,10 @@ export class ViewGroupPage extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					api.deletePost(post.config.id);
+					api.deletePost(
+						post.config.id,
+						`?community=${this._configGroupPage.groupPage.id}`,
+					);
 				},
 			});
 		}
