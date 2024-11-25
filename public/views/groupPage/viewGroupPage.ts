@@ -56,12 +56,12 @@ export class ViewGroupPage extends ViewHome {
 				this.sendAction(new ActionAppGoTo(PAGE_LINKS.groups));
 				break;
 			case ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess:
+				this.updateViewGroupPage(change.data);
 				this.sendAction(
 					new ActionGroupPagePostsRequest(
 						this._configGroupPage.groupPage.id,
 					),
 				);
-				this.updateViewGroupPage(change.data);
 				break;
 			default:
 				this.updateViewGroupPage(change.data);
