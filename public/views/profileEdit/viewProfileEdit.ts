@@ -1,4 +1,4 @@
-import { ActionAppGoTo } from '../../actions/actionApp';
+import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileRequest,
@@ -10,6 +10,8 @@ import {
 	ProfileEditForm,
 	IProfileEditFormConfig,
 } from '../../components/ProfileEditForm/ProfileEditForm';
+import { ProfilePayload } from '../../models/profile';
+import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangeProfileEdit } from '../../stores/storeProfileEditForm';
@@ -46,9 +48,13 @@ export class ViewProfileEdit extends ViewHome {
 			case ACTION_PROFILE_EDIT_TYPES.requestSuccess:
 				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
+			case ACTION_APP_TYPES.actionAppInit:
+			case ACTION_APP_TYPES.goTo:
 			case ACTION_PROFILE_EDIT_TYPES.goToProfileEdit:
 				this.render(change.data);
 				break;
+			default:
+				this.updateViewProfileEdit(change.data);
 		}
 	}
 
@@ -62,7 +68,7 @@ export class ViewProfileEdit extends ViewHome {
 		this._render();
 		this.sendAction(
 			new ActionProfileRequest(
-				this._configProfileEdit.menu.links.profile.href,
+				`/${this._configProfileEdit.main.header.profile.id}`,
 			),
 		);
 	}
@@ -106,7 +112,7 @@ export class ViewProfileEdit extends ViewHome {
 
 		this._profileEditForm.vnode.handlers.push({
 			event: 'submit',
-			callback: (event) => {
+			callback: async (event) => {
 				event.preventDefault();
 				const validator = new Validator();
 				const formData = validator.validateForm(
@@ -114,7 +120,19 @@ export class ViewProfileEdit extends ViewHome {
 					this._profileEditForm.form,
 				);
 				if (formData) {
-					api.editProfile(formData);
+					const fileStr = await fileToString(
+						formData.get('file') as File,
+					);
+					if (fileStr === null) {
+						return;
+					}
+					const profilePayload: ProfilePayload = {
+						first_name: formData.get('first_name') as string,
+						last_name: formData.get('last_name') as string,
+						bio: formData.get('bio') as string,
+						avatar: fileStr,
+					};
+					api.editProfile(profilePayload);
 				}
 			},
 		});

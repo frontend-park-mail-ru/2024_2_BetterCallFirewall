@@ -74,6 +74,11 @@ import { ViewQuestion, ViewQuestionConfig } from './views/viewQuestion';
 import { ViewMetrics, ViewMetricsConfig } from './views/viewMetrics';
 import { ACTION_GROUPS_TYPES } from './actions/actionGroups';
 import { ACTION_GROUP_PAGE_TYPES } from './actions/actionGroupPage';
+import {
+	ViewGroupEdit,
+	ViewGroupEditConfig,
+} from './views/groupEdit/viewGroupEdit';
+import { StoreGroupEdit } from './stores/storeGroupEdit';
 
 export const PAGES = {
 	home: 'home',
@@ -106,9 +111,11 @@ export interface URLInterface {
 	postLikeCount: string;
 	groups: string;
 	group: string;
+	groupEdit: string;
 	groupJoin: string;
 	groupLeave: string;
 	profilesSearch: string;
+	groupsSearch: string;
 	csat: string;
 	csatMetrics: string;
 	image: string;
@@ -130,6 +137,7 @@ export interface AppConfig {
 	createGroupConfig: ViewCreateGroupConfig;
 	createPostConfig: ViewCreatePostConfig;
 	editPostConfig: ViewPostEditConfig;
+	editGroupConfig: ViewGroupEditConfig;
 	questionConfig: ViewQuestionConfig;
 	metricsConfig: ViewMetricsConfig;
 }
@@ -150,6 +158,7 @@ export interface AppStores {
 	createGroup: StoreCreateGroup;
 	profileEdit: StoreProfileEdit;
 	postEdit: StorePostEdit;
+	groupEdit: StoreGroupEdit;
 }
 
 /**
@@ -183,13 +192,20 @@ class App {
 			this._config.friendsConfig,
 			this._root,
 		);
-		const groupsView = new ViewGroups(this._config.groupsConfig, this._root);
+		const groupsView = new ViewGroups(
+			this._config.groupsConfig,
+			this._root,
+		);
 		const groupPageView = new ViewGroupPage(
 			this._config.groupPageConfig,
 			this._root,
 		);
 		const createGroupView = new ViewCreateGroup(
 			this._config.createGroupConfig,
+			this.root,
+		);
+		const editGroupView = new ViewGroupEdit(
+			this._config.editGroupConfig,
 			this.root,
 		);
 		const loginView = new ViewLogin(this._config.loginConfig, this._root);
@@ -268,6 +284,10 @@ class App {
 				view: createGroupView,
 			},
 			{
+				path: PAGE_LINKS.groupEdit,
+				view: editGroupView,
+			},
+			{
 				path: PAGE_LINKS.postEdit,
 				view: postEditView,
 			},
@@ -303,6 +323,7 @@ class App {
 			createGroup: new StoreCreateGroup(storeHome),
 			profileEdit: new StoreProfileEdit(storeHome),
 			postEdit: new StorePostEdit(storeHome),
+			groupEdit: new StoreGroupEdit(storeHome),
 		};
 
 		this._stores.app.subscribe(ACTION_APP_TYPES.actionAppInit);
@@ -312,7 +333,6 @@ class App {
 		this._stores.app.subscribe(ACTION_MENU_TYPES.titleClick);
 		this._stores.app.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 		this._stores.app.subscribe(ACTION_CHAT_TYPES.goToChat);
-		this._stores.app.subscribe(ACTION_CREATE_POST_TYPES.goToCreatePost);
 		this._stores.app.subscribe(ACTION_CREATE_GROUP_TYPES.goToCreateGroup);
 		this._stores.app.subscribe(ACTION_PROFILE_TYPES.getHeaderFail);
 		this._stores.app.subscribe(ACTION_PROFILE_EDIT_TYPES.goToProfileEdit);
@@ -335,6 +355,9 @@ class App {
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.search);
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.searchSuccess);
 		this._stores.home.subscribe(ACTION_PROFILE_TYPES.searchFail);
+		this._stores.home.subscribe(ACTION_GROUPS_TYPES.search);
+		this._stores.home.subscribe(ACTION_GROUPS_TYPES.searchSuccess);
+		this._stores.home.subscribe(ACTION_GROUPS_TYPES.searchFail);
 
 		this._stores.login.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.login.subscribe(ACTION_APP_TYPES.goTo);
@@ -424,22 +447,38 @@ class App {
 		this._stores.createPost.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
 		this._stores.createPost.subscribe(ACTION_FEED_TYPES.postCreateFail);
 		this._stores.createPost.subscribe(
-			ACTION_CREATE_POST_TYPES.goToCreatePost,
+			ACTION_FEED_TYPES.postGroupCreateSuccess,
 		);
 
 		this._stores.createGroup.subscribe(
 			ACTION_CREATE_GROUP_TYPES.goToCreateGroup,
 		);
+		this._stores.createGroup.subscribe(
+			ACTION_CREATE_GROUP_TYPES.createSuccess,
+		);
 
 		this._stores.groupPage.subscribe(
-			ACTION_GROUP_PAGE_TYPES.groupPageRequest
+			ACTION_GROUP_PAGE_TYPES.groupPageRequest,
 		);
 		this._stores.groupPage.subscribe(
-			ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess
+			ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess,
 		);
 		this._stores.groupPage.subscribe(
-			ACTION_GROUP_PAGE_TYPES.updateGroupPage
+			ACTION_GROUP_PAGE_TYPES.updateGroupPage,
 		);
+		this._stores.groupPage.subscribe(
+			ACTION_GROUP_PAGE_TYPES.deleteGroupSuccess,
+		);
+		this._stores.groupPage.subscribe(ACTION_GROUP_PAGE_TYPES.postsRequest);
+		this._stores.groupPage.subscribe(
+			ACTION_GROUP_PAGE_TYPES.postsRequestSuccess,
+		);
+		this._stores.groupPage.subscribe(ACTION_FEED_TYPES.postsRequestFail);
+		this._stores.groupPage.subscribe(
+			ACTION_PROFILE_TYPES.deletePostSuccess,
+		);
+		this._stores.groupPage.subscribe(ACTION_POST_TYPES.likeSuccess);
+		this._stores.groupPage.subscribe(ACTION_POST_TYPES.likeFail);
 
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.updateProfileEdit,
@@ -464,8 +503,21 @@ class App {
 		this._stores.groupPage.subscribe(ACTION_APP_TYPES.goTo);
 
 		this._stores.groups.subscribe(ACTION_APP_TYPES.goTo);
+		this._stores.groups.subscribe(
+			ACTION_GROUPS_TYPES.groupsUnfollowGroupSuccess,
+		);
+		this._stores.groups.subscribe(
+			ACTION_GROUPS_TYPES.groupsFollowGroupSuccess,
+		);
 		this._stores.groups.subscribe(ACTION_GROUPS_TYPES.getGroupsSuccess);
 
+		this._stores.groupEdit.subscribe(ACTION_APP_TYPES.actionAppInit);
+		this._stores.groupEdit.subscribe(ACTION_APP_TYPES.goTo);
+		this._stores.groupEdit.subscribe(
+			ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess,
+		);
+		this._stores.groupEdit.subscribe(ACTION_GROUPS_TYPES.editSuccess);
+		this._stores.groupEdit.subscribe(ACTION_GROUPS_TYPES.editFail);
 
 		loginView.register(this._stores.login);
 
@@ -500,6 +552,9 @@ class App {
 
 		createGroupView.register(this._stores.home);
 		createGroupView.register(this._stores.createGroup);
+
+		editGroupView.register(this._stores.home);
+		editGroupView.register(this._stores.groupEdit);
 
 		postEditView.register(this._stores.home);
 		postEditView.register(this._stores.postEdit);

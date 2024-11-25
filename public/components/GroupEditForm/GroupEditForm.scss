@@ -1,0 +1,12 @@
+.edit-group-form {
+    margin-top: 2rem;
+    width: 30rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__title {
+        margin-bottom: 2rem;
+        font-size: 2.4rem;
+    }
+}

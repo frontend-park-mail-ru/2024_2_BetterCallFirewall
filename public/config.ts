@@ -19,6 +19,8 @@ import { ViewGroupPageConfig } from './views/groupPage/viewGroupPage';
 import { GroupPageConfig } from './components/GroupPage/GroupPage';
 import { ViewCreateGroupConfig } from './views/createGroup/viewCreateGroup';
 import { ICreateGroupFormConfig } from './components/CreateGroupForm/CreateGroupForm';
+import { IGroupEditFormConfig } from './components/GroupEditForm/GroupEditForm';
+import { ViewGroupEditConfig } from './views/groupEdit/viewGroupEdit';
 
 const DEBUG: boolean = false;
 
@@ -39,7 +41,8 @@ export const PAGE_URLS = {
 	postEdit: '/post-edit',
 	groups: '/groups',
 	createGroup: '/create-group',
-	groupPage: '/groups', // изменить
+	groupPage: '/groups',
+	groupEdit: '/group-edit',
 	csat: '/csat/question',
 	question: '/csat/question',
 	metrics: '/csat/metrics',
@@ -91,15 +94,15 @@ const homeConfig: HomeConfig = {
 				text: 'Сообщения',
 				href: PAGE_LINKS.messages,
 				icon: `
-				<svg class="logo__messages" viewBox="0 0 24 24" fill="none">
-					<path d="M21.0039 12C21.0039 16.9706 16.9745 21 12.0039 21C9.9675 21 3.00463 21 3.00463 21C3.00463 21 4.56382 17.2561 3.93982 16.0008C3.34076 14.7956 3.00391 13.4372 3.00391 12C3.00391 7.02944 7.03334 3 12.0039 3C16.9745 3 21.0039 7.02944 21.0039 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M3 7.2C3 6.07989 3 5.51984 3.21799 5.09202C3.40973 4.71569 3.71569 4.40973 4.09202 4.21799C4.51984 4 5.0799 4 6.2 4H17.8C18.9201 4 19.4802 4 19.908 4.21799C20.2843 4.40973 20.5903 4.71569 20.782 5.09202C21 5.51984 21 6.0799 21 7.2V20L17.6757 18.3378C17.4237 18.2118 17.2977 18.1488 17.1656 18.1044C17.0484 18.065 16.9277 18.0365 16.8052 18.0193C16.6672 18 16.5263 18 16.2446 18H6.2C5.07989 18 4.51984 18 4.09202 17.782C3.71569 17.5903 3.40973 17.2843 3.21799 16.908C3 16.4802 3 15.9201 3 14.8V7.2Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg>`,
 			},
 			groups: {
 				key: 'groups',
 				text: 'Группы',
 				href: PAGE_LINKS.groups,
-				icon: `
+				icon: `	
 				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M7.125 6C7.125 5.70163 7.24353 5.41548 7.45451 5.2045C7.66548 4.99353 7.95163 4.875 8.25 4.875H20.25C20.5484 4.875 20.8345 4.99353 21.0455 5.2045C21.2565 5.41548 21.375 5.70163 21.375 6C21.375 6.29837 21.2565 6.58452 21.0455 6.7955C20.8345 7.00647 20.5484 7.125 20.25 7.125H8.25C7.95163 7.125 7.66548 7.00647 7.45451 6.7955C7.24353 6.58452 7.125 6.29837 7.125 6ZM20.25 10.875H8.25C7.95163 10.875 7.66548 10.9935 7.45451 11.2045C7.24353 11.4155 7.125 11.7016 7.125 12C7.125 12.2984 7.24353 12.5845 7.45451 12.7955C7.66548 13.0065 7.95163 13.125 8.25 13.125H20.25C20.5484 13.125 20.8345 13.0065 21.0455 12.7955C21.2565 12.5845 21.375 12.2984 21.375 12C21.375 11.7016 21.2565 11.4155 21.0455 11.2045C20.8345 10.9935 20.5484 10.875 20.25 10.875ZM20.25 16.875H8.25C7.95163 16.875 7.66548 16.9935 7.45451 17.2045C7.24353 17.4155 7.125 17.7016 7.125 18C7.125 18.2984 7.24353 18.5845 7.45451 18.7955C7.66548 19.0065 7.95163 19.125 8.25 19.125H20.25C20.5484 19.125 20.8345 19.0065 21.0455 18.7955C21.2565 18.5845 21.375 18.2984 21.375 18C21.375 17.7016 21.2565 17.4155 21.0455 17.2045C20.8345 16.9935 20.5484 16.875 20.25 16.875ZM4.125 10.5C3.82833 10.5 3.53832 10.588 3.29165 10.7528C3.04497 10.9176 2.85271 11.1519 2.73918 11.426C2.62565 11.7001 2.59594 12.0017 2.65382 12.2926C2.7117 12.5836 2.85456 12.8509 3.06434 13.0607C3.27412 13.2704 3.54139 13.4133 3.83237 13.4712C4.12334 13.5291 4.42494 13.4994 4.69903 13.3858C4.97312 13.2723 5.20738 13.08 5.37221 12.8334C5.53703 12.5867 5.625 12.2967 5.625 12C5.625 11.6022 5.46697 11.2206 5.18566 10.9393C4.90436 10.658 4.52283 10.5 4.125 10.5ZM4.125 4.5C3.82833 4.5 3.53832 4.58797 3.29165 4.7528C3.04497 4.91762 2.85271 5.15189 2.73918 5.42597C2.62565 5.70006 2.59594 6.00166 2.65382 6.29264C2.7117 6.58361 2.85456 6.85088 3.06434 7.06066C3.27412 7.27044 3.54139 7.4133 3.83237 7.47118C4.12334 7.52906 4.42494 7.49935 4.69903 7.38582C4.97312 7.27229 5.20738 7.08003 5.37221 6.83336C5.53703 6.58668 5.625 6.29667 5.625 6C5.625 5.60218 5.46697 5.22064 5.18566 4.93934C4.90436 4.65804 4.52283 4.5 4.125 4.5ZM4.125 16.5C3.82833 16.5 3.53832 16.588 3.29165 16.7528C3.04497 16.9176 2.85271 17.1519 2.73918 17.426C2.62565 17.7001 2.59594 18.0017 2.65382 18.2926C2.7117 18.5836 2.85456 18.8509 3.06434 19.0607C3.27412 19.2704 3.54139 19.4133 3.83237 19.4712C4.12334 19.5291 4.42494 19.4994 4.69903 19.3858C4.97312 19.2723 5.20738 19.08 5.37221 18.8334C5.53703 18.5867 5.625 18.2967 5.625 18C5.625 17.6022 5.46697 17.2206 5.18566 16.9393C4.90436 16.658 4.52283 16.5 4.125 16.5Z" />
 				</svg>`,
@@ -122,6 +125,7 @@ const homeConfig: HomeConfig = {
 			},
 			showSearchResults: false,
 			profilesSearch: [],
+			groupsSearch: [],
 		},
 		content: {
 			key: 'content',
@@ -299,6 +303,7 @@ const profileComponentConfig: ProfileConfig = {
 	groupsCount: -1,
 	img: '',
 	createPostHref: PAGE_LINKS.createPost,
+	editProfileHref: PAGE_LINKS.profileEdit,
 	isAuthor: false,
 	isFriend: false,
 	isSubscriber: false,
@@ -358,7 +363,7 @@ const friendsConfig: ViewFriendsConfig = {
 	},
 	users: {
 		key: 'users',
-		headerText: 'Поиск друзей',
+		headerText: 'Все люди',
 		friendsConfig: [],
 	},
 	pendingUsersRequest: false,
@@ -380,8 +385,10 @@ const groupPageComponentConfig: GroupPageConfig = {
 	description: '',
 	img: '',
 	posts: [],
+	isFollow: false,
 	createPostHref: PAGE_LINKS.createPost,
 	isAdmin: false,
+	countSubscribers: 0,
 };
 
 const groupPageConfig: ViewGroupPageConfig = {
@@ -422,6 +429,41 @@ const groupFormConfig: ICreateGroupFormConfig = {
 const createGroupConfig: ViewCreateGroupConfig = {
 	...homeConfig,
 	createGroupForm: groupFormConfig,
+};
+
+const editGroupFormConfig: IGroupEditFormConfig = {
+	key: 'editGroupForm',
+	inputs: {
+		name: {
+			key: 'name',
+			type: 'text',
+			placeholder: 'Название группы',
+			name: 'name',
+		},
+		description: {
+			key: 'description',
+			type: 'text',
+			placeholder: 'Описание группы',
+			name: 'description',
+		},
+		avatar: {
+			key: 'avatar',
+			name: 'file',
+			type: 'file',
+			accept: 'image/*',
+			placeholder: 'Изменить фото',
+		},
+	},
+	button: {
+		key: 'submitButton',
+		text: 'Изменить группу',
+	},
+};
+
+const editGroupConfig: ViewGroupEditConfig = {
+	...homeConfig,
+	groupEditForm: editGroupFormConfig,
+	groupId: -1,
 };
 
 const postEditFormConfig: PostEditFormConfig = {
@@ -487,9 +529,11 @@ const URL: URLInterface = DEBUG
 			postLikeCount: '',
 			groups: '',
 			group: '',
+			groupEdit: '',
 			groupJoin: '',
 			groupLeave: '',
 			profilesSearch: '',
+			groupsSearch: '',
 			csat: '',
 			csatMetrics: '',
 			image: '',
@@ -520,9 +564,11 @@ const URL: URLInterface = DEBUG
 			postLikeCount: ROOT + apiv1 + '/like/count/post/{id}',
 			groups: ROOT + apiv1 + '/community',
 			group: ROOT + apiv1 + '/community/{id}',
+			groupEdit: ROOT + apiv1 + '/community/{id}',
 			groupJoin: ROOT + apiv1 + '/community/{id}/join',
 			groupLeave: ROOT + apiv1 + '/community/{id}/leave',
 			profilesSearch: ROOT + apiv1 + '/profile/search/',
+			groupsSearch: ROOT + apiv1 + '/community/search/',
 			csat: ROOT + apiv1 + '/csat',
 			csatMetrics: ROOT + apiv1 + '/csat/metrics',
 			image: ROOT + '/image',
@@ -544,6 +590,7 @@ const config: AppConfig = {
 	createGroupConfig,
 	groupPageConfig,
 	editPostConfig,
+	editGroupConfig,
 	questionConfig: {
 		question: {
 			id: 1,

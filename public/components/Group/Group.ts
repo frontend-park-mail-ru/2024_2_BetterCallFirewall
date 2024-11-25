@@ -7,6 +7,7 @@ export interface GroupConfig extends ComponentConfig {
 	description: string;
 	name: string;
 	isFollow: boolean;
+	href: string;
 }
 
 export class Group extends Component {
@@ -24,6 +25,10 @@ export class Group extends Component {
 
 	get config(): GroupConfig {
 		return this._config;
+	}
+
+	get id(): number {
+		return this._config.id;
 	}
 
 	render(): string {

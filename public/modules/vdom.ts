@@ -59,7 +59,10 @@ export const vNodesFromString = (htmlStr: string): (VNode | string)[] => {
 };
 
 const vNodeFromNode = (node: VChildNode): VNode | string | undefined => {
-	if (node.nodeType === Node.TEXT_NODE) {
+	if (
+		node.nodeType === Node.TEXT_NODE ||
+		node.nodeType === Node.COMMENT_NODE
+	) {
 		if (!node.textContent) {
 			return undefined;
 		} else if (isEmptyString(node.textContent)) {

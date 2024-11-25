@@ -1,5 +1,10 @@
 import { Action } from '../actions/action';
 import {
+	ActionGroupsSearchFail,
+	ActionGroupsSearch,
+	ActionGroupsSearchSuccess,
+} from '../actions/actionGroups';
+import {
 	ACTION_HEADER_TYPES,
 	ActionHeaderSearchResultsSwitchData,
 } from '../actions/actionHeader';
@@ -9,10 +14,15 @@ import {
 	ActionProfileSearchData,
 	ActionProfileSearchSuccessData,
 } from '../actions/actionProfile';
+import { ActionProfileEditRequestSuccess } from '../actions/actionProfileEdit';
 import { HeaderConfig } from '../components';
 import config from '../config';
+import { shortGroupResponseToSearchResultConfig } from '../models/group';
 import { headerResponseToHeaderConfig } from '../models/header';
-import { shortProfileResponseToSearchResultConfig } from '../models/profile';
+import {
+	shortProfileResponseToSearchResultConfig,
+	toHeaderProfile,
+} from '../models/profile';
 import deepClone from '../modules/deepClone';
 
 const initialState = deepClone(config.homeConfig.main.header);
@@ -58,6 +68,29 @@ export const reducerHeader = (
 		}
 		case ACTION_PROFILE_TYPES.searchFail:
 			newState.showSearchResults = true;
+			return newState;
+	}
+	switch (true) {
+		case action instanceof ActionGroupsSearch:
+			if (!action.data.lastId) {
+				newState.groupsSearch = [];
+			}
+			return newState;
+		case action instanceof ActionGroupsSearchSuccess:
+			newState.groupsSearch = newState.groupsSearch.concat(
+				action.data.groupsResponses.map((groupResponse) => {
+					return shortGroupResponseToSearchResultConfig(
+						groupResponse,
+					);
+				}),
+			);
+			newState.showSearchResults = true;
+			return newState;
+		case action instanceof ActionGroupsSearchFail:
+			newState.showSearchResults = true;
+			return newState;
+		case action instanceof ActionProfileEditRequestSuccess:
+			newState.profile = toHeaderProfile(action.data.profileResponse);
 			return newState;
 	}
 	return newState;

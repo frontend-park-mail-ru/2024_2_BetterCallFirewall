@@ -1,12 +1,20 @@
 import { STATUS } from '../api/api';
 import app from '../app';
 import { ChatResponse } from '../models/chat';
-import { FullGroupResponse, GroupPayload, ShortGroupResponse } from '../models/group';
+import {
+	FullGroupResponse,
+	GroupPayload,
+	ShortGroupResponse,
+} from '../models/group';
 import { CsatResult } from '../models/csatResult';
 import { HeaderResponse } from '../models/header';
 import { MessageResponse } from '../models/message';
 import { PostPayload, PostResponse } from '../models/post';
-import { FullProfileResponse, ShortProfileResponse } from '../models/profile';
+import {
+	FullProfileResponse,
+	ProfilePayload,
+	ShortProfileResponse,
+} from '../models/profile';
 
 type AjaxPromiseConfig = {
 	request: Request;
@@ -35,10 +43,10 @@ export interface AjaxResponse<T> extends FetchResponse<T> {
 export type QueryParams = Record<string, string | undefined>;
 
 const replaceId = (url: string, id: number): string => {
-	return url.replace('{id}', `${id}`);
+	return url.replace('{id}', `${id}`).replace('%7Bid%7D', `${id}`);
 };
 
-const insertQueryParams = (baseUrl: string, params?: QueryParams) => {
+export const insertQueryParams = (baseUrl: string, params?: QueryParams) => {
 	if (!params) {
 		return baseUrl;
 	}
@@ -104,8 +112,12 @@ class Ajax {
 	 */
 	async createPost(
 		formData: PostPayload,
+		query: string,
 	): Promise<AjaxResponse<PostResponse>> {
-		const request = this._postRequest(app.config.URL.feed, formData);
+		const request = this._postRequest(
+			app.config.URL.feed + query,
+			formData,
+		);
 		return this._postResponse(request);
 	}
 
@@ -115,17 +127,21 @@ class Ajax {
 	async editPost(
 		formData: PostPayload,
 		postId: number,
+		query?: string,
 	): Promise<AjaxResponse<PostResponse>> {
 		const url = app.config.URL.post.replace('{id}', `${postId}`);
-		return this._genericRequestResponse(url, 'put', formData);
+		return this._genericRequestResponse(url + query, 'put', formData);
 	}
 
 	/**
 	 * Удалить пост
 	 */
-	async deletePost(postId: number): Promise<AjaxResponse<object>> {
+	async deletePost(
+		postId: number,
+		query?: string,
+	): Promise<AjaxResponse<object>> {
 		const url = app.config.URL.post.replace('{id}', `${postId}`);
-		const request = this._deleteRequest(url);
+		const request = this._deleteRequest(query ? url + query : url);
 		return await this._objectResponse(request);
 	}
 
@@ -192,14 +208,13 @@ class Ajax {
 	 * Редактировать профиль
 	 */
 	async editProfile(
-		formData: FormData,
+		formData: ProfilePayload,
 	): Promise<AjaxResponse<FullProfileResponse>> {
-		const request = this._formRequest(
+		return this._genericRequestResponse(
 			app.config.URL.profile,
-			formData,
 			'put',
+			formData,
 		);
-		return this._fullProfileResponse(request);
 	}
 
 	/**
@@ -316,13 +331,32 @@ class Ajax {
 		return this._getShortGroupResponse(url);
 	}
 
-	async createGroup(formData: GroupPayload): Promise<AjaxResponse<object>> {
-		const request = this._postRequest(app.config.URL.groups, formData);
-		return this._postResponse(request);
+	async createGroup(formData: GroupPayload): Promise<AjaxResponse<number>> {
+		return this._genericRequestResponse(
+			app.config.URL.groups,
+			'post',
+			formData,
+		);
 	}
 
-	async getGroupPage(groupPagePath: string): Promise<AjaxResponse<FullGroupResponse>> {
-		const request = this._getRequest(app.config.URL.group + groupPagePath);
+	async groupEdit(
+		groupPayload: GroupPayload,
+		id: number,
+	): Promise<AjaxResponse<object>> {
+		return this._genericRequestResponse(
+			replaceId(app.config.URL.groupEdit, id),
+			'put',
+			groupPayload,
+		);
+	}
+
+	async getGroupPage(
+		groupPagePath: string,
+	): Promise<AjaxResponse<FullGroupResponse>> {
+		let url = app.config.URL.group;
+		const groupId = groupPagePath.split('/').pop();
+		url = url.replace('{id}', `${groupId}`);
+		const request = this._getRequest(url);
 		const response = await this._response(request);
 		let groupPageResponse: AjaxResponse<FullGroupResponse> = {
 			status: response.status,
@@ -330,11 +364,30 @@ class Ajax {
 		};
 		switch (groupPageResponse.status) {
 			case STATUS.ok: {
-				const body = (await response.json()) as FetchResponse<FullGroupResponse>;
+				const body =
+					(await response.json()) as FetchResponse<FullGroupResponse>;
 				groupPageResponse = Object.assign(groupPageResponse, body);
 			}
 		}
 		return groupPageResponse;
+	}
+
+	async unfollowGroup(groupId: number): Promise<AjaxResponse<object>> {
+		let url = app.config.URL.groupLeave;
+		url = url.replace('{id}', `${groupId}`);
+		return this._postRequestObjectResponse(url);
+	}
+
+	async followGroup(groupId: number): Promise<AjaxResponse<object>> {
+		let url = app.config.URL.groupJoin;
+		url = url.replace('{id}', `${groupId}`);
+		return this._postRequestObjectResponse(url);
+	}
+
+	async deleteGroup(groupId: number): Promise<AjaxResponse<object>> {
+		let url = app.config.URL.group;
+		url = url.replace('{id}', `${groupId}`);
+		return this._deleteObjectResponse(url);
 	}
 
 	/**
@@ -367,6 +420,20 @@ class Ajax {
 		const url = insertQueryParams(app.config.URL.profilesSearch, {
 			q: str,
 			id: userId ? `${userId}` : undefined,
+		});
+		return this._genericRequestResponse(url, 'get');
+	}
+
+	/**
+	 * Поиск групп
+	 */
+	async groupsSearch(
+		str: string,
+		lastId?: number,
+	): Promise<AjaxResponse<ShortGroupResponse[]>> {
+		const url = insertQueryParams(app.config.URL.groupsSearch, {
+			q: str,
+			id: lastId ? `${lastId}` : undefined,
 		});
 		return this._genericRequestResponse(url, 'get');
 	}

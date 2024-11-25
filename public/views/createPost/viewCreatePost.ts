@@ -1,14 +1,14 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
-import {
-	ActionUpdateCreatePost,
-} from '../../actions/actionCreatePost';
+import { ActionUpdateCreatePost } from '../../actions/actionCreatePost';
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
 import api from '../../api/api';
+import app from '../../app';
 import { Root } from '../../components';
 import {
 	CreatePostForm,
 	CreatePostFormConfig,
 } from '../../components/CreatePostForm/CreatePostForm';
+import { PAGE_URLS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import { PostPayload } from '../../models/post';
 import fileToString from '../../modules/fileToString';
@@ -41,16 +41,21 @@ export class ViewCreatePost extends ViewHome {
 	handleChange(change: ChangeCreatePost): void {
 		super.handleChange(change);
 		switch (change.type) {
-			// case ACTION_CREATE_POST_TYPES.goToCreatePost:
-			// 	this._configCreatePost = Object.assign(
-			// 		this._configCreatePost,
-			// 		change.data,
-			// 	);
-			// 	this.render();
-			// 	break;
 			case ACTION_FEED_TYPES.postCreateSuccess:
 				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
+			case ACTION_FEED_TYPES.postGroupCreateSuccess: {
+				const url = new URL(app.router.href);
+				const groupId = url.searchParams.get('community');
+				if (groupId) {
+					this.sendAction(
+						new ActionAppGoTo(PAGE_URLS.groupPage + `/${groupId}`),
+					);
+				}
+				break;
+			}
+			default:
+				this.updateViewCreatePost(change.data);
 		}
 	}
 
@@ -119,7 +124,8 @@ export class ViewCreatePost extends ViewHome {
 								file: fileStr,
 							},
 						};
-						api.createPost(postPayload);
+						const url = new URL(app.router.href);
+						api.createPost(postPayload, url.search);
 						this._createPostForm.clearError();
 					} else {
 						this._createPostForm.printError(

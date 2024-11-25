@@ -1,7 +1,4 @@
-import {
-	findVNodeByKey,
-	VNode,
-} from '../../modules/vdom';
+import { findVNodeByKey, VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
 import { PostConfig, Post } from '../Post/Post';
 
@@ -15,6 +12,8 @@ export interface GroupPageConfig extends ComponentConfig {
 	posts: PostConfig[];
 	createPostHref: string;
 	isAdmin: boolean;
+	isFollow: boolean;
+	countSubscribers: number;
 }
 
 export class GroupPage extends Component {
@@ -33,6 +32,10 @@ export class GroupPage extends Component {
 		throw new Error('config not found');
 	}
 
+	get id(): number {
+		return this._config.id;
+	}
+
 	set config(config: GroupPageConfig) {
 		this._config = config;
 	}
@@ -45,12 +48,16 @@ export class GroupPage extends Component {
 		return vnode;
 	}
 
-    get deleteGroupButtonVNode(): VNode {
+	get deleteGroupButtonVNode(): VNode {
 		const vnode = findVNodeByKey(this.vnode, 'deleteGroup');
 		if (!vnode) {
 			throw new Error('deleteButton vnode not found');
 		}
 		return vnode;
+	}
+
+	get groupEditButtonVNode(): VNode {
+		return this._findVNodeByKey('groupEdit');
 	}
 
 	get posts(): Post[] {

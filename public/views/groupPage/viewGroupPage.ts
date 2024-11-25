@@ -1,6 +1,11 @@
-import { ActionGroupPageRequest, ActionUpdateGroupPage } from '../../actions/actionGroupPage';
+import {
+	ACTION_GROUP_PAGE_TYPES,
+	ActionGroupPageDeleteGroup,
+	ActionGroupPagePostsRequest,
+	ActionGroupPageRequest,
+	ActionUpdateGroupPage,
+} from '../../actions/actionGroupPage';
 import { ActionAppGoTo } from '../../actions/actionApp';
-import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import api from '../../api/api';
 import app from '../../app';
 import { Post, Root } from '../../components';
@@ -8,10 +13,14 @@ import {
 	GroupPage,
 	GroupPageConfig,
 } from '../../components/GroupPage/GroupPage';
-import { PAGE_LINKS } from '../../config';
 import { update } from '../../modules/vdom';
 import { ChangeGroupPage } from '../../stores/storeGroupPage';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
+import { PAGE_LINKS, PAGE_URLS, ROOT } from '../../config';
+import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
+import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
+import { throttle } from '../../modules/throttle';
+import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
 
 export type ComponentsGroupPage = {
 	groupPage?: GroupPage;
@@ -44,21 +53,36 @@ export class ViewGroupPage extends ViewHome {
 	}
 
 	handleChange(change: ChangeGroupPage): void {
-		//
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_PROFILE_TYPES.deletePostSuccess:
+				this.updateViewGroupPage(change.data);
+				this.sendAction(
+					new ActionGroupPagePostsRequest(
+						this._configGroupPage.groupPage.id,
+					),
+				);
+				break;
+			case ACTION_GROUP_PAGE_TYPES.deleteGroupSuccess:
+				this.sendAction(new ActionAppGoTo(PAGE_LINKS.groups));
+				break;
+			case ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess:
+				this.updateViewGroupPage(change.data);
+				this.sendAction(
+					new ActionGroupPagePostsRequest(
+						this._configGroupPage.groupPage.id,
+					),
+				);
+				break;
 			default:
 				this.updateViewGroupPage(change.data);
 		}
-	} //
+	}
 
 	render(): void {
 		this._render();
 		this.sendAction(new ActionUpdateGroupPage());
 		this.sendAction(new ActionGroupPageRequest(app.router.path));
-		// this._components.groupPage?.posts.forEach((post) => {
-		// 	this.sendAction(new ActionPostLikeCount(post.config.id));
-		// });
 	}
 
 	updateViewGroupPage(data: ViewGroupPageConfig): void {
@@ -83,11 +107,11 @@ export class ViewGroupPage extends ViewHome {
 	protected _renderGroupPage(): void {
 		this._components.groupPage = new GroupPage(
 			this._configGroupPage.groupPage,
-			this.content);
+			this.content,
+		);
 	}
 
 	protected _addHandlers(): void {
-		//
 		super._addHandlers();
 		this._addGroupPageHandlers();
 	}
@@ -98,12 +122,30 @@ export class ViewGroupPage extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					const url = new URL(PAGE_LINKS.createPost);
-					url.searchParams.append(
-						'community',
-						`${this._configGroupPage.groupPage.id}`,
+					this.sendAction(
+						new ActionAppGoTo(this.groupPage.config.createPostHref),
 					);
-					this.sendAction(new ActionAppGoTo(url.toString()));
+				},
+			});
+			this.groupPage.groupEditButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionAppGoTo(
+							PAGE_URLS.groupEdit +
+								`/${this._configGroupPage.groupPage.id}`,
+						),
+					);
+				},
+			});
+			this.groupPage.deleteGroupButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionGroupPageDeleteGroup(this.groupPage.id),
+					);
 				},
 			});
 		}
@@ -116,7 +158,15 @@ export class ViewGroupPage extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
+					const url = new URL(PAGE_URLS.postEdit, ROOT);
+					url.searchParams.append(
+						'community',
+						`${this._configGroupPage.groupPage.id}`,
+					);
 					this.sendAction(new ActionPostEditGoTo(post.config));
+					this.sendAction(
+						new ActionAppGoTo(url.pathname + url.search),
+					);
 				},
 			});
 		}
@@ -125,9 +175,26 @@ export class ViewGroupPage extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					api.deletePost(post.config.id);
+					api.deletePost(
+						post.config.id,
+						`?community=${this._configGroupPage.groupPage.id}`,
+					);
 				},
 			});
 		}
+		post.likeButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this._likePost(post);
+			},
+		});
 	}
-} //
+	private _likePost = throttle((post: Post) => {
+		if (post.config.likedByUser) {
+			this.sendAction(new ActionPostUnlike(post.config.id));
+		} else {
+			this.sendAction(new ActionPostLike(post.config.id));
+		}
+	}, 1000);
+}

@@ -1,3 +1,4 @@
+import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import { ACTION_CREATE_GROUP_TYPES } from '../../actions/actionCreateGroup';
 import api from '../../api/api';
 import { Root } from '../../components';
@@ -5,6 +6,7 @@ import {
 	CreateGroupForm,
 	ICreateGroupFormConfig,
 } from '../../components/CreateGroupForm/CreateGroupForm';
+import { PAGE_URLS } from '../../config';
 import { GroupPayload } from '../../models/group';
 import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
@@ -18,6 +20,7 @@ export type ComponentsCreateGroup = {
 
 export interface ViewCreateGroupConfig extends HomeConfig {
 	createGroupForm: ICreateGroupFormConfig;
+	createdGroupId?: number;
 }
 
 export class ViewCreateGroup extends ViewHome {
@@ -44,6 +47,8 @@ export class ViewCreateGroup extends ViewHome {
 	handleChange(change: ChangeCreateGroup): void {
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_APP_TYPES.actionAppInit:
+			case ACTION_APP_TYPES.goTo:
 			case ACTION_CREATE_GROUP_TYPES.goToCreateGroup:
 				this._configCreateGroup = Object.assign(
 					this._configCreateGroup,
@@ -51,14 +56,13 @@ export class ViewCreateGroup extends ViewHome {
 				);
 				this.render();
 				break;
+			default:
+				this.updateViewCreatePost(change.data);
 		}
 	}
 
 	render(): void {
 		this._render();
-		// dispatcher.getAction(
-		// 	new ActionUpdateCreatePost(this._configCreatePost.createPostForm),
-		// );
 	}
 
 	updateViewCreatePost(data: ViewCreateGroupConfig): void {
@@ -78,6 +82,15 @@ export class ViewCreateGroup extends ViewHome {
 		this._addHandlers();
 
 		update(rootNode, rootVNode);
+
+		if (this._configCreateGroup.createdGroupId) {
+			this.sendAction(
+				new ActionAppGoTo(
+					PAGE_URLS.groupPage +
+						`/${this._configCreateGroup.createdGroupId}`,
+				),
+			);
+		}
 	}
 
 	protected _renderCreatePostGroup(): void {
@@ -99,9 +112,7 @@ export class ViewCreateGroup extends ViewHome {
 					this._createGroupForm.form,
 				);
 				if (formData) {
-					if (
-						formData.get('name')
-					) {
+					if (formData.get('name')) {
 						const fileStr = await fileToString(
 							formData.get('file') as File,
 						);

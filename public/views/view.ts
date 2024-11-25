@@ -52,6 +52,6 @@ export abstract class View {
 	}
 
 	abstract get config(): object;
-	abstract render(): void;
+	abstract render(data?: ViewData): void;
 	abstract handleChange(change: Change): void;
 }

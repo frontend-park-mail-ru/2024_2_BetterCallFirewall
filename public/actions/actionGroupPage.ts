@@ -1,10 +1,16 @@
 import { FullGroupResponse } from '../models/group';
+import { PostResponse } from '../models/post';
 import { Action, ActionType } from './action';
 
 export const ACTION_GROUP_PAGE_TYPES = {
-	groupPageRequest: 'groupPageRequest',
-    groupPageRequestSuccess: 'groupPageRequestSuccess',
-    updateGroupPage: 'updateGroupPage',
+	groupPageRequest: 'actionGroupPageRequest',
+	groupPageRequestSuccess: 'actionGroupPageRequestSuccess',
+	updateGroupPage: 'actionUpdateGroupPage',
+	deleteGroup: 'actionDeleteGroup',
+	deleteGroupSuccess: 'actionDeleteGroupSuccess',
+	postsRequest: 'actionGroupPagePostsRequest',
+	postsRequestSuccess: 'actionGroupPagePostsRequestSuccess',
+	postsRequestFail: 'actionGroupPagePostsRequestFail',
 };
 
 export interface ActionUpdateGroupPageData {}
@@ -39,5 +45,52 @@ export class ActionGroupPageRequestSuccess implements Action {
 	constructor(data: ActionGroupPageRequestSuccessData) {
 		this.type = ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess;
 		this.data = data;
+	}
+}
+
+export interface ActionGroupPageDeleteData {
+	groupId: number;
+}
+
+export class ActionGroupPageDeleteGroup implements Action {
+	type: ActionType;
+	data: ActionGroupPageDeleteData;
+
+	constructor(groupId: number) {
+		this.type = ACTION_GROUP_PAGE_TYPES.deleteGroup;
+		this.data = { groupId: groupId };
+	}
+}
+
+export class ActionGroupPageDeleteGroupSuccess implements Action {
+	type: ActionType;
+	data: object = {};
+
+	constructor() {
+		this.type = ACTION_GROUP_PAGE_TYPES.deleteGroupSuccess;
+	}
+}
+
+export interface ActionGroupPagePostsRequestData {
+	groupId: number;
+}
+export class ActionGroupPagePostsRequest implements Action {
+	type: ActionType = ACTION_GROUP_PAGE_TYPES.postsRequest;
+	data: ActionGroupPagePostsRequestData;
+
+	constructor(groupId: number) {
+		this.data = { groupId };
+	}
+}
+
+export interface ActionGroupPagePostsRequestSuccessData {
+	postsResponses: PostResponse[];
+}
+export class ActionGroupPagePostsRequestSuccess implements Action {
+	type: ActionType = ACTION_GROUP_PAGE_TYPES.postsRequestSuccess;
+	data: ActionGroupPagePostsRequestSuccessData;
+
+	constructor(postsResponses: PostResponse[]) {
+		this.data = { postsResponses };
 	}
 }

@@ -32,7 +32,7 @@ export class Router {
 	goToPage(path: string, pushState: boolean = true) {
 		this._path = path;
 		for (const route of this._config) {
-			const regex = new RegExp(`^${route.path}$`);
+			const regex = new RegExp(`^${route.path}(/?.*)?$`);
 			const match = path.match(regex);
 			if (match) {
 				if (this._activeView) {
@@ -65,12 +65,24 @@ export class Router {
 		return this._path;
 	}
 
+	get href() {
+		return window.location.href;
+	}
+
 	get chatId(): number | undefined {
 		const regex = /^\/chat\/(\d+)$/;
 		const match = this.path.match(regex);
 		if (match) {
 			const id = Number(match[1]);
 			return id;
+		}
+	}
+
+	idFromPath(url: string): number | undefined {
+		const regex = new RegExp(`^${url}/(\\d+)$`);
+		const match = this.path.match(regex);
+		if (match) {
+			return Number(match[1]);
 		}
 	}
 }

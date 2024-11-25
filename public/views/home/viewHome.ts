@@ -1,4 +1,5 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
+import { ActionGroupsSearch } from '../../actions/actionGroups';
 import {
 	ActionHeaderLogoutClickFail,
 	ActionHeaderLogoutClickSuccess,
@@ -78,7 +79,7 @@ export abstract class ViewHome extends View {
 			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_APP_TYPES.goTo:
 				this._configHome = change.data;
-				this.render();
+				this.render(change.data);
 				break;
 		}
 	}
@@ -283,16 +284,37 @@ export abstract class ViewHome extends View {
 				},
 			});
 		});
+		this.header.groupsSearch.forEach((groupSearch) => {
+			groupSearch.vnode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionAppGoTo(
+							PAGE_URLS.groups + `/${groupSearch.config.id}`,
+						),
+					);
+					this.sendAction(new ActionHeaderSearchResultsSwitch(false));
+				},
+			});
+		});
 	}
 
 	private _searchInputHandler = debounce((str: string, append?: boolean) => {
 		const profilesSearch = this._configHome.main.header.profilesSearch;
+		const groupsSearch = this._configHome.main.header.groupsSearch;
 		this.sendAction(
 			new ActionProfileSearch(
 				str,
 				append
 					? profilesSearch[profilesSearch.length - 1]?.id
 					: undefined,
+			),
+		);
+		this.sendAction(
+			new ActionGroupsSearch(
+				str,
+				append ? groupsSearch[groupsSearch.length - 1]?.id : undefined,
 			),
 		);
 	}, 200);
