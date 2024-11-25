@@ -11,7 +11,6 @@ import {
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileGetHeaderSuccessData,
-	ActionProfileRequestSuccess,
 	ActionProfileSearchData,
 	ActionProfileSearchSuccessData,
 } from '../actions/actionProfile';
@@ -90,7 +89,6 @@ export const reducerHeader = (
 		case action instanceof ActionGroupsSearchFail:
 			newState.showSearchResults = true;
 			return newState;
-		case action instanceof ActionProfileRequestSuccess:
 		case action instanceof ActionProfileEditRequestSuccess:
 			newState.profile = toHeaderProfile(action.data.profileResponse);
 			return newState;
