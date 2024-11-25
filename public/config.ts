@@ -658,6 +658,7 @@ export const validators: Record<string, (value: string | File) => string> = {
 	bio: (value) => Validator.validatePost(value as string),
 	avatar: (value) => Validator.validateImg(value as File),
 	description: (value) => Validator.validateDescription(value as string),
+	name: (value) => Validator.validateName(value as string),
 };
 
 interface Question {
