@@ -52,6 +52,8 @@ export class ViewPostEdit extends ViewHome {
 				);
 				this.render();
 				break;
+			default:
+				this.updateViewProfileEdit(change.data);
 		}
 	}
 

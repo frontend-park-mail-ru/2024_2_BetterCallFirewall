@@ -17,6 +17,7 @@ import { update } from '../../modules/vdom';
 import { ChangeGroupPage } from '../../stores/storeGroupPage';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 import { PAGE_LINKS, PAGE_URLS, ROOT } from '../../config';
+import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 
 export type ComponentsGroupPage = {
 	groupPage?: GroupPage;
@@ -154,6 +155,7 @@ export class ViewGroupPage extends ViewHome {
 					this.sendAction(
 						new ActionAppGoTo(url.pathname + url.search),
 					);
+					this.sendAction(new ActionPostEditGoTo(post.config));
 				},
 			});
 		}
