@@ -6,6 +6,7 @@ import {
 	ActionGroupPagePostsRequestSuccess,
 	ActionGroupPageRequestSuccessData,
 } from '../actions/actionGroupPage';
+import { ActionPostLikeSuccess } from '../actions/actionPost';
 import { STATUS } from '../api/api';
 import app from '../app';
 import config, { PAGE_LINKS, ROOT } from '../config';
@@ -59,6 +60,18 @@ export const reducerGroupPage = (
 			} else if (action.data.status !== STATUS.ok) {
 				newState.main.content.message = 'Что-то пошло не так';
 			}
+			return newState;
+		case action instanceof ActionPostLikeSuccess:
+			newState.groupPage.posts.forEach((postConfig) => {
+				if (postConfig.id === action.data.postId) {
+					postConfig.likedByUser = !postConfig.likedByUser;
+					if (postConfig.likedByUser) {
+						postConfig.likes++;
+					} else {
+						postConfig.likes--;
+					}
+				}
+			});
 			return newState;
 		default:
 			return newState;
