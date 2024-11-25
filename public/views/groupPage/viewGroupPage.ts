@@ -6,7 +6,6 @@ import {
 	ActionUpdateGroupPage,
 } from '../../actions/actionGroupPage';
 import { ActionAppGoTo } from '../../actions/actionApp';
-import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import api from '../../api/api';
 import app from '../../app';
 import { Post, Root } from '../../components';
@@ -17,7 +16,7 @@ import {
 import { update } from '../../modules/vdom';
 import { ChangeGroupPage } from '../../stores/storeGroupPage';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
-import { PAGE_LINKS, PAGE_URLS } from '../../config';
+import { PAGE_LINKS, PAGE_URLS, ROOT } from '../../config';
 
 export type ComponentsGroupPage = {
 	groupPage?: GroupPage;
@@ -101,7 +100,6 @@ export class ViewGroupPage extends ViewHome {
 	}
 
 	protected _addHandlers(): void {
-		//
 		super._addHandlers();
 		this._addGroupPageHandlers();
 	}
@@ -148,7 +146,14 @@ export class ViewGroupPage extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					this.sendAction(new ActionPostEditGoTo(post.config));
+					const url = new URL(PAGE_URLS.postEdit, ROOT);
+					url.searchParams.append(
+						'community',
+						`${this._configGroupPage.groupPage.id}`,
+					);
+					this.sendAction(
+						new ActionAppGoTo(url.pathname + url.search),
+					);
 				},
 			});
 		}

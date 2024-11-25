@@ -1,6 +1,7 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
 import { ACTION_POST_EDIT_TYPES } from '../../actions/actionPostEdit';
 import api from '../../api/api';
+import app from '../../app';
 import { Root } from '../../components';
 import {
 	PostEditFormConfig,
@@ -112,7 +113,12 @@ export class ViewPostEdit extends ViewHome {
 								file: fileStr,
 							},
 						};
-						api.editPost(postPayload, this._configPostEdit.postId);
+						const url = new URL(app.router.href);
+						api.editPost(
+							postPayload,
+							this._configPostEdit.postId,
+							url.search,
+						);
 					}
 				}
 			},

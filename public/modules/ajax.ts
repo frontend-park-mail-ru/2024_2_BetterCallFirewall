@@ -127,9 +127,10 @@ class Ajax {
 	async editPost(
 		formData: PostPayload,
 		postId: number,
+		query?: string,
 	): Promise<AjaxResponse<PostResponse>> {
 		const url = app.config.URL.post.replace('{id}', `${postId}`);
-		return this._genericRequestResponse(url, 'put', formData);
+		return this._genericRequestResponse(url + query, 'put', formData);
 	}
 
 	/**

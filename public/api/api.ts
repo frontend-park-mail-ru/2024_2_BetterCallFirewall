@@ -584,8 +584,8 @@ class API {
 		}
 	}
 
-	async editPost(formData: PostPayload, postId: number) {
-		const response = await ajax.editPost(formData, postId);
+	async editPost(formData: PostPayload, postId: number, query?: string) {
+		const response = await ajax.editPost(formData, postId, query);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
