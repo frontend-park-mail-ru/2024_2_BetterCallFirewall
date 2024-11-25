@@ -80,6 +80,7 @@ export abstract class ViewHome extends View {
 			case ACTION_APP_TYPES.goTo:
 				this._configHome = change.data;
 				this.render(change.data);
+				this.sendAction(new ActionMenuOpenSwitch(false));
 				break;
 		}
 	}
