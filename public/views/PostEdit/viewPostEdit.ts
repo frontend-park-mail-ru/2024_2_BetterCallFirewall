@@ -7,6 +7,7 @@ import {
 	PostEditFormConfig,
 	PostEditForm,
 } from '../../components/PostEditForm/PostEditForm';
+import { PAGE_URLS } from '../../config';
 import { PostPayload } from '../../models/post';
 import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
@@ -39,9 +40,18 @@ export class ViewPostEdit extends ViewHome {
 	handleChange(change: ChangePostEdit): void {
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_POST_EDIT_TYPES.requestSuccess:
-				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
+			case ACTION_POST_EDIT_TYPES.requestSuccess: {
+				const url = new URL(app.router.href);
+				const groupId = url.searchParams.get('community');
+				if (groupId) {
+					this.sendAction(
+						new ActionAppGoTo(PAGE_URLS.groupPage + `/${groupId}`),
+					);
+				} else {
+					this.sendAction(new ActionAppGoTo(this._profileLinkHref));
+				}
 				break;
+			}
 			case ACTION_POST_EDIT_TYPES.requestFail:
 				this.updateViewProfileEdit(change.data);
 				break;
