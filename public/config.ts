@@ -41,7 +41,7 @@ export const PAGE_URLS = {
 	postEdit: '/post-edit',
 	groups: '/groups',
 	createGroup: '/create-group',
-	groupPage: '/groups', // изменить
+	groupPage: '/groups',
 	groupEdit: '/group-edit',
 	csat: '/csat/question',
 	question: '/csat/question',
@@ -363,7 +363,7 @@ const friendsConfig: ViewFriendsConfig = {
 	},
 	users: {
 		key: 'users',
-		headerText: 'Поиск друзей',
+		headerText: 'Все люди',
 		friendsConfig: [],
 	},
 	pendingUsersRequest: false,

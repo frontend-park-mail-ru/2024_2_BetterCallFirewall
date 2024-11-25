@@ -1,4 +1,5 @@
 import { PostConfig } from '../components';
+import { GroupPageConfig } from '../components/GroupPage/GroupPage';
 import { PAGE_URLS } from '../config';
 import parseImage from '../modules/parseImage';
 import parseTime from '../modules/parseTime';
@@ -7,6 +8,7 @@ interface Header {
 	author_id: number;
 	author: string;
 	avatar: string;
+	community_id?: string;
 }
 
 interface PostContent {
@@ -24,6 +26,9 @@ export interface PostResponse {
 }
 
 export const toPostConfig = (postResponse: PostResponse): PostConfig => {
+	const authorHref = postResponse.header.community_id
+		? `${PAGE_URLS.groupPage}/${postResponse.header.community_id}`
+		: `${PAGE_URLS.profile}/${postResponse.header.author_id}`;
 	return {
 		id: postResponse.id,
 		key: `post-${postResponse.id}`,
@@ -36,8 +41,20 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		hasEditButton: false,
 		likes: postResponse.likes_count,
 		likedByUser: postResponse.is_liked,
-		authorHref: `${PAGE_URLS.profile}/${postResponse.header.author_id}`,
+		authorHref,
 	};
+};
+
+export const groupPostResponseToPostConfig = (
+	groupPageConfig: GroupPageConfig,
+	postResponse: PostResponse,
+): PostConfig => {
+	const postConfig = toPostConfig(postResponse);
+	if (groupPageConfig.isAdmin) {
+		postConfig.hasEditButton = true;
+		postConfig.hasDeleteButton = true;
+	}
+	return postConfig;
 };
 
 export interface PostPayload {

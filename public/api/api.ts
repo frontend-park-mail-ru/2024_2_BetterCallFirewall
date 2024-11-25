@@ -14,6 +14,7 @@ import {
 	ACTION_FEED_TYPES,
 	ActionFeedPostCreateFail,
 	ActionFeedPostCreateSuccess,
+	ActionFeedPostGroupCreateSuccess,
 	ActionFeedPostsRequestData,
 	ActionPostsRequestFail,
 	ActionPostsRequestSuccess,
@@ -47,6 +48,8 @@ import {
 	ActionGroupPageRequestSuccess,
 	ActionGroupPageDeleteData,
 	ActionGroupPageDeleteGroupSuccess,
+	ActionGroupPagePostsRequest,
+	ActionGroupPagePostsRequestSuccess,
 } from '../actions/actionGroupPage';
 import {
 	ACTION_GROUPS_TYPES,
@@ -100,6 +103,7 @@ import { GroupPayload } from '../models/group';
 import { PostPayload } from '../models/post';
 import ajax, { QueryParams } from '../modules/ajax';
 import { ProfilePayload } from '../models/profile';
+import { ActionCreateGroupSuccess } from '../actions/actionCreateGroup';
 
 export const STATUS = {
 	ok: 200,
@@ -178,6 +182,10 @@ class API {
 		switch (true) {
 			case action instanceof ActionGroupsSearch:
 				this.groupsSearch(action.data.str, action.data.lastId);
+				break;
+			case action instanceof ActionGroupPagePostsRequest:
+				this.requestPosts(undefined, action.data.groupId);
+				break;
 		}
 	}
 
@@ -251,10 +259,16 @@ class API {
 		}
 	}
 
-	async requestPosts(lastPostId?: number): Promise<void> {
+	async requestPosts(
+		lastPostId?: number,
+		communityId?: number,
+	): Promise<void> {
 		const params: QueryParams = {};
 		if (lastPostId) {
 			params.id = `${lastPostId}`;
+		}
+		if (communityId) {
+			params.community = `${communityId}`;
 		}
 		const response = await ajax.getPosts(params);
 		switch (response.status) {
@@ -262,7 +276,15 @@ class API {
 				if (!response.data) {
 					break;
 				}
-				this.sendAction(new ActionPostsRequestSuccess(response.data));
+				if (communityId) {
+					this.sendAction(
+						new ActionGroupPagePostsRequestSuccess(response.data),
+					);
+				} else {
+					this.sendAction(
+						new ActionPostsRequestSuccess(response.data),
+					);
+				}
 				break;
 			case STATUS.unauthorized:
 				this.sendAction(new ActionUserUnauthorized());
@@ -448,9 +470,7 @@ class API {
 				if (!response.data) {
 					return;
 				}
-				// this.sendAction(
-				// 	new ActionGroupsCreateGroupSuccess(),
-				// );
+				this.sendAction(new ActionCreateGroupSuccess(response.data));
 				break;
 			default:
 			// this.sendAction();
@@ -545,17 +565,27 @@ class API {
 				if (!response.data) {
 					return;
 				}
-				this.sendAction(
-					new ActionFeedPostCreateSuccess({ post: response.data }),
-				);
+				if (response.data.header.community_id) {
+					this.sendAction(
+						new ActionFeedPostGroupCreateSuccess({
+							post: response.data,
+						}),
+					);
+				} else {
+					this.sendAction(
+						new ActionFeedPostCreateSuccess({
+							post: response.data,
+						}),
+					);
+				}
 				break;
 			default:
 				this.sendAction(new ActionFeedPostCreateFail());
 		}
 	}
 
-	async editPost(formData: PostPayload, postId: number) {
-		const response = await ajax.editPost(formData, postId);
+	async editPost(formData: PostPayload, postId: number, query?: string) {
+		const response = await ajax.editPost(formData, postId, query);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
@@ -572,8 +602,8 @@ class API {
 		}
 	}
 
-	async deletePost(postId: number) {
-		const response = await ajax.deletePost(postId);
+	async deletePost(postId: number, query?: string) {
+		const response = await ajax.deletePost(postId, query);
 		switch (response.status) {
 			case STATUS.ok:
 				this.sendAction(new ActionProfileDeletePostSuccess());

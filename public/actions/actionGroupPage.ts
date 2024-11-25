@@ -1,4 +1,5 @@
 import { FullGroupResponse } from '../models/group';
+import { PostResponse } from '../models/post';
 import { Action, ActionType } from './action';
 
 export const ACTION_GROUP_PAGE_TYPES = {
@@ -6,7 +7,10 @@ export const ACTION_GROUP_PAGE_TYPES = {
 	groupPageRequestSuccess: 'actionGroupPageRequestSuccess',
 	updateGroupPage: 'actionUpdateGroupPage',
 	deleteGroup: 'actionDeleteGroup',
-	deleteGroupSuccess: 'actionDeleteGroup',
+	deleteGroupSuccess: 'actionDeleteGroupSuccess',
+	postsRequest: 'actionGroupPagePostsRequest',
+	postsRequestSuccess: 'actionGroupPagePostsRequestSuccess',
+	postsRequestFail: 'actionGroupPagePostsRequestFail',
 };
 
 export interface ActionUpdateGroupPageData {}
@@ -64,5 +68,29 @@ export class ActionGroupPageDeleteGroupSuccess implements Action {
 
 	constructor() {
 		this.type = ACTION_GROUP_PAGE_TYPES.deleteGroupSuccess;
+	}
+}
+
+export interface ActionGroupPagePostsRequestData {
+	groupId: number;
+}
+export class ActionGroupPagePostsRequest implements Action {
+	type: ActionType = ACTION_GROUP_PAGE_TYPES.postsRequest;
+	data: ActionGroupPagePostsRequestData;
+
+	constructor(groupId: number) {
+		this.data = { groupId };
+	}
+}
+
+export interface ActionGroupPagePostsRequestSuccessData {
+	postsResponses: PostResponse[];
+}
+export class ActionGroupPagePostsRequestSuccess implements Action {
+	type: ActionType = ACTION_GROUP_PAGE_TYPES.postsRequestSuccess;
+	data: ActionGroupPagePostsRequestSuccessData;
+
+	constructor(postsResponses: PostResponse[]) {
+		this.data = { postsResponses };
 	}
 }

@@ -79,7 +79,7 @@ export class Router {
 	}
 
 	idFromPath(url: string): number | undefined {
-		const regex = new RegExp(`^${url}/(d+)$`);
+		const regex = new RegExp(`^${url}/(\\d+)$`);
 		const match = this.path.match(regex);
 		if (match) {
 			return Number(match[1]);

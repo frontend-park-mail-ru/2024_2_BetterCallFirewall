@@ -1,4 +1,5 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
+import { ActionGroupPageRequest } from '../../actions/actionGroupPage';
 import { ACTION_GROUPS_TYPES } from '../../actions/actionGroups';
 import api from '../../api/api';
 import { Root } from '../../components';
@@ -6,7 +7,7 @@ import {
 	GroupEditForm,
 	IGroupEditFormConfig,
 } from '../../components/GroupEditForm/GroupEditForm';
-import { PAGE_LINKS } from '../../config';
+import { PAGE_LINKS, PAGE_URLS } from '../../config';
 import { GroupPayload } from '../../models/group';
 import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
@@ -62,6 +63,11 @@ export class ViewGroupEdit extends ViewHome {
 
 	render(): void {
 		this._render();
+		this.sendAction(
+			new ActionGroupPageRequest(
+				PAGE_URLS.groupPage + `/${this._configGroupEdit.groupId}`,
+			),
+		);
 	}
 
 	updateViewGroupEdit(data: ViewGroupEditConfig): void {
@@ -130,6 +136,47 @@ export class ViewGroupEdit extends ViewHome {
 				this._groupEditForm.clearError();
 			},
 		});
+		this._addInputHandler();
+	}
+
+	private _addInputHandler(): void {
+		this._groupEditForm.fileInputVNode.handlers.push(
+			{
+				event: 'click',
+				callback: (event) => {
+					const label = this._groupEditForm.label;
+					const preview = this._groupEditForm.img as HTMLImageElement;
+					const input = event.target as HTMLInputElement;
+					if (input.value) {
+						input.value = '';
+						event.preventDefault();
+						label?.classList.remove('active');
+						label.textContent = 'Прикрепить картинку';
+						preview.src = '';
+					}
+				},
+			},
+			{
+				event: 'change',
+				callback: (event) => {
+					const label = this._groupEditForm.label;
+					const preview = this._groupEditForm.img as HTMLImageElement;
+					const input = event.target as HTMLInputElement;
+					if (input.files && input.files.length > 0) {
+						if (label) {
+							label.classList.add('active');
+							label.textContent =
+								'Картинка выбрана, нажмите, чтобы отменить';
+						}
+						const reader = new FileReader();
+						reader.onload = function (e) {
+							preview.src = e.target?.result as string;
+						};
+						reader.readAsDataURL(input.files[0]);
+					}
+				},
+			},
+		);
 	}
 
 	private get _groupEditForm(): GroupEditForm {

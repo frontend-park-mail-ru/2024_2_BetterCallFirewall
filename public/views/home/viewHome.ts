@@ -79,7 +79,7 @@ export abstract class ViewHome extends View {
 			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_APP_TYPES.goTo:
 				this._configHome = change.data;
-				this.render();
+				this.render(change.data);
 				break;
 		}
 	}

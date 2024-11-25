@@ -127,17 +127,21 @@ class Ajax {
 	async editPost(
 		formData: PostPayload,
 		postId: number,
+		query?: string,
 	): Promise<AjaxResponse<PostResponse>> {
 		const url = app.config.URL.post.replace('{id}', `${postId}`);
-		return this._genericRequestResponse(url, 'put', formData);
+		return this._genericRequestResponse(url + query, 'put', formData);
 	}
 
 	/**
 	 * Удалить пост
 	 */
-	async deletePost(postId: number): Promise<AjaxResponse<object>> {
+	async deletePost(
+		postId: number,
+		query?: string,
+	): Promise<AjaxResponse<object>> {
 		const url = app.config.URL.post.replace('{id}', `${postId}`);
-		const request = this._deleteRequest(url);
+		const request = this._deleteRequest(query ? url + query : url);
 		return await this._objectResponse(request);
 	}
 
@@ -327,9 +331,12 @@ class Ajax {
 		return this._getShortGroupResponse(url);
 	}
 
-	async createGroup(formData: GroupPayload): Promise<AjaxResponse<object>> {
-		const request = this._postRequest(app.config.URL.groups, formData);
-		return this._postResponse(request);
+	async createGroup(formData: GroupPayload): Promise<AjaxResponse<number>> {
+		return this._genericRequestResponse(
+			app.config.URL.groups,
+			'post',
+			formData,
+		);
 	}
 
 	async groupEdit(

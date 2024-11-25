@@ -446,9 +446,15 @@ class App {
 		);
 		this._stores.createPost.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
 		this._stores.createPost.subscribe(ACTION_FEED_TYPES.postCreateFail);
+		this._stores.createPost.subscribe(
+			ACTION_FEED_TYPES.postGroupCreateSuccess,
+		);
 
 		this._stores.createGroup.subscribe(
 			ACTION_CREATE_GROUP_TYPES.goToCreateGroup,
+		);
+		this._stores.createGroup.subscribe(
+			ACTION_CREATE_GROUP_TYPES.createSuccess,
 		);
 
 		this._stores.groupPage.subscribe(
@@ -460,6 +466,19 @@ class App {
 		this._stores.groupPage.subscribe(
 			ACTION_GROUP_PAGE_TYPES.updateGroupPage,
 		);
+		this._stores.groupPage.subscribe(
+			ACTION_GROUP_PAGE_TYPES.deleteGroupSuccess,
+		);
+		this._stores.groupPage.subscribe(ACTION_GROUP_PAGE_TYPES.postsRequest);
+		this._stores.groupPage.subscribe(
+			ACTION_GROUP_PAGE_TYPES.postsRequestSuccess,
+		);
+		this._stores.groupPage.subscribe(ACTION_FEED_TYPES.postsRequestFail);
+		this._stores.groupPage.subscribe(
+			ACTION_PROFILE_TYPES.deletePostSuccess,
+		);
+		this._stores.groupPage.subscribe(ACTION_POST_TYPES.likeSuccess);
+		this._stores.groupPage.subscribe(ACTION_POST_TYPES.likeFail);
 
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.updateProfileEdit,
@@ -494,6 +513,9 @@ class App {
 
 		this._stores.groupEdit.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.groupEdit.subscribe(ACTION_APP_TYPES.goTo);
+		this._stores.groupEdit.subscribe(
+			ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess,
+		);
 		this._stores.groupEdit.subscribe(ACTION_GROUPS_TYPES.editSuccess);
 		this._stores.groupEdit.subscribe(ACTION_GROUPS_TYPES.editFail);
 
