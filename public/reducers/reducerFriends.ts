@@ -1,10 +1,10 @@
 import { Action } from '../actions/action';
 import {
 	ACTION_FRIENDS_TYPES,
-	ActionProfileGetFriendsSuccessData,
-	ActionProfileGetSubscribersSuccessData,
-	ActionProfileGetSubscriptionsSuccessData,
-	ActionProfileGetUsersSuccessData,
+	ActionFriendsGetFriendsSuccessData,
+	ActionFriendsGetSubscribersSuccessData,
+	ActionFriendsGetSubscriptionsSuccessData,
+	ActionFriendsGetUsersSuccessData,
 } from '../actions/actionFriends';
 import config from '../config';
 import { toFriendConfig } from '../models/profile';
@@ -27,9 +27,10 @@ export const reducerFriends = (
 			newState.subscribers.friendsConfig = [];
 			newState.subscriptions.friendsConfig = [];
 			newState.users.friendsConfig = [];
+			newState.pendingUsersRequest = true;
 			return newState;
 		case ACTION_FRIENDS_TYPES.getUsersSuccess: {
-			const actionData = action.data as ActionProfileGetUsersSuccessData;
+			const actionData = action.data as ActionFriendsGetUsersSuccessData;
 			newState.users.friendsConfig = newState.users.friendsConfig.concat(
 				actionData.users
 					.filter(
@@ -42,11 +43,12 @@ export const reducerFriends = (
 						return toFriendConfig(user);
 					}),
 			);
+			newState.pendingUsersRequest = false;
 			return newState;
 		}
 		case ACTION_FRIENDS_TYPES.getSubscribersSuccess: {
 			const actionData =
-				action.data as ActionProfileGetSubscribersSuccessData;
+				action.data as ActionFriendsGetSubscribersSuccessData;
 			newState.subscribers.friendsConfig = actionData.subscribers.map(
 				(subscriber) => toFriendConfig(subscriber),
 			);
@@ -54,7 +56,7 @@ export const reducerFriends = (
 		}
 		case ACTION_FRIENDS_TYPES.getFriendsSuccess: {
 			const actionData =
-				action.data as ActionProfileGetFriendsSuccessData;
+				action.data as ActionFriendsGetFriendsSuccessData;
 			newState.friends.friendsConfig = actionData.friends.map((friend) =>
 				toFriendConfig(friend),
 			);
@@ -62,7 +64,7 @@ export const reducerFriends = (
 		}
 		case ACTION_FRIENDS_TYPES.getSubscriptionsSuccess: {
 			const actionData =
-				action.data as ActionProfileGetSubscriptionsSuccessData;
+				action.data as ActionFriendsGetSubscriptionsSuccessData;
 			newState.subscriptions.friendsConfig = actionData.subscriptions.map(
 				(subscription) => toFriendConfig(subscription),
 			);

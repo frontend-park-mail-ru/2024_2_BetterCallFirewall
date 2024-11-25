@@ -1,38 +1,31 @@
-import {
-	ACTION_CREATE_POST_TYPES,
-	ActionUpdateCreatePost,
-} from '../../actions/actionCreatePost';
+import { ActionAppGoTo } from '../../actions/actionApp';
+import { ActionUpdateCreatePost } from '../../actions/actionCreatePost';
 import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
-import { ActionMenuLinkClick } from '../../actions/actionMenu';
 import api from '../../api/api';
+import app from '../../app';
 import { Root } from '../../components';
 import {
 	CreatePostForm,
-	ICreatePostFormConfig,
+	CreatePostFormConfig,
 } from '../../components/CreatePostForm/CreatePostForm';
+import { PAGE_URLS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
+import { PostPayload } from '../../models/post';
+import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
+import { update } from '../../modules/vdom';
 import { ChangeCreatePost } from '../../stores/storeCreatePost';
-import {
-	ComponentsHome,
-	HomeConfig,
-	IViewHome,
-	ViewHome,
-} from '../home/viewHome';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsCreatePost = {
 	createPostForm?: CreatePostForm;
 } & ComponentsHome;
 
 export interface ViewCreatePostConfig extends HomeConfig {
-	createPostForm: ICreatePostFormConfig;
+	createPostForm: CreatePostFormConfig;
 }
 
-export interface IViewCreatePost extends IViewHome {
-	handleChange(change: ChangeCreatePost): void;
-}
-
-export class ViewCreatePost extends ViewHome implements IViewCreatePost {
+export class ViewCreatePost extends ViewHome {
 	protected _configCreatePost: ViewCreatePostConfig;
 	protected _components: ComponentsCreatePost = {};
 
@@ -48,18 +41,21 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 	handleChange(change: ChangeCreatePost): void {
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_CREATE_POST_TYPES.goToCreatePost:
-				this._configCreatePost = Object.assign(
-					this._configCreatePost,
-					change.data,
-				);
-				this.render();
-				break;
 			case ACTION_FEED_TYPES.postCreateSuccess:
-				this.sendAction(
-					new ActionMenuLinkClick({ href: this._profileLinkHref }),
-				);
+				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
+			case ACTION_FEED_TYPES.postGroupCreateSuccess: {
+				const url = new URL(app.router.href);
+				const groupId = url.searchParams.get('community');
+				if (groupId) {
+					this.sendAction(
+						new ActionAppGoTo(PAGE_URLS.groupPage + `/${groupId}`),
+					);
+				}
+				break;
+			}
+			default:
+				this.updateViewCreatePost(change.data);
 		}
 	}
 
@@ -71,43 +67,37 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 	}
 
 	updateViewCreatePost(data: ViewCreatePostConfig): void {
-		this._configCreatePost = data;
+		this.updateViewHome(data);
+		this._configCreatePost = Object.assign(this._configCreatePost, data);
 		this._render();
 	}
 
-	update(config: object): void {
-		this.updateViewCreatePost(config as ViewCreatePostConfig);
-	}
-
 	protected _render(): void {
+		const rootNode = this._root.node;
+
 		super._render();
 		this._renderCreatePostForm();
+
+		const rootVNode = this._root.newVNode();
+
 		this._addHandlers();
+
+		update(rootNode, rootVNode);
 	}
 
 	protected _renderCreatePostForm(): void {
-		const content = this.content;
-		const createPostForm = new CreatePostForm(
+		this._components.createPostForm = new CreatePostForm(
 			this._configCreatePost.createPostForm,
-			content,
+			this.content,
 		);
-		createPostForm.render();
-		this._components.createPostForm = createPostForm;
 	}
 
-	private get _createPostForm(): CreatePostForm {
-		const form = this._components.createPostForm;
-		if (!form) {
-			throw new Error('form not found');
-		}
-		return form;
-	}
+	protected _addHandlers() {
+		super._addHandlers();
 
-	private _addHandlers() {
-		this.content.addHandler(
-			this._createPostForm.htmlElement,
-			'submit',
-			(event) => {
+		this._createPostForm.vnode.handlers.push({
+			event: 'submit',
+			callback: async (event) => {
 				event.preventDefault();
 				const validator = new Validator();
 				const formData = validator.validateForm(
@@ -119,7 +109,23 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 						formData.get('text') ||
 						(formData.get('file') as File).name
 					) {
-						api.createPost(formData);
+						const fileStr = await fileToString(
+							formData.get('file') as File,
+						);
+						if (fileStr === null) {
+							this._createPostForm.printError(
+								'Что-то пошло не так',
+							);
+							return;
+						}
+						const postPayload: PostPayload = {
+							post_content: {
+								text: formData.get('text') as string,
+								file: fileStr,
+							},
+						};
+						const url = new URL(app.router.href);
+						api.createPost(postPayload, url.search);
 						this._createPostForm.clearError();
 					} else {
 						this._createPostForm.printError(
@@ -128,41 +134,57 @@ export class ViewCreatePost extends ViewHome implements IViewCreatePost {
 					}
 				}
 			},
-		);
+		});
 		this._addHandlerInput();
 	}
 
-	private _addHandlerInput(): void {
-		const fileInput = this._createPostForm.fileInput;
-		const label = this._createPostForm.label;
-		const preview = this._createPostForm.img as HTMLImageElement;
-		if (fileInput) {
-			this.content.addHandler(fileInput, 'click', (event) => {
-				const input = event.target as HTMLInputElement;
-				if (input.value) {
-					input.value = '';
-					event.preventDefault();
-					label?.classList.remove('active');
-					label.textContent = 'Прикрепить картинку';
-					preview.src = '';
-				}
-			});
-			this.content.addHandler(fileInput, 'change', (event) => {
-				const input = event.target as HTMLInputElement;
-				if (input.files && input.files.length > 0) {
-					if (label) {
-						label.classList.add('active');
-						label.textContent =
-							'Картинка выбрана, нажмите, чтобы отменить';
-					}
-
-					const reader = new FileReader();
-					reader.onload = function (e) {
-						preview.src = e.target?.result as string;
-					};
-					reader.readAsDataURL(input.files[0]);
-				}
-			});
+	private get _createPostForm(): CreatePostForm {
+		const form = this._components.createPostForm;
+		if (!form) {
+			throw new Error('form not found');
 		}
+		return form;
+	}
+
+	private _addHandlerInput(): void {
+		this._createPostForm.fileInputVNode.handlers.push(
+			{
+				event: 'click',
+				callback: (event) => {
+					const label = this._createPostForm.label;
+					const preview = this._createPostForm
+						.img as HTMLImageElement;
+					const input = event.target as HTMLInputElement;
+					if (input.value) {
+						input.value = '';
+						event.preventDefault();
+						label?.classList.remove('active');
+						label.textContent = 'Прикрепить картинку';
+						preview.src = '';
+					}
+				},
+			},
+			{
+				event: 'change',
+				callback: (event) => {
+					const label = this._createPostForm.label;
+					const preview = this._createPostForm
+						.img as HTMLImageElement;
+					const input = event.target as HTMLInputElement;
+					if (input.files && input.files.length > 0) {
+						if (label) {
+							label.classList.add('active');
+							label.textContent =
+								'Картинка выбрана, нажмите, чтобы отменить';
+						}
+						const reader = new FileReader();
+						reader.onload = function (e) {
+							preview.src = e.target?.result as string;
+						};
+						reader.readAsDataURL(input.files[0]);
+					}
+				},
+			},
+		);
 	}
 }

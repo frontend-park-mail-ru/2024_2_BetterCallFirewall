@@ -1,0 +1,24 @@
+.search-result {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 0.5rem;
+    border: 0.05rem solid rgba(255, 255, 255, 0.5);
+    border-radius: 1rem;
+    padding: 0.5rem;
+    max-width: 20rem;
+    &__avatar-container {
+        min-width: 3rem;
+        width: 3rem;
+        height: 3rem;
+        margin-right: 1rem;
+    }
+    &__avatar {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.search-result:hover {
+    border-color: var(--main-color);
+}

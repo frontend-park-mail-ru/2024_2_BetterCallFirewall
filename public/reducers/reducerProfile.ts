@@ -1,6 +1,9 @@
 import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
-import { ACTION_MENU_TYPES } from '../actions/actionMenu';
+import {
+	ACTION_POST_TYPES,
+	ActionPostLikeSuccessData,
+} from '../actions/actionPost';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileGetYourOwnProfileSuccessData,
@@ -26,7 +29,7 @@ export const reducerProfile = (
 	let actionData;
 	switch (action?.type) {
 		case ACTION_APP_TYPES.actionAppInit:
-		case ACTION_MENU_TYPES.menuLinkClick:
+		case ACTION_APP_TYPES.goTo:
 			newState.path = app.router.path;
 			return newState;
 		case ACTION_PROFILE_EDIT_TYPES.requestSuccess: {
@@ -60,12 +63,20 @@ export const reducerProfile = (
 			newState.profile = Object.assign(newState.profile, profileConfig);
 			return newState;
 		}
-		case ACTION_PROFILE_TYPES.getHeaderSuccess:
-		case ACTION_PROFILE_TYPES.updateProfile:
-		case ACTION_PROFILE_TYPES.profileRequestFail:
-		case ACTION_PROFILE_TYPES.goToProfile:
-		case ACTION_PROFILE_TYPES.getYourOwnProfileFail:
-		case ACTION_PROFILE_TYPES.getYourOwnProfile:
+		case ACTION_POST_TYPES.likeSuccess: {
+			const actionData = action.data as ActionPostLikeSuccessData;
+			newState.profile.posts.forEach((postConfig) => {
+				if (postConfig.id === actionData.postId) {
+					postConfig.likedByUser = !postConfig.likedByUser;
+					if (postConfig.likedByUser) {
+						postConfig.likes++;
+					} else {
+						postConfig.likes--;
+					}
+				}
+			});
+			return newState;
+		}
 		default:
 			return newState;
 	}

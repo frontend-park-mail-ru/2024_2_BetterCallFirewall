@@ -7,8 +7,15 @@ import {
 	ActionChatRequestSuccess,
 } from '../actions/actionChat';
 import {
-	actionFeedPostCreateFail,
+	ActionCsatMetrics,
+	ActionCsatSendSuccess,
+} from '../actions/actionCsat';
+import {
+	ACTION_FEED_TYPES,
+	ActionFeedPostCreateFail,
 	ActionFeedPostCreateSuccess,
+	ActionFeedPostGroupCreateSuccess,
+	ActionFeedPostsRequestData,
 	ActionPostsRequestFail,
 	ActionPostsRequestSuccess,
 } from '../actions/actionFeed';
@@ -23,17 +30,46 @@ import {
 	ActionFriendsSubscribeSuccess,
 	actionFriendsUnsubscribeFail,
 	ActionFriendsUnsubscribeSuccess,
-	ActionProfileGetFriendsSuccess,
-	ActionProfileGetSubscribersSuccess,
-	ActionProfileGetSubscriptionsSuccess,
-	ActionProfileGetUsersSuccess,
+	ActionFriendsGetFriendsSuccess,
+	ActionFriendsGetSubscribersSuccess,
+	ActionFriendsGetSubscriptionsSuccess,
+	ActionFriendsGetUsersSuccess,
 } from '../actions/actionFriends';
+import {
+	ActionGroupsEditFail,
+	ActionGroupsEditSuccess,
+	ActionGroupsFollowGroupData,
+	ActionGroupsFollowGroupSuccess,
+	ActionGroupsUnfollowGroupSuccess,
+} from '../actions/actionGroups';
+import {
+	ACTION_GROUP_PAGE_TYPES,
+	ActionGroupPageRequestData,
+	ActionGroupPageRequestSuccess,
+	ActionGroupPageDeleteData,
+	ActionGroupPageDeleteGroupSuccess,
+	ActionGroupPagePostsRequest,
+	ActionGroupPagePostsRequestSuccess,
+} from '../actions/actionGroupPage';
+import {
+	ACTION_GROUPS_TYPES,
+	ActionGroupsSearchFail,
+	ActionGroupsGetGroupsSuccess,
+	ActionGroupsSearch,
+	ActionGroupsSearchSuccess,
+} from '../actions/actionGroups';
 import { ActionMenuUpdateProfileLinkHref } from '../actions/actionMenu';
 import {
 	ACTION_MESSAGES_TYPES,
 	ActionMessagesRequestFail as ActionMessagesRequestFail,
 	ActionMessagesRequestSuccess,
 } from '../actions/actionMessages';
+import {
+	ACTION_POST_TYPES,
+	ActionPostLikeData,
+	ActionPostLikeFail,
+	ActionPostLikeSuccess,
+} from '../actions/actionPost';
 import {
 	ActionPostEditRequestFail,
 	ActionPostEditRequestSuccess,
@@ -49,15 +85,25 @@ import {
 	ActionProfileDeletePostSuccess,
 	ACTION_PROFILE_TYPES,
 	ActionProfileRequestData,
+	ActionProfileSearchFail,
+	ActionProfileSearchSuccess,
+	ActionProfileSearchData,
 } from '../actions/actionProfile';
 import {
 	ActionProfileEditRequestFail,
 	ActionProfileEditRequestSuccess,
 } from '../actions/actionProfileEdit';
-import { ActionUserUnauthorized } from '../actions/actionUser';
+import {
+	ACTION_USER_TYPES,
+	ActionUserUnauthorized,
+} from '../actions/actionUser';
 import app from '../app';
 import dispatcher from '../dispatcher/dispatcher';
+import { GroupPayload } from '../models/group';
+import { PostPayload } from '../models/post';
 import ajax, { QueryParams } from '../modules/ajax';
+import { ProfilePayload } from '../models/profile';
+import { ActionCreateGroupSuccess } from '../actions/actionCreateGroup';
 
 export const STATUS = {
 	ok: 200,
@@ -71,6 +117,15 @@ export const STATUS = {
 class API {
 	handleAction(action: Action) {
 		switch (action.type) {
+			case ACTION_FEED_TYPES.postsRequest:
+				this.requestPosts(
+					(action.data as ActionFeedPostsRequestData).lastId,
+				);
+				break;
+			case ACTION_USER_TYPES.auth:
+			case ACTION_PROFILE_TYPES.getHeader:
+				this.requestHeader();
+				break;
 			case ACTION_FRIENDS_TYPES.accept:
 				this.acceptFriend((action.data as ActionFriendsAcceptData).id);
 				break;
@@ -87,6 +142,50 @@ class API {
 				this.getChatMessages(actionData.id, actionData.lastTime);
 				break;
 			}
+			case ACTION_PROFILE_TYPES.getYourOwnProfile:
+				this.requestYourOwnProfile();
+				break;
+			case ACTION_POST_TYPES.like:
+				this.likePost((action.data as ActionPostLikeData).postId);
+				break;
+			case ACTION_PROFILE_TYPES.search: {
+				const actionData = action.data as ActionProfileSearchData;
+				this.profileSearch(actionData.str, actionData.lastId);
+				break;
+			}
+			case ACTION_POST_TYPES.unlike:
+				this.unlikePost((action.data as ActionPostLikeData).postId);
+				break;
+			case ACTION_GROUPS_TYPES.getGroups:
+				this.requestGroups();
+				break;
+			case ACTION_GROUP_PAGE_TYPES.groupPageRequest:
+				this.requestGroupPage(
+					(action.data as ActionGroupPageRequestData).href,
+				);
+				break;
+			case ACTION_GROUPS_TYPES.groupsUnfollowGroup:
+				this.unfollowGroup(
+					(action.data as ActionGroupsFollowGroupData).groupId,
+				);
+				break;
+			case ACTION_GROUPS_TYPES.groupsFollowGroup:
+				this.followGroup(
+					(action.data as ActionGroupsFollowGroupData).groupId,
+				);
+				break;
+			case ACTION_GROUP_PAGE_TYPES.deleteGroup:
+				this.deleteGroup(
+					(action.data as ActionGroupPageDeleteData).groupId,
+				);
+		}
+		switch (true) {
+			case action instanceof ActionGroupsSearch:
+				this.groupsSearch(action.data.str, action.data.lastId);
+				break;
+			case action instanceof ActionGroupPagePostsRequest:
+				this.requestPosts(undefined, action.data.groupId);
+				break;
 		}
 	}
 
@@ -160,10 +259,16 @@ class API {
 		}
 	}
 
-	async requestPosts(lastPostId?: number): Promise<void> {
+	async requestPosts(
+		lastPostId?: number,
+		communityId?: number,
+	): Promise<void> {
 		const params: QueryParams = {};
 		if (lastPostId) {
 			params.id = `${lastPostId}`;
+		}
+		if (communityId) {
+			params.community = `${communityId}`;
 		}
 		const response = await ajax.getPosts(params);
 		switch (response.status) {
@@ -171,7 +276,15 @@ class API {
 				if (!response.data) {
 					break;
 				}
-				this.sendAction(new ActionPostsRequestSuccess(response.data));
+				if (communityId) {
+					this.sendAction(
+						new ActionGroupPagePostsRequestSuccess(response.data),
+					);
+				} else {
+					this.sendAction(
+						new ActionPostsRequestSuccess(response.data),
+					);
+				}
 				break;
 			case STATUS.unauthorized:
 				this.sendAction(new ActionUserUnauthorized());
@@ -209,9 +322,13 @@ class API {
 					),
 				);
 				break;
-			case STATUS.badRequest:
 			case STATUS.unauthorized:
 				this.sendAction(new ActionUserUnauthorized());
+				this.sendAction(
+					new ActionProfileGetHeaderFail({ status: response.status }),
+				);
+				break;
+			case STATUS.badRequest:
 				this.sendAction(
 					new ActionProfileGetHeaderFail({ status: response.status }),
 				);
@@ -230,14 +347,14 @@ class API {
 					break;
 				}
 				this.sendAction(
-					new ActionProfileGetFriendsSuccess({
+					new ActionFriendsGetFriendsSuccess({
 						friends: response.data,
 					}),
 				);
 				break;
 			case STATUS.noMoreContent:
 				this.sendAction(
-					new ActionProfileGetFriendsSuccess({ friends: [] }),
+					new ActionFriendsGetFriendsSuccess({ friends: [] }),
 				);
 				break;
 		}
@@ -251,14 +368,14 @@ class API {
 					break;
 				}
 				this.sendAction(
-					new ActionProfileGetSubscribersSuccess({
+					new ActionFriendsGetSubscribersSuccess({
 						subscribers: response.data,
 					}),
 				);
 				break;
 			case STATUS.noMoreContent:
 				this.sendAction(
-					new ActionProfileGetSubscribersSuccess({ subscribers: [] }),
+					new ActionFriendsGetSubscribersSuccess({ subscribers: [] }),
 				);
 				break;
 		}
@@ -272,7 +389,7 @@ class API {
 					break;
 				}
 				this.sendAction(
-					new ActionProfileGetUsersSuccess({
+					new ActionFriendsGetUsersSuccess({
 						users: response.data,
 					}),
 				);
@@ -287,14 +404,14 @@ class API {
 					break;
 				}
 				this.sendAction(
-					new ActionProfileGetSubscriptionsSuccess({
+					new ActionFriendsGetSubscriptionsSuccess({
 						subscriptions: response.data,
 					}),
 				);
 				break;
 			case STATUS.noMoreContent:
 				this.sendAction(
-					new ActionProfileGetSubscriptionsSuccess({
+					new ActionFriendsGetSubscriptionsSuccess({
 						subscriptions: [],
 					}),
 				);
@@ -346,24 +463,129 @@ class API {
 		}
 	}
 
-	async createPost(formData: FormData) {
-		const response = await ajax.createPost(formData);
+	async createGroup(formData: GroupPayload) {
+		const response = await ajax.createGroup(formData);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					return;
+				}
+				this.sendAction(new ActionCreateGroupSuccess(response.data));
+				break;
+			default:
+			// this.sendAction();
+		}
+	}
+
+	async groupEdit(groupPayload: GroupPayload, id: number) {
+		const respone = await ajax.groupEdit(groupPayload, id);
+		switch (respone.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionGroupsEditSuccess());
+				break;
+			default:
+				this.sendAction(new ActionGroupsEditFail());
+		}
+	}
+
+	async requestGroups() {
+		const response = await ajax.getGroups();
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					// this.sendAction();
+					break;
+				}
+				this.sendAction(
+					new ActionGroupsGetGroupsSuccess({
+						groups: response.data,
+					}),
+				);
+				break;
+			case STATUS.noMoreContent:
+				this.sendAction(
+					new ActionGroupsGetGroupsSuccess({ groups: [] }),
+				);
+				break;
+		}
+	}
+
+	async requestGroupPage(href: string) {
+		const response = await ajax.getGroupPage(href);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
 					return;
 				}
 				this.sendAction(
-					new ActionFeedPostCreateSuccess({ post: response.data }),
+					new ActionGroupPageRequestSuccess({
+						groupPageResponse: response.data,
+					}),
 				);
-				break;
-			default:
-				this.sendAction(new actionFeedPostCreateFail());
+				return;
 		}
 	}
 
-	async editPost(formData: FormData, postId: number) {
-		const response = await ajax.editPost(formData, postId);
+	// async followGroup() {
+	// 	const response = await ajax.followGroup(groupId);
+	// 	switch (response.status) {
+	// 		case STATUS.ok:
+	// 			this.sendAction(new ActionGroupsFollowGroup());
+	// 	}
+	// }
+
+	async unfollowGroup(groupId: number) {
+		const response = await ajax.unfollowGroup(groupId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionGroupsUnfollowGroupSuccess());
+		}
+	}
+
+	async followGroup(groupId: number) {
+		const response = await ajax.followGroup(groupId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionGroupsFollowGroupSuccess());
+		}
+	}
+
+	async deleteGroup(groupId: number) {
+		const response = await ajax.deleteGroup(groupId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionGroupPageDeleteGroupSuccess());
+		}
+	}
+
+	async createPost(formData: PostPayload, query: string) {
+		const response = await ajax.createPost(formData, query);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					return;
+				}
+				if (response.data.header.community_id) {
+					this.sendAction(
+						new ActionFeedPostGroupCreateSuccess({
+							post: response.data,
+						}),
+					);
+				} else {
+					this.sendAction(
+						new ActionFeedPostCreateSuccess({
+							post: response.data,
+						}),
+					);
+				}
+				break;
+			default:
+				this.sendAction(new ActionFeedPostCreateFail());
+		}
+	}
+
+	async editPost(formData: PostPayload, postId: number, query?: string) {
+		const response = await ajax.editPost(formData, postId, query);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
@@ -380,8 +602,8 @@ class API {
 		}
 	}
 
-	async deletePost(postId: number) {
-		const response = await ajax.deletePost(postId);
+	async deletePost(postId: number, query?: string) {
+		const response = await ajax.deletePost(postId, query);
 		switch (response.status) {
 			case STATUS.ok:
 				this.sendAction(new ActionProfileDeletePostSuccess());
@@ -391,7 +613,7 @@ class API {
 		}
 	}
 
-	async editProfile(formData: FormData) {
+	async editProfile(formData: ProfilePayload) {
 		const response = await ajax.editProfile(formData);
 		switch (response.status) {
 			case STATUS.ok:
@@ -447,6 +669,85 @@ class API {
 			default:
 				this.sendAction(new ActionChatRequestFail());
 		}
+	}
+
+	async likePost(postId: number) {
+		const response = await ajax.likePost(postId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionPostLikeSuccess(postId));
+				break;
+			default:
+				this.sendAction(new ActionPostLikeFail());
+		}
+	}
+
+	async unlikePost(postId: number) {
+		const response = await ajax.unlikePost(postId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionPostLikeSuccess(postId));
+				break;
+			default:
+				this.sendAction(new ActionPostLikeFail());
+		}
+	}
+
+	async profileSearch(str: string, userId?: number) {
+		const response = await ajax.profilesSearch(str, userId);
+		switch (response.status) {
+			case STATUS.ok:
+				if (response.data) {
+					this.sendAction(
+						new ActionProfileSearchSuccess(response.data),
+					);
+				} else {
+					this.sendAction(new ActionProfileSearchFail());
+				}
+				break;
+			default:
+				this.sendAction(new ActionProfileSearchFail());
+		}
+	}
+
+	async groupsSearch(str: string, lastId?: number) {
+		const respone = await ajax.groupsSearch(str, lastId);
+		switch (respone.status) {
+			case STATUS.ok:
+				if (respone.data) {
+					this.sendAction(
+						new ActionGroupsSearchSuccess(respone.data),
+					);
+				} else {
+					this.sendAction(new ActionGroupsSearchFail());
+				}
+				break;
+			default:
+				this.sendAction(new ActionGroupsSearchFail());
+		}
+	}
+
+	async csatSend(inTotal: number, feed: number) {
+		const response = await ajax.csatSend(inTotal, feed);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionCsatSendSuccess());
+		}
+	}
+
+	async csatMetrics() {
+		const response = await ajax.csatMetrics();
+		switch (response.status) {
+			case STATUS.ok:
+				if (response.data) {
+					this.sendAction(new ActionCsatMetrics(response.data));
+				}
+		}
+	}
+
+	async sendImage(image: File) {
+		const response = await ajax.sendImage(image);
+		return response.data;
 	}
 }
 

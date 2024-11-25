@@ -15,7 +15,9 @@ export class Dispatcher {
 	}
 
 	dispatch(action: Action) {
+		console.log('dispatcher: action:', action);
 		const stores = this.subscribed[action.type];
+		console.log('dispatcher: to stores:', stores);
 		if (stores) {
 			stores.forEach((store) => {
 				store.handleAction(action);

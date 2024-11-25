@@ -1,34 +1,30 @@
-import { ActionMenuLinkClick } from '../../actions/actionMenu';
+import { ActionAppGoTo } from '../../actions/actionApp';
 import { ACTION_POST_EDIT_TYPES } from '../../actions/actionPostEdit';
 import api from '../../api/api';
+import app from '../../app';
 import { Root } from '../../components';
 import {
-	IPostEditFormConfig,
+	PostEditFormConfig,
 	PostEditForm,
 } from '../../components/PostEditForm/PostEditForm';
+import { PAGE_URLS } from '../../config';
+import { PostPayload } from '../../models/post';
+import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
+import { update } from '../../modules/vdom';
 import { ChangePostEdit } from '../../stores/storePostEdit';
-import {
-	ComponentsHome,
-	HomeConfig,
-	IViewHome,
-	ViewHome,
-} from '../home/viewHome';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsPostEdit = {
 	postEditForm?: PostEditForm;
 } & ComponentsHome;
 
 export interface ViewPostEditConfig extends HomeConfig {
-	postEditForm: IPostEditFormConfig;
+	postEditForm: PostEditFormConfig;
 	postId: number;
 }
 
-export interface IViewPostEdit extends IViewHome {
-	// handleChange(change: ChangePostEdit): void;
-}
-
-export class ViewPostEdit extends ViewHome implements IViewPostEdit {
+export class ViewPostEdit extends ViewHome {
 	protected _configPostEdit: ViewPostEditConfig;
 	protected _components: ComponentsPostEdit = {};
 
@@ -44,11 +40,18 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 	handleChange(change: ChangePostEdit): void {
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_POST_EDIT_TYPES.requestSuccess:
-				this.sendAction(
-					new ActionMenuLinkClick({ href: this._profileLinkHref }),
-				);
+			case ACTION_POST_EDIT_TYPES.requestSuccess: {
+				const url = new URL(app.router.href);
+				const groupId = url.searchParams.get('community');
+				if (groupId) {
+					this.sendAction(
+						new ActionAppGoTo(PAGE_URLS.groupPage + `/${groupId}`),
+					);
+				} else {
+					this.sendAction(new ActionAppGoTo(this._profileLinkHref));
+				}
 				break;
+			}
 			case ACTION_POST_EDIT_TYPES.requestFail:
 				this.updateViewProfileEdit(change.data);
 				break;
@@ -59,6 +62,8 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 				);
 				this.render();
 				break;
+			default:
+				this.updateViewProfileEdit(change.data);
 		}
 	}
 
@@ -67,28 +72,70 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 	}
 
 	updateViewProfileEdit(data: ViewPostEditConfig): void {
+		this.updateViewHome(data);
 		this._configPostEdit = Object.assign(this._configPostEdit, data);
 		this._render();
 	}
 
-	update(config: object): void {
-		this.updateViewProfileEdit(config as ViewPostEditConfig);
-	}
-
 	protected _render(): void {
+		const rootNode = this._root.node;
+
 		super._render();
 		this._renderPostEditForm();
+
+		const rootVNode = this._root.newVNode();
+
 		this._addHandlers();
+
+		update(rootNode, rootVNode);
 	}
 
 	protected _renderPostEditForm(): void {
-		const content = this.content;
-		const postEditForm = new PostEditForm(
+		this._components.postEditForm = new PostEditForm(
 			this._configPostEdit.postEditForm,
-			content,
+			this.content,
 		);
-		postEditForm.render();
-		this._components.postEditForm = postEditForm;
+	}
+
+	protected _addHandlers() {
+		super._addHandlers();
+		this._postEditForm.vnode.handlers.push({
+			event: 'submit',
+			callback: async (event) => {
+				event.preventDefault();
+				const validator = new Validator();
+				const formData = validator.validateForm(
+					this._postEditForm.formData,
+					this._postEditForm.form,
+				);
+				if (formData) {
+					if (
+						formData.get('text') ||
+						(formData.get('file') as File).name
+					) {
+						const fileStr = await fileToString(
+							formData.get('file') as File,
+						);
+						if (fileStr === null) {
+							return;
+						}
+						const postPayload: PostPayload = {
+							post_content: {
+								text: formData.get('text') as string,
+								file: fileStr,
+							},
+						};
+						const url = new URL(app.router.href);
+						api.editPost(
+							postPayload,
+							this._configPostEdit.postId,
+							url.search,
+						);
+					}
+				}
+			},
+		});
+		this._addHandlerInput();
 	}
 
 	private get _postEditForm(): PostEditForm {
@@ -99,57 +146,43 @@ export class ViewPostEdit extends ViewHome implements IViewPostEdit {
 		return form;
 	}
 
-	private _addHandlers() {
-		this.content.addHandler(
-			this._postEditForm.htmlElement,
-			'submit',
-			(event) => {
-				event.preventDefault();
-				const validator = new Validator();
-				const formData = validator.validateForm(
-					this._postEditForm.formData,
-					this._postEditForm.form,
-				);
-				if (formData) {
-					api.editPost(formData, this._configPostEdit.postId);
-				}
+	private _addHandlerInput(): void {
+		this._postEditForm.fileInputVNode.handlers.push(
+			{
+				event: 'click',
+				callback: (event) => {
+					const label = this._postEditForm.label;
+					const preview = this._postEditForm.img as HTMLImageElement;
+					const input = event.target as HTMLInputElement;
+					if (input.value) {
+						input.value = '';
+						event.preventDefault();
+						label?.classList.remove('active');
+						label.textContent = 'Прикрепить картинку';
+						preview.src = '';
+					}
+				},
+			},
+			{
+				event: 'change',
+				callback: (event) => {
+					const label = this._postEditForm.label;
+					const preview = this._postEditForm.img as HTMLImageElement;
+					const input = event.target as HTMLInputElement;
+					if (input.files && input.files.length > 0) {
+						if (label) {
+							label.classList.add('active');
+							label.textContent =
+								'Картинка выбрана, нажмите, чтобы отменить';
+						}
+						const reader = new FileReader();
+						reader.onload = function (e) {
+							preview.src = e.target?.result as string;
+						};
+						reader.readAsDataURL(input.files[0]);
+					}
+				},
 			},
 		);
-
-		// this._addHandlerInput();
-	}
-
-	private _addHandlerInput(): void {
-		const fileInput = this._postEditForm.fileInput;
-		const label = this._postEditForm.label;
-		const preview = this._postEditForm.img as HTMLImageElement;
-		if (fileInput) {
-			this.content.addHandler(fileInput, 'click', (event) => {
-				const input = event.target as HTMLInputElement;
-				if (input.value) {
-					input.value = '';
-					event.preventDefault();
-					label?.classList.remove('active');
-					label.textContent = 'Прикрепить картинку';
-					preview.src = '';
-				}
-			});
-			this.content.addHandler(fileInput, 'change', (event) => {
-				const input = event.target as HTMLInputElement;
-				if (input.files && input.files.length > 0) {
-					if (label) {
-						label.classList.add('active');
-						label.textContent =
-							'Картинка выбрана, нажмите, чтобы отменить';
-					}
-
-					const reader = new FileReader();
-					reader.onload = function (e) {
-						preview.src = e.target?.result as string;
-					};
-					reader.readAsDataURL(input.files[0]);
-				}
-			});
-		}
 	}
 }

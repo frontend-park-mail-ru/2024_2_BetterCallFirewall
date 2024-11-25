@@ -1,21 +1,27 @@
-import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
-import { ACTION_LOGIN_TYPES } from '../../actions/actionLogin';
-import { ActionMenuLinkClick } from '../../actions/actionMenu';
-import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
-import { ACTION_SIGNUP_TYPES } from '../../actions/actionSignup';
-import api from '../../api/api';
-import { IPostConfig, Post, Root } from '../../components';
+import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
+import {
+	ActionFeedPostsRequest,
+	ActionFeedUpdate,
+} from '../../actions/actionFeed';
+import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
+import { PostConfig, Post, Root } from '../../components';
+import { throttle } from '../../modules/throttle';
+import { update } from '../../modules/vdom';
 import { ChangeFeed } from '../../stores/storeFeed';
-import { HomeConfig, IViewHome, ViewHome } from '../home/viewHome';
+import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export interface ViewFeedConfig extends HomeConfig {
-	posts: IPostConfig[];
+	posts: PostConfig[];
+	pendingPostRequest: boolean;
 }
 
-export interface IViewFeed extends IViewHome {}
+export type FeedComponents = {
+	posts?: Post[];
+} & ComponentsHome;
 
-export class ViewFeed extends ViewHome implements IViewFeed {
+export class ViewFeed extends ViewHome {
 	protected _configFeed: ViewFeedConfig;
+	protected _components: FeedComponents = {};
 
 	constructor(config: ViewFeedConfig, root: Root) {
 		super(config, root);
@@ -29,30 +35,27 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	handleChange(change: ChangeFeed): void {
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_FEED_TYPES.postCreateSuccess:
-				this.sendAction(
-					new ActionMenuLinkClick({ href: this._profileLinkHref }),
-				);
-				break;
-			case ACTION_LOGIN_TYPES.loginClickSuccess:
-			case ACTION_SIGNUP_TYPES.signupClickSuccess:
-				if (!this._configFeed.posts.length) {
-					api.requestPosts(this.lastPostId);
+			case ACTION_APP_TYPES.goTo:
+				if (
+					!this._configFeed.posts.length &&
+					!this._configFeed.pendingPostRequest
+				) {
+					this.sendAction(
+						new ActionFeedPostsRequest(this.lastPostId),
+					);
 				}
+				this.sendAction(new ActionFeedUpdate());
 				break;
-			case ACTION_FEED_TYPES.postsRequestSuccess:
-			case ACTION_FEED_TYPES.postsRequestFail:
+			default:
 				this.updateViewFeed(change.data);
-				break;
 		}
 	}
 
 	render(): void {
 		this._render();
-		this._addHandlers();
 
-		if (this._isNearBottom()) {
-			api.requestPosts(this.lastPostId);
+		if (this._isNearBottom() && !this._configFeed.pendingPostRequest) {
+			this.sendAction(new ActionFeedPostsRequest(this.lastPostId));
 		}
 	}
 
@@ -60,17 +63,25 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 		this.updateViewHome(data);
 		this._configFeed = { ...this._configFeed, ...data };
 		this._render();
-		this._addHandlers();
-	}
-
-	update(config: object): void {
-		this.updateViewFeed(config as ViewFeedConfig);
 	}
 
 	protected _render(): void {
+		const rootNode = this._root.node;
+
 		super._render();
 		this._renderPosts();
-		this._printMessage();
+
+		const rootVNode = this._root.newVNode();
+
+		this._addHandlers();
+
+		update(rootNode, rootVNode);
+	}
+
+	protected _addHandlers() {
+		super._addHandlers();
+		this._addScrollHandler();
+		this._addPostsHandler();
 	}
 
 	private get lastPostId(): number | undefined {
@@ -81,37 +92,52 @@ export class ViewFeed extends ViewHome implements IViewFeed {
 	}
 
 	private _renderPosts(): void {
-		this._configFeed.posts.forEach((postData) => {
-			const post = new Post(postData, this.content);
-			post.render();
-			this._addPostHandlers(post);
+		this._components.posts = this._configFeed.posts.map((postConfig) => {
+			return new Post(postConfig, this.content);
 		});
-	}
-
-	private _addPostHandlers(post: Post) {
-		if (post.config.hasEditButton) {
-			post.addHandler(post.editButton, 'click', (event) => {
-				event.preventDefault();
-				this.sendAction(new ActionPostEditGoTo(post.config));
-			});
-		}
-	}
-
-	private _addHandlers() {
-		this._addScrollHandler();
 	}
 
 	private _addScrollHandler() {
 		let debounceTimeout: NodeJS.Timeout;
 		const handler = () => {
-			if (this._isNearBottom()) {
+			if (this._isNearBottom() && !this._isOnBottom()) {
 				clearTimeout(debounceTimeout);
 				debounceTimeout = setTimeout(() => {
-					api.requestPosts(this.lastPostId);
+					if (!this.config.pendingPostRequest) {
+						this.sendAction(
+							new ActionFeedPostsRequest(this.lastPostId),
+						);
+					}
 				}, 200);
 			}
 		};
-
-		this.content.addHandler(document, 'scroll', handler);
+		this._root.addDocumentHandler({ event: 'scroll', callback: handler });
 	}
+
+	private _addPostsHandler() {
+		this._components.posts?.forEach((post) => {
+			post.likeButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this._likePost(post);
+				},
+			});
+			post.authorLinkVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionAppGoTo(post.config.authorHref));
+				},
+			});
+		});
+	}
+
+	private _likePost = throttle((post: Post) => {
+		if (post.config.likedByUser) {
+			this.sendAction(new ActionPostUnlike(post.config.id));
+		} else {
+			this.sendAction(new ActionPostLike(post.config.id));
+		}
+	}, 1000);
 }

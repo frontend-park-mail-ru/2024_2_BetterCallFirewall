@@ -3,10 +3,10 @@
     background-color: var(--second-bg-color);
     border-radius: .7rem;
     color: var(--main-text-color);
-    border: .5px solid rgba(255, 255, 255, 0.5);
+    border: .05rem solid rgba(255, 255, 255, 0.5);
     margin-bottom: 1rem;
     margin-left: 2rem;
-    max-width: 42rem;
+    max-width: 100%;
     width: 42rem;
     &:first-child {
         margin-top: 2rem;
@@ -41,6 +41,9 @@
             padding-left: .2rem;
             margin-bottom: .8rem;
             white-space: pre-line;
+            max-width: 100%;
+            overflow-wrap: break-word;
+            overflow: hidden;
         }
         &-image {
             border-radius: 10rem;
@@ -91,9 +94,32 @@
         height: 3rem;
         width: 3rem;
     }
+    &__like {
+        display: flex;
+        align-items: center;
+        &-button {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin: 1rem;
+            svg {
+                &:hover {
+                    cursor: pointer;
+                }
+                &:active path {
+                    fill: var(--main-color);
+                    stroke: var(--main-color);
+                }
+            }
+            &_liked {
+                svg path {
+                    fill: var(--main-color);
+                    stroke: var(--main-color);
+                }
+            }
+        }
+    }
 }
 
 .header-text {
     margin-bottom: .3rem;
 }
-

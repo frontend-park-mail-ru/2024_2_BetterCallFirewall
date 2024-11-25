@@ -19,7 +19,7 @@
 Елизавета Бредня - UX/UI
 
 ## Деплой
-[Vilka](http://185.241.194.197:8000/)
+[Vilka](http://vilka.online)
 
 ## Ссылки
 [Backend](https://github.com/go-park-mail-ru/2024_2_BetterCallFirewall)

@@ -30,7 +30,6 @@ export interface IBaseComponent {
 	update(data: IBaseComponentConfig): void;
 	remove(): void;
 	removeForUpdate(): void;
-	show(parent: HTMLElement): void;
 }
 
 export default abstract class BaseComponent implements IBaseComponent {
@@ -212,10 +211,6 @@ export default abstract class BaseComponent implements IBaseComponent {
 		oldHtmlElement.replaceWith(this.htmlElement);
 	}
 
-	show(parent: HTMLElement) {
-		parent.appendChild(this.htmlElement);
-	}
-
 	protected _render(templateFile: string, show: boolean = true): string {
 		const template = Handlebars.templates[templateFile];
 		const html = template(this._templateContext);
@@ -238,6 +233,7 @@ export default abstract class BaseComponent implements IBaseComponent {
 		if (!this._config) {
 			throw new Error('component has no config');
 		}
+		this._templateContext = { ...this.config };
 	}
 	abstract render(show: boolean): string;
 }

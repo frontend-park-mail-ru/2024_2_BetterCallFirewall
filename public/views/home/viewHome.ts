@@ -1,46 +1,51 @@
-import { ACTION_APP_TYPES } from '../../actions/actionApp';
+import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
+import { ActionGroupsSearch } from '../../actions/actionGroups';
 import {
 	ActionHeaderLogoutClickFail,
 	ActionHeaderLogoutClickSuccess,
+	ActionHeaderSearchResultsSwitch,
 } from '../../actions/actionHeader';
-import { ACTION_LOGIN_TYPES } from '../../actions/actionLogin';
 import {
 	ACTION_MENU_TYPES,
-	ActionMenuLinkClick,
+	ActionMenuOpenSwitch,
 	ActionMenuTitleClick,
 } from '../../actions/actionMenu';
-import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
-import api from '../../api/api';
+import {
+	ACTION_PROFILE_TYPES,
+	ActionProfileSearch,
+} from '../../actions/actionProfile';
 import app from '../../app';
 import {
 	Header,
 	Container,
-	IContainerConfig,
-	IContentConfig,
-	IHeaderConfig,
-	IMenuConfig,
-	Menu,
+	ContainerConfig,
+	HeaderConfig,
+	MenuConfig,
 	Root,
+	ContentConfig,
 	Content,
 } from '../../components';
-import config, { PAGE_LINKS } from '../../config';
+import { CSAT, CSATConfig } from '../../components/CSAT/CSAT';
+import Menu from '../../components/Menu/Menu';
+import { PAGE_LINKS, PAGE_URLS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
+import { debounce } from '../../modules/debounce';
 import { ChangeHome } from '../../stores/storeHome';
-import { BaseView, Components, View } from '../view';
+import { Components, View } from '../view';
 
 export interface MainConfig {
 	key: string;
 	className: string;
-	header: IHeaderConfig;
-	content: IContentConfig;
-	aside: IContainerConfig;
+	header: HeaderConfig;
+	content: ContentConfig;
+	aside: ContainerConfig;
 }
 
 export interface HomeConfig {
-	menu: IMenuConfig;
+	menu: MenuConfig;
 	main: MainConfig;
-	errorMessage: string;
+	csat: CSATConfig;
 }
 
 export type ComponentsHome = {
@@ -49,21 +54,10 @@ export type ComponentsHome = {
 	header?: Header;
 	content?: Content;
 	aside?: Container;
+	csat?: CSAT;
 } & Components;
 
-export interface ViewMenu extends ViewHome {
-	updateMenu(data: IMenuConfig): void;
-}
-
-export interface ViewHeader extends ViewHome {
-	updateHeader(data: IHeaderConfig): void;
-}
-
-export interface IViewHome extends View {
-	updateViewHome(data: HomeConfig): void;
-}
-
-export abstract class ViewHome extends BaseView implements IViewHome {
+export abstract class ViewHome extends View {
 	protected _components: ComponentsHome = {};
 	private _configHome: HomeConfig;
 
@@ -82,14 +76,11 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 			case ACTION_MENU_TYPES.updateProfileLinkHref:
 				this.updateViewHome(change.data);
 				break;
-			case ACTION_LOGIN_TYPES.loginClickSuccess:
-			case ACTION_PROFILE_TYPES.getHeader:
-				api.requestHeader();
-				break;
 			case ACTION_APP_TYPES.actionAppInit:
-			case ACTION_MENU_TYPES.menuLinkClick:
-				this._configHome = Object.assign(this._configHome, change.data);
-				this.render();
+			case ACTION_APP_TYPES.goTo:
+				this._configHome = change.data;
+				this.render(change.data);
+				this.sendAction(new ActionMenuOpenSwitch(false));
 				break;
 		}
 	}
@@ -97,42 +88,6 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 	updateViewHome(data: HomeConfig) {
 		this._configHome = data;
 		this._render();
-	}
-
-	render(): void {
-		this._render();
-	}
-
-	updateMenu(data: IMenuConfig): void {
-		this._configHome.menu = data;
-		const menu = this._components.menu;
-		if (!menu) {
-			throw new Error('menu does not exist on ViewHome');
-		}
-		menu.update(data);
-		this._addMenuHandlers();
-	}
-
-	updateHeader(data: IHeaderConfig): void {
-		const header = this._components.header;
-		if (!header) {
-			throw new Error('header does not exist on ViewHome');
-		}
-		header.update(data);
-		this._addHeaderHandlers();
-	}
-
-	updateMain(data: MainConfig): void {
-		this.updateHeader(data.header);
-		const content = this._components.content;
-		const main = this._components.main;
-		const aside = this._components.aside;
-		if (!main || !content || !aside) {
-			throw new Error('component does not exist on ViewHome');
-		}
-		main.update(data);
-		content.update(data.content);
-		aside.update(data.aside);
 	}
 
 	protected get _homeComponents(): ComponentsHome {
@@ -155,159 +110,219 @@ export abstract class ViewHome extends BaseView implements IViewHome {
 		return profileLink.href;
 	}
 
-	protected _clearContent() {
-		const content = this._components.content;
-		if (!content) {
-			throw new Error('content does not exist on ViewHome');
-		}
-		content.removeInner();
-	}
-
-	protected _updateContent() {
-		this._clearContent();
-		this._renderContent();
-	}
-
-	protected _renderContent(): void {
-		const main = this._components.main;
-		if (!main) {
-			throw new Error('main does not exist on viewHome');
-		}
+	protected _render() {
+		this._root.clear();
+		this._components.menu = new Menu(this._configHome.menu, this._root);
+		this._components.main = new Container(
+			this._configHome.main,
+			this._root,
+		);
+		this._components.header = new Header(
+			this._configHome.main.header,
+			this._components.main,
+		);
 		this._components.content = new Content(
 			this._configHome.main.content,
-			main,
+			this._components.main,
 		);
-		this._components.content.render();
+		this._components.aside = new Container(
+			this._configHome.main.aside,
+			this._components.main,
+		);
 	}
 
-	protected _render() {
-		this.clear();
-		this._renderMenu();
-		this._renderMain();
-		this._renderContent();
-		const main = this._components.main;
-		if (!main) {
-			throw new Error('main does not exist on viewHome');
-		}
-		const aside = new Container(this._configHome.main.aside, main);
-		aside.render();
+	protected _addHandlers() {
+		this._addMenuHandlers();
+		this._addHeaderHandlers();
+		this._root.addDocumentHandler({
+			event: 'click',
+			callback: (event) => {
+				if (
+					this.header.config.showSearchResults &&
+					!this.header.searchResultsHTML.contains(
+						event.target as Node,
+					)
+				) {
+					this.sendAction(new ActionHeaderSearchResultsSwitch(false));
+				}
+				if (
+					this.menu.config.isShow &&
+					!this.menu.html.contains(event.target as Node)
+				) {
+					this.sendAction(new ActionMenuOpenSwitch(false));
+				}
+			},
+		});
+		this._components.csat?.exitButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				if (this._components.csat) this._configHome.csat.show = false;
+				this._render();
+			},
+		});
 	}
 
-	// true, если до конца документа осталось меньше двух экранов
+	// true, если до конца документа осталось меньше экрана
 	protected _isNearBottom = () => {
 		return (
 			window.innerHeight * 2 + window.scrollY > document.body.offsetHeight
 		);
 	};
 
-	protected _printMessage() {
-		if (this._configHome.errorMessage) {
-			this.content.printMessage(this._configHome.errorMessage);
+	// true, если до конца документа осталось меньше 100 пикселей
+	protected _isOnBottom = () => {
+		return (
+			100 + window.innerHeight + window.scrollY >
+			document.body.offsetHeight
+		);
+	};
+
+	private get menu(): Menu {
+		const menu = this._components.menu;
+		if (!menu) {
+			throw new Error('menu does not exist');
 		}
+		return menu;
 	}
 
-	private _renderMenu() {
-		this._components.menu = new Menu(this._configHome.menu, this._root);
-		this._components.menu.render();
-		this._addMenuHandlers();
+	private get header(): Header {
+		const header = this._components.header;
+		if (!header) {
+			throw new Error('header does not exist');
+		}
+		return header;
 	}
 
 	private _addMenuHandlers() {
-		const menu = this._components.menu;
-		if (!menu) {
-			throw new Error('menu not found');
-		}
-		const config = menu.config;
-		const feedLink = menu.children[config.links.feed.key];
-		menu.addHandler(feedLink.htmlElement, 'click', (event) => {
-			event.preventDefault();
-			dispatcher.getAction(
-				new ActionMenuLinkClick({
-					href: config.links.feed.href,
-				}),
-			);
+		Object.entries(this.menu.config.links).forEach(([, link]) => {
+			const linkVNode = this.menu.menuLinkVNode(link.key);
+			linkVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(new ActionAppGoTo(link.href));
+				},
+			});
 		});
 
-		const profileLink = menu.children[config.links.profile.key];
-		menu.addHandler(profileLink.htmlElement, 'click', (event) => {
-			event.preventDefault();
-			dispatcher.getAction(
-				new ActionMenuLinkClick({ href: config.links.profile.href }),
-			);
+		this.menu.titleVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionMenuTitleClick());
+			},
 		});
-
-		const friendsLink = menu.children[config.links.friends.key];
-		menu.addHandler(friendsLink.htmlElement, 'click', (event) => {
-			event.preventDefault();
-			dispatcher.getAction(
-				new ActionMenuLinkClick({ href: config.links.friends.href }),
-			);
-		});
-
-		const messagesLink = menu.children[config.links.messages.key];
-		menu.addHandler(messagesLink.htmlElement, 'click', (event) => {
-			event.preventDefault();
-			this.sendAction(
-				new ActionMenuLinkClick({ href: config.links.messages.href }),
-			);
-		});
-
-		const titleHTML = menu.htmlElement.querySelector(
-			'[data-key=title]',
-		) as HTMLElement;
-		if (!titleHTML) {
-			throw new Error('title not found');
-		}
-		menu.addHandler(titleHTML, 'click', (event) => {
-			event.preventDefault();
-			dispatcher.getAction(new ActionMenuTitleClick());
-		});
-	}
-
-	private _renderMain() {
-		this._components.main = new Container(
-			this._configHome.main,
-			this._root,
-		);
-		this._components.main.render();
-		this._renderHeader();
-	}
-
-	private _renderHeader() {
-		const main = this._components.main;
-		if (!main) {
-			throw new Error('main does not exist on viewHome');
-		}
-		this._components.header = new Header(
-			this._configHome.main.header,
-			main,
-		);
-		this._components.header.render();
-		this._addHeaderHandlers();
 	}
 
 	private _addHeaderHandlers() {
-		const header = this._components.header;
-		if (!header) {
-			throw new Error('header not found');
-		}
-		header.addHandler(header.logoutButtonHTML, 'click', (event: Event) => {
-			event.preventDefault();
-			logoutButtonClick();
+		this.header.logoutButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				logoutButtonClick();
+			},
 		});
-
-		header.addHandler(header.profileLink, 'click', (event) => {
-			event.preventDefault();
-			const profile = header.config as IHeaderConfig;
-			this.sendAction(
-				new ActionMenuLinkClick({ href: `/${profile.profile.id}` }),
-			);
+		this.header.profileLinkVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				const profile = this.header.config;
+				this.sendAction(new ActionAppGoTo(`/${profile.profile.id}`));
+			},
+		});
+		this.header.menuOpenerVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				event.stopImmediatePropagation();
+				this.sendAction(
+					new ActionMenuOpenSwitch(!this._configHome.menu.isShow),
+				);
+			},
+		});
+		this.header.searchInputVNode.handlers.push(
+			{
+				event: 'input',
+				callback: (event) => {
+					event.preventDefault();
+					const input = event.currentTarget as HTMLInputElement;
+					if (input && input.value.length > 2) {
+						this._searchInputHandler(input.value);
+					}
+				},
+			},
+			{
+				event: 'focus',
+				callback: (event) => {
+					event.preventDefault();
+					const input = event.currentTarget as HTMLInputElement;
+					if (input?.value.length) {
+						this.sendAction(
+							new ActionHeaderSearchResultsSwitch(true),
+						);
+					}
+				},
+			},
+			{
+				event: 'click',
+				callback: (event) => {
+					event.stopPropagation();
+				},
+			},
+		);
+		this.header.profilesSearch.forEach((profileSearch) => {
+			profileSearch.vnode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionAppGoTo(
+							PAGE_URLS.profile + `/${profileSearch.config.id}`,
+						),
+					);
+					this.sendAction(new ActionHeaderSearchResultsSwitch(false));
+				},
+			});
+		});
+		this.header.groupsSearch.forEach((groupSearch) => {
+			groupSearch.vnode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionAppGoTo(
+							PAGE_URLS.groups + `/${groupSearch.config.id}`,
+						),
+					);
+					this.sendAction(new ActionHeaderSearchResultsSwitch(false));
+				},
+			});
 		});
 	}
+
+	private _searchInputHandler = debounce((str: string, append?: boolean) => {
+		const profilesSearch = this._configHome.main.header.profilesSearch;
+		const groupsSearch = this._configHome.main.header.groupsSearch;
+		this.sendAction(
+			new ActionProfileSearch(
+				str,
+				append
+					? profilesSearch[profilesSearch.length - 1]?.id
+					: undefined,
+			),
+		);
+		this.sendAction(
+			new ActionGroupsSearch(
+				str,
+				append ? groupsSearch[groupsSearch.length - 1]?.id : undefined,
+			),
+		);
+	}, 200);
 }
 
 const logoutButtonClick = () => {
-	ajax.post(config.URL.logout, {}, (data, error) => {
+	ajax.post(app.config.URL.logout, {}, (data, error) => {
 		if (error) {
 			dispatcher.getAction(new ActionHeaderLogoutClickFail());
 			return;

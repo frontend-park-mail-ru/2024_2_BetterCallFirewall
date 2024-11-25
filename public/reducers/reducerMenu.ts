@@ -2,6 +2,7 @@ import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
 import {
 	ACTION_MENU_TYPES,
+	ActionMenuOpenSwitchData,
 	ActionUpdateProfileLinkHrefData,
 } from '../actions/actionMenu';
 import {
@@ -9,14 +10,14 @@ import {
 	ActionProfileGetYourOwnProfileSuccessData,
 } from '../actions/actionProfile';
 import app from '../app';
-import { IMenuConfig } from '../components/Menu/Menu';
+import { MenuConfig } from '../components/Menu/Menu';
 import config from '../config';
 import deepClone from '../modules/deepClone';
 
-const initialState: IMenuConfig = deepClone(config.homeConfig.menu);
+const initialState: MenuConfig = deepClone(config.homeConfig.menu);
 
 export const reducerMenu = (
-	state: IMenuConfig = initialState,
+	state: MenuConfig = initialState,
 	action?: Action,
 ) => {
 	const newState = deepClone(state);
@@ -24,10 +25,9 @@ export const reducerMenu = (
 		switch (action.type) {
 			case ACTION_PROFILE_TYPES.updateProfile:
 			case ACTION_APP_TYPES.actionAppInit:
-			case ACTION_MENU_TYPES.menuLinkClick:
-				Object.keys(newState.links).forEach((key) => {
-					const link = newState.links[key];
-					link.active = app.router.path === link.href;
+			case ACTION_APP_TYPES.goTo:
+				Object.entries(newState.links).forEach(([, linkConfig]) => {
+					linkConfig.active = app.router.path === linkConfig.href;
 				});
 				break;
 			case ACTION_MENU_TYPES.titleClick:
@@ -43,6 +43,10 @@ export const reducerMenu = (
 				newState.links.profile.href = `/${actionData.profile.id}`;
 				break;
 			}
+			case ACTION_MENU_TYPES.openSwitch:
+				newState.isShow = (
+					action.data as ActionMenuOpenSwitchData
+				).show;
 		}
 	}
 	return newState;

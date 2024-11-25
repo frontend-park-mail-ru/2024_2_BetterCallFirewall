@@ -4,8 +4,10 @@
   "scripts": {
     "prestart": "npm run compile:templates && npm run compile:bundle",
     "start": "node ./server/server.js",
+    "start-csat": "cd ./public/csat && npm start",
     "compile:templates": "find public/ -name '*.hbs' | xargs handlebars -f public/precompiled.js",
-    "compile:bundle": "npx webpack"
+    "compile:bundle": "npx webpack",
+    "build": "npm run prestart"
   },
   "dependencies": {
     "body-parser": "^1.20.3",

@@ -20,7 +20,6 @@ export class ActionUpdateChat implements Action {
 }
 
 export interface ActionChatGoToChatData {
-	// chatConfig: IChatConfig;
 	href: string;
 }
 

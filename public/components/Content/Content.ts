@@ -1,67 +1,43 @@
-import { IBaseComponent } from '../BaseComponent';
-import {
-	Container,
-	IContainerConfig,
-	ContentMessage,
-	IContentMessage,
-} from '../index';
+import Component from '../Component';
+import { Container, ContainerConfig, ContentMessage } from '../index';
+import { Loader } from '../Loader/Loader';
 
-export interface IContentConfig extends IContainerConfig {}
-
-export interface IContent extends Container {
-	printMessage(message: string): void;
-	removeMessage(): void;
-	removeInner(): void;
+export interface ContentConfig extends ContainerConfig {
+	showLoader: boolean;
+	message: string;
 }
 
-export class Content extends Container implements IContent {
-	private message: IContentMessage | null;
+export class Content extends Container {
+	protected _config: ContentConfig;
 
 	/**
 	 * Создает новый компонент Content
-	 * @param {IContentConfig} config
+	 * @param {ContentConfig} config
 	 * @param {IBaseComponent} parent
 	 */
-	constructor(config: IContentConfig, parent: IBaseComponent) {
+	constructor(config: ContentConfig, parent: Component) {
 		super(config, parent);
-		this.message = null;
+		this._config = config;
 	}
 
-	/**
-	 * Prints message at the end of content
-	 * @param {string} message
-	 */
-	printMessage(message: string) {
-		if (this.message) {
-			this.removeMessage();
-			this.message = null;
+	render(): string {
+		this._prerender();
+		return this._render('Content.hbs');
+	}
+
+	protected _prerender(): void {
+		if (this._config.showLoader) {
+			new Loader({ key: 'loader' }, this);
 		}
-		const messageItem = new ContentMessage(
-			{ key: 'message', text: message },
-			this,
-		);
-		messageItem.render();
-		this.message = messageItem;
-	}
-
-	/**
-	 * Removes message
-	 */
-	removeMessage() {
-		if (this.message) {
-			this.message.remove();
-			this.message = null;
+		if (this._config.message) {
+			new ContentMessage(
+				{
+					key: 'contentMessage',
+					text: this._config.message,
+				},
+				this,
+			);
 		}
-	}
-
-	update(data: IContentConfig): void {
-		this._config = data;
-	}
-
-	removeInner() {
-		this.removeHandlers();
-		Object.entries(this.children).forEach(([, child]) => {
-			child.remove();
-		});
+		super._prerender();
 	}
 }

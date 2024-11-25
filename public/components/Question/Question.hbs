@@ -1,0 +1,16 @@
+<div class="question" data-key="{{this.key}}">
+    <div class="question__name">
+        <span>{{{this.name}}}</span>
+    </div>
+    <div class="question__scoring">
+        {{#each scores}}
+            {{{this}}}
+        {{/each}}
+    </div>
+    <div class="question__bottom">
+        <a class="question__skip link-no-decorations" href="">Пропустить вопрос</a>
+        <button type="submit" class="question__button">
+            Ответить!
+        </button>
+    </div>
+</div>

@@ -1,5 +1,5 @@
-import { IChatConfig } from '../components/Chat/Chat';
-import { IChatMessageConfig } from '../components/ChatMessage/ChatMessage';
+import { ChatConfig } from '../components/Chat/Chat';
+import { ChatMessageConfig } from '../components/ChatMessage/ChatMessage';
 import parseTime from '../modules/parseTime';
 
 export interface MessageSend {
@@ -14,9 +14,9 @@ export interface MessageResponse {
 }
 
 export const toChatMessageConfig = (
-	chatConfig: IChatConfig,
+	chatConfig: ChatConfig,
 	messageResponse: MessageResponse,
-): IChatMessageConfig => {
+): ChatMessageConfig => {
 	const isCompanion = messageResponse.sender === chatConfig.companionId;
 	return {
 		key: `chat-message-${messageResponse.sender}`,

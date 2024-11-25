@@ -1,4 +1,4 @@
-import { IInputConfig } from '../components/index';
+import { InputConfig } from '../components/index';
 import { validators } from '../config';
 export default class Validator {
 	/**
@@ -22,13 +22,13 @@ export default class Validator {
 	}
 
 	static validateImg(file: File): string {
-		if (!file) {
-			return 'Файл не выбран';
+		if (!file || !file.name) {
+			return '';
 		}
 
-		const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+		const validImageTypes = ['image/jpeg', 'image/png', 'image/webp'];
 		if (!validImageTypes.includes(file.type)) {
-			return 'Разрешены только изображения (JPEG, PNG, GIF)';
+			return 'Разрешены только изображения (jpeg, png, webp)';
 		}
 
 		const maxSizeInMB = 5;
@@ -122,8 +122,16 @@ export default class Validator {
 		}
 		if (nameValue.length < 3) {
 			return 'Поле должно содержать не менее 3 символов.';
-		} else if (nameValue.length > 20) {
-			return 'Поле должно содержать не более 20 символов.';
+		} else if (nameValue.length > 30) {
+			return 'Поле должно содержать не более 30 символов.';
+		}
+		return '';
+	}
+
+	static validateDescription(description: string): string {
+		const nameValue: string = Validator.shieldingData(description);
+		if (nameValue.length > 60) {
+			return 'Поле должно содержать не более 60 символов.';
 		}
 		return '';
 	}
@@ -149,8 +157,8 @@ export default class Validator {
 	 * @param {Object} config
 	 */
 	configItems(
-		config: Record<string, IInputConfig>,
-	): Array<[string, IInputConfig]> {
+		config: Record<string, InputConfig>,
+	): Array<[string, InputConfig]> {
 		return Object.entries(config);
 	}
 

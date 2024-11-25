@@ -1,20 +1,22 @@
-import { ACTION_APP_TYPES } from '../../actions/actionApp';
+import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import { ActionFormError } from '../../actions/actionForm';
-import {
-	ActionLoginClickSuccess,
-	ActionLoginToSignupClick,
-} from '../../actions/actionLogin';
+import { ActionUserAuth } from '../../actions/actionUser';
 import { ILoginFormConfig, LoginForm, Root } from '../../components';
-import config, { validators } from '../../config';
+import config, { PAGE_LINKS, validators } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import ajax from '../../modules/ajax';
 import Validator from '../../modules/validation';
+import { update } from '../../modules/vdom';
 import { ChangeLogin } from '../../stores/storeLogin';
-import { BaseView, Components } from '../view';
+import { Components, View } from '../view';
 
-export class ViewLogin extends BaseView {
+export type ComponentsLogin = {
+	login?: LoginForm;
+} & Components;
+
+export class ViewLogin extends View {
 	private _config: ILoginFormConfig;
-	private _components: Components = {};
+	private _components: ComponentsLogin = {};
 
 	constructor(config: ILoginFormConfig, root: Root) {
 		super(root);
@@ -28,6 +30,7 @@ export class ViewLogin extends BaseView {
 	handleChange(change: ChangeLogin): void {
 		switch (change.type) {
 			case ACTION_APP_TYPES.actionAppInit:
+			case ACTION_APP_TYPES.goTo:
 				this._config = change.data;
 				this.render();
 				break;
@@ -38,79 +41,82 @@ export class ViewLogin extends BaseView {
 
 	updateViewLogin(data: ILoginFormConfig) {
 		this._config = data;
-		this.render();
+		this._render();
 	}
 
 	render() {
-		this.clear();
-
-		const config = this._config;
-		const login = new LoginForm(config, this._root);
-		login.render();
-		this._components.login = login;
-		this._addLoginHandlers();
+		this._render();
 	}
 
-	update(config: object): void {
-		this.updateViewLogin(config as ILoginFormConfig);
+	protected _render() {
+		const rootNode = this._root.node;
+
+		this._root.clear();
+		this._components.login = new LoginForm(this._config, this._root);
+		const rootVNode = this._root.newVNode();
+		this._addLoginHandlers();
+
+		update(rootNode, rootVNode);
 	}
 
 	private _addLoginHandlers() {
-		const loginForm = this._components.login as LoginForm;
+		const loginForm = this._components.login;
 		if (!loginForm) {
 			throw new Error('login form not found');
 		}
-		loginForm.addHandler(loginForm.form, 'submit', (event: Event) => {
-			event.preventDefault();
-			if (this._config.inputs) {
-				loginFormSubmit(loginForm);
-			}
+		loginForm.formVNode.handlers.push({
+			event: 'submit',
+			callback: (event) => {
+				event.preventDefault();
+				if (this._config.inputs) {
+					loginFormSubmit(loginForm);
+				}
+			},
 		});
-
-		const toSignupLink = loginForm.items.toSignupLink;
-		loginForm.addHandler(toSignupLink.htmlElement, 'click', (event) => {
-			event.preventDefault();
-			dispatcher.getAction(new ActionLoginToSignupClick());
+		loginForm.toSingupLinkVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionAppGoTo(PAGE_LINKS.signup));
+			},
 		});
-
-		const titleLinkHTML = loginForm.htmlElement.querySelector(
-			'.title',
-		) as HTMLElement;
-		loginForm.addHandler(titleLinkHTML, 'click', (event) => {
-			event.preventDefault();
+		loginForm.titleLinkVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+			},
 		});
 
 		this.inputFieldHandler(loginForm);
 	}
 
 	private inputFieldHandler(loginForm: LoginForm) {
-		const inputFields = document.querySelectorAll('input, textarea');
-		inputFields.forEach((input) => {
-			loginForm.addHandler(input as HTMLElement, 'input', (event) => {
-				const target = event.target as HTMLInputElement;
-				const parentElem = target.parentElement as HTMLElement;
-
-				const validator = validators[target.name];
-				let error = '';
-
-				if (validator) {
-					if (
-						target.type === 'file' &&
-						target.files &&
-						target.files[0]
-					) {
-						error = validator(target.files[0]);
-					} else {
-						error = validator(target.value.trim());
+		loginForm.textInputFieldsVNodes.forEach((input) => {
+			input.handlers.push({
+				event: 'input',
+				callback: (event) => {
+					const target = event.target as HTMLInputElement;
+					const parentElem = target.parentElement as HTMLElement;
+					const validator = validators[target.name];
+					let error = '';
+					if (validator) {
+						if (
+							target.type === 'file' &&
+							target.files &&
+							target.files[0]
+						) {
+							error = validator(target.files[0]);
+						} else {
+							error = validator(target.value.trim());
+						}
 					}
-				}
-
-				const valid = new Validator();
-				if (error) {
-					valid.printError(parentElem as HTMLInputElement, error);
-				} else {
-					valid.errorsDelete(parentElem);
-				}
+					const valid = new Validator();
+					if (error) {
+						valid.printError(parentElem as HTMLInputElement, error);
+					} else {
+						valid.errorsDelete(parentElem);
+					}
+				},
 			});
 		});
 	}
@@ -122,13 +128,19 @@ const loginFormSubmit = (loginForm: LoginForm) => {
 	if (!data) {
 		return;
 	}
+	Object.entries(loginForm.config.inputs).forEach(([, input]) => {
+		if (input.type !== 'password') {
+			input.text = data.get(input.name)?.toString();
+		}
+	});
 	ajax.sendForm(config.URL.login, data, async (response, error) => {
 		if (error) {
 			dispatcher.getAction(new ActionFormError('Что-то пошло не так'));
 			return;
 		}
 		if (response && response.ok) {
-			dispatcher.getAction(new ActionLoginClickSuccess());
+			dispatcher.getAction(new ActionUserAuth());
+			dispatcher.getAction(new ActionAppGoTo(PAGE_LINKS.feed));
 		} else if (response) {
 			const data = await response.json();
 			if (data.message === 'wrong email or password') {

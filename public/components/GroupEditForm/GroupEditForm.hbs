@@ -1,0 +1,15 @@
+<div class="edit-group-form" data-key="{{this.key}}">
+    <h2 class="edit-group-form__title">Редактировать профиль</h2>
+    <form method="post" class="form" id="formEditGroup">
+        {{#each textAreas}}
+            {{{this}}}
+        {{/each}}
+        {{#each inputs}}
+            {{{this}}}
+        {{/each}}
+        <span class="form__error">
+            {{{error}}}
+        </span>
+        {{{button}}}
+    </form>
+</div>

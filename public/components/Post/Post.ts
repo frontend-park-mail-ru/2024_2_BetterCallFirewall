@@ -1,10 +1,9 @@
-import BaseComponent, {
-	IBaseComponent,
-	IBaseComponentConfig,
-} from '../BaseComponent';
+import { findVNodeByClass, VNode } from '../../modules/vdom';
+import Component, { ComponentConfig } from '../Component';
 
-export interface IPostConfig extends IBaseComponentConfig {
+export interface PostConfig extends ComponentConfig {
 	id: number;
+	groupId?: number;
 	key: string;
 	avatar: string;
 	title: string;
@@ -13,62 +12,58 @@ export interface IPostConfig extends IBaseComponentConfig {
 	date: string;
 	hasDeleteButton: boolean;
 	hasEditButton: boolean;
+	likes: number;
+	likedByUser: boolean;
+	authorHref: string;
 }
-
-export interface IPost extends IBaseComponent {}
 
 /**
  * Class of post
  */
-export class Post extends BaseComponent implements IPost {
-	protected _config: IPostConfig;
+export class Post extends Component {
+	protected _config: PostConfig;
 
 	/**
 	 * Instance of post
 	 *
-	 * @param {IPostConfig} config - post data
-	 * @param {IBaseComponent} parent - parent element
+	 * @param {PostConfig} config - post data
+	 * @param {Component} parent - parent element
 	 */
-	constructor(config: IPostConfig, parent: IBaseComponent | null) {
+	constructor(config: PostConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 	}
 
-	get config(): IPostConfig {
+	get config(): PostConfig {
 		return this._config;
 	}
 
-	get editButton(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.post__header-edit',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('editButton not found');
+	get editButtonVNode(): VNode {
+		const vnode = findVNodeByClass(this.vnode, 'post__header-edit');
+		if (!vnode) {
+			throw new Error('editButton vnode not found');
 		}
-		return html;
+		return vnode;
 	}
 
-	get deleteButton(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.post__header-delete',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('deleteButton not found');
+	get deleteButtonVNode(): VNode {
+		const vnode = findVNodeByClass(this.vnode, 'post__header-delete');
+		if (!vnode) {
+			throw new Error('deleteButton vnode not found');
 		}
-		return html;
+		return vnode;
 	}
 
-	render(show: boolean = true): string {
+	get likeButtonVNode(): VNode {
+		return this._findVNodeByClass('post__like-button');
+	}
+
+	get authorLinkVNode(): VNode {
+		return this._findVNodeByClass('post__author-link');
+	}
+
+	render(): string {
 		this._prerender();
-		const renderResult = this._render('Post.hbs', show);
-		return renderResult;
-	}
-
-	update(data: IPostConfig): void {
-		this._config = { ...this._config, ...data };
-	}
-	protected _prerender(): void {
-		super._prerender();
-		this._templateContext = { ...this.config };
+		return this._render('Post.hbs');
 	}
 }
