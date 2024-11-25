@@ -26,7 +26,9 @@ export interface PostResponse {
 }
 
 export const toPostConfig = (postResponse: PostResponse): PostConfig => {
-	const authorHref = `${postResponse.header.community_id ? PAGE_URLS.groupPage : PAGE_URLS.profile}/${postResponse.header.author_id}`;
+	const authorHref = postResponse.header.community_id
+		? `${PAGE_URLS.groupPage}/${postResponse.header.community_id}`
+		: `${PAGE_URLS.profile}/${postResponse.header.author_id}`;
 	return {
 		id: postResponse.id,
 		key: `post-${postResponse.id}`,
