@@ -87,7 +87,7 @@ export interface ActionGroupPagePostsRequestSuccessData {
 	postsResponses: PostResponse[];
 }
 export class ActionGroupPagePostsRequestSuccess implements Action {
-	type: ActionType = ACTION_GROUP_PAGE_TYPES.postsRequest;
+	type: ActionType = ACTION_GROUP_PAGE_TYPES.postsRequestSuccess;
 	data: ActionGroupPagePostsRequestSuccessData;
 
 	constructor(postsResponses: PostResponse[]) {

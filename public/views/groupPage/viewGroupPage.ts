@@ -55,6 +55,14 @@ export class ViewGroupPage extends ViewHome {
 			case ACTION_GROUP_PAGE_TYPES.deleteGroupSuccess:
 				this.sendAction(new ActionAppGoTo(PAGE_LINKS.groups));
 				break;
+			case ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess:
+				this.sendAction(
+					new ActionGroupPagePostsRequest(
+						this._configGroupPage.groupPage.id,
+					),
+				);
+				this.updateViewGroupPage(change.data);
+				break;
 			default:
 				this.updateViewGroupPage(change.data);
 		}
@@ -64,9 +72,6 @@ export class ViewGroupPage extends ViewHome {
 		this._render();
 		this.sendAction(new ActionUpdateGroupPage());
 		this.sendAction(new ActionGroupPageRequest(app.router.path));
-		this.sendAction(
-			new ActionGroupPagePostsRequest(this._configGroupPage.groupPage.id),
-		);
 	}
 
 	updateViewGroupPage(data: ViewGroupPageConfig): void {
