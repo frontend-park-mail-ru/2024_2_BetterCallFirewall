@@ -173,7 +173,7 @@ h1, h2, h3, h4, h5, h6 {
         }
     }
     &__info {
-        width: 100%;
+        max-width: 50%;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -293,6 +293,12 @@ input::placeholder, textarea::placeholder {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 18rem;
+        max-width: 100%;
+    }
+    a {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
     }
 }
