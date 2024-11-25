@@ -276,7 +276,7 @@ class API {
 				if (!response.data) {
 					break;
 				}
-				if (response.data[0].header.community_id) {
+				if (communityId) {
 					this.sendAction(
 						new ActionGroupPagePostsRequestSuccess(response.data),
 					);
