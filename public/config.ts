@@ -363,7 +363,7 @@ const friendsConfig: ViewFriendsConfig = {
 	},
 	users: {
 		key: 'users',
-		headerText: 'Поиск друзей',
+		headerText: 'Все люди',
 		friendsConfig: [],
 	},
 	pendingUsersRequest: false,
