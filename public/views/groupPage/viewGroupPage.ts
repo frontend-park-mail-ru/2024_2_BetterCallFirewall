@@ -18,6 +18,7 @@ import { ChangeGroupPage } from '../../stores/storeGroupPage';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 import { PAGE_LINKS, PAGE_URLS, ROOT } from '../../config';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
+import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
 
 export type ComponentsGroupPage = {
 	groupPage?: GroupPage;
@@ -52,6 +53,14 @@ export class ViewGroupPage extends ViewHome {
 	handleChange(change: ChangeGroupPage): void {
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_PROFILE_TYPES.deletePostSuccess:
+				this.updateViewGroupPage(change.data);
+				this.sendAction(
+					new ActionGroupPagePostsRequest(
+						this._configGroupPage.groupPage.id,
+					),
+				);
+				break;
 			case ACTION_GROUP_PAGE_TYPES.deleteGroupSuccess:
 				this.sendAction(new ActionAppGoTo(PAGE_LINKS.groups));
 				break;
