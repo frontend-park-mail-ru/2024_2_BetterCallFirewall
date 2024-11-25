@@ -49,7 +49,7 @@ export const toGroupPageConfig = (
 			post.hasEditButton = true;
 		});
 	}
-	return Object.assign(config, groupPageData);
+	return groupPageData;
 };
 
 export const toGroupsConfig = (
