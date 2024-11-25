@@ -39,7 +39,7 @@
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 768px) {
     * {
         font-size: 2.9vw;
     }
@@ -54,6 +54,9 @@
     }
     .main {
         margin-left: 0;
+    }
+    .item__info {
+        max-width: 50%;
     }
 }
 
