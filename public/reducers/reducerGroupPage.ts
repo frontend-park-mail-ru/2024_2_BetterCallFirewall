@@ -10,7 +10,7 @@ import { STATUS } from '../api/api';
 import app from '../app';
 import config, { PAGE_LINKS, ROOT } from '../config';
 import { toGroupPageConfig } from '../models/group';
-import { toPostConfig } from '../models/post';
+import { groupPostResponseToPostConfig } from '../models/post';
 import deepClone from '../modules/deepClone';
 import { ViewGroupPageConfig } from '../views/groupPage/viewGroupPage';
 
@@ -44,7 +44,10 @@ export const reducerGroupPage = (
 		case action instanceof ActionGroupPagePostsRequestSuccess:
 			newState.groupPage.posts = action.data.postsResponses.map(
 				(postResponse) => {
-					return toPostConfig(postResponse);
+					return groupPostResponseToPostConfig(
+						newState.groupPage,
+						postResponse,
+					);
 				},
 			);
 			return newState;

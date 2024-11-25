@@ -1,4 +1,5 @@
 import { PostConfig } from '../components';
+import { GroupPageConfig } from '../components/GroupPage/GroupPage';
 import { PAGE_URLS } from '../config';
 import parseImage from '../modules/parseImage';
 import parseTime from '../modules/parseTime';
@@ -39,6 +40,18 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		likedByUser: postResponse.is_liked,
 		authorHref: `${PAGE_URLS.profile}/${postResponse.header.author_id}`,
 	};
+};
+
+export const groupPostResponseToPostConfig = (
+	groupPageConfig: GroupPageConfig,
+	postResponse: PostResponse,
+): PostConfig => {
+	const postConfig = toPostConfig(postResponse);
+	if (groupPageConfig.isAdmin) {
+		postConfig.hasEditButton = true;
+		postConfig.hasDeleteButton = true;
+	}
+	return postConfig;
 };
 
 export interface PostPayload {
