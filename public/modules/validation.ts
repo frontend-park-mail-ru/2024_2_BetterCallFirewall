@@ -122,8 +122,8 @@ export default class Validator {
 		}
 		if (nameValue.length < 3) {
 			return 'Поле должно содержать не менее 3 символов.';
-		} else if (nameValue.length > 20) {
-			return 'Поле должно содержать не более 20 символов.';
+		} else if (nameValue.length > 30) {
+			return 'Поле должно содержать не более 30 символов.';
 		}
 		return '';
 	}
