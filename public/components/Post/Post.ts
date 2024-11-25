@@ -3,6 +3,7 @@ import Component, { ComponentConfig } from '../Component';
 
 export interface PostConfig extends ComponentConfig {
 	id: number;
+	groupId?: number;
 	key: string;
 	avatar: string;
 	title: string;

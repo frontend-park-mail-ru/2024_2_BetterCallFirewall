@@ -41,7 +41,7 @@ export const PAGE_URLS = {
 	postEdit: '/post-edit',
 	groups: '/groups',
 	createGroup: '/create-group',
-	groupPage: '/groups', // изменить
+	groupPage: '/groups',
 	groupEdit: '/group-edit',
 	csat: '/csat/question',
 	question: '/csat/question',
