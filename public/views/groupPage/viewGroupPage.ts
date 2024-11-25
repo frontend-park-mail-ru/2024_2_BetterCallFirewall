@@ -19,6 +19,8 @@ import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 import { PAGE_LINKS, PAGE_URLS, ROOT } from '../../config';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
+import { throttle } from '../../modules/throttle';
+import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
 
 export type ComponentsGroupPage = {
 	groupPage?: GroupPage;
@@ -180,5 +182,19 @@ export class ViewGroupPage extends ViewHome {
 				},
 			});
 		}
+		post.likeButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this._likePost(post);
+			},
+		});
 	}
-} //
+	private _likePost = throttle((post: Post) => {
+		if (post.config.likedByUser) {
+			this.sendAction(new ActionPostUnlike(post.config.id));
+		} else {
+			this.sendAction(new ActionPostLike(post.config.id));
+		}
+	}, 1000);
+}

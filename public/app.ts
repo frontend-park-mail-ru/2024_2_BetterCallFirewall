@@ -477,6 +477,8 @@ class App {
 		this._stores.groupPage.subscribe(
 			ACTION_PROFILE_TYPES.deletePostSuccess,
 		);
+		this._stores.groupPage.subscribe(ACTION_POST_TYPES.likeSuccess);
+		this._stores.groupPage.subscribe(ACTION_POST_TYPES.likeFail);
 
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.updateProfileEdit,
