@@ -48,6 +48,8 @@ import {
 	ActionGroupPageRequestSuccess,
 	ActionGroupPageDeleteData,
 	ActionGroupPageDeleteGroupSuccess,
+	ActionGroupPagePostsRequest,
+	ActionGroupPagePostsRequestSuccess,
 } from '../actions/actionGroupPage';
 import {
 	ACTION_GROUPS_TYPES,
@@ -180,6 +182,10 @@ class API {
 		switch (true) {
 			case action instanceof ActionGroupsSearch:
 				this.groupsSearch(action.data.str, action.data.lastId);
+				break;
+			case action instanceof ActionGroupPagePostsRequest:
+				this.requestPosts(undefined, action.data.groupId);
+				break;
 		}
 	}
 
@@ -253,10 +259,16 @@ class API {
 		}
 	}
 
-	async requestPosts(lastPostId?: number): Promise<void> {
+	async requestPosts(
+		lastPostId?: number,
+		communityId?: number,
+	): Promise<void> {
 		const params: QueryParams = {};
 		if (lastPostId) {
 			params.id = `${lastPostId}`;
+		}
+		if (communityId) {
+			params.community = `${communityId}`;
 		}
 		const response = await ajax.getPosts(params);
 		switch (response.status) {
@@ -264,7 +276,15 @@ class API {
 				if (!response.data) {
 					break;
 				}
-				this.sendAction(new ActionPostsRequestSuccess(response.data));
+				if (response.data[0].header.community_id) {
+					this.sendAction(
+						new ActionGroupPagePostsRequestSuccess(response.data),
+					);
+				} else {
+					this.sendAction(
+						new ActionPostsRequestSuccess(response.data),
+					);
+				}
 				break;
 			case STATUS.unauthorized:
 				this.sendAction(new ActionUserUnauthorized());

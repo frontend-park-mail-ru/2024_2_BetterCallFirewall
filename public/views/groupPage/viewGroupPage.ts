@@ -1,6 +1,7 @@
 import {
 	ACTION_GROUP_PAGE_TYPES,
 	ActionGroupPageDeleteGroup,
+	ActionGroupPagePostsRequest,
 	ActionGroupPageRequest,
 	ActionUpdateGroupPage,
 } from '../../actions/actionGroupPage';
@@ -63,6 +64,9 @@ export class ViewGroupPage extends ViewHome {
 		this._render();
 		this.sendAction(new ActionUpdateGroupPage());
 		this.sendAction(new ActionGroupPageRequest(app.router.path));
+		this.sendAction(
+			new ActionGroupPagePostsRequest(this._configGroupPage.groupPage.id),
+		);
 	}
 
 	updateViewGroupPage(data: ViewGroupPageConfig): void {

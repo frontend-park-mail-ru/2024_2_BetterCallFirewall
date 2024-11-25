@@ -1,12 +1,16 @@
 import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
+import { ActionPostsRequestFail } from '../actions/actionFeed';
 import {
 	ACTION_GROUP_PAGE_TYPES,
+	ActionGroupPagePostsRequestSuccess,
 	ActionGroupPageRequestSuccessData,
 } from '../actions/actionGroupPage';
+import { STATUS } from '../api/api';
 import app from '../app';
 import config, { PAGE_LINKS, ROOT } from '../config';
 import { toGroupPageConfig } from '../models/group';
+import { toPostConfig } from '../models/post';
 import deepClone from '../modules/deepClone';
 import { ViewGroupPageConfig } from '../views/groupPage/viewGroupPage';
 
@@ -38,6 +42,24 @@ export const reducerGroupPage = (
 			newState.groupPage.createPostHref = url.pathname + url.search;
 			return newState;
 		}
+	}
+	switch (true) {
+		case action instanceof ActionGroupPagePostsRequestSuccess:
+			newState.groupPage.posts = action.data.postsResponses.map(
+				(postResponse) => {
+					return toPostConfig(postResponse);
+				},
+			);
+			return newState;
+		case action instanceof ActionPostsRequestFail:
+			if (action.data.message) {
+				newState.main.content.message = action.data.message;
+			} else if (action.data.status === STATUS.noMoreContent) {
+				newState.main.content.message = 'Постов больше нет';
+			} else if (action.data.status !== STATUS.ok) {
+				newState.main.content.message = 'Что-то пошло не так';
+			}
+			return newState;
 		default:
 			return newState;
 	}
