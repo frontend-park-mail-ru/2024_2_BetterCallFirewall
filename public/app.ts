@@ -469,6 +469,7 @@ class App {
 		this._stores.groupPage.subscribe(
 			ACTION_GROUP_PAGE_TYPES.deleteGroupSuccess,
 		);
+		this._stores.groupPage.subscribe(ACTION_GROUP_PAGE_TYPES.postsRequest);
 		this._stores.groupPage.subscribe(
 			ACTION_GROUP_PAGE_TYPES.postsRequestSuccess,
 		);

@@ -3,6 +3,7 @@ import { ACTION_APP_TYPES } from '../actions/actionApp';
 import { ActionPostsRequestFail } from '../actions/actionFeed';
 import {
 	ACTION_GROUP_PAGE_TYPES,
+	ActionGroupPagePostsRequest,
 	ActionGroupPagePostsRequestSuccess,
 	ActionGroupPageRequestSuccessData,
 } from '../actions/actionGroupPage';
@@ -41,6 +42,9 @@ export const reducerGroupPage = (
 		}
 	}
 	switch (true) {
+		case action instanceof ActionGroupPagePostsRequest:
+			newState.groupPage.posts = [];
+			return newState;
 		case action instanceof ActionGroupPagePostsRequestSuccess:
 			newState.groupPage.posts = action.data.postsResponses.map(
 				(postResponse) => {
