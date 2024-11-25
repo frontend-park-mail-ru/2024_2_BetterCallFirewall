@@ -128,6 +128,14 @@ export default class Validator {
 		return '';
 	}
 
+	static validateDescription(description: string): string {
+		const nameValue: string = Validator.shieldingData(description);
+		if (nameValue.length > 60) {
+			return 'Поле должно содержать не более 60 символов.';
+		}
+		return '';
+	}
+
 	/**
 	 * Printing error under input in page
 	 *
