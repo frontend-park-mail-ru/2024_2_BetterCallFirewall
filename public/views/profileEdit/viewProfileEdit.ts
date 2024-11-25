@@ -68,7 +68,7 @@ export class ViewProfileEdit extends ViewHome {
 		this._render();
 		this.sendAction(
 			new ActionProfileRequest(
-				this._configProfileEdit.menu.links.profile.href,
+				`/${this._configProfileEdit.main.header.profile.id}`,
 			),
 		);
 	}
