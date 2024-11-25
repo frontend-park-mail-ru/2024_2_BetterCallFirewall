@@ -287,3 +287,12 @@ input::placeholder, textarea::placeholder {
     font-size: .8rem;
     color: var(--date-color);
 }
+
+.item__info {
+    span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 18rem;
+    }
+}
