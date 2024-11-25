@@ -60,6 +60,7 @@ export const reducerGroupPage = (
 			} else if (action.data.status !== STATUS.ok) {
 				newState.main.content.message = 'Что-то пошло не так';
 			}
+			newState.groupPage.posts = [];
 			return newState;
 		case action instanceof ActionPostLikeSuccess:
 			newState.groupPage.posts.forEach((postConfig) => {
