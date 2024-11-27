@@ -131,6 +131,7 @@ const homeConfig: HomeConfig = {
 			key: 'content',
 			className: 'content',
 			errorMessage: '',
+			infoMessage: '',
 			showLoader: false,
 		},
 		aside: {
