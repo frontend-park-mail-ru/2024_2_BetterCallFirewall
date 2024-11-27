@@ -52,12 +52,12 @@ export const reducerFeed = (
 			newState.pendingPostRequest = false;
 			newState.main.content.showLoader = false;
 			const data = action.data as ActionPostsRequestFailData;
-			if (data.message) {
-				newState.main.content.errorMessage = data.message;
-			} else if (data.status === STATUS.noMoreContent) {
+			if (data.status === STATUS.noMoreContent) {
 				newState.main.content.infoMessage = 'Постов больше нет';
 			} else if (data.status !== STATUS.ok) {
 				newState.main.content.errorMessage = 'Что-то пошло не так';
+			} else if (data.message) {
+				newState.main.content.errorMessage = data.message;
 			}
 			return newState;
 		}

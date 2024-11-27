@@ -33,7 +33,7 @@ export class Content extends Container {
 		if (this._config.errorMessage) {
 			new ContentMessage(
 				{
-					key: 'contentMessage',
+					key: 'contentErrorMessage',
 					text: this._config.errorMessage,
 					error: true,
 				},

@@ -55,12 +55,12 @@ export const reducerGroupPage = (
 		case action instanceof ActionPostsRequestFail:
 			newState.main.content.infoMessage = '';
 			newState.main.content.errorMessage = '';
-			if (action.data.message) {
-				newState.main.content.errorMessage = action.data.message;
-			} else if (action.data.status === STATUS.noMoreContent) {
+			if (action.data.status === STATUS.noMoreContent) {
 				newState.main.content.infoMessage = 'Постов нет';
 			} else if (action.data.status !== STATUS.ok) {
 				newState.main.content.errorMessage = 'Что-то пошло не так';
+			} else if (action.data.message) {
+				newState.main.content.errorMessage = action.data.message;
 			}
 			newState.groupPage.posts = [];
 			return newState;
