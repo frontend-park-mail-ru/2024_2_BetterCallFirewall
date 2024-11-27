@@ -53,12 +53,14 @@ export const reducerGroupPage = (
 			);
 			return newState;
 		case action instanceof ActionPostsRequestFail:
+			newState.main.content.infoMessage = '';
+			newState.main.content.errorMessage = '';
 			if (action.data.message) {
-				newState.main.content.message = action.data.message;
+				newState.main.content.errorMessage = action.data.message;
 			} else if (action.data.status === STATUS.noMoreContent) {
-				newState.main.content.message = 'Постов больше нет';
+				newState.main.content.infoMessage = 'Постов нет';
 			} else if (action.data.status !== STATUS.ok) {
-				newState.main.content.message = 'Что-то пошло не так';
+				newState.main.content.errorMessage = 'Что-то пошло не так';
 			}
 			newState.groupPage.posts = [];
 			return newState;

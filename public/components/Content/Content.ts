@@ -4,7 +4,8 @@ import { Loader } from '../Loader/Loader';
 
 export interface ContentConfig extends ContainerConfig {
 	showLoader: boolean;
-	message: string;
+	infoMessage: string;
+	errorMessage: string;
 }
 
 export class Content extends Container {
@@ -29,11 +30,21 @@ export class Content extends Container {
 		if (this._config.showLoader) {
 			new Loader({ key: 'loader' }, this);
 		}
-		if (this._config.message) {
+		if (this._config.errorMessage) {
 			new ContentMessage(
 				{
 					key: 'contentMessage',
-					text: this._config.message,
+					text: this._config.errorMessage,
+					error: true,
+				},
+				this,
+			);
+		}
+		if (this._config.infoMessage) {
+			new ContentMessage(
+				{
+					key: 'contentInfoMessage',
+					text: this._config.infoMessage,
 				},
 				this,
 			);

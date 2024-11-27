@@ -2,6 +2,7 @@ import Component, { ComponentConfig } from '../Component';
 
 export interface ContentMessageConfig extends ComponentConfig {
 	text: string;
+	error?: boolean;
 }
 
 export class ContentMessage extends Component {
