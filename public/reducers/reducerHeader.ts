@@ -1,7 +1,6 @@
 import { Action } from '../actions/action';
 import {
 	ActionGroupsSearchFail,
-	ActionGroupsSearch,
 	ActionGroupsSearchSuccess,
 } from '../actions/actionGroups';
 import {
@@ -11,7 +10,6 @@ import {
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileGetHeaderSuccessData,
-	ActionProfileSearchData,
 	ActionProfileSearchSuccessData,
 } from '../actions/actionProfile';
 import { ActionProfileEditRequestSuccess } from '../actions/actionProfileEdit';
@@ -48,11 +46,6 @@ export const reducerHeader = (
 			newState.showSearchResults = (
 				action.data as ActionHeaderSearchResultsSwitchData
 			).show;
-			return newState;
-		case ACTION_PROFILE_TYPES.search:
-			if (!(action.data as ActionProfileSearchData).lastId) {
-				newState.profilesSearch = [];
-			}
 			return newState;
 		case ACTION_PROFILE_TYPES.searchSuccess: {
 			const actionData = action.data as ActionProfileSearchSuccessData;
