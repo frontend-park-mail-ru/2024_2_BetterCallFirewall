@@ -57,12 +57,12 @@ export const reducerHeader = (
 		case ACTION_PROFILE_TYPES.searchSuccess: {
 			const actionData = action.data as ActionProfileSearchSuccessData;
 			newState.searchInfoMessage = '';
-			newState.profilesSearch = newState.profilesSearch.concat(
-				actionData.profilesResponses.map((profileResponse) => {
+			newState.profilesSearch = actionData.profilesResponses.map(
+				(profileResponse) => {
 					return shortProfileResponseToSearchResultConfig(
 						profileResponse,
 					);
-				}),
+				},
 			);
 			if (
 				!newState.groupsSearch.length &&
@@ -86,12 +86,12 @@ export const reducerHeader = (
 			return newState;
 		case action instanceof ActionGroupsSearchSuccess:
 			newState.searchInfoMessage = '';
-			newState.groupsSearch = newState.groupsSearch.concat(
-				action.data.groupsResponses.map((groupResponse) => {
+			newState.groupsSearch = action.data.groupsResponses.map(
+				(groupResponse) => {
 					return shortGroupResponseToSearchResultConfig(
 						groupResponse,
 					);
-				}),
+				},
 			);
 			if (
 				!newState.groupsSearch.length &&
