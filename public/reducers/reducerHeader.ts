@@ -56,6 +56,7 @@ export const reducerHeader = (
 			return newState;
 		case ACTION_PROFILE_TYPES.searchSuccess: {
 			const actionData = action.data as ActionProfileSearchSuccessData;
+			newState.searchInfoMessage = '';
 			newState.profilesSearch = newState.profilesSearch.concat(
 				actionData.profilesResponses.map((profileResponse) => {
 					return shortProfileResponseToSearchResultConfig(
@@ -63,10 +64,17 @@ export const reducerHeader = (
 					);
 				}),
 			);
+			if (
+				!newState.groupsSearch.length &&
+				!newState.profilesSearch.length
+			) {
+				newState.searchInfoMessage = 'Ничего не найдено';
+			}
 			newState.showSearchResults = true;
 			return newState;
 		}
 		case ACTION_PROFILE_TYPES.searchFail:
+			newState.searchInfoMessage = 'Что-то пошло не так';
 			newState.showSearchResults = true;
 			return newState;
 	}
@@ -77,6 +85,7 @@ export const reducerHeader = (
 			}
 			return newState;
 		case action instanceof ActionGroupsSearchSuccess:
+			newState.searchInfoMessage = '';
 			newState.groupsSearch = newState.groupsSearch.concat(
 				action.data.groupsResponses.map((groupResponse) => {
 					return shortGroupResponseToSearchResultConfig(
@@ -84,9 +93,18 @@ export const reducerHeader = (
 					);
 				}),
 			);
+			if (
+				!newState.groupsSearch.length &&
+				!newState.profilesSearch.length
+			) {
+				newState.searchInfoMessage = 'Ничего не найдено';
+			}
 			newState.showSearchResults = true;
 			return newState;
 		case action instanceof ActionGroupsSearchFail:
+			if (!newState.profilesSearch.length) {
+				newState.searchInfoMessage = 'Что-то пошло не так';
+			}
 			newState.showSearchResults = true;
 			return newState;
 		case action instanceof ActionProfileEditRequestSuccess:

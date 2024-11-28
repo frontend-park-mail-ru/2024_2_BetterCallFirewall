@@ -17,6 +17,7 @@ export interface HeaderConfig extends ComponentConfig {
 	showSearchResults: boolean;
 	profilesSearch: SearchResultConfig[];
 	groupsSearch: SearchResultConfig[];
+	searchInfoMessage: string;
 }
 
 /**

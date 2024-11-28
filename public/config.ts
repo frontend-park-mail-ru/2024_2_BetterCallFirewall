@@ -126,6 +126,7 @@ const homeConfig: HomeConfig = {
 			showSearchResults: false,
 			profilesSearch: [],
 			groupsSearch: [],
+			searchInfoMessage: '',
 		},
 		content: {
 			key: 'content',
