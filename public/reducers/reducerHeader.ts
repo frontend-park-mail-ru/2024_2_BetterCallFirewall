@@ -79,11 +79,6 @@ export const reducerHeader = (
 			return newState;
 	}
 	switch (true) {
-		case action instanceof ActionGroupsSearch:
-			if (!action.data.lastId) {
-				newState.groupsSearch = [];
-			}
-			return newState;
 		case action instanceof ActionGroupsSearchSuccess:
 			newState.searchInfoMessage = '';
 			newState.groupsSearch = action.data.groupsResponses.map(
