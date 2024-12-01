@@ -35,6 +35,7 @@
     }
     &__content {
         padding: 1rem;
+        padding-bottom: unset;
         display: flex;
         flex-direction: column;
         &-text {
