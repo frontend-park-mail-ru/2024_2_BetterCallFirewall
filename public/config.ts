@@ -310,6 +310,7 @@ const profileComponentConfig: ProfileConfig = {
 	isFriend: false,
 	isSubscriber: false,
 	isSubscription: false,
+	isUnknown: false,
 	posts: [],
 };
 

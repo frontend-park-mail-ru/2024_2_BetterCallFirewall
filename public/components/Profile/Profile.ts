@@ -25,6 +25,7 @@ export interface ProfileConfig extends ComponentConfig {
 	isFriend: boolean;
 	isSubscriber: boolean;
 	isSubscription: boolean;
+	isUnknown: boolean;
 }
 
 export class Profile extends Component {

@@ -29,6 +29,11 @@ export const toProfileConfig = (
 	config: ProfileConfig,
 	profileResponse: FullProfileResponse,
 ): ProfileConfig => {
+	const isUnknown =
+		!profileResponse.is_author &&
+		!profileResponse.is_friend &&
+		!profileResponse.is_subscriber &&
+		!profileResponse.is_subscription;
 	const profileData: ProfileConfig = {
 		id: profileResponse.id,
 		key: `profile-${profileResponse.id}`,
@@ -47,6 +52,7 @@ export const toProfileConfig = (
 		isFriend: profileResponse.is_friend,
 		isSubscriber: profileResponse.is_subscriber,
 		isSubscription: profileResponse.is_subscription,
+		isUnknown,
 	};
 	if (profileData.isAuthor) {
 		profileData.posts.forEach((post) => {
