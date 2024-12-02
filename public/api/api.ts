@@ -34,6 +34,7 @@ import {
 	ActionFriendsGetSubscribersSuccess,
 	ActionFriendsGetSubscriptionsSuccess,
 	ActionFriendsGetUsersSuccess,
+	ActionFriendsUnsubscribe,
 } from '../actions/actionFriends';
 import {
 	ActionGroupsEditFail,
@@ -186,6 +187,8 @@ class API {
 			case action instanceof ActionGroupPagePostsRequest:
 				this.requestPosts(undefined, action.data.groupId);
 				break;
+			case action instanceof ActionFriendsUnsubscribe:
+				this.unsubscribeToProfile(action.data.profileId);
 		}
 	}
 

@@ -402,6 +402,7 @@ class App {
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.deletePostSuccess);
 		this._stores.profile.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
 		this._stores.profile.subscribe(ACTION_FRIENDS_TYPES.acceptSuccess);
+		this._stores.profile.subscribe(ACTION_FRIENDS_TYPES.unsubscribeSuccess);
 		this._stores.profile.subscribe(ACTION_POST_TYPES.likeSuccess);
 		this._stores.profile.subscribe(ACTION_POST_TYPES.likeFail);
 
