@@ -82,7 +82,7 @@ export class ViewGroupPage extends ViewHome {
 	render(): void {
 		this._render();
 		this.sendAction(new ActionUpdateGroupPage());
-		this.sendAction(new ActionGroupPageRequest(app.router.path));
+		this._groupPageRequest();
 	}
 
 	updateViewGroupPage(data: ViewGroupPageConfig): void {
@@ -196,5 +196,9 @@ export class ViewGroupPage extends ViewHome {
 		} else {
 			this.sendAction(new ActionPostLike(post.config.id));
 		}
+	}, 1000);
+
+	private _groupPageRequest = throttle(() => {
+		this.sendAction(new ActionGroupPageRequest(app.router.path));
 	}, 1000);
 }

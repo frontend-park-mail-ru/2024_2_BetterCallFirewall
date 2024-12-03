@@ -10,6 +10,7 @@ import {
 import { PAGE_LINKS, PAGE_URLS } from '../../config';
 import { GroupPayload } from '../../models/group';
 import fileToString from '../../modules/fileToString';
+import { throttle } from '../../modules/throttle';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangeGroupEdit } from '../../stores/storeGroupEdit';
@@ -63,11 +64,7 @@ export class ViewGroupEdit extends ViewHome {
 
 	render(): void {
 		this._render();
-		this.sendAction(
-			new ActionGroupPageRequest(
-				PAGE_URLS.groupPage + `/${this._configGroupEdit.groupId}`,
-			),
-		);
+		this._groupPageRequest();
 	}
 
 	updateViewGroupEdit(data: ViewGroupEditConfig): void {
@@ -186,4 +183,12 @@ export class ViewGroupEdit extends ViewHome {
 		}
 		return form;
 	}
+
+	private _groupPageRequest = throttle(() => {
+		this.sendAction(
+			new ActionGroupPageRequest(
+				PAGE_URLS.groupPage + `/${this._configGroupEdit.groupId}`,
+			),
+		);
+	}, 1000);
 }
