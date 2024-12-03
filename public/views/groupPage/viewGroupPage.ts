@@ -22,6 +22,7 @@ import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
 import { throttle } from '../../modules/throttle';
 import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
 import {
+	ACTION_GROUPS_TYPES,
 	ActionGroupsFollowGroup,
 	ActionGroupsUnfollowGroup,
 } from '../../actions/actionGroups';
@@ -59,6 +60,10 @@ export class ViewGroupPage extends ViewHome {
 	handleChange(change: ChangeGroupPage): void {
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_GROUPS_TYPES.groupsFollowGroupSuccess:
+			case ACTION_GROUPS_TYPES.groupsUnfollowGroupSuccess:
+				this.render(change.data);
+				break;
 			case ACTION_PROFILE_TYPES.deletePostSuccess:
 				this.updateViewGroupPage(change.data);
 				this.sendAction(
