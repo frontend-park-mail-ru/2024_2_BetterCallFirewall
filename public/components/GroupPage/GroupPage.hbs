@@ -17,6 +17,12 @@
                 {{#if this.isAdmin}}
                     <button class="header__link button-action-negative button-no-decorations" data-key="deleteGroup">Удалить группу</button>
                     <a class="profile-edit" href="" data-key="groupEdit">Редактировать группу</a>
+                {{else}}
+                    {{#if this.isFollow}}
+                        <button class="header__link button-action-negative button-no-decorations">Отписаться</button>
+                    {{else}}
+                        <button class="header__link button-action button-no-decorations">Подписаться</button>
+                    {{/if}}
                 {{/if}}
             </div>
         </div>
