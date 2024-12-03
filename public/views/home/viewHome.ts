@@ -77,6 +77,8 @@ export abstract class ViewHome extends View {
 				this.updateViewHome(change.data);
 				break;
 			case ACTION_APP_TYPES.actionAppInit:
+				this.sendAction(new ActionAppGoTo(app.router.path));
+				break;
 			case ACTION_APP_TYPES.goTo:
 				this._configHome = change.data;
 				this.render(change.data);

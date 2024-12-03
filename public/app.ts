@@ -340,7 +340,6 @@ class App {
 		this._stores.app.subscribe(ACTION_POST_EDIT_TYPES.goToPostEdit);
 		this._stores.app.subscribe(ACTION_POST_EDIT_TYPES.requestSuccess);
 
-		this._stores.home.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.home.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.titleClick);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.updateProfileLinkHref);

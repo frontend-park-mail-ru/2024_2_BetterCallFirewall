@@ -61,10 +61,16 @@ export class Router {
 		return this._activeView;
 	}
 
+	/**
+	 * URL внутри домена (начиная с первого /)
+	 */
 	get path(): string {
 		return this._path;
 	}
 
+	/**
+	 * Полный URL
+	 */
 	get href() {
 		return window.location.href;
 	}
