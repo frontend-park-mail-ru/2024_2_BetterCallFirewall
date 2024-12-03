@@ -48,14 +48,16 @@ export const reducerChat = (
 			return newState;
 		case ACTION_CHAT_TYPES.sendMessage: {
 			const actionData = action.data as ActionChatSendMessageData;
-			const messageResponse: MessageResponse = {
-				sender: newState.main.header.profile.id,
-				content: actionData.message.content,
-				created_at: new Date().toISOString(),
-			};
-			newState.chat.messages.push(
-				toChatMessageConfig(newState.chat, messageResponse),
-			);
+			if (newState.chat.companionId !== newState.chat.myId) {
+				const messageResponse: MessageResponse = {
+					sender: newState.main.header.profile.id,
+					content: actionData.message.content,
+					created_at: new Date().toISOString(),
+				};
+				newState.chat.messages.push(
+					toChatMessageConfig(newState.chat, messageResponse),
+				);
+			}
 			newState.chat.inputText = '';
 			return newState;
 		}
