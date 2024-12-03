@@ -511,7 +511,6 @@ class App {
 		);
 		this._stores.groups.subscribe(ACTION_GROUPS_TYPES.getGroupsSuccess);
 
-		this._stores.groupEdit.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.groupEdit.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.groupEdit.subscribe(
 			ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess,
