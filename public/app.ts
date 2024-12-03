@@ -502,6 +502,12 @@ class App {
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestFail);
 
 		this._stores.groupPage.subscribe(ACTION_APP_TYPES.goTo);
+		this._stores.groupPage.subscribe(
+			ACTION_GROUPS_TYPES.groupsFollowGroupSuccess,
+		);
+		this._stores.groupPage.subscribe(
+			ACTION_GROUPS_TYPES.groupsUnfollowGroupSuccess,
+		);
 
 		this._stores.groups.subscribe(
 			ACTION_GROUPS_TYPES.groupsUnfollowGroupSuccess,

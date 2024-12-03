@@ -60,6 +60,14 @@ export class GroupPage extends Component {
 		return this._findVNodeByKey('groupEdit');
 	}
 
+	get groupFollowButton(): VNode {
+		return this._findVNodeByKey('follow');
+	}
+
+	get groupUnfollowButton(): VNode {
+		return this._findVNodeByKey('unfollow');
+	}
+
 	get posts(): Post[] {
 		return this._posts;
 	}

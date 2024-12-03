@@ -21,6 +21,10 @@ import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
 import { throttle } from '../../modules/throttle';
 import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
+import {
+	ActionGroupsFollowGroup,
+	ActionGroupsUnfollowGroup,
+} from '../../actions/actionGroups';
 
 export type ComponentsGroupPage = {
 	groupPage?: GroupPage;
@@ -79,7 +83,13 @@ export class ViewGroupPage extends ViewHome {
 		}
 	}
 
-	render(): void {
+	render(config?: ViewGroupPageConfig): void {
+		if (config) {
+			this._configGroupPage = Object.assign(
+				this._configGroupPage,
+				config,
+			);
+		}
 		this._render();
 		this.sendAction(new ActionUpdateGroupPage());
 		this._groupPageRequest();
@@ -148,6 +158,28 @@ export class ViewGroupPage extends ViewHome {
 					);
 				},
 			});
+		} else {
+			if (this._configGroupPage.groupPage.isFollow) {
+				this.groupPage.groupUnfollowButton.handlers.push({
+					event: 'click',
+					callback: (event) => {
+						event.preventDefault();
+						this.sendAction(
+							new ActionGroupsUnfollowGroup(this.groupPage.id),
+						);
+					},
+				});
+			} else {
+				this.groupPage.groupFollowButton.handlers.push({
+					event: 'click',
+					callback: (event) => {
+						event.preventDefault();
+						this.sendAction(
+							new ActionGroupsFollowGroup(this.groupPage.id),
+						);
+					},
+				});
+			}
 		}
 		this.groupPage.posts.forEach((post) => this._addPostHandlers(post));
 	}
