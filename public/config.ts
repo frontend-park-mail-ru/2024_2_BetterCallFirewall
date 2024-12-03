@@ -357,21 +357,25 @@ const friendsConfig: ViewFriendsConfig = {
 		key: 'friends',
 		headerText: 'Друзья',
 		friendsConfig: [],
+		messageText: '',
 	},
 	subscribers: {
 		key: 'subscribers',
 		headerText: 'Подписчики',
 		friendsConfig: [],
+		messageText: '',
 	},
 	subscriptions: {
 		key: 'subscriptions',
 		headerText: 'Подписки',
 		friendsConfig: [],
+		messageText: '',
 	},
 	users: {
 		key: 'users',
 		headerText: 'Все люди',
 		friendsConfig: [],
+		messageText: '',
 	},
 	pendingUsersRequest: false,
 };

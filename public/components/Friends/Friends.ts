@@ -1,9 +1,11 @@
 import Component, { ComponentConfig } from '../Component';
+import { ContentMessage } from '../ContentMessage/ContentMessage';
 import { Friend, FriendConfig } from '../Friend/Friend';
 
 export interface FriendsConfig extends ComponentConfig {
 	headerText: string;
 	friendsConfig: FriendConfig[];
+	messageText: string;
 }
 
 export class Friends extends Component {
@@ -29,11 +31,16 @@ export class Friends extends Component {
 		this._people = this._config.friendsConfig.map((config) => {
 			return new Friend(config, this);
 		});
+		const message = new ContentMessage(
+			{ key: 'friends-message', text: this._config.messageText },
+			this,
+		);
 		this._templateContext = {
 			...this._templateContext,
 			friends: this._people.map((person) => {
 				return person.render();
 			}),
+			message: message.render(),
 		};
 	}
 }
