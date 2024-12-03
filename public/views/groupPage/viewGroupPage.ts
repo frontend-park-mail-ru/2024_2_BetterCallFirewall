@@ -16,7 +16,7 @@ import {
 import { update } from '../../modules/vdom';
 import { ChangeGroupPage } from '../../stores/storeGroupPage';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
-import { PAGE_LINKS, PAGE_URLS, ROOT } from '../../config';
+import { PAGE_LINKS, PAGE_URLS, ROOT, THROTTLE_LIMITS } from '../../config';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
 import { throttle } from '../../modules/throttle';
@@ -169,9 +169,7 @@ export class ViewGroupPage extends ViewHome {
 					event: 'click',
 					callback: (event) => {
 						event.preventDefault();
-						this.sendAction(
-							new ActionGroupsUnfollowGroup(this.groupPage.id),
-						);
+						this._unfollowGroup();
 					},
 				});
 			} else {
@@ -179,9 +177,7 @@ export class ViewGroupPage extends ViewHome {
 					event: 'click',
 					callback: (event) => {
 						event.preventDefault();
-						this.sendAction(
-							new ActionGroupsFollowGroup(this.groupPage.id),
-						);
+						this._followGroup();
 					},
 				});
 			}
@@ -238,4 +234,16 @@ export class ViewGroupPage extends ViewHome {
 	private _groupPageRequest = throttle(() => {
 		this.sendAction(new ActionGroupPageRequest(app.router.path));
 	}, 1000);
+
+	private _followGroup = throttle(() => {
+		this.sendAction(
+			new ActionGroupsFollowGroup(this._configGroupPage.groupPage.id),
+		);
+	}, THROTTLE_LIMITS.buttonClick);
+
+	private _unfollowGroup = throttle(() => {
+		this.sendAction(
+			new ActionGroupsUnfollowGroup(this._configGroupPage.groupPage.id),
+		);
+	}, THROTTLE_LIMITS.buttonClick);
 }

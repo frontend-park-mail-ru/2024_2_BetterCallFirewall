@@ -53,6 +53,10 @@ PAGE_LINKS.groupPage += '/\\d+';
 PAGE_LINKS.chat += '/\\d+';
 PAGE_LINKS.profile += '/([\\w-]+)';
 
+export const THROTTLE_LIMITS = {
+	buttonClick: 500,
+};
+
 const homeConfig: HomeConfig = {
 	menu: {
 		key: 'menu',
