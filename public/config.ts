@@ -401,7 +401,8 @@ const groupPageComponentConfig: GroupPageConfig = {
 const groupPageConfig: ViewGroupPageConfig = {
 	...homeConfig,
 	groupPage: groupPageComponentConfig,
-	path: '/', //??
+	path: '/',
+	followRequestPending: false,
 };
 
 const groupFormConfig: ICreateGroupFormConfig = {

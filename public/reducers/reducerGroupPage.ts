@@ -6,6 +6,12 @@ import {
 	ActionGroupPagePostsRequestSuccess,
 	ActionGroupPageRequestSuccessData,
 } from '../actions/actionGroupPage';
+import {
+	ActionGroupsFollowGroup,
+	ActionGroupsFollowGroupSuccess,
+	ActionGroupsUnfollowGroup,
+	ActionGroupsUnfollowGroupSuccess,
+} from '../actions/actionGroups';
 import { ActionPostLikeSuccess } from '../actions/actionPost';
 import { STATUS } from '../api/api';
 import app from '../app';
@@ -75,6 +81,20 @@ export const reducerGroupPage = (
 					}
 				}
 			});
+			return newState;
+		case action instanceof ActionGroupsFollowGroup:
+		case action instanceof ActionGroupsUnfollowGroup:
+			newState.followRequestPending = true;
+			return newState;
+		case action instanceof ActionGroupsFollowGroupSuccess:
+			newState.followRequestPending = false;
+			newState.groupPage.countSubscribers++;
+			newState.groupPage.isFollow = true;
+			return newState;
+		case action instanceof ActionGroupsUnfollowGroupSuccess:
+			newState.followRequestPending = false;
+			newState.groupPage.countSubscribers--;
+			newState.groupPage.isFollow = false;
 			return newState;
 		default:
 			return newState;

@@ -34,6 +34,7 @@ export type ComponentsGroupPage = {
 export interface ViewGroupPageConfig extends HomeConfig {
 	groupPage: GroupPageConfig;
 	path: string;
+	followRequestPending: boolean;
 }
 
 export class ViewGroupPage extends ViewHome {
@@ -169,7 +170,9 @@ export class ViewGroupPage extends ViewHome {
 					event: 'click',
 					callback: (event) => {
 						event.preventDefault();
-						this._unfollowGroup();
+						if (!this._configGroupPage.followRequestPending) {
+							this._unfollowGroup();
+						}
 					},
 				});
 			} else {
@@ -177,7 +180,9 @@ export class ViewGroupPage extends ViewHome {
 					event: 'click',
 					callback: (event) => {
 						event.preventDefault();
-						this._followGroup();
+						if (!this._configGroupPage.followRequestPending) {
+							this._followGroup();
+						}
 					},
 				});
 			}
