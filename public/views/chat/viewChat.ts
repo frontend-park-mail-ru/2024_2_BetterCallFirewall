@@ -16,6 +16,7 @@ import { Chat, ChatConfig } from '../../components/Chat/Chat';
 import { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import { MessageSend } from '../../models/message';
+import { throttle } from '../../modules/throttle';
 import { update } from '../../modules/vdom';
 import { ChangeChat } from '../../stores/storeChat';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
@@ -57,9 +58,7 @@ export class ViewChat extends ViewHome {
 				this._configChat = Object.assign(this._configChat, change.data);
 				this.render();
 				if (app.router.chatId) {
-					this.sendAction(
-						new ActionProfileRequest(`/${app.router.chatId}`),
-					);
+					this._companionProfileRequest();
 				}
 				this._chatScrollBottom = 0;
 				break;
@@ -255,4 +254,8 @@ export class ViewChat extends ViewHome {
 		this._chat.textarea.value = '';
 		this.sendAction(new ActionChatSendMessage(message));
 	}
+
+	private _companionProfileRequest = throttle(() => {
+		this.sendAction(new ActionProfileRequest(`/${app.router.chatId}`));
+	}, 1000);
 }
