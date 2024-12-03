@@ -466,7 +466,7 @@ const editGroupFormConfig: IGroupEditFormConfig = {
 const editGroupConfig: ViewGroupEditConfig = {
 	...homeConfig,
 	groupEditForm: editGroupFormConfig,
-	groupId: -1,
+	groupId: 0,
 };
 
 const postEditFormConfig: PostEditFormConfig = {

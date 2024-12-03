@@ -185,10 +185,12 @@ export class ViewGroupEdit extends ViewHome {
 	}
 
 	private _groupPageRequest = throttle(() => {
-		this.sendAction(
-			new ActionGroupPageRequest(
-				PAGE_URLS.groupPage + `/${this._configGroupEdit.groupId}`,
-			),
-		);
+		if (this._configGroupEdit.groupId) {
+			this.sendAction(
+				new ActionGroupPageRequest(
+					PAGE_URLS.groupPage + `/${this._configGroupEdit.groupId}`,
+				),
+			);
+		}
 	}, 1000);
 }
