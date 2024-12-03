@@ -75,7 +75,7 @@ export class ViewProfile extends ViewHome {
 	render(): void {
 		this._render();
 		this.sendAction(new ActionUpdateProfile());
-		this.sendAction(new ActionProfileRequest(app.router.path));
+		this._requestProfile();
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {
@@ -209,5 +209,9 @@ export class ViewProfile extends ViewHome {
 		} else {
 			this.sendAction(new ActionPostLike(post.config.id));
 		}
+	}, 1000);
+
+	private _requestProfile = throttle(() => {
+		this.sendAction(new ActionProfileRequest(app.router.path));
 	}, 1000);
 }

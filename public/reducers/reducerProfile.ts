@@ -28,7 +28,6 @@ export const reducerProfile = (
 	const newState = deepClone(state);
 	let actionData;
 	switch (action?.type) {
-		case ACTION_APP_TYPES.actionAppInit:
 		case ACTION_APP_TYPES.goTo:
 			newState.path = app.router.path;
 			return newState;

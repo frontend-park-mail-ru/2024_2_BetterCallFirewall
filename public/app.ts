@@ -371,7 +371,6 @@ class App {
 		this._stores.signup.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.signup.subscribe(ACTION_FORM_TYPES.formError);
 
-		// this._stores.feed.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.feed.subscribe(ACTION_USER_TYPES.auth);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequest);
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.postsRequestSuccess);
@@ -380,7 +379,6 @@ class App {
 		this._stores.feed.subscribe(ACTION_POST_TYPES.likeSuccess);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.likeFail);
 
-		// this._stores.profile.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.profile.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
 		this._stores.profile.subscribe(
