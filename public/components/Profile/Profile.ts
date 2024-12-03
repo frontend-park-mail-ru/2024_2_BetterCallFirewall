@@ -72,6 +72,10 @@ export class Profile extends Component {
 		return vnode;
 	}
 
+	get subscribeButtonVNode(): VNode {
+		return this._findVNodeByClass('subscribe-friend');
+	}
+
 	get acceptFriendButtonVNode(): VNode {
 		const vnode = findVNodeByClass(this.vnode, 'accept-friend');
 		if (!vnode) {

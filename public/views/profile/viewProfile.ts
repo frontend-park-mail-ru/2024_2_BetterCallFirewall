@@ -3,6 +3,7 @@ import { ActionChatGoToChat } from '../../actions/actionChat';
 import {
 	ACTION_FRIENDS_TYPES,
 	ActionFriendsAccept,
+	ActionFriendsSubscribe,
 	ActionFriendsUnsubscribe,
 } from '../../actions/actionFriends';
 import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
@@ -60,6 +61,7 @@ export class ViewProfile extends ViewHome {
 				this.sendAction(new ActionUpdateProfile());
 				this.sendAction(new ActionProfileRequest(app.router.path));
 				break;
+			case ACTION_FRIENDS_TYPES.subscribeSuccess:
 			case ACTION_FRIENDS_TYPES.unsubscribeSuccess:
 				this.sendAction(
 					new ActionProfileRequest(`/${this.profile.config.id}`),
@@ -155,6 +157,17 @@ export class ViewProfile extends ViewHome {
 					event.preventDefault();
 					this.sendAction(
 						new ActionFriendsUnsubscribe(this.profile.config.id),
+					);
+				},
+			});
+		}
+		if (this.profile.config.isUnknown) {
+			this.profile.subscribeButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionFriendsSubscribe(this.profile.config.id),
 					);
 				},
 			});
