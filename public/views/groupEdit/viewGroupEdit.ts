@@ -62,7 +62,9 @@ export class ViewGroupEdit extends ViewHome {
 			this._updateConfig(data);
 		}
 		this._render();
-		this._groupPageRequest();
+		if (this._configGroupEdit.groupId) {
+			this._groupPageRequest();
+		}
 	}
 
 	updateViewGroupEdit(data: ViewGroupEditConfig): void {
@@ -187,12 +189,10 @@ export class ViewGroupEdit extends ViewHome {
 	}
 
 	private _groupPageRequest = throttle(() => {
-		if (this._configGroupEdit.groupId) {
-			this.sendAction(
-				new ActionGroupPageRequest(
-					PAGE_URLS.groupPage + `/${this._configGroupEdit.groupId}`,
-				),
-			);
-		}
+		this.sendAction(
+			new ActionGroupPageRequest(
+				PAGE_URLS.groupPage + `/${this._configGroupEdit.groupId}`,
+			),
+		);
 	}, 1000);
 }
