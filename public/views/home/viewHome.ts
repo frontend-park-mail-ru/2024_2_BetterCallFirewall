@@ -76,7 +76,6 @@ export abstract class ViewHome extends View {
 			case ACTION_MENU_TYPES.updateProfileLinkHref:
 				this.updateViewHome(change.data);
 				break;
-			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_APP_TYPES.goTo:
 				this._configHome = change.data;
 				this.render(change.data);
