@@ -7,7 +7,7 @@ import {
 	GroupEditForm,
 	IGroupEditFormConfig,
 } from '../../components/GroupEditForm/GroupEditForm';
-import { PAGE_LINKS, PAGE_URLS } from '../../config';
+import { PAGE_URLS } from '../../config';
 import { GroupPayload } from '../../models/group';
 import fileToString from '../../modules/fileToString';
 import { throttle } from '../../modules/throttle';
@@ -47,7 +47,7 @@ export class ViewGroupEdit extends ViewHome {
 			case ACTION_GROUPS_TYPES.editSuccess:
 				this.sendAction(
 					new ActionAppGoTo(
-						PAGE_LINKS.groupPage +
+						PAGE_URLS.groupPage +
 							`/${this._configGroupEdit.groupId}`,
 					),
 				);
