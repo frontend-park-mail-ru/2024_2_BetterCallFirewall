@@ -30,7 +30,7 @@
     box-sizing: border-box;
 }
 
-@media (max-width: 2560px) {
+@media (max-width: var(--desktop-width)) {
     * {
         font-size: 1.2vw;
     }
@@ -39,7 +39,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: var(--mobile-width)) {
     * {
         font-size: 2.9vw;
     }
@@ -78,6 +78,9 @@ html {
     --negative-color: #e33d3d;
     --date-color: #7a7a7a;
     --border: 0.05rem solid rgba(255, 255, 255, 0.5);
+
+    --mobile-width: 768px;
+    --desktop-width: 2560px;
 }
 
 body {

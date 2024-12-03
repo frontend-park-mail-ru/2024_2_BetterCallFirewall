@@ -90,7 +90,7 @@
         }
     }
 
-    @media (max-width: 1200px) {
+    @media (max-width: var(--mobile-width)) {
         .header__menu-opener {
             visibility: visible;
         }
