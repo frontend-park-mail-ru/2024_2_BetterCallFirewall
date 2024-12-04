@@ -135,6 +135,7 @@ export const create = (vnode: VNode | string): Node => {
 		element.appendChild(create(child));
 	});
 	element._vnode = vnode;
+	vnode.element = element;
 	return element;
 };
 
