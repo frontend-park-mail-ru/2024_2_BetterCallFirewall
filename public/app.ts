@@ -92,6 +92,7 @@ export interface URLInterface {
 	logout: string;
 	feed: string; // Лента и создание поста
 	profile: string;
+	profileById: string;
 	profileYourOwn: string;
 	profiles: string;
 	subscribeToProfile: string;
@@ -393,11 +394,13 @@ class App {
 			ACTION_PROFILE_TYPES.getYourOwnProfileFail,
 		);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.getHeaderSuccess);
+		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.profileRequest);
+		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.deletePostSuccess);
+		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.deleteSuccess);
+		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.deleteFail);
 		this._stores.profile.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.requestSuccess,
 		);
-		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.profileRequest);
-		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.deletePostSuccess);
 		this._stores.profile.subscribe(ACTION_FEED_TYPES.postCreateSuccess);
 		this._stores.profile.subscribe(ACTION_FRIENDS_TYPES.subscribeSuccess);
 		this._stores.profile.subscribe(ACTION_FRIENDS_TYPES.unsubscribeSuccess);

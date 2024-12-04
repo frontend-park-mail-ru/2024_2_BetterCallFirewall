@@ -88,6 +88,10 @@ export class Profile extends Component {
 		return this._findVNodeByClass('unsubscribe-friend');
 	}
 
+	get deleteProfileButtonVNode(): VNode {
+		return this._findVNodeByKey('profile-delete');
+	}
+
 	get postsVNodes(): VNode[] {
 		const vnode = findVNodeByClassAll(this.vnode, 'accept-friend');
 		if (!vnode) {

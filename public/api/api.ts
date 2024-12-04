@@ -90,6 +90,9 @@ import {
 	ActionProfileSearchFail,
 	ActionProfileSearchSuccess,
 	ActionProfileSearchData,
+	ActionProfileDeleteSuccess,
+	ActionProfileDeleteFail,
+	ActionProfileDelete,
 } from '../actions/actionProfile';
 import {
 	ActionProfileEditRequestFail,
@@ -193,6 +196,9 @@ class API {
 				break;
 			case action instanceof ActionFriendsSubscribe:
 				this.subscribeToProfile(action.data.profileId);
+				break;
+			case action instanceof ActionProfileDelete:
+				this.deleteProfile(action.data.profileId);
 				break;
 		}
 	}
@@ -634,6 +640,17 @@ class API {
 				break;
 			default:
 				this.sendAction(new ActionProfileEditRequestFail());
+		}
+	}
+
+	async deleteProfile(profileId: number) {
+		const respone = await ajax.deleteProfile(profileId);
+		switch (respone.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionProfileDeleteSuccess());
+				break;
+			default:
+				this.sendAction(new ActionProfileDeleteFail());
 		}
 	}
 

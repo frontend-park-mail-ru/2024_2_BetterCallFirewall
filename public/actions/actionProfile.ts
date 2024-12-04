@@ -18,6 +18,9 @@ export const ACTION_PROFILE_TYPES = {
 	search: 'actionProfileSearch',
 	searchSuccess: 'actionProfileSearchSuccess',
 	searchFail: 'actionProfileSearchFail',
+	delete: 'actionProfileDelete',
+	deleteSuccess: 'actionProfileDeleteSuccess',
+	deleteFail: 'actionProfileDeleteFail',
 };
 
 export interface ActionUpdateProfileData {}
@@ -185,5 +188,24 @@ export class ActionProfileSearchSuccess implements Action {
 
 export class ActionProfileSearchFail implements Action {
 	type: ActionType = ACTION_PROFILE_TYPES.searchFail;
+	data: object = {};
+}
+
+export class ActionProfileDelete implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.delete;
+	data: { profileId: number };
+
+	constructor(profileId: number) {
+		this.data = { profileId };
+	}
+}
+
+export class ActionProfileDeleteSuccess implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.deleteSuccess;
+	data: object = {};
+}
+
+export class ActionProfileDeleteFail implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.deleteFail;
 	data: object = {};
 }

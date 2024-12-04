@@ -218,6 +218,14 @@ class Ajax {
 	}
 
 	/**
+	 * Удалить профиль
+	 */
+	async deleteProfile(profileId: number): Promise<AjaxResponse<object>> {
+		const url = replaceId(app.config.URL.profile, profileId);
+		return this._genericRequestResponse(url, 'delete');
+	}
+
+	/**
 	 * Получить хэдер
 	 */
 	async getHeader(): Promise<AjaxResponse<HeaderResponse>> {

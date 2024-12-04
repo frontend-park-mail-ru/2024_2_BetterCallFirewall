@@ -10,9 +10,11 @@ import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
+	ActionProfileDelete,
 	ActionProfileRequest,
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
+import { ActionUserUnauthorized } from '../../actions/actionUser';
 import api from '../../api/api';
 import app from '../../app';
 import { Post, Root } from '../../components';
@@ -66,6 +68,9 @@ export class ViewProfile extends ViewHome {
 				this.sendAction(
 					new ActionProfileRequest(`/${this.profile.config.id}`),
 				);
+				break;
+			case ACTION_PROFILE_TYPES.deleteSuccess:
+				this.sendAction(new ActionUserUnauthorized());
 				break;
 			default:
 				this.updateViewProfile(change.data);
@@ -135,6 +140,15 @@ export class ViewProfile extends ViewHome {
 						new ActionChatGoToChat({
 							href: PAGE_URLS.chat + `/${this.profile.config.id}`,
 						}),
+					);
+				},
+			});
+			this.profile.deleteProfileButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionProfileDelete(this.profile.config.id),
 					);
 				},
 			});
