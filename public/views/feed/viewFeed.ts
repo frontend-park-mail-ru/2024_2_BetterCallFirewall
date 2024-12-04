@@ -1,5 +1,7 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
+import { ActionCommentRequest } from '../../actions/actionComment';
 import {
+	ACTION_FEED_TYPES,
 	ActionFeedPostsRequest,
 	ActionFeedUpdate,
 } from '../../actions/actionFeed';
@@ -35,6 +37,11 @@ export class ViewFeed extends ViewHome {
 	handleChange(change: ChangeFeed): void {
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_FEED_TYPES.postsRequestSuccess:
+				change.data.posts.forEach((post) => {
+					this.sendAction(new ActionCommentRequest(post.id));
+				});
+				break;
 			case ACTION_APP_TYPES.goTo:
 				if (
 					!this._configFeed.posts.length &&

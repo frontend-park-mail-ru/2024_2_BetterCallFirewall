@@ -1,4 +1,5 @@
 import { Action } from '../actions/action';
+import { ActionCommentRequestSuccess } from '../actions/actionComment';
 import {
 	ACTION_FEED_TYPES,
 	ActionFeedPostCreateSuccessData,
@@ -8,6 +9,7 @@ import {
 import { ACTION_POST_TYPES, ActionPostLikeData } from '../actions/actionPost';
 import { STATUS } from '../api/api';
 import config from '../config';
+import { toCommentConfig } from '../models/comment';
 import { toPostConfig } from '../models/post';
 import deepClone from '../modules/deepClone';
 import { ViewFeedConfig } from '../views/feed/viewFeed';
@@ -75,7 +77,19 @@ export const reducerFeed = (
 			});
 			return newState;
 		}
-		default:
-			return state;
 	}
+	switch (true) {
+		case action instanceof ActionCommentRequestSuccess: {
+			const post = newState.posts.filter((post) => {
+				return post.id === action.data.postId;
+			})[0];
+			post.commentsConfigs = action.data.commentsResponses.map(
+				(commentResponse) => {
+					return toCommentConfig(commentResponse);
+				},
+			);
+			break;
+		}
+	}
+	return newState;
 };

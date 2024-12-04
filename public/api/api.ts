@@ -793,7 +793,9 @@ class API {
 					this.sendAction(new ActionCommentRequestFail());
 					break;
 				}
-				this.sendAction(new ActionCommentRequestSuccess(response.data));
+				this.sendAction(
+					new ActionCommentRequestSuccess(response.data, postId),
+				);
 				break;
 			default:
 				this.sendAction(new ActionCommentRequestFail());

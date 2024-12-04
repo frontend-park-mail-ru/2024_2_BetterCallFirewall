@@ -20,10 +20,10 @@ export class ActionCommentRequest implements Action {
 }
 export class ActionCommentRequestSuccess implements Action {
 	type: ActionType = ACTION_COMMENT_TYPES.requestSuccess;
-	data: { commentsResponses: CommentResponse[] };
+	data: { commentsResponses: CommentResponse[]; postId: number };
 
-	constructor(commentsResponses: CommentResponse[]) {
-		this.data = { commentsResponses };
+	constructor(commentsResponses: CommentResponse[], postId: number) {
+		this.data = { commentsResponses, postId };
 	}
 }
 export class ActionCommentRequestFail implements Action {
