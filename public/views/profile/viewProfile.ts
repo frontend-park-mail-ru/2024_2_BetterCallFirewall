@@ -130,6 +130,15 @@ export class ViewProfile extends ViewHome {
 					this.sendAction(new ActionAppGoTo(PAGE_LINKS.profileEdit));
 				},
 			});
+			this.profile.deleteProfileButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionProfileDelete(this.profile.config.id),
+					);
+				},
+			});
 		}
 		if (!this.profile.config.isAuthor) {
 			this.profile.writeMessageLinkVNode.handlers.push({
@@ -140,15 +149,6 @@ export class ViewProfile extends ViewHome {
 						new ActionChatGoToChat({
 							href: PAGE_URLS.chat + `/${this.profile.config.id}`,
 						}),
-					);
-				},
-			});
-			this.profile.deleteProfileButtonVNode.handlers.push({
-				event: 'click',
-				callback: (event) => {
-					event.preventDefault();
-					this.sendAction(
-						new ActionProfileDelete(this.profile.config.id),
 					);
 				},
 			});
