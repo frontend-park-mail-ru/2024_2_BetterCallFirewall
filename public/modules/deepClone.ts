@@ -12,6 +12,7 @@ const deepClone = <T>(original: T, cloned = new WeakMap()): T => {
 	}
 
 	const copy: T = {} as T;
+	cloned.set(original, copy);
 
 	Object.entries(original).forEach(([key, value]) => {
 		copy[key as keyof T] = deepClone(value, cloned);
