@@ -220,8 +220,8 @@ class Ajax {
 	/**
 	 * Удалить профиль
 	 */
-	async deleteProfile(profileId: number): Promise<AjaxResponse<object>> {
-		const url = replaceId(app.config.URL.profileById, profileId);
+	async deleteProfile(): Promise<AjaxResponse<object>> {
+		const url = app.config.URL.profile;
 		return this._genericRequestResponse(url, 'delete');
 	}
 

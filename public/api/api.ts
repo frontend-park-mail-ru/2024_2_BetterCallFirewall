@@ -198,7 +198,7 @@ class API {
 				this.subscribeToProfile(action.data.profileId);
 				break;
 			case action instanceof ActionProfileDelete:
-				this.deleteProfile(action.data.profileId);
+				this.deleteProfile();
 				break;
 		}
 	}
@@ -643,8 +643,8 @@ class API {
 		}
 	}
 
-	async deleteProfile(profileId: number) {
-		const respone = await ajax.deleteProfile(profileId);
+	async deleteProfile() {
+		const respone = await ajax.deleteProfile();
 		switch (respone.status) {
 			case STATUS.ok:
 				this.sendAction(new ActionProfileDeleteSuccess());

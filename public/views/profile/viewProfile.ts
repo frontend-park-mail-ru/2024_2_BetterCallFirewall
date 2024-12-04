@@ -134,9 +134,7 @@ export class ViewProfile extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					this.sendAction(
-						new ActionProfileDelete(this.profile.config.id),
-					);
+					this.sendAction(new ActionProfileDelete());
 				},
 			});
 		}

@@ -193,11 +193,7 @@ export class ActionProfileSearchFail implements Action {
 
 export class ActionProfileDelete implements Action {
 	type: ActionType = ACTION_PROFILE_TYPES.delete;
-	data: { profileId: number };
-
-	constructor(profileId: number) {
-		this.data = { profileId };
-	}
+	data: object = {};
 }
 
 export class ActionProfileDeleteSuccess implements Action {
