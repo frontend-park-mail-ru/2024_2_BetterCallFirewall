@@ -1,6 +1,7 @@
 import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
 import { throttle } from '../../modules/throttle';
 import { findVNodeByClass, VNode } from '../../modules/vdom';
+import { CommentConfig } from '../Comment/Comment';
 import Component, { ComponentConfig } from '../Component';
 
 export interface PostConfig extends ComponentConfig {
@@ -17,6 +18,7 @@ export interface PostConfig extends ComponentConfig {
 	likes: number;
 	likedByUser: boolean;
 	authorHref: string;
+	comments: CommentConfig[];
 }
 
 /**

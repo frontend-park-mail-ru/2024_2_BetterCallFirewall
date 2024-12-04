@@ -92,6 +92,38 @@ export class ViewFeed extends ViewHome {
 	}
 
 	private _renderPosts(): void {
+		const mockPost: PostConfig = {
+			id: 1,
+			key: 'post-1',
+			avatar: '',
+			title: 'Это моковый пост',
+			text: 'Это моковый пост',
+			date: '00.00.0000',
+			hasDeleteButton: false,
+			hasEditButton: false,
+			likes: 999,
+			likedByUser: false,
+			authorHref: '/2',
+			comments: [
+				{
+					key: 'comment-1',
+					authorId: 2,
+					avatar: '',
+					authorName: 'Это моковый коммент',
+					createdAt: '00.00.0000',
+					text: 'Это моковый коммент',
+				},
+				{
+					key: 'comment-2',
+					authorId: 2,
+					avatar: '',
+					authorName: 'Это моковый коммент 2',
+					createdAt: '00.00.0000',
+					text: 'Это моковый коммент 2',
+				},
+			],
+		};
+		this._configFeed.posts = [mockPost].concat(this._configFeed.posts);
 		this._components.posts = this._configFeed.posts.map((postConfig) => {
 			return new Post(postConfig, this.content);
 		});
@@ -117,13 +149,6 @@ export class ViewFeed extends ViewHome {
 	private _addPostsHandler() {
 		this._components.posts?.forEach((post) => {
 			post.addLikeHandler();
-			// post.likeButtonVNode.handlers.push({
-			// 	event: 'click',
-			// 	callback: (event) => {
-			// 		event.preventDefault();
-			// 		this._likePost(post);
-			// 	},
-			// });
 			post.authorLinkVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {
