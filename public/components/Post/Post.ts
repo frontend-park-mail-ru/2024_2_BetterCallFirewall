@@ -129,7 +129,8 @@ export class Post extends Component {
 	}, 1000);
 
 	private _sendComment() {
-		const text = this.commentTextareaHTML.value;
+		const text = (this.commentTextareaVNode.element as HTMLTextAreaElement)
+			.value;
 		if (!text) {
 			return;
 		}

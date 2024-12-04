@@ -18,6 +18,7 @@ export interface VNode {
 	attrubutes: Attributes;
 	handlers: Handler[];
 	children: (VNode | string)[];
+	element: Element;
 }
 
 export interface Handler {
@@ -95,6 +96,7 @@ const vNodeFromNode = (node: VChildNode): VNode | string | undefined => {
 		attrubutes: attributesFromNode(elementNode),
 		handlers: [],
 		children,
+		element: elementNode,
 	};
 	elementNode._vnode = vnode;
 	return vnode;
