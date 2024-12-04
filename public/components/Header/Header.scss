@@ -29,6 +29,7 @@
 
     &__logout {
         &:hover path {
+            cursor: pointer;
             fill: var(--main-color);
             stroke: var(--main-color); 
         }
