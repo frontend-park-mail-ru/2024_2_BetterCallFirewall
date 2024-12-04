@@ -76,10 +76,10 @@ export class Post extends Component {
 		return this._findVNodeByKey('comment-textarea');
 	}
 
-	get commentTextareaHTML(): Element {
+	get commentTextareaHTML(): HTMLTextAreaElement {
 		return this._findHTML(
 			`[data-key=${this._config.key}] [data-key=comment-textarea]`,
-		);
+		) as HTMLTextAreaElement;
 	}
 
 	addLikeHandler() {
@@ -129,7 +129,7 @@ export class Post extends Component {
 	}, 1000);
 
 	private _sendComment() {
-		const text = this.commentTextareaVNode.element.textContent;
+		const text = this.commentTextareaHTML.value;
 		if (!text) {
 			return;
 		}
