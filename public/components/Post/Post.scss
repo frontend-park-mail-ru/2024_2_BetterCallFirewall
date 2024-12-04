@@ -82,8 +82,8 @@
         width: 2rem;
         svg {
             &:hover path {
-                stroke: var(--main-color); 
-                fill: var(--main-color); 
+                stroke: var(--negative-color); 
+                fill: var(--negative-color); 
             }
             &:active path{
                 stroke: var(--main-text-color);
