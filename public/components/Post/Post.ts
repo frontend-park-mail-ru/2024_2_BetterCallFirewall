@@ -1,7 +1,7 @@
 import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
 import { throttle } from '../../modules/throttle';
 import { findVNodeByClass, VNode } from '../../modules/vdom';
-import { CommentConfig } from '../Comment/Comment';
+import { Comment, CommentConfig } from '../Comment/Comment';
 import Component, { ComponentConfig } from '../Component';
 
 export interface PostConfig extends ComponentConfig {
@@ -18,7 +18,7 @@ export interface PostConfig extends ComponentConfig {
 	likes: number;
 	likedByUser: boolean;
 	authorHref: string;
-	comments: CommentConfig[];
+	commentsConfigs: CommentConfig[];
 }
 
 /**
@@ -79,6 +79,19 @@ export class Post extends Component {
 	render(): string {
 		this._prerender();
 		return this._render('Post.hbs');
+	}
+
+	protected _prerender(): void {
+		super._prerender();
+		const comments = this._config.commentsConfigs.map((config) => {
+			return new Comment(config, this);
+		});
+		this._templateContext = {
+			...this._templateContext,
+			comments: comments.map((comment) => {
+				return comment.render();
+			}),
+		};
 	}
 
 	private _like = throttle(() => {
