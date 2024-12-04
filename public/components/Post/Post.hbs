@@ -53,8 +53,8 @@
         {{#each this.comments}}
             {{{this}}}
         {{/each}}
-        <form action="" class="post__comments sender" data-key="form">
-            <textarea class="sender__input" type="text" placeholder="Напишите комментарий.." data-key="{{this.inputKey}}">{{this.inputText}}</textarea>
+        <form action="" class="post__comments sender" data-key="comment-form">
+            <textarea class="sender__input" type="text" placeholder="Напишите комментарий.." data-key="comment-textarea">{{this.inputText}}</textarea>
             <button class="sender__send button-no-decorations">
                 <svg viewBox="0 0 40 40" fill="none">
                     <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#1DC67F"/>

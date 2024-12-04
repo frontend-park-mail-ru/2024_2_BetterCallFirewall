@@ -149,6 +149,7 @@ export class ViewFeed extends ViewHome {
 	private _addPostsHandler() {
 		this._components.posts?.forEach((post) => {
 			post.addLikeHandler();
+			post.addCommentHandlers();
 			post.authorLinkVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {

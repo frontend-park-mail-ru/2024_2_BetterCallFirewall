@@ -109,6 +109,15 @@ import { PostPayload } from '../models/post';
 import ajax, { QueryParams } from '../modules/ajax';
 import { ProfilePayload } from '../models/profile';
 import { ActionCreateGroupSuccess } from '../actions/actionCreateGroup';
+import {
+	ActionCommentCreate,
+	ActionCommentCreateFail,
+	ActionCommentCreateSuccess,
+	ActionCommentRequest,
+	ActionCommentRequestFail,
+	ActionCommentRequestSuccess,
+} from '../actions/actionComment';
+import { CommentPayload } from '../models/comment';
 
 export const STATUS = {
 	ok: 200,
@@ -199,6 +208,15 @@ class API {
 				break;
 			case action instanceof ActionProfileDelete:
 				this.deleteProfile();
+				break;
+			case action instanceof ActionCommentRequest:
+				this.getComments(action.data.postId);
+				break;
+			case action instanceof ActionCommentCreate:
+				this.createComment(
+					action.data.postId,
+					action.data.commentPayload,
+				);
 				break;
 		}
 	}
@@ -492,8 +510,8 @@ class API {
 	}
 
 	async groupEdit(groupPayload: GroupPayload, id: number) {
-		const respone = await ajax.groupEdit(groupPayload, id);
-		switch (respone.status) {
+		const response = await ajax.groupEdit(groupPayload, id);
+		switch (response.status) {
 			case STATUS.ok:
 				this.sendAction(new ActionGroupsEditSuccess());
 				break;
@@ -539,14 +557,6 @@ class API {
 				return;
 		}
 	}
-
-	// async followGroup() {
-	// 	const response = await ajax.followGroup(groupId);
-	// 	switch (response.status) {
-	// 		case STATUS.ok:
-	// 			this.sendAction(new ActionGroupsFollowGroup());
-	// 	}
-	// }
 
 	async unfollowGroup(groupId: number) {
 		const response = await ajax.unfollowGroup(groupId);
@@ -644,8 +654,8 @@ class API {
 	}
 
 	async deleteProfile() {
-		const respone = await ajax.deleteProfile();
-		switch (respone.status) {
+		const response = await ajax.deleteProfile();
+		switch (response.status) {
 			case STATUS.ok:
 				this.sendAction(new ActionProfileDeleteSuccess());
 				break;
@@ -736,12 +746,12 @@ class API {
 	}
 
 	async groupsSearch(str: string, lastId?: number) {
-		const respone = await ajax.groupsSearch(str, lastId);
-		switch (respone.status) {
+		const response = await ajax.groupsSearch(str, lastId);
+		switch (response.status) {
 			case STATUS.ok:
-				if (respone.data) {
+				if (response.data) {
 					this.sendAction(
-						new ActionGroupsSearchSuccess(respone.data),
+						new ActionGroupsSearchSuccess(response.data),
 					);
 				} else {
 					this.sendAction(new ActionGroupsSearchFail());
@@ -773,6 +783,32 @@ class API {
 	async sendImage(image: File) {
 		const response = await ajax.sendImage(image);
 		return response.data;
+	}
+
+	async getComments(postId: number) {
+		const response = await ajax.getComments(postId);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					this.sendAction(new ActionCommentRequestFail());
+					break;
+				}
+				this.sendAction(new ActionCommentRequestSuccess(response.data));
+				break;
+			default:
+				this.sendAction(new ActionCommentRequestFail());
+		}
+	}
+
+	async createComment(postId: number, commentPayload: CommentPayload) {
+		const response = await ajax.createComment(postId, commentPayload);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionCommentCreateSuccess());
+				break;
+			default:
+				this.sendAction(new ActionCommentCreateFail());
+		}
 	}
 }
 

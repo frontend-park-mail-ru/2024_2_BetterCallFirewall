@@ -104,6 +104,7 @@ export interface URLInterface {
 	profileSubscriptions: string;
 	header: string;
 	post: string;
+	comments: string;
 	messages: string;
 	chat: string;
 	chatWS: string;

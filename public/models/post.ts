@@ -4,7 +4,7 @@ import { PAGE_URLS } from '../config';
 import parseImage from '../modules/parseImage';
 import parseTime from '../modules/parseTime';
 
-interface Header {
+export interface Header {
 	author_id: number;
 	author: string;
 	avatar: string;
@@ -23,6 +23,7 @@ export interface PostResponse {
 	post_content: PostContent;
 	likes_count: number;
 	is_liked: boolean;
+	comment_count: number;
 }
 
 export const toPostConfig = (postResponse: PostResponse): PostConfig => {

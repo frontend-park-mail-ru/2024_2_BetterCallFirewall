@@ -15,6 +15,7 @@ import {
 	ProfilePayload,
 	ShortProfileResponse,
 } from '../models/profile';
+import { CommentPayload, CommentResponse } from '../models/comment';
 
 type AjaxPromiseConfig = {
 	request: Request;
@@ -466,11 +467,35 @@ class Ajax {
 		return this._genericRequestResponse(app.config.URL.csatMetrics, 'get');
 	}
 
+	/**
+	 * Отправить изображение
+	 */
 	async sendImage(image: File): Promise<AjaxResponse<string>> {
 		const formData = new FormData();
 		formData.append('file', image);
 		const request = this._postFormRequest(app.config.URL.image, formData);
 		return this._genericResponse(request);
+	}
+
+	/**
+	 * Создать комментарий
+	 */
+	async createComment(
+		postId: number,
+		comment: CommentPayload,
+	): Promise<AjaxResponse<object>> {
+		const url = replaceId(app.config.URL.post, postId);
+		return this._genericRequestResponse(url, 'post', comment);
+	}
+
+	/**
+	 * Получить комментарии к посту
+	 */
+	async getComments(
+		postId: number,
+	): Promise<AjaxResponse<CommentResponse[]>> {
+		const url = replaceId(app.config.URL.comments, postId);
+		return this._genericRequestResponse(url, 'get');
 	}
 
 	/**

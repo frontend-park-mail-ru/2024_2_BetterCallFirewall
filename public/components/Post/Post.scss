@@ -119,6 +119,9 @@
             }
         }
     }
+    &__comments {
+        border-top: var(--border);
+    }
 }
 
 .header-text {

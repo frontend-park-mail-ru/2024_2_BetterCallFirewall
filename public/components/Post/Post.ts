@@ -1,4 +1,6 @@
+import { ActionCommentCreate } from '../../actions/actionComment';
 import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
+import { CommentPayload } from '../../models/comment';
 import { throttle } from '../../modules/throttle';
 import { findVNodeByClass, VNode } from '../../modules/vdom';
 import { Comment, CommentConfig } from '../Comment/Comment';
@@ -66,12 +68,36 @@ export class Post extends Component {
 		return this._findVNodeByClass('post__author-link');
 	}
 
+	get commentFormVNode(): VNode {
+		return this._findVNodeByKey('comment-form');
+	}
+
+	get commentTextareaVNode(): VNode {
+		return this._findVNodeByKey('comment-textarea');
+	}
+
+	get commentTextareaHTML(): Element {
+		return this._findHTML(
+			`[data-key=${this._config.key}] [data-key=comment-textarea]`,
+		);
+	}
+
 	addLikeHandler() {
 		this.likeButtonVNode.handlers.push({
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
 				this._like();
+			},
+		});
+	}
+
+	addCommentHandlers() {
+		this.commentFormVNode.handlers.push({
+			event: 'submit',
+			callback: (event) => {
+				event.preventDefault();
+				this._sendComment();
 			},
 		});
 	}
@@ -101,4 +127,18 @@ export class Post extends Component {
 			this._sendAction(new ActionPostLike(this._config.id));
 		}
 	}, 1000);
+
+	private _sendComment() {
+		const text = this.commentTextareaVNode.element.textContent;
+		if (!text) {
+			return;
+		}
+		const commentPayload: CommentPayload = {
+			text,
+			file: '',
+		};
+		this._sendAction(
+			new ActionCommentCreate(this._config.id, commentPayload),
+		);
+	}
 }
