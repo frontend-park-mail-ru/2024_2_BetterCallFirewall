@@ -206,13 +206,14 @@ export class ViewProfile extends ViewHome {
 				},
 			});
 		}
-		post.likeButtonVNode.handlers.push({
-			event: 'click',
-			callback: (event) => {
-				event.preventDefault();
-				this._likePost(post);
-			},
-		});
+		post.addLikeHandler();
+		// post.likeButtonVNode.handlers.push({
+		// 	event: 'click',
+		// 	callback: (event) => {
+		// 		event.preventDefault();
+		// 		this._likePost(post);
+		// 	},
+		// });
 	}
 
 	private _likePost = throttle((post: Post) => {

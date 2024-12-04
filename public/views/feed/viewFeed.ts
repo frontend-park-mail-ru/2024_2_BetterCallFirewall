@@ -116,13 +116,14 @@ export class ViewFeed extends ViewHome {
 
 	private _addPostsHandler() {
 		this._components.posts?.forEach((post) => {
-			post.likeButtonVNode.handlers.push({
-				event: 'click',
-				callback: (event) => {
-					event.preventDefault();
-					this._likePost(post);
-				},
-			});
+			post.addLikeHandler();
+			// post.likeButtonVNode.handlers.push({
+			// 	event: 'click',
+			// 	callback: (event) => {
+			// 		event.preventDefault();
+			// 		this._likePost(post);
+			// 	},
+			// });
 			post.authorLinkVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {

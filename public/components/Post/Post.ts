@@ -1,3 +1,5 @@
+import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
+import { throttle } from '../../modules/throttle';
 import { findVNodeByClass, VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
 
@@ -62,8 +64,26 @@ export class Post extends Component {
 		return this._findVNodeByClass('post__author-link');
 	}
 
+	addLikeHandler() {
+		this.likeButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this._like();
+			},
+		});
+	}
+
 	render(): string {
 		this._prerender();
 		return this._render('Post.hbs');
 	}
+
+	private _like = throttle(() => {
+		if (this._config.likedByUser) {
+			this._sendAction(new ActionPostUnlike(this._config.id));
+		} else {
+			this._sendAction(new ActionPostLike(this._config.id));
+		}
+	}, 1000);
 }

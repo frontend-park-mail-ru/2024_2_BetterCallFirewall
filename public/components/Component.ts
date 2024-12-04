@@ -1,3 +1,5 @@
+import { Action } from '../actions/action';
+import dispatcher from '../dispatcher/dispatcher';
 import {
 	findVNodeByClass,
 	findVNodeByKey,
@@ -62,6 +64,7 @@ export default abstract class Component {
 			throw new Error('this is string node');
 		}
 		this._vnode = vnode;
+		this._addHandlers();
 		return this._vnode;
 	}
 
@@ -72,6 +75,8 @@ export default abstract class Component {
 	removeChildren() {
 		this._children = [];
 	}
+
+	protected _addHandlers() {}
 
 	protected _render(templateFile: string): string {
 		const template = Handlebars.templates[templateFile];
@@ -97,6 +102,10 @@ export default abstract class Component {
 
 	protected _findHTML(selector: string) {
 		return checkElement(document.querySelector(selector));
+	}
+
+	protected _sendAction(action: Action) {
+		dispatcher.getAction(action);
 	}
 
 	abstract render(): string;
