@@ -207,6 +207,7 @@ export class ViewProfile extends ViewHome {
 			});
 		}
 		post.addLikeHandler();
+		post.addCommentHandlers();
 	}
 
 	private _likePost = throttle((post: Post) => {

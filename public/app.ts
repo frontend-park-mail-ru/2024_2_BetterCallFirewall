@@ -413,6 +413,9 @@ class App {
 		this._stores.profile.subscribe(ACTION_FRIENDS_TYPES.removeSuccess);
 		this._stores.profile.subscribe(ACTION_POST_TYPES.likeSuccess);
 		this._stores.profile.subscribe(ACTION_POST_TYPES.likeFail);
+		this._stores.profile.subscribe(ACTION_POST_TYPES.commentsOpenSwitch);
+		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
+		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.createSuccess);
 
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.subscribeSuccess);

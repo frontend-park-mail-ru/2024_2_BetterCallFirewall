@@ -1,7 +1,12 @@
 import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
 import {
+	ActionCommentCreateSuccess,
+	ActionCommentRequestSuccess,
+} from '../actions/actionComment';
+import {
 	ACTION_POST_TYPES,
+	ActionPostCommentsOpenSwitch,
 	ActionPostLikeSuccessData,
 } from '../actions/actionPost';
 import {
@@ -18,6 +23,7 @@ import config from '../config';
 import { toProfileConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
 import { ViewProfileConfig } from '../views/profile/viewProfile';
+import { reducerPost } from './reducerPost';
 
 const initialState: ViewProfileConfig = deepClone(config.profileConfig);
 
@@ -76,7 +82,17 @@ export const reducerProfile = (
 			});
 			return newState;
 		}
-		default:
-			return newState;
 	}
+	switch (true) {
+		case action instanceof ActionPostCommentsOpenSwitch:
+		case action instanceof ActionCommentRequestSuccess:
+		case action instanceof ActionCommentCreateSuccess:
+			newState.profile.posts.forEach((post) => {
+				if (post.id === action.data.postId) {
+					Object.assign(post, reducerPost(post, action));
+				}
+			});
+			break;
+	}
+	return newState;
 };
