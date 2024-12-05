@@ -43,6 +43,7 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		likes: postResponse.likes_count,
 		likedByUser: postResponse.is_liked,
 		authorHref,
+		commentsCount: postResponse.comment_count,
 		commentsConfigs: [],
 		commentsOpen: false,
 	};

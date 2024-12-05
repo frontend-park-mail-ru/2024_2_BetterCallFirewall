@@ -24,6 +24,7 @@ export interface PostConfig extends ComponentConfig {
 	likes: number;
 	likedByUser: boolean;
 	authorHref: string;
+	commentsCount: number;
 	commentsConfigs: CommentConfig[];
 	commentsOpen: boolean;
 }
