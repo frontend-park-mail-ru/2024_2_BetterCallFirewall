@@ -133,20 +133,22 @@ export class Post extends Component {
 				this._sendComment();
 			},
 		});
-		this.moreCommentsButtonVNode.handlers.push({
-			event: 'click',
-			callback: (event) => {
-				event.preventDefault();
-				this._sendAction(
-					new ActionCommentRequest(
-						this._config.id,
-						this._config.commentsConfigs[
-							this._config.commentsConfigs.length - 1
-						].id,
-					),
-				);
-			},
-		});
+		if (this.isMoreComments) {
+			this.moreCommentsButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this._sendAction(
+						new ActionCommentRequest(
+							this._config.id,
+							this._config.commentsConfigs[
+								this._config.commentsConfigs.length - 1
+							].id,
+						),
+					);
+				},
+			});
+		}
 	}
 
 	render(): string {
