@@ -9,6 +9,7 @@ import {
 } from '../../actions/actionPost';
 import { CommentPayload } from '../../models/comment';
 import { throttle } from '../../modules/throttle';
+import { INPUT_LIMITS } from '../../modules/validation';
 import { findVNodeByClass, VNode } from '../../modules/vdom';
 import { Comment, CommentConfig } from '../Comment/Comment';
 import Component, { ComponentConfig } from '../Component';
@@ -167,6 +168,7 @@ export class Post extends Component {
 				return comment.render();
 			}),
 			isMoreComments: this.isMoreComments,
+			commentTextLimit: INPUT_LIMITS.commentText,
 		};
 	}
 
