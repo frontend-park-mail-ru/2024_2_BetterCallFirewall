@@ -135,17 +135,17 @@
             margin: 1rem;
             svg {
                 cursor: pointer;
-                &:hover {
+                &:active {
                     path {
                         fill: var(--main-color);
                         stroke: var(--main-color);
                     }
                 }
-                &:active {
-                    path {
-                        fill: var(--main-text-color);
-                        stroke: var(--main-text-color);
-                    }
+            }
+            _opened {
+                path {
+                    fill: var(--main-color);
+                    stroke: var(--main-color);
                 }
             }
         }
