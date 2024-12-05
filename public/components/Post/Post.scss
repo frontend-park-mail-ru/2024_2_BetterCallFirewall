@@ -149,6 +149,9 @@
                 }
             }
         }
+        &_hidden {
+            display: none;
+        }
     }
     &__comments {
         border-top: var(--border);
