@@ -165,6 +165,7 @@ export const update = (node: ExtendedNode, vnode: VNode | string) => {
 		elementVNode.children,
 	);
 	elementNode._vnode = elementVNode;
+	elementVNode.element = elementNode;
 };
 
 const updateAttrs = (
