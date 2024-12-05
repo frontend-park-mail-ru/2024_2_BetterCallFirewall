@@ -1,4 +1,6 @@
 import { Action, ActionType } from '../actions/action';
+import { ActionCommentRequest } from '../actions/actionComment';
+import { ActionPostCommentsOpenSwitch } from '../actions/actionPost';
 import api from '../api/api';
 import app from '../app';
 import { Router } from '../router/router';
@@ -11,6 +13,7 @@ export class Dispatcher {
 	private _router?: Router;
 
 	getAction(action: Action) {
+		this._handleAction(action);
 		this.dispatch(action);
 	}
 
@@ -37,6 +40,16 @@ export class Dispatcher {
 
 	addRouter(router: Router) {
 		this._router = router;
+	}
+
+	private _handleAction(action: Action) {
+		switch (true) {
+			case action instanceof ActionPostCommentsOpenSwitch:
+				if (action.data.show) {
+					this.dispatch(new ActionCommentRequest(action.data.postId));
+				}
+				break;
+		}
 	}
 }
 
