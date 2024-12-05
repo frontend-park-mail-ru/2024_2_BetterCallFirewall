@@ -44,6 +44,7 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		likedByUser: postResponse.is_liked,
 		authorHref,
 		commentsConfigs: [],
+		commentsOpen: false,
 	};
 };
 

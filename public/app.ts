@@ -381,6 +381,7 @@ class App {
 		this._stores.feed.subscribe(ACTION_FEED_TYPES.update);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.likeSuccess);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.likeFail);
+		this._stores.feed.subscribe(ACTION_POST_TYPES.commentsOpenSwitch);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 
 		this._stores.profile.subscribe(ACTION_APP_TYPES.goTo);

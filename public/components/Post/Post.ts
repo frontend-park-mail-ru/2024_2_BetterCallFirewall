@@ -1,5 +1,9 @@
 import { ActionCommentCreate } from '../../actions/actionComment';
-import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
+import {
+	ActionPostCommentsOpenSwitch,
+	ActionPostLike,
+	ActionPostUnlike,
+} from '../../actions/actionPost';
 import { CommentPayload } from '../../models/comment';
 import { throttle } from '../../modules/throttle';
 import { findVNodeByClass, VNode } from '../../modules/vdom';
@@ -21,6 +25,7 @@ export interface PostConfig extends ComponentConfig {
 	likedByUser: boolean;
 	authorHref: string;
 	commentsConfigs: CommentConfig[];
+	commentsOpen: boolean;
 }
 
 /**
@@ -82,6 +87,10 @@ export class Post extends Component {
 		) as HTMLTextAreaElement;
 	}
 
+	get commentButtonVNode(): VNode {
+		return this._findVNodeByClass('post__comment-button');
+	}
+
 	addLikeHandler() {
 		this.likeButtonVNode.handlers.push({
 			event: 'click',
@@ -93,6 +102,18 @@ export class Post extends Component {
 	}
 
 	addCommentHandlers() {
+		this.commentButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this._sendAction(
+					new ActionPostCommentsOpenSwitch(
+						!this._config.commentsOpen,
+						this._config.id,
+					),
+				);
+			},
+		});
 		this.commentFormVNode.handlers.push({
 			event: 'submit',
 			callback: (event) => {

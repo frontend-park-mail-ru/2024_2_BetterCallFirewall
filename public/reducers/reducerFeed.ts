@@ -6,7 +6,11 @@ import {
 	ActionPostsRequestFailData,
 	ActionPostsRequestSuccessData,
 } from '../actions/actionFeed';
-import { ACTION_POST_TYPES, ActionPostLikeData } from '../actions/actionPost';
+import {
+	ACTION_POST_TYPES,
+	ActionPostCommentsOpenSwitch,
+	ActionPostLikeData,
+} from '../actions/actionPost';
 import { STATUS } from '../api/api';
 import config from '../config';
 import { toCommentConfig } from '../models/comment';
@@ -90,6 +94,14 @@ export const reducerFeed = (
 			);
 			break;
 		}
+		case action instanceof ActionPostCommentsOpenSwitch:
+			{
+				const post = newState.posts.filter((post) => {
+					return post.id === action.data.postId;
+				})[0];
+				post.commentsOpen = action.data.show;
+			}
+			break;
 	}
 	return newState;
 };

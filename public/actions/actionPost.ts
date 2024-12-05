@@ -5,6 +5,7 @@ export const ACTION_POST_TYPES = {
 	unlike: 'actionPostUnlike',
 	likeSuccess: 'actionPostLikeSuccess',
 	likeFail: 'actionPostLikeFail',
+	commentsOpenSwitch: 'actionPostCommentsOpenSwitch',
 };
 
 export interface ActionPostLikeData {
@@ -48,4 +49,13 @@ export class ActionPostLikeSuccess implements Action {
 export class ActionPostLikeFail implements Action {
 	type: ActionType = ACTION_POST_TYPES.likeFail;
 	data: object = {};
+}
+
+export class ActionPostCommentsOpenSwitch implements Action {
+	type: ActionType = ACTION_POST_TYPES.commentsOpenSwitch;
+	data: { show: boolean; postId: number };
+
+	constructor(show: boolean, postId: number) {
+		this.data = { show, postId };
+	}
 }
