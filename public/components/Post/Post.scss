@@ -95,6 +95,9 @@
         height: 3rem;
         width: 3rem;
     }
+    &__footer {
+        display: flex;
+    }
     &__like {
         display: flex;
         align-items: center;
@@ -105,10 +108,14 @@
             svg {
                 &:hover {
                     cursor: pointer;
+                    & path {
+                        fill: var(--main-color);  
+                        stroke: var(--main-color);
+                    }
                 }
                 &:active path {
-                    fill: var(--main-color);
-                    stroke: var(--main-color);
+                    fill: var(--main-text-color);
+                    stroke: var(--main-text-color);
                 }
             }
             &_liked {
@@ -116,6 +123,22 @@
                     fill: var(--main-color);
                     stroke: var(--main-color);
                 }
+            }
+        }
+    }
+    &__comment {
+        display: flex;
+        align-items: center;
+        &-button {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin: 1rem;
+            svg {
+                &:hover {
+                    cursor: pointer;
+                    
+                }
+
             }
         }
     }
