@@ -1,7 +1,13 @@
 import { CommentConfig } from '../components/Comment/Comment';
 import parseImage from '../modules/parseImage';
 import parseTime from '../modules/parseTime';
-import { Header } from './post';
+
+export interface Header {
+	author_id: number;
+	author: string;
+	avatar: string;
+	community_id: number;
+}
 
 interface Content {
 	text: string;
@@ -23,6 +29,7 @@ export const toCommentConfig = (
 ): CommentConfig => {
 	return {
 		id: commentResponse.id,
+		communityId: commentResponse.header.community_id,
 		key: `comment-${commentResponse.id}`,
 		authorId: commentResponse.header.author_id,
 		avatar: parseImage(commentResponse.header.avatar),
