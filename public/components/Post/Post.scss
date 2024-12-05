@@ -108,7 +108,7 @@
             svg {
                 &:hover {
                     cursor: pointer;
-                    & path {
+                    path {
                         fill: var(--main-color);  
                         stroke: var(--main-color);
                     }
