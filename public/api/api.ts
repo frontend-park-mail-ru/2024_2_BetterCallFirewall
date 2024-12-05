@@ -210,7 +210,7 @@ class API {
 				this.deleteProfile();
 				break;
 			case action instanceof ActionCommentRequest:
-				this.getComments(action.data.postId);
+				this.getComments(action.data.postId, action.data.lastId);
 				break;
 			case action instanceof ActionCommentCreate:
 				this.createComment(
@@ -785,8 +785,8 @@ class API {
 		return response.data;
 	}
 
-	async getComments(postId: number) {
-		const response = await ajax.getComments(postId);
+	async getComments(postId: number, lastId?: number) {
+		const response = await ajax.getComments(postId, lastId);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
@@ -794,7 +794,11 @@ class API {
 					break;
 				}
 				this.sendAction(
-					new ActionCommentRequestSuccess(response.data, postId),
+					new ActionCommentRequestSuccess(
+						response.data,
+						postId,
+						lastId ? true : false,
+					),
 				);
 				break;
 			default:

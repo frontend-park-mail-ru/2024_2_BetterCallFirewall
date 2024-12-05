@@ -172,9 +172,12 @@
 
 .comments {
     &__more-button {
+        display: flex;
+        justify-content: end;
         cursor: pointer;
         color: var(--main-color);
         text-decoration: none;
+        margin: 1rem;
     }
 }
 

@@ -493,8 +493,12 @@ class Ajax {
 	 */
 	async getComments(
 		postId: number,
+		lastId?: number,
 	): Promise<AjaxResponse<CommentResponse[]>> {
-		const url = replaceId(app.config.URL.comments, postId);
+		let url = replaceId(app.config.URL.comments, postId);
+		if (lastId) {
+			url = insertQueryParams(url, { id: `${lastId}` });
+		}
 		return this._genericRequestResponse(url, 'get');
 	}
 

@@ -12,18 +12,26 @@ export const ACTION_COMMENT_TYPES = {
 
 export class ActionCommentRequest implements Action {
 	type: ActionType = ACTION_COMMENT_TYPES.request;
-	data: { postId: number };
+	data: { postId: number; lastId?: number };
 
-	constructor(postId: number) {
-		this.data = { postId };
+	constructor(postId: number, lastId?: number) {
+		this.data = { postId, lastId };
 	}
 }
 export class ActionCommentRequestSuccess implements Action {
 	type: ActionType = ACTION_COMMENT_TYPES.requestSuccess;
-	data: { commentsResponses: CommentResponse[]; postId: number };
+	data: {
+		commentsResponses: CommentResponse[];
+		postId: number;
+		append: boolean;
+	};
 
-	constructor(commentsResponses: CommentResponse[], postId: number) {
-		this.data = { commentsResponses, postId };
+	constructor(
+		commentsResponses: CommentResponse[],
+		postId: number,
+		append: boolean,
+	) {
+		this.data = { commentsResponses, postId, append };
 	}
 }
 export class ActionCommentRequestFail implements Action {

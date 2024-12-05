@@ -22,6 +22,7 @@ export const toCommentConfig = (
 	commentResponse: CommentResponse,
 ): CommentConfig => {
 	return {
+		id: commentResponse.id,
 		key: `comment-${commentResponse.id}`,
 		authorId: commentResponse.header.author_id,
 		avatar: parseImage(commentResponse.header.avatar),

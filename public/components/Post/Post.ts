@@ -1,4 +1,7 @@
-import { ActionCommentCreate } from '../../actions/actionComment';
+import {
+	ActionCommentCreate,
+	ActionCommentRequest,
+} from '../../actions/actionComment';
 import {
 	ActionPostCommentsOpenSwitch,
 	ActionPostLike,
@@ -50,6 +53,10 @@ export class Post extends Component {
 		return this._config;
 	}
 
+	get isMoreComments(): boolean {
+		return this._config.commentsCount > this._config.commentsConfigs.length;
+	}
+
 	get editButtonVNode(): VNode {
 		const vnode = findVNodeByClass(this.vnode, 'post__header-edit');
 		if (!vnode) {
@@ -92,6 +99,10 @@ export class Post extends Component {
 		return this._findVNodeByClass('post__comment-button');
 	}
 
+	get moreCommentsButtonVNode(): VNode {
+		return this._findVNodeByClass('comments__more-button');
+	}
+
 	addLikeHandler() {
 		this.likeButtonVNode.handlers.push({
 			event: 'click',
@@ -122,6 +133,20 @@ export class Post extends Component {
 				this._sendComment();
 			},
 		});
+		this.moreCommentsButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this._sendAction(
+					new ActionCommentRequest(
+						this._config.id,
+						this._config.commentsConfigs[
+							this._config.commentsConfigs.length - 1
+						].id,
+					),
+				);
+			},
+		});
 	}
 
 	render(): string {
@@ -134,14 +159,12 @@ export class Post extends Component {
 		const comments = this._config.commentsConfigs.map((config) => {
 			return new Comment(config, this);
 		});
-		const moreComments =
-			this._config.commentsCount > this._config.commentsConfigs.length;
 		this._templateContext = {
 			...this._templateContext,
 			comments: comments.map((comment) => {
 				return comment.render();
 			}),
-			moreComments,
+			isMoreComments: this.isMoreComments,
 		};
 	}
 

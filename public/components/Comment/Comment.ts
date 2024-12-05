@@ -1,6 +1,7 @@
 import Component, { ComponentConfig } from '../Component';
 
 export interface CommentConfig extends ComponentConfig {
+	id: number;
 	authorId: number;
 	avatar: string;
 	authorName: string;
