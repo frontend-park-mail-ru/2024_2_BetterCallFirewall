@@ -164,6 +164,14 @@
     }
 }
 
+.comments {
+    &__more-button {
+        cursor: pointer;
+        color: var(--main-color);
+        text-decoration: none;
+    }
+}
+
 .header-text {
     margin-bottom: .3rem;
 }

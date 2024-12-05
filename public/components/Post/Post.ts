@@ -134,11 +134,14 @@ export class Post extends Component {
 		const comments = this._config.commentsConfigs.map((config) => {
 			return new Comment(config, this);
 		});
+		const moreComments =
+			this._config.commentsCount > this._config.commentsConfigs.length;
 		this._templateContext = {
 			...this._templateContext,
 			comments: comments.map((comment) => {
 				return comment.render();
 			}),
+			moreComments,
 		};
 	}
 

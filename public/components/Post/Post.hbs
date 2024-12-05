@@ -65,6 +65,9 @@
         {{#each this.comments}}
             {{{this}}}
         {{/each}}
+        {{#if this.moreComments}}
+            <span class="comments__more-button">Показать следующие комментарии</span>
+        {{/if}}
         <form action="" class="post__comments sender" data-key="comment-form">
             <textarea class="sender__input post__comments-input" type="text" placeholder="Напишите комментарий.." data-key="comment-textarea">{{this.inputText}}</textarea>
             <button class="sender__send button-no-decorations post__comments-sender">
