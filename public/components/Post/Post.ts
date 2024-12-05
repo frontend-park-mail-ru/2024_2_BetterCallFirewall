@@ -151,8 +151,9 @@ export class Post extends Component {
 	}, 1000);
 
 	private _sendComment() {
-		const text = (this.commentTextareaVNode.element as HTMLTextAreaElement)
-			.value;
+		const textarea = this.commentTextareaVNode
+			.element as HTMLTextAreaElement;
+		const text = textarea.value;
 		if (!text) {
 			return;
 		}
@@ -160,6 +161,7 @@ export class Post extends Component {
 			text,
 			file: '',
 		};
+		textarea.value = '';
 		this._sendAction(
 			new ActionCommentCreate(this._config.id, commentPayload),
 		);

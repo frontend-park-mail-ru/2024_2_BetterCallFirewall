@@ -1,5 +1,8 @@
 import { Action } from '../actions/action';
-import { ActionCommentRequestSuccess } from '../actions/actionComment';
+import {
+	ActionCommentCreateSuccess,
+	ActionCommentRequestSuccess,
+} from '../actions/actionComment';
 import {
 	ACTION_FEED_TYPES,
 	ActionFeedPostCreateSuccessData,
@@ -83,6 +86,15 @@ export const reducerFeed = (
 		}
 	}
 	switch (true) {
+		case action instanceof ActionCommentCreateSuccess: {
+			const post = newState.posts.filter((post) => {
+				return post.id === action.data.postId;
+			})[0];
+			post.commentsConfigs = post.commentsConfigs.concat(
+				toCommentConfig(action.data.commentResponse),
+			);
+			break;
+		}
 		case action instanceof ActionCommentRequestSuccess: {
 			const post = newState.posts.filter((post) => {
 				return post.id === action.data.postId;

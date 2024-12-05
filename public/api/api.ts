@@ -806,7 +806,13 @@ class API {
 		const response = await ajax.createComment(postId, commentPayload);
 		switch (response.status) {
 			case STATUS.ok:
-				this.sendAction(new ActionCommentCreateSuccess());
+				if (!response.data) {
+					this.sendAction(new ActionCommentCreateFail());
+					break;
+				}
+				this.sendAction(
+					new ActionCommentCreateSuccess(response.data, postId),
+				);
 				break;
 			default:
 				this.sendAction(new ActionCommentCreateFail());

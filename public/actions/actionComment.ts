@@ -41,7 +41,11 @@ export class ActionCommentCreate implements Action {
 }
 export class ActionCommentCreateSuccess implements Action {
 	type: ActionType = ACTION_COMMENT_TYPES.createSuccess;
-	data: object = {};
+	data: { commentResponse: CommentResponse; postId: number };
+
+	constructor(commentResponse: CommentResponse, postId: number) {
+		this.data = { commentResponse, postId };
+	}
 }
 export class ActionCommentCreateFail implements Action {
 	type: ActionType = ACTION_COMMENT_TYPES.createFail;

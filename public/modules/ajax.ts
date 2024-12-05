@@ -483,7 +483,7 @@ class Ajax {
 	async createComment(
 		postId: number,
 		comment: CommentPayload,
-	): Promise<AjaxResponse<object>> {
+	): Promise<AjaxResponse<CommentResponse>> {
 		const url = replaceId(app.config.URL.post, postId);
 		return this._genericRequestResponse(url, 'post', comment);
 	}

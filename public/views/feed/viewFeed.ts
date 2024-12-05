@@ -1,7 +1,5 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
-import { ActionCommentRequest } from '../../actions/actionComment';
 import {
-	ACTION_FEED_TYPES,
 	ActionFeedPostsRequest,
 	ActionFeedUpdate,
 } from '../../actions/actionFeed';
