@@ -811,25 +811,7 @@ class API {
 					break;
 				}
 				this.sendAction(
-					new ActionCommentCreateSuccess(
-						{
-							id: -1,
-							header: {
-								author_id: 0,
-								author: 'Заглушка',
-								avatar: '',
-							},
-							content: {
-								text: 'Обнови страницу',
-								file: '',
-								created_at: '00.00.0000',
-								updated_at: '00.00.0000',
-							},
-							likes_count: 999,
-							is_liked: false,
-						},
-						postId,
-					),
+					new ActionCommentCreateSuccess(response.data, postId),
 				);
 				break;
 			default:
