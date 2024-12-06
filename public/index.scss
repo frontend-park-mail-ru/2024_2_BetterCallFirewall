@@ -280,6 +280,33 @@ input::placeholder, textarea::placeholder {
     }
 }
 
+.svg-button {
+    &:hover {
+        cursor: pointer;
+        path {
+            stroke: var(--main-color);
+        }
+    }
+    &:active {
+        path {
+            stroke: var(--main-text-color);
+        }
+    }
+    &_negative {
+        &:hover {
+            cursor: pointer;
+            path {
+                stroke: var(--negative-color);
+            }
+        }
+        &:active {
+            path {
+                stroke: var(--main-text-color);
+            }
+        }
+    }
+}
+
 @media (max-width: 2560px) {
     * {
         font-size: 1.2vw;

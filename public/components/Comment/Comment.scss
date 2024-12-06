@@ -25,18 +25,24 @@
         line-height: 1.5;
         overflow: hidden;
     }
+    &__actions {
+        display: flex;
+        justify-content: end;
+        margin-left: auto;
+    }
+    &__action-button {
+        width: 1rem;
+        height: 1rem;
+        margin: 0.5rem;
+        display: none;
+    }
     &:hover {
         .comment__edit {
             display: block;
         }
         .comment__delete {
             display: block;
+
         }
-    }
-    &__edit {
-        display: none;
-    }
-    &__delete {
-        display: none;
     }
 }
