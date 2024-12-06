@@ -40,6 +40,7 @@ export interface PostConfig extends ComponentConfig {
  */
 export class Post extends Component {
 	protected _config: PostConfig;
+	private _comments: Comment[] = [];
 
 	/**
 	 * Instance of post
@@ -152,6 +153,9 @@ export class Post extends Component {
 				},
 			});
 		}
+		this._comments.forEach((comment) => {
+			comment.addActionButtonHandlers(this);
+		});
 	}
 
 	render(): string {
@@ -161,12 +165,12 @@ export class Post extends Component {
 
 	protected _prerender(): void {
 		super._prerender();
-		const comments = this._config.commentsConfigs.map((config) => {
+		this._comments = this._config.commentsConfigs.map((config) => {
 			return new Comment(config, this);
 		});
 		this._templateContext = {
 			...this._templateContext,
-			comments: comments.map((comment) => {
+			comments: this._comments.map((comment) => {
 				return comment.render();
 			}),
 			isMoreComments: this.isMoreComments,
