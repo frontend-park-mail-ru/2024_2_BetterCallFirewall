@@ -49,6 +49,7 @@ html {
     --negative-color: #e33d3d;
     --date-color: #7a7a7a;
     --border: 0.05rem solid rgba(255, 255, 255, 0.5);
+    --border-negative: 1px solid var(--negative-color);
 
     --mobile-width: 768px;
     --desktop-width: 2560px;

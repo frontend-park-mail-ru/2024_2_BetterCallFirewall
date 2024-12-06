@@ -66,7 +66,7 @@ export class Comment extends Component {
 						new ActionConfirmOpen({
 							key: 'confirm',
 							title: 'Удалить комментарий',
-							text: 'Вы действительно хотите удалить комментарий',
+							text: 'Вы действительно хотите удалить комментарий?',
 							actions: [
 								{
 									text: 'Удалить',
