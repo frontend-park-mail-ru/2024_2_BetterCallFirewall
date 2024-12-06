@@ -40,6 +40,7 @@ export const toCommentConfig = (
 		avatar: parseImage(commentResponse.header.avatar),
 		authorName: commentResponse.header.author,
 		createdAt: parseTime(commentResponse.content.created_at),
+		createdAtISO: commentResponse.content.created_at,
 		text: commentResponse.content.text,
 		hasEditButton,
 		hasDeleteButton,
@@ -66,7 +67,7 @@ export const commentPayloadToResponse = (
 		content: {
 			text: payload.text,
 			file: payload.file,
-			created_at: config.createdAt,
+			created_at: config.createdAtISO,
 			updated_at: new Date().toISOString(),
 		},
 		likes_count: 0,

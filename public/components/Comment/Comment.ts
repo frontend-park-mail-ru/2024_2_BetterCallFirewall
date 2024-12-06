@@ -11,6 +11,7 @@ export interface CommentConfig extends ComponentConfig {
 	avatar: string;
 	authorName: string;
 	createdAt: string;
+	createdAtISO: string;
 	text: string;
 	hasEditButton: boolean;
 	hasDeleteButton: boolean;
