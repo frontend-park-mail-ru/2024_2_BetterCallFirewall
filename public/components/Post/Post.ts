@@ -166,7 +166,7 @@ export class Post extends Component {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					this.vnode.element.scrollIntoView({
+					this.commentButtonVNode.element.scrollIntoView({
 						behavior: 'smooth',
 						block: 'center',
 					});
