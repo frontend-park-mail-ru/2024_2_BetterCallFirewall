@@ -40,10 +40,12 @@ export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 			break;
 		case action instanceof ActionCommentEditSuccess:
 			newState.commentsConfigs.forEach((comment) => {
-				Object.assign(
-					comment,
-					toCommentConfig(action.data.commentResponse),
-				);
+				if (comment.id === action.data.commentResponse.id) {
+					Object.assign(
+						comment,
+						toCommentConfig(action.data.commentResponse),
+					);
+				}
 			});
 			break;
 		case action instanceof ActionPostCommentEdit:

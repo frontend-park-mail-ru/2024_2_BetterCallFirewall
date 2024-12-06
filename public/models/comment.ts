@@ -1,5 +1,6 @@
 import app from '../app';
 import { CommentConfig } from '../components/Comment/Comment';
+import { ROOT } from '../config';
 import parseImage from '../modules/parseImage';
 import parseTime from '../modules/parseTime';
 
@@ -60,7 +61,7 @@ export const commentPayloadToResponse = (
 			author_id: config.authorId,
 			author: config.authorName,
 			community_id: config.communityId,
-			avatar: config.avatar,
+			avatar: config.avatar.slice(ROOT.length),
 		},
 		content: {
 			text: payload.text,
