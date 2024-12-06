@@ -2,6 +2,7 @@ import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
 import {
 	ActionCommentCreateSuccess,
+	ActionCommentEditSuccess,
 	ActionCommentRequestSuccess,
 } from '../actions/actionComment';
 import {
@@ -87,6 +88,7 @@ export const reducerProfile = (
 		case action instanceof ActionPostCommentsOpenSwitch:
 		case action instanceof ActionCommentRequestSuccess:
 		case action instanceof ActionCommentCreateSuccess:
+		case action instanceof ActionCommentEditSuccess:
 			newState.profile.posts.forEach((post) => {
 				if (post.id === action.data.postId) {
 					Object.assign(post, reducerPost(post, action));

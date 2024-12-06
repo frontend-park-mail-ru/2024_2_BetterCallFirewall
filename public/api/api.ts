@@ -113,11 +113,15 @@ import {
 	ActionCommentCreate,
 	ActionCommentCreateFail,
 	ActionCommentCreateSuccess,
+	ActionCommentEdit,
+	ActionCommentEditFail,
+	ActionCommentEditSuccess,
 	ActionCommentRequest,
 	ActionCommentRequestFail,
 	ActionCommentRequestSuccess,
 } from '../actions/actionComment';
-import { CommentPayload } from '../models/comment';
+import { CommentPayload, commentPayloadToResponse } from '../models/comment';
+import { CommentConfig } from '../components/Comment/Comment';
 
 export const STATUS = {
 	ok: 200,
@@ -215,6 +219,14 @@ class API {
 			case action instanceof ActionCommentCreate:
 				this.createComment(
 					action.data.postId,
+					action.data.commentPayload,
+				);
+				break;
+			case action instanceof ActionCommentEdit:
+				this.editComment(
+					action.data.postId,
+					action.data.commentId,
+					action.data.commentConfig,
 					action.data.commentPayload,
 				);
 				break;
@@ -820,6 +832,35 @@ class API {
 				break;
 			default:
 				this.sendAction(new ActionCommentCreateFail());
+		}
+	}
+
+	async editComment(
+		postId: number,
+		commentId: number,
+		commentConfig: CommentConfig,
+		commentPayload: CommentPayload,
+	) {
+		const response = await ajax.editComment(
+			postId,
+			commentId,
+			commentPayload,
+		);
+		switch (response.status) {
+			case STATUS.ok:
+				if (response.data) {
+					this.sendAction(new ActionCommentEditFail());
+					break;
+				}
+				this.sendAction(
+					new ActionCommentEditSuccess(
+						commentPayloadToResponse(commentConfig, commentPayload),
+						postId,
+					),
+				);
+				break;
+			default:
+				this.sendAction(new ActionCommentEditFail());
 		}
 	}
 }

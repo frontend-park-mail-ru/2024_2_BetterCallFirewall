@@ -9,6 +9,8 @@ export interface CommentConfig extends ComponentConfig {
 	authorName: string;
 	createdAt: string;
 	text: string;
+	hasEditButton: boolean;
+	hasDeleteButton: boolean;
 }
 
 export class Comment extends Component {

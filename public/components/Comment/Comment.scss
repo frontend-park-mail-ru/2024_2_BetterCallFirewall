@@ -25,4 +25,18 @@
         line-height: 1.5;
         overflow: hidden;
     }
+    &:hover {
+        &__edit {
+            display: block;
+        }
+        &__delete {
+            display: block;
+        }
+    }
+    &__edit {
+        display: none;
+    }
+    &__delete {
+        display: none;
+    }
 }

@@ -1,3 +1,4 @@
+import { CommentConfig } from '../components/Comment/Comment';
 import { CommentPayload, CommentResponse } from '../models/comment';
 import { Action, ActionType } from './action';
 
@@ -8,6 +9,9 @@ export const ACTION_COMMENT_TYPES = {
 	create: 'actionCommentCreate',
 	createSuccess: 'actionCommentCreateSuccess',
 	createFail: 'actionCommentCreateFail',
+	edit: 'actionCommentEdit',
+	editSuccess: 'actionCommentEditSuccess',
+	editFail: 'actionCommentEditFail',
 };
 
 export class ActionCommentRequest implements Action {
@@ -57,5 +61,36 @@ export class ActionCommentCreateSuccess implements Action {
 }
 export class ActionCommentCreateFail implements Action {
 	type: ActionType = ACTION_COMMENT_TYPES.createFail;
+	data: object = {};
+}
+
+export class ActionCommentEdit implements Action {
+	type: ActionType = ACTION_COMMENT_TYPES.edit;
+	data: {
+		postId: number;
+		commentId: number;
+		commentConfig: CommentConfig;
+		commentPayload: CommentPayload;
+	};
+
+	constructor(
+		postId: number,
+		commentId: number,
+		commentConfig: CommentConfig,
+		commentPayload: CommentPayload,
+	) {
+		this.data = { postId, commentId, commentConfig, commentPayload };
+	}
+}
+export class ActionCommentEditSuccess implements Action {
+	type: ActionType = ACTION_COMMENT_TYPES.editSuccess;
+	data: { commentResponse: CommentResponse; postId: number };
+
+	constructor(commentResponse: CommentResponse, postId: number) {
+		this.data = { commentResponse, postId };
+	}
+}
+export class ActionCommentEditFail implements Action {
+	type: ActionType = ACTION_COMMENT_TYPES.editFail;
 	data: object = {};
 }

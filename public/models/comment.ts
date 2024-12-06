@@ -1,3 +1,4 @@
+import app from '../app';
 import { CommentConfig } from '../components/Comment/Comment';
 import parseImage from '../modules/parseImage';
 import parseTime from '../modules/parseTime';
@@ -27,6 +28,9 @@ export interface CommentResponse {
 export const toCommentConfig = (
 	commentResponse: CommentResponse,
 ): CommentConfig => {
+	const userId = app.stores.home.state.main.header.profile.id;
+	const hasEditButton = userId === commentResponse.header.author_id;
+	const hasDeleteButton = hasEditButton;
 	return {
 		id: commentResponse.id,
 		communityId: commentResponse.header.community_id,
@@ -36,6 +40,8 @@ export const toCommentConfig = (
 		authorName: commentResponse.header.author,
 		createdAt: parseTime(commentResponse.content.created_at),
 		text: commentResponse.content.text,
+		hasEditButton,
+		hasDeleteButton,
 	};
 };
 
@@ -43,3 +49,26 @@ export interface CommentPayload {
 	text: string;
 	file: string;
 }
+
+export const commentPayloadToResponse = (
+	config: CommentConfig,
+	payload: CommentPayload,
+): CommentResponse => {
+	return {
+		id: config.id,
+		header: {
+			author_id: config.authorId,
+			author: config.authorName,
+			community_id: config.communityId,
+			avatar: config.avatar,
+		},
+		content: {
+			text: payload.text,
+			file: payload.file,
+			created_at: config.createdAt,
+			updated_at: new Date().toISOString(),
+		},
+		likes_count: 0,
+		is_liked: false,
+	};
+};

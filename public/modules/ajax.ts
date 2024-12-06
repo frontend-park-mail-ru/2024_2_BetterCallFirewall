@@ -502,6 +502,16 @@ class Ajax {
 		return this._genericRequestResponse(url, 'get');
 	}
 
+	async editComment(
+		postId: number,
+		commentId: number,
+		commentPayload: CommentPayload,
+	): Promise<AjaxResponse<object>> {
+		let url = replaceId(app.config.URL.comment, postId);
+		url = url.replace('{comment_id}', `${commentId}`);
+		return this._genericRequestResponse(url, 'put', commentPayload);
+	}
+
 	/**
 	 * Sending data form data
 	 *

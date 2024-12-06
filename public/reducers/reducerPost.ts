@@ -1,6 +1,7 @@
 import { Action } from '../actions/action';
 import {
 	ActionCommentCreateSuccess,
+	ActionCommentEditSuccess,
 	ActionCommentRequestSuccess,
 } from '../actions/actionComment';
 import { ActionPostCommentsOpenSwitch } from '../actions/actionPost';
@@ -30,10 +31,16 @@ export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 				newState.commentsConfigs.concat(newComments);
 			break;
 		}
-
 		case action instanceof ActionPostCommentsOpenSwitch:
 			newState.commentsOpen = action.data.show;
 			break;
+		case action instanceof ActionCommentEditSuccess:
+			newState.commentsConfigs.forEach((comment) => {
+				Object.assign(
+					comment,
+					toCommentConfig(action.data.commentResponse),
+				);
+			});
 	}
 	return newState;
 };

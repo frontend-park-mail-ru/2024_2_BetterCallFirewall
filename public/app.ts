@@ -106,6 +106,7 @@ export interface URLInterface {
 	header: string;
 	post: string;
 	comments: string;
+	comment: string;
 	messages: string;
 	chat: string;
 	chatWS: string;
@@ -384,6 +385,7 @@ class App {
 		this._stores.feed.subscribe(ACTION_POST_TYPES.commentsOpenSwitch);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.createSuccess);
+		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.editSuccess);
 
 		this._stores.profile.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
@@ -416,6 +418,7 @@ class App {
 		this._stores.profile.subscribe(ACTION_POST_TYPES.commentsOpenSwitch);
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.createSuccess);
+		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.editSuccess);
 
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.subscribeSuccess);

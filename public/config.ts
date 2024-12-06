@@ -551,6 +551,7 @@ const URL: URLInterface = DEBUG
 			csatMetrics: '',
 			image: '',
 			comments: '',
+			comment: '',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -572,6 +573,7 @@ const URL: URLInterface = DEBUG
 			profileSubscriptions: ROOT + apiv1 + '/profile/{id}/subscriptions',
 			post: ROOT + apiv1 + '/feed/{id}',
 			comments: ROOT + apiv1 + '/feed/{id}/comments',
+			comment: ROOT + apiv1 + '/feed/{id}/{comment_id}',
 			messages: ROOT + apiv1 + '/messages/chats',
 			chat: ROOT + apiv1 + '/messages/chat/{id}',
 			chatWS: ROOT_WS + apiv1 + '/message/ws',
