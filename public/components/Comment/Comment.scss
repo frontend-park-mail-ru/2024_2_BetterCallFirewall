@@ -26,10 +26,10 @@
         overflow: hidden;
     }
     &:hover {
-        &__edit {
+        .comment__edit {
             display: block;
         }
-        &__delete {
+        .comment__delete {
             display: block;
         }
     }
