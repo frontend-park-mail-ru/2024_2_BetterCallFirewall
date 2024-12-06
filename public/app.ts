@@ -80,6 +80,7 @@ import {
 } from './views/groupEdit/viewGroupEdit';
 import { StoreGroupEdit } from './stores/storeGroupEdit';
 import { ACTION_COMMENT_TYPES } from './actions/actionComment';
+import { ACTION_CONFIRM_TYPES } from './actions/actionConfirm';
 
 export const PAGES = {
 	home: 'home',
@@ -362,6 +363,7 @@ class App {
 		this._stores.home.subscribe(ACTION_GROUPS_TYPES.search);
 		this._stores.home.subscribe(ACTION_GROUPS_TYPES.searchSuccess);
 		this._stores.home.subscribe(ACTION_GROUPS_TYPES.searchFail);
+		this._stores.home.subscribe(ACTION_CONFIRM_TYPES.open);
 
 		this._stores.login.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.login.subscribe(ACTION_APP_TYPES.goTo);

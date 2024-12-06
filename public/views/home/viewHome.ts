@@ -1,4 +1,5 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
+import { ACTION_CONFIRM_TYPES } from '../../actions/actionConfirm';
 import { ActionGroupsSearch } from '../../actions/actionGroups';
 import {
 	ActionHeaderLogoutClickFail,
@@ -25,6 +26,7 @@ import {
 	ContentConfig,
 	Content,
 } from '../../components';
+import { ConfirmConfig } from '../../components/Confirm/Confirm';
 import { CSAT, CSATConfig } from '../../components/CSAT/CSAT';
 import Menu from '../../components/Menu/Menu';
 import { PAGE_LINKS, PAGE_URLS } from '../../config';
@@ -46,6 +48,7 @@ export interface HomeConfig {
 	menu: MenuConfig;
 	main: MainConfig;
 	csat: CSATConfig;
+	confirm?: ConfirmConfig;
 }
 
 export type ComponentsHome = {
@@ -72,6 +75,8 @@ export abstract class ViewHome extends View {
 
 	handleChange(change: ChangeHome): void {
 		switch (change.type) {
+			case ACTION_CONFIRM_TYPES.open:
+			case ACTION_CONFIRM_TYPES.close:
 			case ACTION_PROFILE_TYPES.getHeaderSuccess:
 			case ACTION_MENU_TYPES.updateProfileLinkHref:
 				this.updateViewHome(change.data);

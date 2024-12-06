@@ -1,0 +1,14 @@
+.confirm {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &-pad {
+        padding: 2rem;
+        border: var(--border);
+        border-radius: 1rem;
+    }
+    &__actions {
+        display: flex;
+    }
+}

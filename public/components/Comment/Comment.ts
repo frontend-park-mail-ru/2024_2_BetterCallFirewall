@@ -1,8 +1,9 @@
-import { ActionCommentDelete } from '../../actions/actionComment';
+import { ActionConfirmOpen } from '../../actions/actionConfirm';
 import { ActionPostCommentEdit } from '../../actions/actionPost';
 import { groupPageHref, profileHref } from '../../modules/urls';
 import { VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
+import { Style } from '../Confirm/Confirm';
 import { Post } from '../Post/Post';
 
 export interface CommentConfig extends ComponentConfig {
@@ -62,11 +63,28 @@ export class Comment extends Component {
 				callback: (event) => {
 					event.preventDefault();
 					this._sendAction(
-						new ActionCommentDelete(
-							post.config.id,
-							this._config.id,
-						),
+						new ActionConfirmOpen({
+							key: 'confirm',
+							title: 'Удалить комментарий',
+							text: 'Вы действительно хотите удалить комментарий',
+							actions: [
+								{
+									text: 'Удалить',
+									style: Style.Negative,
+								},
+								{
+									text: 'Отмена',
+									style: Style.Main,
+								},
+							],
+						}),
 					);
+					// this._sendAction(
+					// 	new ActionCommentDelete(
+					// 		post.config.id,
+					// 		this._config.id,
+					// 	),
+					// );
 				},
 			});
 		}

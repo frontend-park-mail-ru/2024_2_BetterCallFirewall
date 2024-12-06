@@ -1,0 +1,17 @@
+<div class="confirm">
+    <div class="confirm-pad">
+        <div class="confirm__header">
+            {{this.title}}
+        </div>
+        <div class="confirm__text">
+            {{this.text}}
+        </div>
+        <div class="confirm__actions">
+            {{#each this.actions}}
+                <div class="confirm__action">
+                    <button class="button-action button-no-decoration {{this.style}}">{{this.text}}</button>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
