@@ -158,6 +158,10 @@
     }
     &__comments {
         border-top: var(--border);
+        &-actions {
+            display: flex;
+            justify-content: space-between;
+        }
         &_hidden {
             display: none;
         }
@@ -171,9 +175,7 @@
 }
 
 .comments {
-    &__more-button {
-        display: flex;
-        justify-content: end;
+    &__action-button {
         cursor: pointer;
         color: var(--main-color);
         text-decoration: none;

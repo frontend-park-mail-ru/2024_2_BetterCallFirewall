@@ -67,9 +67,14 @@
         {{#each this.comments}}
             {{{this}}}
         {{/each}}
-        {{#if this.isMoreComments}}
-            <span class="comments__more-button">Показать следующие комментарии</span>
-        {{/if}}
+        <div class="post__comments-actions">
+            {{#if this.isMoreComments}}
+                <span class="comments__action-button comments__more-button">Показать следующие комментарии</span>
+            {{/if}}
+            {{#if this.hasCloseCommentsButton}}
+                <span class="comments__action-button comments__close-button">Закрыть комментарии</span>
+            {{/if}}
+        </div>
         <form action="" class="post__comments sender" data-key="comment-form">
             <textarea class="sender__input post__comments-input" type="text" placeholder="Напишите комментарий.." maxlength="{{this.commentTextLimit}}" data-key="comment-textarea">{{this.inputText}}</textarea>
             <button class="sender__send button-no-decorations post__comments-sender">

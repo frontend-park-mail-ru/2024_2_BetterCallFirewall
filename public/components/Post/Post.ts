@@ -63,6 +63,10 @@ export class Post extends Component {
 			: false;
 	}
 
+	get hasCloseCommentsButton(): boolean {
+		return this._config.commentsConfigs.length ? true : false;
+	}
+
 	get editButtonVNode(): VNode {
 		const vnode = findVNodeByClass(this.vnode, 'post__header-edit');
 		if (!vnode) {
@@ -105,6 +109,10 @@ export class Post extends Component {
 
 	get moreCommentsButtonVNode(): VNode {
 		return this._findVNodeByClass('comments__more-button');
+	}
+
+	get closeCommentsButtonVNode(): VNode {
+		return this._findVNodeByClass('comments__close-button');
 	}
 
 	addLikeHandler() {
@@ -153,6 +161,23 @@ export class Post extends Component {
 				},
 			});
 		}
+		if (this.hasCloseCommentsButton) {
+			this.closeCommentsButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.commentButtonVNode.element.scrollIntoView({
+						behavior: 'smooth',
+					});
+					this._sendAction(
+						new ActionPostCommentsOpenSwitch(
+							false,
+							this._config.id,
+						),
+					);
+				},
+			});
+		}
 		this._comments.forEach((comment) => {
 			comment.addActionButtonHandlers(this);
 		});
@@ -174,6 +199,7 @@ export class Post extends Component {
 				return comment.render();
 			}),
 			isMoreComments: this.isMoreComments,
+			hasCloseCommentsButton: this.hasCloseCommentsButton,
 			commentTextLimit: INPUT_LIMITS.commentText,
 		};
 	}
