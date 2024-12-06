@@ -1,8 +1,8 @@
 import Component, { ComponentConfig } from '../Component';
 
 export enum Style {
-	Main = 'confirm__action_main',
-	Negative = 'confirm__action_negative',
+	Main = 'button-action confirm__action_main',
+	Negative = 'button-action-negative confirm__action_negative',
 }
 
 interface ConfirmAction {
