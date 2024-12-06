@@ -387,6 +387,7 @@ class App {
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.createSuccess);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.editSuccess);
+		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.deleteSuccess);
 
 		this._stores.profile.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);

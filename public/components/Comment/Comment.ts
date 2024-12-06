@@ -1,3 +1,4 @@
+import { ActionCommentDelete } from '../../actions/actionComment';
 import { ActionPostCommentEdit } from '../../actions/actionPost';
 import { groupPageHref, profileHref } from '../../modules/urls';
 import { VNode } from '../../modules/vdom';
@@ -48,6 +49,20 @@ export class Comment extends Component {
 					textarea.value = this._config.text;
 					this._sendAction(
 						new ActionPostCommentEdit(
+							post.config.id,
+							this._config.id,
+						),
+					);
+				},
+			});
+		}
+		if (this._config.hasDeleteButton) {
+			this.deleteButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this._sendAction(
+						new ActionCommentDelete(
 							post.config.id,
 							this._config.id,
 						),

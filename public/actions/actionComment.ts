@@ -12,6 +12,9 @@ export const ACTION_COMMENT_TYPES = {
 	edit: 'actionCommentEdit',
 	editSuccess: 'actionCommentEditSuccess',
 	editFail: 'actionCommentEditFail',
+	delete: 'actionCommentDelete',
+	deleteSuccess: 'actionCommentDeleteSuccess',
+	deleteFail: 'actionCommentDeleteFail',
 };
 
 export class ActionCommentRequest implements Action {
@@ -92,5 +95,26 @@ export class ActionCommentEditSuccess implements Action {
 }
 export class ActionCommentEditFail implements Action {
 	type: ActionType = ACTION_COMMENT_TYPES.editFail;
+	data: object = {};
+}
+
+export class ActionCommentDelete implements Action {
+	type: string = ACTION_COMMENT_TYPES.delete;
+	data: { postId: number; commentId: number };
+
+	constructor(postId: number, commentId: number) {
+		this.data = { postId, commentId };
+	}
+}
+export class ActionCommentDeleteSuccess implements Action {
+	type: string = ACTION_COMMENT_TYPES.deleteSuccess;
+	data: { postId: number; commentId: number };
+
+	constructor(postId: number, commentId: number) {
+		this.data = { postId, commentId };
+	}
+}
+export class ActionCommentDeleteFail implements Action {
+	type: string = ACTION_COMMENT_TYPES.deleteFail;
 	data: object = {};
 }

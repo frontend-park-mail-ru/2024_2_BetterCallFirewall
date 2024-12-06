@@ -502,6 +502,9 @@ class Ajax {
 		return this._genericRequestResponse(url, 'get');
 	}
 
+	/**
+	 * Редактировать комментарий
+	 */
 	async editComment(
 		postId: number,
 		commentId: number,
@@ -510,6 +513,18 @@ class Ajax {
 		let url = replaceId(app.config.URL.comment, postId);
 		url = url.replace('{comment_id}', `${commentId}`);
 		return this._genericRequestResponse(url, 'put', commentPayload);
+	}
+
+	/**
+	 * Удалить комментарий
+	 */
+	async deleteComment(
+		postId: number,
+		commentId: number,
+	): Promise<AjaxResponse<object>> {
+		let url = replaceId(app.config.URL.comment, postId);
+		url = url.replace('{commentId}', `${commentId}`);
+		return this._genericRequestResponse(url, 'delete');
 	}
 
 	/**

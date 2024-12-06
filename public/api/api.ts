@@ -113,6 +113,9 @@ import {
 	ActionCommentCreate,
 	ActionCommentCreateFail,
 	ActionCommentCreateSuccess,
+	ActionCommentDelete,
+	ActionCommentDeleteFail,
+	ActionCommentDeleteSuccess,
 	ActionCommentEdit,
 	ActionCommentEditFail,
 	ActionCommentEditSuccess,
@@ -229,6 +232,9 @@ class API {
 					action.data.commentConfig,
 					action.data.commentPayload,
 				);
+				break;
+			case action instanceof ActionCommentDelete:
+				this.deleteComment(action.data.postId, action.data.commentId);
 				break;
 		}
 	}
@@ -861,6 +867,19 @@ class API {
 				break;
 			default:
 				this.sendAction(new ActionCommentEditFail());
+		}
+	}
+
+	async deleteComment(postId: number, commentId: number) {
+		const response = await ajax.deleteComment(postId, commentId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(
+					new ActionCommentDeleteSuccess(postId, commentId),
+				);
+				break;
+			default:
+				this.sendAction(new ActionCommentDeleteFail());
 		}
 	}
 }

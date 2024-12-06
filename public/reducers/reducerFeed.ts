@@ -1,6 +1,7 @@
 import { Action } from '../actions/action';
 import {
 	ActionCommentCreateSuccess,
+	ActionCommentDeleteSuccess,
 	ActionCommentEditSuccess,
 	ActionCommentRequestSuccess,
 } from '../actions/actionComment';
@@ -93,6 +94,7 @@ export const reducerFeed = (
 		case action instanceof ActionCommentRequestSuccess:
 		case action instanceof ActionCommentCreateSuccess:
 		case action instanceof ActionCommentEditSuccess:
+		case action instanceof ActionCommentDeleteSuccess:
 			newState.posts.forEach((post) => {
 				if (post.id === action.data.postId) {
 					Object.assign(post, reducerPost(post, action));

@@ -1,6 +1,7 @@
 import { Action } from '../actions/action';
 import {
 	ActionCommentCreateSuccess,
+	ActionCommentDeleteSuccess,
 	ActionCommentEdit,
 	ActionCommentEditSuccess,
 	ActionCommentRequestSuccess,
@@ -53,6 +54,14 @@ export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 			break;
 		case action instanceof ActionCommentEdit:
 			newState.commentEditId = 0;
+			break;
+		case action instanceof ActionCommentDeleteSuccess:
+			newState.commentsCount--;
+			newState.commentsConfigs = newState.commentsConfigs.filter(
+				(comment) => {
+					return comment.id !== action.data.commentId;
+				},
+			);
 			break;
 	}
 	return newState;
