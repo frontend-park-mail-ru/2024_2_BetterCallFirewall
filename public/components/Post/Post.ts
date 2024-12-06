@@ -168,6 +168,7 @@ export class Post extends Component {
 					event.preventDefault();
 					this.vnode.element.scrollIntoView({
 						behavior: 'smooth',
+						block: 'center',
 					});
 					this._sendAction(
 						new ActionPostCommentsOpenSwitch(
