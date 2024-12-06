@@ -1,5 +1,6 @@
 import {
 	ActionCommentCreate,
+	ActionCommentEdit,
 	ActionCommentRequest,
 } from '../../actions/actionComment';
 import {
@@ -31,6 +32,7 @@ export interface PostConfig extends ComponentConfig {
 	commentsCount: number;
 	commentsConfigs: CommentConfig[];
 	commentsOpen: boolean;
+	commentEditId: number;
 }
 
 /**
@@ -93,9 +95,7 @@ export class Post extends Component {
 	}
 
 	get commentTextareaHTML(): HTMLTextAreaElement {
-		return this._findHTML(
-			`[data-key=${this._config.key}] [data-key=comment-textarea]`,
-		) as HTMLTextAreaElement;
+		return this.commentTextareaVNode.element as HTMLTextAreaElement;
 	}
 
 	get commentButtonVNode(): VNode {
@@ -194,8 +194,21 @@ export class Post extends Component {
 			file: '',
 		};
 		textarea.value = '';
-		this._sendAction(
-			new ActionCommentCreate(this._config.id, commentPayload),
-		);
+		if (this._config.commentEditId) {
+			this._sendAction(
+				new ActionCommentEdit(
+					this._config.id,
+					this._config.commentEditId,
+					this._config.commentsConfigs.filter((config) => {
+						return config.id === this._config.commentEditId;
+					})[0],
+					commentPayload,
+				),
+			);
+		} else {
+			this._sendAction(
+				new ActionCommentCreate(this._config.id, commentPayload),
+			);
+		}
 	}
 }

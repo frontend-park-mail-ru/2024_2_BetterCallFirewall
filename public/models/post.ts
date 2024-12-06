@@ -46,6 +46,7 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		commentsCount: postResponse.comment_count,
 		commentsConfigs: [],
 		commentsOpen: false,
+		commentEditId: 0,
 	};
 };
 

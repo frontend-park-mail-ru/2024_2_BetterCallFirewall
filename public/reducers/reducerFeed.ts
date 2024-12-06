@@ -12,6 +12,7 @@ import {
 } from '../actions/actionFeed';
 import {
 	ACTION_POST_TYPES,
+	ActionPostCommentEdit,
 	ActionPostCommentsOpenSwitch,
 	ActionPostLikeData,
 } from '../actions/actionPost';
@@ -88,6 +89,7 @@ export const reducerFeed = (
 	}
 	switch (true) {
 		case action instanceof ActionPostCommentsOpenSwitch:
+		case action instanceof ActionPostCommentEdit:
 		case action instanceof ActionCommentRequestSuccess:
 		case action instanceof ActionCommentCreateSuccess:
 		case action instanceof ActionCommentEditSuccess:

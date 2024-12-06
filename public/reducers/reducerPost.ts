@@ -1,10 +1,14 @@
 import { Action } from '../actions/action';
 import {
 	ActionCommentCreateSuccess,
+	ActionCommentEdit,
 	ActionCommentEditSuccess,
 	ActionCommentRequestSuccess,
 } from '../actions/actionComment';
-import { ActionPostCommentsOpenSwitch } from '../actions/actionPost';
+import {
+	ActionPostCommentEdit,
+	ActionPostCommentsOpenSwitch,
+} from '../actions/actionPost';
 import { PostConfig } from '../components';
 import { toCommentConfig } from '../models/comment';
 import deepClone from '../modules/deepClone';
@@ -41,6 +45,13 @@ export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 					toCommentConfig(action.data.commentResponse),
 				);
 			});
+			break;
+		case action instanceof ActionPostCommentEdit:
+			newState.commentEditId = action.data.commentId;
+			break;
+		case action instanceof ActionCommentEdit:
+			newState.commentEditId = 0;
+			break;
 	}
 	return newState;
 };

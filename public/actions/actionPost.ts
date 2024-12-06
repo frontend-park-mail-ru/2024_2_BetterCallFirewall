@@ -6,6 +6,7 @@ export const ACTION_POST_TYPES = {
 	likeSuccess: 'actionPostLikeSuccess',
 	likeFail: 'actionPostLikeFail',
 	commentsOpenSwitch: 'actionPostCommentsOpenSwitch',
+	commentEdit: 'actionPostCommentEdit',
 };
 
 export interface ActionPostLikeData {
@@ -57,5 +58,14 @@ export class ActionPostCommentsOpenSwitch implements Action {
 
 	constructor(show: boolean, postId: number) {
 		this.data = { show, postId };
+	}
+}
+
+export class ActionPostCommentEdit implements Action {
+	type: ActionType = ACTION_POST_TYPES.commentEdit;
+	data: { postId: number; commentId: number };
+
+	constructor(postId: number, commentId: number) {
+		this.data = { postId, commentId };
 	}
 }

@@ -383,6 +383,7 @@ class App {
 		this._stores.feed.subscribe(ACTION_POST_TYPES.likeSuccess);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.likeFail);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.commentsOpenSwitch);
+		this._stores.feed.subscribe(ACTION_POST_TYPES.commentEdit);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.createSuccess);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.editSuccess);

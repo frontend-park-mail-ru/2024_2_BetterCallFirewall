@@ -1,5 +1,8 @@
+import { ActionPostCommentEdit } from '../../actions/actionPost';
 import { groupPageHref, profileHref } from '../../modules/urls';
+import { VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
+import { Post } from '../Post/Post';
 
 export interface CommentConfig extends ComponentConfig {
 	id: number;
@@ -21,6 +24,38 @@ export class Comment extends Component {
 		this._config = config;
 	}
 
+	get config(): CommentConfig {
+		return this._config;
+	}
+
+	get editButtonVNode(): VNode {
+		return this._findVNodeByClass('comment__edit');
+	}
+
+	get deleteButtonVNode(): VNode {
+		return this._findVNodeByClass('comment__delete');
+	}
+
+	addActionButtonHandlers(post: Post) {
+		this.editButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				const textarea = post.commentTextareaHTML;
+				textarea.focus();
+				textarea.value = this._config.text;
+				this._sendAction(
+					new ActionPostCommentEdit(post.config.id, this._config.id),
+				);
+			},
+		});
+	}
+
+	render(): string {
+		this._prerender();
+		return this._render('Comment.hbs');
+	}
+
 	protected _prerender(): void {
 		super._prerender();
 		const authorHref = this._config.communityId
@@ -30,10 +65,5 @@ export class Comment extends Component {
 			...this._templateContext,
 			authorHref,
 		};
-	}
-
-	render(): string {
-		this._prerender();
-		return this._render('Comment.hbs');
 	}
 }
