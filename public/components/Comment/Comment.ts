@@ -37,18 +37,23 @@ export class Comment extends Component {
 	}
 
 	addActionButtonHandlers(post: Post) {
-		this.editButtonVNode.handlers.push({
-			event: 'click',
-			callback: (event) => {
-				event.preventDefault();
-				const textarea = post.commentTextareaHTML;
-				textarea.focus();
-				textarea.value = this._config.text;
-				this._sendAction(
-					new ActionPostCommentEdit(post.config.id, this._config.id),
-				);
-			},
-		});
+		if (this._config.hasEditButton) {
+			this.editButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					const textarea = post.commentTextareaHTML;
+					textarea.focus();
+					textarea.value = this._config.text;
+					this._sendAction(
+						new ActionPostCommentEdit(
+							post.config.id,
+							this._config.id,
+						),
+					);
+				},
+			});
+		}
 	}
 
 	render(): string {
