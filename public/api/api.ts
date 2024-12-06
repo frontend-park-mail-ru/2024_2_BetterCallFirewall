@@ -848,7 +848,7 @@ class API {
 		);
 		switch (response.status) {
 			case STATUS.ok:
-				if (response.data) {
+				if (!response.data) {
 					this.sendAction(new ActionCommentEditFail());
 					break;
 				}
