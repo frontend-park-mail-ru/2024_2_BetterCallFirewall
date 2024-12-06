@@ -523,7 +523,7 @@ class Ajax {
 		commentId: number,
 	): Promise<AjaxResponse<object>> {
 		let url = replaceId(app.config.URL.comment, postId);
-		url = url.replace('{commentId}', `${commentId}`);
+		url = url.replace('{comment_id}', `${commentId}`);
 		return this._genericRequestResponse(url, 'delete');
 	}
 
