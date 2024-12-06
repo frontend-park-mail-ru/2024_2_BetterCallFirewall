@@ -55,7 +55,9 @@ export class Post extends Component {
 	}
 
 	get isMoreComments(): boolean {
-		return this._config.commentsCount > this._config.commentsConfigs.length;
+		return this._config.commentsConfigs.length
+			? this._config.commentsCount > this._config.commentsConfigs.length
+			: false;
 	}
 
 	get editButtonVNode(): VNode {
