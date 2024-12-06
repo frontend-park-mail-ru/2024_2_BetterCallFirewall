@@ -26,7 +26,7 @@ import {
 	ContentConfig,
 	Content,
 } from '../../components';
-import { ConfirmConfig } from '../../components/Confirm/Confirm';
+import { Confirm, ConfirmConfig } from '../../components/Confirm/Confirm';
 import { CSAT, CSATConfig } from '../../components/CSAT/CSAT';
 import Menu from '../../components/Menu/Menu';
 import { PAGE_LINKS, PAGE_URLS } from '../../config';
@@ -57,6 +57,7 @@ export type ComponentsHome = {
 	header?: Header;
 	content?: Content;
 	aside?: Container;
+	confirm?: Confirm;
 	csat?: CSAT;
 } & Components;
 
@@ -136,6 +137,12 @@ export abstract class ViewHome extends View {
 			this._configHome.main.aside,
 			this._components.main,
 		);
+		if (this._configHome.confirm) {
+			this._components.confirm = new Confirm(
+				this._configHome.confirm,
+				this._root,
+			);
+		}
 	}
 
 	protected _addHandlers() {
