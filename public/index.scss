@@ -280,7 +280,7 @@ input::placeholder, textarea::placeholder {
     }
 }
 
-.svg-button {
+.svg-button-edit {
     &:hover {
         cursor: pointer;
         path {
@@ -292,16 +292,34 @@ input::placeholder, textarea::placeholder {
             stroke: var(--main-text-color);
         }
     }
+}
+
+.svg-button {
+    &:hover {
+        cursor: pointer;
+        path {
+            stroke: var(--main-color);
+            fill: var(--main-color);
+        }
+    }
+    &:active {
+        path {
+            stroke: var(--main-text-color);
+            fill: var(--main-text-color);
+        }
+    }
     &_negative {
         &:hover {
             cursor: pointer;
             path {
                 stroke: var(--negative-color);
+                fill: var(--negative-color);
             }
         }
         &:active {
             path {
                 stroke: var(--main-text-color);
+                fill: var(--main-text-color);
             }
         }
     }
