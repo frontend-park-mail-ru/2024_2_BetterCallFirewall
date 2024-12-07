@@ -65,6 +65,9 @@ export default abstract class Component {
 		}
 		this._vnode = vnode;
 		this._addHandlers();
+		this._children.forEach((child) => {
+			child._addHandlers();
+		});
 		return this._vnode;
 	}
 
