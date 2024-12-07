@@ -425,6 +425,7 @@ class App {
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.createSuccess);
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.editSuccess);
+		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.deleteSuccess);
 		this._stores.profile.subscribe(ACTION_CONFIRM_TYPES.close);
 
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);
@@ -501,6 +502,11 @@ class App {
 		);
 		this._stores.groupPage.subscribe(ACTION_POST_TYPES.likeSuccess);
 		this._stores.groupPage.subscribe(ACTION_POST_TYPES.likeFail);
+		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
+		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.createSuccess);
+		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.editSuccess);
+		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.deleteSuccess);
+		this._stores.groupPage.subscribe(ACTION_CONFIRM_TYPES.close);
 
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.updateProfileEdit,
