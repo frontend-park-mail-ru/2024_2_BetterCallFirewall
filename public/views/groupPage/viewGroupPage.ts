@@ -20,7 +20,6 @@ import { PAGE_LINKS, PAGE_URLS, ROOT, THROTTLE_LIMITS } from '../../config';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
 import { throttle } from '../../modules/throttle';
-import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
 import {
 	ACTION_GROUPS_TYPES,
 	ActionGroupsFollowGroup,
@@ -242,21 +241,9 @@ export class ViewGroupPage extends ViewHome {
 				},
 			});
 		}
-		post.likeButtonVNode.handlers.push({
-			event: 'click',
-			callback: (event) => {
-				event.preventDefault();
-				this._likePost(post);
-			},
-		});
+		post.addCommentHandlers();
+		post.addLikeHandler();
 	}
-	private _likePost = throttle((post: Post) => {
-		if (post.config.likedByUser) {
-			this.sendAction(new ActionPostUnlike(post.config.id));
-		} else {
-			this.sendAction(new ActionPostLike(post.config.id));
-		}
-	}, 1000);
 
 	private _groupPageRequest = throttle(() => {
 		this.sendAction(new ActionGroupPageRequest(app.router.path));
