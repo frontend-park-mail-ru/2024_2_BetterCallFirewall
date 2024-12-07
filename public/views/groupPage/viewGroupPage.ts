@@ -26,6 +26,8 @@ import {
 	ActionGroupsFollowGroup,
 	ActionGroupsUnfollowGroup,
 } from '../../actions/actionGroups';
+import { ActionConfirmOpen } from '../../actions/actionConfirm';
+import { Style } from '../../components/Confirm/Confirm';
 
 export type ComponentsGroupPage = {
 	groupPage?: GroupPage;
@@ -213,9 +215,29 @@ export class ViewGroupPage extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					api.deletePost(
-						post.config.id,
-						`?community=${this._configGroupPage.groupPage.id}`,
+					this.sendAction(
+						new ActionConfirmOpen({
+							key: 'confirm-post-delete',
+							title: 'Удалить пост?',
+							text: '',
+							actions: [
+								{
+									text: 'Удалить',
+									style: Style.Negative,
+									callback: (event) => {
+										event.preventDefault();
+										api.deletePost(
+											post.config.id,
+											`?community=${this._configGroupPage.groupPage.id}`,
+										);
+									},
+								},
+								{
+									text: 'Отмена',
+									style: Style.Main,
+								},
+							],
+						}),
 					);
 				},
 			});
