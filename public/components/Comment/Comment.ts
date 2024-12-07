@@ -89,12 +89,6 @@ export class Comment extends Component {
 							],
 						}),
 					);
-					// this._sendAction(
-					// 	new ActionCommentDelete(
-					// 		post.config.id,
-					// 		this._config.id,
-					// 	),
-					// );
 				},
 			});
 		}

@@ -1,5 +1,6 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
 import { ActionChatGoToChat } from '../../actions/actionChat';
+import { ActionConfirmOpen } from '../../actions/actionConfirm';
 import {
 	ACTION_FRIENDS_TYPES,
 	ActionFriendsAccept,
@@ -18,6 +19,7 @@ import { ActionUserUnauthorized } from '../../actions/actionUser';
 import api from '../../api/api';
 import app from '../../app';
 import { Post, Root } from '../../components';
+import { Style } from '../../components/Confirm/Confirm';
 import { ProfileConfig, Profile } from '../../components/Profile/Profile';
 import { PAGE_LINKS, PAGE_URLS } from '../../config';
 import { throttle } from '../../modules/throttle';
@@ -134,7 +136,29 @@ export class ViewProfile extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					this.sendAction(new ActionProfileDelete());
+					this.sendAction(
+						new ActionConfirmOpen({
+							key: 'confirm-profile-delete',
+							title: '',
+							text: 'Удалить аккаунт?',
+							actions: [
+								{
+									text: 'Удалить',
+									style: Style.Negative,
+									callback: (event) => {
+										event.preventDefault();
+										this.sendAction(
+											new ActionProfileDelete(),
+										);
+									},
+								},
+								{
+									text: 'Отмена',
+									style: Style.Main,
+								},
+							],
+						}),
+					);
 				},
 			});
 		}
