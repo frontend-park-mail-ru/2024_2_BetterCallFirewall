@@ -184,6 +184,12 @@
     &__close-button {
         margin-left: auto;
     }
+    &__sort-select {
+        color: var(--main-color);
+        background-color: var(--second-bg-color);
+        border: none;
+        margin: 0.5rem;
+    }
 }
 
 .header-text {
