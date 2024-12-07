@@ -231,6 +231,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: .6rem;
     color: var(--main-color);
     background-color: none;
+    cursor: pointer;
     &:hover {
         background-color: var(--hover-bg-color);
     }
@@ -245,6 +246,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: .6rem;
     color: var(--negative-color);
     background-color: none;
+    cursor: pointer;
     &:hover {
         background-color: var(--hover-bg-color);
     }
