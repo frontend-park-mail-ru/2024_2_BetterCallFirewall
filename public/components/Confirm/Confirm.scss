@@ -17,6 +17,7 @@
     &__actions {
         display: flex;
         justify-content: space-between;
+        gap: 2rem;
     }
     &__action {
         background-color: var(--main-bg-color);

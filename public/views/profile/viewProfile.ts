@@ -139,8 +139,8 @@ export class ViewProfile extends ViewHome {
 					this.sendAction(
 						new ActionConfirmOpen({
 							key: 'confirm-profile-delete',
-							title: '',
-							text: 'Удалить аккаунт?',
+							title: 'Удалить аккаунт?',
+							text: '',
 							actions: [
 								{
 									text: 'Удалить',
