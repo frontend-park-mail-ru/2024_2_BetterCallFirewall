@@ -1,5 +1,11 @@
 import { Action } from '../actions/action';
 import { ACTION_APP_TYPES } from '../actions/actionApp';
+import {
+	ActionCommentCreateSuccess,
+	ActionCommentDeleteSuccess,
+	ActionCommentEditSuccess,
+	ActionCommentRequestSuccess,
+} from '../actions/actionComment';
 import { ActionPostsRequestFail } from '../actions/actionFeed';
 import {
 	ACTION_GROUP_PAGE_TYPES,
@@ -12,7 +18,11 @@ import {
 	ActionGroupsUnfollowGroup,
 	ActionGroupsUnfollowGroupSuccess,
 } from '../actions/actionGroups';
-import { ActionPostLikeSuccess } from '../actions/actionPost';
+import {
+	ActionPostCommentEdit,
+	ActionPostCommentsOpenSwitch,
+	ActionPostLikeSuccess,
+} from '../actions/actionPost';
 import { STATUS } from '../api/api';
 import app from '../app';
 import config, { PAGE_LINKS, ROOT } from '../config';
@@ -20,6 +30,7 @@ import { toGroupPageConfig } from '../models/group';
 import { groupPostResponseToPostConfig } from '../models/post';
 import deepClone from '../modules/deepClone';
 import { ViewGroupPageConfig } from '../views/groupPage/viewGroupPage';
+import { reducerPost } from './reducerPost';
 
 const initialState: ViewGroupPageConfig = deepClone(config.groupPageConfig);
 
@@ -96,7 +107,19 @@ export const reducerGroupPage = (
 			newState.groupPage.countSubscribers--;
 			newState.groupPage.isFollow = false;
 			return newState;
-		default:
-			return newState;
 	}
+	switch (true) {
+		case action instanceof ActionPostCommentsOpenSwitch:
+		case action instanceof ActionPostCommentEdit:
+		case action instanceof ActionCommentRequestSuccess:
+		case action instanceof ActionCommentCreateSuccess:
+		case action instanceof ActionCommentEditSuccess:
+		case action instanceof ActionCommentDeleteSuccess:
+			newState.groupPage.posts.forEach((post) => {
+				if (post.id === action.data.postId) {
+					Object.assign(post, reducerPost(post, action));
+				}
+			});
+	}
+	return newState;
 };
