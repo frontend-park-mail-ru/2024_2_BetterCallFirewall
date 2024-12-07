@@ -64,7 +64,11 @@ export class Post extends Component {
 	}
 
 	get hasCloseCommentsButton(): boolean {
-		return this._config.commentsConfigs.length ? true : false;
+		return this._config.commentsConfigs.length > 0;
+	}
+
+	get hasSortSelect(): boolean {
+		return this._config.commentsConfigs.length > 1;
 	}
 
 	get editButtonVNode(): VNode {
@@ -200,6 +204,7 @@ export class Post extends Component {
 				return comment.render();
 			}),
 			isMoreComments: this.isMoreComments,
+			hasSortSelect: this.hasSortSelect,
 			hasCloseCommentsButton: this.hasCloseCommentsButton,
 			commentTextLimit: INPUT_LIMITS.commentText,
 		};
