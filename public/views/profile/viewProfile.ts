@@ -7,7 +7,6 @@ import {
 	ActionFriendsSubscribe,
 	ActionFriendsUnsubscribe,
 } from '../../actions/actionFriends';
-import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
@@ -226,21 +225,33 @@ export class ViewProfile extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					api.deletePost(post.config.id);
+					this.sendAction(
+						new ActionConfirmOpen({
+							key: 'confirm-post-delete',
+							title: 'Удалить пост?',
+							text: '',
+							actions: [
+								{
+									text: 'Удалить',
+									style: Style.Negative,
+									callback: (event) => {
+										event.preventDefault();
+										api.deletePost(post.config.id);
+									},
+								},
+								{
+									text: 'Отмена',
+									style: Style.Main,
+								},
+							],
+						}),
+					);
 				},
 			});
 		}
 		post.addLikeHandler();
 		post.addCommentHandlers();
 	}
-
-	private _likePost = throttle((post: Post) => {
-		if (post.config.likedByUser) {
-			this.sendAction(new ActionPostUnlike(post.config.id));
-		} else {
-			this.sendAction(new ActionPostLike(post.config.id));
-		}
-	}, 1000);
 
 	private _requestProfile = throttle(() => {
 		this.sendAction(new ActionProfileRequest(app.router.path));
