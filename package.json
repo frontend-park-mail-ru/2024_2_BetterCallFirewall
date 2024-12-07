@@ -8,8 +8,7 @@
     "compile:templates": "find public/ -name '*.hbs' | xargs handlebars -f public/precompiled.js",
     "compile:bundle": "npx webpack",
     "build": "npm run prestart",
-    "lint": "npx eslint --fix --color",
-    "prepare": "husky install"
+    "lint": "npx eslint --fix --color"
   },
   "dependencies": {
     "body-parser": "^1.20.3",
