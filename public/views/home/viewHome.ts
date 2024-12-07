@@ -1,5 +1,8 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
-import { ACTION_CONFIRM_TYPES } from '../../actions/actionConfirm';
+import {
+	ACTION_CONFIRM_TYPES,
+	ActionConfirmOpen,
+} from '../../actions/actionConfirm';
 import { ActionGroupsSearch } from '../../actions/actionGroups';
 import {
 	ActionHeaderLogoutClickFail,
@@ -26,7 +29,11 @@ import {
 	ContentConfig,
 	Content,
 } from '../../components';
-import { Confirm, ConfirmConfig } from '../../components/Confirm/Confirm';
+import {
+	Confirm,
+	ConfirmConfig,
+	Style,
+} from '../../components/Confirm/Confirm';
 import { CSAT, CSATConfig } from '../../components/CSAT/CSAT';
 import Menu from '../../components/Menu/Menu';
 import { PAGE_LINKS, PAGE_URLS } from '../../config';
@@ -234,7 +241,7 @@ export abstract class ViewHome extends View {
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
-				logoutButtonClick();
+				this.logoutButtonClick();
 			},
 		});
 		this.header.profileLinkVNode.handlers.push({
@@ -333,9 +340,33 @@ export abstract class ViewHome extends View {
 			),
 		);
 	}, 200);
+
+	private logoutButtonClick() {
+		this.sendAction(
+			new ActionConfirmOpen({
+				key: 'confirm-logout',
+				title: 'Выйти из аккаунта?',
+				text: '',
+				actions: [
+					{
+						text: 'Выйти',
+						style: Style.Negative,
+						callback: (event) => {
+							event.preventDefault();
+							logout();
+						},
+					},
+					{
+						text: 'Отмена',
+						style: Style.Main,
+					},
+				],
+			}),
+		);
+	}
 }
 
-const logoutButtonClick = () => {
+const logout = () => {
 	ajax.post(app.config.URL.logout, {}, (data, error) => {
 		if (error) {
 			dispatcher.getAction(new ActionHeaderLogoutClickFail());
