@@ -37,7 +37,7 @@ export class Router {
 			if (match) {
 				if (this._activeView) {
 					if (pushState) {
-						history.pushState(this._activeView.config, '', path);
+						history.pushState({}, '', path);
 					}
 					this._activeView.active = false;
 				}
