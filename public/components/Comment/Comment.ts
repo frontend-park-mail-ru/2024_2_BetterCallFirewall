@@ -1,3 +1,4 @@
+import { ActionCommentDelete } from '../../actions/actionComment';
 import { ActionConfirmOpen } from '../../actions/actionConfirm';
 import { ActionPostCommentEdit } from '../../actions/actionPost';
 import { groupPageHref, profileHref } from '../../modules/urls';
@@ -71,6 +72,15 @@ export class Comment extends Component {
 								{
 									text: 'Удалить',
 									style: Style.Negative,
+									callback: (event) => {
+										event.preventDefault();
+										this._sendAction(
+											new ActionCommentDelete(
+												post.config.id,
+												this._config.id,
+											),
+										);
+									},
 								},
 								{
 									text: 'Отмена',

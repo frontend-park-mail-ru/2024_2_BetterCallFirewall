@@ -364,6 +364,7 @@ class App {
 		this._stores.home.subscribe(ACTION_GROUPS_TYPES.searchSuccess);
 		this._stores.home.subscribe(ACTION_GROUPS_TYPES.searchFail);
 		this._stores.home.subscribe(ACTION_CONFIRM_TYPES.open);
+		this._stores.home.subscribe(ACTION_CONFIRM_TYPES.close);
 
 		this._stores.login.subscribe(ACTION_APP_TYPES.actionAppInit);
 		this._stores.login.subscribe(ACTION_APP_TYPES.goTo);
