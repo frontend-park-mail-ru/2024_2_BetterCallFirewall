@@ -15,6 +15,11 @@ import { findVNodeByClass, VNode } from '../../modules/vdom';
 import { Comment, CommentConfig } from '../Comment/Comment';
 import Component, { ComponentConfig } from '../Component';
 
+export enum SortOptions {
+	Asc = 'asc',
+	Desc = 'desc',
+}
+
 export interface PostConfig extends ComponentConfig {
 	id: number;
 	groupId?: number;
@@ -205,6 +210,7 @@ export class Post extends Component {
 			}),
 			isMoreComments: this.isMoreComments,
 			hasSortSelect: this.hasSortSelect,
+			sortOptions: SortOptions,
 			hasCloseCommentsButton: this.hasCloseCommentsButton,
 			commentTextLimit: INPUT_LIMITS.commentText,
 		};
