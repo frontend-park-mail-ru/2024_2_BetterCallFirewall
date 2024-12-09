@@ -26,7 +26,9 @@ const DEBUG: boolean = false;
 
 export const ROOT: string = DEBUG
 	? 'http://127.0.0.1:8000'
-	: 'http://vilka.online';
+	: 'https://vilka.online';
+
+const ROOT_WS = ROOT.replace('https', 'wss');
 
 export const PAGE_URLS = {
 	feed: '/feed',
@@ -510,8 +512,6 @@ const editPostConfig: ViewPostEditConfig = {
 	postEditForm: postEditFormConfig,
 	postId: -1,
 };
-
-const ROOT_WS = ROOT.replace('http', 'ws');
 
 const apiv1 = '/api/v1';
 
