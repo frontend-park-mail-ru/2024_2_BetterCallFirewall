@@ -1,4 +1,4 @@
-import { PostConfig } from '../components';
+import { PostConfig, SortOptions } from '../components';
 import { GroupPageConfig } from '../components/GroupPage/GroupPage';
 import { PAGE_URLS } from '../config';
 import parseImage from '../modules/parseImage';
@@ -47,6 +47,7 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		commentsConfigs: [],
 		commentsOpen: false,
 		commentEditId: 0,
+		commentsSort: SortOptions.Asc,
 	};
 };
 

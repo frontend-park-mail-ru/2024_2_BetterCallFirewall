@@ -5,6 +5,7 @@ import {
 } from '../../actions/actionComment';
 import {
 	ActionPostCommentsOpenSwitch,
+	ActionPostCommentsSortChange,
 	ActionPostLike,
 	ActionPostUnlike,
 } from '../../actions/actionPost';
@@ -38,6 +39,7 @@ export interface PostConfig extends ComponentConfig {
 	commentsConfigs: CommentConfig[];
 	commentsOpen: boolean;
 	commentEditId: number;
+	commentsSort: string;
 }
 
 /**
@@ -124,6 +126,10 @@ export class Post extends Component {
 		return this._findVNodeByClass('comments__close-button');
 	}
 
+	get commentsSortSelectVNode(): VNode {
+		return this._findVNodeByClass('comments__sort-select');
+	}
+
 	addLikeHandler() {
 		this.likeButtonVNode.handlers.push({
 			event: 'click',
@@ -143,6 +149,7 @@ export class Post extends Component {
 					new ActionPostCommentsOpenSwitch(
 						!this._config.commentsOpen,
 						this._config.id,
+						this._config.commentsSort,
 					),
 				);
 			},
@@ -162,6 +169,7 @@ export class Post extends Component {
 					this._sendAction(
 						new ActionCommentRequest(
 							this._config.id,
+							this._config.commentsSort,
 							this._config.commentsConfigs[
 								this._config.commentsConfigs.length - 1
 							].id,
@@ -183,11 +191,24 @@ export class Post extends Component {
 						new ActionPostCommentsOpenSwitch(
 							false,
 							this._config.id,
+							this._config.commentsSort,
 						),
 					);
 				},
 			});
 		}
+		this.commentsSortSelectVNode.handlers.push({
+			event: 'change',
+			callback: (event) => {
+				event.preventDefault();
+				this._sendAction(
+					new ActionPostCommentsSortChange(
+						this._config.id,
+						(event.target as HTMLSelectElement).value,
+					),
+				);
+			},
+		});
 		this._comments.forEach((comment) => {
 			comment.addActionButtonHandlers(this);
 		});

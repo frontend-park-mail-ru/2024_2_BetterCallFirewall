@@ -9,6 +9,7 @@ import {
 import {
 	ActionPostCommentEdit,
 	ActionPostCommentsOpenSwitch,
+	ActionPostCommentsSortChange,
 } from '../actions/actionPost';
 import { PostConfig } from '../components';
 import { toCommentConfig } from '../models/comment';
@@ -62,6 +63,9 @@ export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 					return comment.id !== action.data.commentId;
 				},
 			);
+			break;
+		case action instanceof ActionPostCommentsSortChange:
+			newState.commentsSort = action.data.sort;
 			break;
 	}
 	return newState;

@@ -16,6 +16,7 @@ import {
 	ShortProfileResponse,
 } from '../models/profile';
 import { CommentPayload, CommentResponse } from '../models/comment';
+import { SortOptions } from '../components';
 
 type AjaxPromiseConfig = {
 	request: Request;
@@ -493,11 +494,15 @@ class Ajax {
 	 */
 	async getComments(
 		postId: number,
+		sort: string,
 		lastId?: number,
 	): Promise<AjaxResponse<CommentResponse[]>> {
 		let url = replaceId(app.config.URL.comments, postId);
 		if (lastId) {
 			url = insertQueryParams(url, { id: `${lastId}` });
+		}
+		if (sort === SortOptions.Desc) {
+			url = insertQueryParams(url, { sort: 'old' });
 		}
 		return this._genericRequestResponse(url, 'get');
 	}
