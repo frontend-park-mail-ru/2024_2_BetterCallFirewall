@@ -197,18 +197,20 @@ export class Post extends Component {
 				},
 			});
 		}
-		this.commentsSortSelectVNode.handlers.push({
-			event: 'change',
-			callback: (event) => {
-				event.preventDefault();
-				this._sendAction(
-					new ActionPostCommentsSortChange(
-						this._config.id,
-						(event.target as HTMLSelectElement).value,
-					),
-				);
-			},
-		});
+		if (this.hasSortSelect) {
+			this.commentsSortSelectVNode.handlers.push({
+				event: 'change',
+				callback: (event) => {
+					event.preventDefault();
+					this._sendAction(
+						new ActionPostCommentsSortChange(
+							this._config.id,
+							(event.target as HTMLSelectElement).value,
+						),
+					);
+				},
+			});
+		}
 		this._comments.forEach((comment) => {
 			comment.addActionButtonHandlers(this);
 		});
