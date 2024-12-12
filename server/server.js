@@ -188,7 +188,6 @@ app.get('/favicon.ico', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-	console.log('request:', req);
 	res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 

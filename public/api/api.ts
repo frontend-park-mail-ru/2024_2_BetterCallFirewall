@@ -802,8 +802,8 @@ class API {
 		}
 	}
 
-	async sendImage(image: File) {
-		const response = await ajax.sendImage(image);
+	async sendFile(image: File) {
+		const response = await ajax.sendFile(image);
 		return response.data;
 	}
 

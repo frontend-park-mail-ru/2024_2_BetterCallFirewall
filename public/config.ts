@@ -550,6 +550,7 @@ const URL: URLInterface = DEBUG
 			csat: '',
 			csatMetrics: '',
 			image: '',
+			file: '',
 			comments: '',
 			comment: '',
 		}
@@ -590,6 +591,7 @@ const URL: URLInterface = DEBUG
 			csat: ROOT + apiv1 + '/csat',
 			csatMetrics: ROOT + apiv1 + '/csat/metrics',
 			image: ROOT + '/image',
+			file: ROOT + '/image',
 		};
 
 const config: AppConfig = {

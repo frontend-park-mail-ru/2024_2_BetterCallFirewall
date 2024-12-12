@@ -469,12 +469,12 @@ class Ajax {
 	}
 
 	/**
-	 * Отправить изображение
+	 * Отправить файл
 	 */
-	async sendImage(image: File): Promise<AjaxResponse<string>> {
+	async sendFile(image: File): Promise<AjaxResponse<string>> {
 		const formData = new FormData();
 		formData.append('file', image);
-		const request = this._postFormRequest(app.config.URL.image, formData);
+		const request = this._postFormRequest(app.config.URL.file, formData);
 		return this._genericResponse(request);
 	}
 

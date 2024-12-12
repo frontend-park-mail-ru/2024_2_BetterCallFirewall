@@ -124,6 +124,7 @@ export interface URLInterface {
 	csat: string;
 	csatMetrics: string;
 	image: string;
+	file: string;
 }
 
 export interface AppConfig {
