@@ -103,17 +103,20 @@
         position: absolute;
         display: none;
         display: flex;
+        overflow-y: scroll; 
         flex-wrap: wrap;
-        width: 5rem;
+        width: 8rem;
+        height: 8rem;
         height: auto;
-        gap: 1rem;
+        gap: .3rem;
         overflow-y: auto;
+        bottom: 8rem;
     }
 }
 
 .emoji-btn {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2rem;
+    height: 2rem;
     stroke: var(--main-text-color);
     &:hover {
         stroke: var(--button-color);
