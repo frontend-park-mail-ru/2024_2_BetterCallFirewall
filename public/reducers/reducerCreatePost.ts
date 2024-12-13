@@ -1,6 +1,7 @@
 import { Action } from '../actions/action';
 import {
 	ActionAttachmentsInputAddFiles,
+	ActionAttachmentsInputDeleteFile,
 	ActionAttachmentsInputFileLoaded,
 } from '../actions/actionAttachmentsInput';
 import {
@@ -47,6 +48,12 @@ export const reducerCreatePost = (
 		case action instanceof ActionAttachmentsInputFileLoaded:
 			newState.createPostForm.attachmentsInput.files[action.data.index] =
 				action.data.filePayload;
+			break;
+		case action instanceof ActionAttachmentsInputDeleteFile:
+			newState.createPostForm.attachmentsInput.files =
+				newState.createPostForm.attachmentsInput.files.filter(
+					(file, i) => action.data.index !== i,
+				);
 			break;
 	}
 	return newState;

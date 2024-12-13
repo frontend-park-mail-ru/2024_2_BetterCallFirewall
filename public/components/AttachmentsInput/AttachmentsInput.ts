@@ -1,5 +1,6 @@
 import {
 	ActionAttachmentsInputAddFiles,
+	ActionAttachmentsInputDeleteFile,
 	ActionAttachmentsInputFileLoaded,
 } from '../../actions/actionAttachmentsInput';
 import { FilePayload } from '../../models/file';
@@ -15,6 +16,7 @@ export interface AttachmentsInputConfig extends InputConfig {
 
 export class AttachmentsInput extends Input {
 	protected _config: AttachmentsInputConfig;
+	private _attachments: Attachment[] = [];
 
 	constructor(config: AttachmentsInputConfig, parent: Component) {
 		super(config, parent);
@@ -27,13 +29,16 @@ export class AttachmentsInput extends Input {
 
 	protected _prerender(): void {
 		super._prerender();
-		const attachments = this._config.files.map((file, i) => {
+		this._attachments = this._config.files.map((file, i) => {
 			return new Attachment(
-				{ key: `attachment-${i}`, file: file },
+				{ key: `attachment-${i}`, file: file, hasDeleteButton: true },
 				this,
-			).render();
+			);
 		});
-		this._templateContext = { ...this._templateContext, attachments };
+		this._templateContext = {
+			...this._templateContext,
+			attachments: this._attachments.map((item) => item.render()),
+		};
 	}
 
 	render(): string {
@@ -67,6 +72,19 @@ export class AttachmentsInput extends Input {
 					}
 				});
 			},
+		});
+		this._attachments.forEach((item, i) => {
+			if (item.config.hasDeleteButton) {
+				item.deleteButtonVNode.handlers.push({
+					event: 'click',
+					callback: (event) => {
+						event.preventDefault();
+						this._sendAction(
+							new ActionAttachmentsInputDeleteFile(i),
+						);
+					},
+				});
+			}
 		});
 	}
 }

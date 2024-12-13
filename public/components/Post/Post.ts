@@ -233,6 +233,7 @@ export class Post extends Component {
 				{
 					key: `attachment-${i}`,
 					file: { src: file, type: fileTypeFromName(file) },
+					hasDeleteButton: false,
 				},
 				this,
 			).render();

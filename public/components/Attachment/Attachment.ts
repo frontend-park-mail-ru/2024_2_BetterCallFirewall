@@ -1,5 +1,6 @@
 import { FilePayload } from '../../models/file';
 import { fileTypeFromName } from '../../modules/files';
+import { VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
 import { Loader } from '../Loader/Loader';
 
@@ -11,6 +12,7 @@ export enum FileType {
 
 export interface AttachmentConfig extends ComponentConfig {
 	file: FilePayload;
+	hasDeleteButton: boolean;
 }
 
 export class Attachment extends Component {
@@ -21,12 +23,20 @@ export class Attachment extends Component {
 		this._config = config;
 	}
 
+	get config(): AttachmentConfig {
+		return this._config;
+	}
+
 	get isImage(): boolean {
 		return fileTypeFromName(this._config.file.src) === FileType.Image;
 	}
 
 	get isLoading(): boolean {
 		return fileTypeFromName(this._config.file.src) == FileType.Empty;
+	}
+
+	get deleteButtonVNode(): VNode {
+		return this._findVNodeByClass('attachment__delete-button');
 	}
 
 	render(): string {

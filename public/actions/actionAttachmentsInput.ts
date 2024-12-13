@@ -4,6 +4,7 @@ import { Action } from './action';
 export const ACTION_ATTACHMENTS_INPUT_TYPES = {
 	addFiles: 'actionAttachmentsInputAddFiles',
 	fileLoaded: 'actionAttachmentsInputFileLoaded',
+	deleteFile: 'actionAttachmentsInputDeleteFile',
 };
 
 export class ActionAttachmentsInputAddFiles implements Action {
@@ -21,5 +22,14 @@ export class ActionAttachmentsInputFileLoaded implements Action {
 
 	constructor(filePayload: FilePayload, index: number) {
 		this.data = { filePayload, index };
+	}
+}
+
+export class ActionAttachmentsInputDeleteFile implements Action {
+	type: string = ACTION_ATTACHMENTS_INPUT_TYPES.deleteFile;
+	data: { index: number };
+
+	constructor(index: number) {
+		this.data = { index };
 	}
 }
