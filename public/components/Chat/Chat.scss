@@ -110,3 +110,13 @@
         overflow-y: auto;
     }
 }
+
+.emoji-btn {
+    stroke: var(--main-text-color);
+    &:hover {
+        stroke: var(--button-color);
+    }
+    &:active {
+        stroke: var(--main-text-color);
+    }
+}
