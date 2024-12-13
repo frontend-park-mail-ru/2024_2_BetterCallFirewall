@@ -65,9 +65,6 @@ export default abstract class Component {
 		}
 		this._vnode = vnode;
 		this._addHandlers();
-		this._children.forEach((child) => {
-			child._addHandlers();
-		});
 		return this._vnode;
 	}
 
@@ -79,7 +76,11 @@ export default abstract class Component {
 		this._children = [];
 	}
 
-	protected _addHandlers() {}
+	protected _addHandlers() {
+		this._children.forEach((child) => {
+			child._addHandlers();
+		});
+	}
 
 	protected _render(templateFile: string): string {
 		const template = Handlebars.templates[templateFile];
