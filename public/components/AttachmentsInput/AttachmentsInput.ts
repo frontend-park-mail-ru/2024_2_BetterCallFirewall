@@ -50,6 +50,7 @@ export class AttachmentsInput extends Input {
 				if (!fileList) {
 					return;
 				}
+				const oldFilesLength = this._config.files.length;
 				const files = Array.from(fileList);
 				this._sendAction(
 					new ActionAttachmentsInputAddFiles(files.length),
@@ -60,7 +61,7 @@ export class AttachmentsInput extends Input {
 						this._sendAction(
 							new ActionAttachmentsInputFileLoaded(
 								{ src: fileStr, type: file.type },
-								i,
+								oldFilesLength + i,
 							),
 						);
 					}
