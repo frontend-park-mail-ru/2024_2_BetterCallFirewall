@@ -56,7 +56,7 @@ export class Chat extends Component {
 	}
 
 	get emojiBlockVNode(): VNode {
-		return this._findVNodeByKey('emoji-button');
+		return this._findVNodeByClass('emoji-button');
 	}
 
 	get emojiVNode(): VNode {
