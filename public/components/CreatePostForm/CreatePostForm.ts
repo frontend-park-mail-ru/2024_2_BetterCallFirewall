@@ -1,5 +1,8 @@
 import { VNode } from '../../modules/vdom';
-import { AttachmentsInputConfig } from '../AttachmentsInput/AttachmentsInput';
+import {
+	AttachmentsInput,
+	AttachmentsInputConfig,
+} from '../AttachmentsInput/AttachmentsInput';
 import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
 import Component from '../Component';
 
@@ -63,9 +66,14 @@ export class CreatePostForm extends BaseForm {
 
 	protected _prerender(): void {
 		super._prerender();
+		const attachmentsInput = new AttachmentsInput(
+			this._config.attachmentsInput,
+			this,
+		);
 		this._templateContext = {
 			...this._templateContext,
 			className: 'send-post',
+			attachmentsInput: attachmentsInput.render(),
 		};
 	}
 
