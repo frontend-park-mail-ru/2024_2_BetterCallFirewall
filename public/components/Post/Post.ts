@@ -10,9 +10,11 @@ import {
 	ActionPostUnlike,
 } from '../../actions/actionPost';
 import { CommentPayload } from '../../models/comment';
+import { fileTypeFromName } from '../../modules/files';
 import { throttle } from '../../modules/throttle';
 import { INPUT_LIMITS } from '../../modules/validation';
 import { findVNodeByClass, VNode } from '../../modules/vdom';
+import { Attachment } from '../Attachment/Attachment';
 import { Comment, CommentConfig } from '../Comment/Comment';
 import Component, { ComponentConfig } from '../Component';
 
@@ -28,7 +30,7 @@ export interface PostConfig extends ComponentConfig {
 	avatar: string;
 	title: string;
 	text: string;
-	img?: string;
+	files: string[];
 	date: string;
 	hasDeleteButton: boolean;
 	hasEditButton: boolean;
@@ -226,6 +228,15 @@ export class Post extends Component {
 		this._comments = this._config.commentsConfigs.map((config) => {
 			return new Comment(config, this);
 		});
+		const attachments = this._config.files.map((file, i) => {
+			return new Attachment(
+				{
+					key: `attachment-${i}`,
+					file: { src: file, type: fileTypeFromName(file) },
+				},
+				this,
+			).render();
+		});
 		this._templateContext = {
 			...this._templateContext,
 			comments: this._comments.map((comment) => {
@@ -236,6 +247,7 @@ export class Post extends Component {
 			sortOptions: SortOptions,
 			hasCloseCommentsButton: this.hasCloseCommentsButton,
 			commentTextLimit: INPUT_LIMITS.commentText,
+			attachments,
 		};
 	}
 

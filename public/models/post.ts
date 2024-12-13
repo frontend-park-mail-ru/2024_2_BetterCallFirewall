@@ -13,7 +13,7 @@ export interface Header {
 
 interface PostContent {
 	text: string;
-	file: string;
+	file: string[];
 	created_at: string;
 }
 
@@ -36,7 +36,7 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		avatar: parseImage(postResponse.header.avatar),
 		title: postResponse.header.author,
 		text: postResponse.post_content.text,
-		img: parseImage(postResponse.post_content.file),
+		files: postResponse.post_content.file.map((file) => parseImage(file)),
 		date: parseTime(postResponse.post_content.created_at),
 		hasDeleteButton: false,
 		hasEditButton: false,

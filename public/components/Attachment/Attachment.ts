@@ -1,5 +1,5 @@
 import { FilePayload } from '../../models/file';
-import fileType from '../../modules/fileType';
+import { fileType } from '../../modules/files';
 import Component, { ComponentConfig } from '../Component';
 import { Loader } from '../Loader/Loader';
 
