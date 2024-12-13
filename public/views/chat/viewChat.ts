@@ -123,6 +123,7 @@ export class ViewChat extends ViewHome {
 		this._addEnterSendHandler();
 		this._addCompanionLink();
 		this._addScrollHandler();
+		// this._addEmojiHandlers();
 		this._addEscapeHandler();
 		this._chat.settingsButtonVNode.handlers.push({
 			event: 'click',
@@ -207,6 +208,21 @@ export class ViewChat extends ViewHome {
 			callback: handleScroll,
 		});
 	}
+
+	// private _addEmojiHandlers(): void {
+	// 	const emojiButtons = this._chat.emojiBlockVNode.handlers;
+	// 	emojiButtons.forEach((button) => {
+	// 		button.handlers.push({
+	// 			event: 'click',
+	// 			callback: (event) => {
+	// 				const emoji = event.target.textContent;
+	// 				const textarea = this._chat.textarea;
+	// 				textarea.value += emoji;
+	// 				textarea.focus();
+	// 			},
+	// 		});
+	// 	});
+	// }
 
 	private _addEscapeHandler() {
 		this._root.addDocumentHandler({

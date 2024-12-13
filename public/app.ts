@@ -81,6 +81,8 @@ import {
 import { StoreGroupEdit } from './stores/storeGroupEdit';
 import { ACTION_COMMENT_TYPES } from './actions/actionComment';
 import { ACTION_CONFIRM_TYPES } from './actions/actionConfirm';
+import { ViewStickers, ViewStickersConfig } from './views/stickers/viewStickers';
+import { StoreStickers } from './stores/storeStickers';
 
 export const PAGES = {
 	home: 'home',
@@ -138,6 +140,7 @@ export interface AppConfig {
 	chatConfig: ViewChatConfig;
 	friendsConfig: ViewFriendsConfig;
 	groupsConfig: ViewGroupsConfig;
+	stickersConfig: ViewStickersConfig;
 	groupPageConfig: ViewGroupPageConfig;
 	createGroupConfig: ViewCreateGroupConfig;
 	createPostConfig: ViewCreatePostConfig;
@@ -158,6 +161,7 @@ export interface AppStores {
 	chat: StoreChat;
 	friends: StoreFriends;
 	groups: StoreGroups;
+	stickers: StoreStickers;
 	groupPage: StoreGroupPage;
 	createPost: StoreCreatePost;
 	createGroup: StoreCreateGroup;
@@ -199,6 +203,10 @@ class App {
 		);
 		const groupsView = new ViewGroups(
 			this._config.groupsConfig,
+			this._root,
+		);
+		const stickersView = new ViewStickers(
+			this._config.stickersConfig,
 			this._root,
 		);
 		const groupPageView = new ViewGroupPage(
@@ -285,6 +293,10 @@ class App {
 				view: groupsView,
 			},
 			{
+				path: PAGE_LINKS.stickers,
+				view: stickersView,
+			},
+			{
 				path: PAGE_LINKS.createGroup,
 				view: createGroupView,
 			},
@@ -321,6 +333,7 @@ class App {
 			profile: new StoreProfile(storeHome),
 			friends: new StoreFriends(storeHome),
 			groups: new StoreGroups(storeHome),
+			stickers: new StoreStickers(storeHome),
 			groupPage: new StoreGroupPage(storeHome),
 			messages: new StoreMessages(storeHome),
 			chat: new StoreChat(storeHome),
@@ -588,6 +601,9 @@ class App {
 
 		groupPageView.register(this._stores.home);
 		groupPageView.register(this._stores.groupPage);
+
+		stickersView.register(this._stores.home);
+		stickersView.register(this._stores.stickers);
 
 		createGroupView.register(this._stores.home);
 		createGroupView.register(this._stores.createGroup);

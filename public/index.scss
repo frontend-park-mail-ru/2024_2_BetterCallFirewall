@@ -27,6 +27,9 @@
 @use 'components/Metric/Metric';
 @use 'components/Comment/Comment.scss';
 @use 'components/Confirm/Confirm.scss';
+@use 'components/Emoji/Emoji.scss';
+@use 'components/Sticker/Sticker.scss';
+@use 'components/Stickers/Stickers.scss';
 
 * {
     box-sizing: border-box;

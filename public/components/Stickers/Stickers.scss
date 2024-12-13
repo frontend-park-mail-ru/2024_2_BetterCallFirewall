@@ -1,0 +1,15 @@
+.stickers {
+    width: 100%;
+    &__header {
+        display: flex;
+        flex-direction: row;
+        span {
+            margin-right: .5rem;
+        }
+    }
+    &__all {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem; 
+    }
+}

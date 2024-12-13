@@ -21,6 +21,7 @@ import { ViewCreateGroupConfig } from './views/createGroup/viewCreateGroup';
 import { ICreateGroupFormConfig } from './components/CreateGroupForm/CreateGroupForm';
 import { IGroupEditFormConfig } from './components/GroupEditForm/GroupEditForm';
 import { ViewGroupEditConfig } from './views/groupEdit/viewGroupEdit';
+import { ViewStickersConfig } from './views/stickers/viewStickers';
 
 const DEBUG: boolean = false;
 
@@ -40,6 +41,7 @@ export const PAGE_URLS = {
 	profile: '',
 	postEdit: '/post-edit',
 	groups: '/groups',
+	stickers: '/stickers',
 	createGroup: '/create-group',
 	groupPage: '/groups',
 	groupEdit: '/group-edit',
@@ -389,6 +391,15 @@ const groupsConfig: ViewGroupsConfig = {
 	},
 };
 
+const stickersConfig: ViewStickersConfig = {
+	...homeConfig,
+	stickers: {
+		key: 'stickers',
+		headerText: 'Стикеры',
+		stickersConfig: [],
+	},
+};
+
 const groupPageComponentConfig: GroupPageConfig = {
 	id: -1,
 	key: 'group',
@@ -605,6 +616,7 @@ const config: AppConfig = {
 	chatConfig,
 	friendsConfig,
 	groupsConfig,
+	stickersConfig,
 	createGroupConfig,
 	groupPageConfig,
 	editPostConfig,
