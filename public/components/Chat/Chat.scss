@@ -112,6 +112,8 @@
 }
 
 .emoji-btn {
+    width: 2.5rem;
+    height: 2.5rem;
     stroke: var(--main-text-color);
     &:hover {
         stroke: var(--button-color);
