@@ -1,5 +1,5 @@
 import { FilePayload } from '../../models/file';
-import { fileType } from '../../modules/files';
+import { fileTypeFromName } from '../../modules/files';
 import Component, { ComponentConfig } from '../Component';
 import { Loader } from '../Loader/Loader';
 
@@ -22,11 +22,11 @@ export class Attachment extends Component {
 	}
 
 	get isImage(): boolean {
-		return fileType(this._config.file) === FileType.Image;
+		return fileTypeFromName(this._config.file.src) === FileType.Image;
 	}
 
 	get isLoading(): boolean {
-		return fileType(this._config.file) == FileType.Empty;
+		return fileTypeFromName(this._config.file.src) == FileType.Empty;
 	}
 
 	render(): string {

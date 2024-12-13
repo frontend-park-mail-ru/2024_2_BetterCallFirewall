@@ -30,13 +30,14 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 	const authorHref = postResponse.header.community_id
 		? `${PAGE_URLS.groupPage}/${postResponse.header.community_id}`
 		: `${PAGE_URLS.profile}/${postResponse.header.author_id}`;
+	const files = postResponse.post_content.file;
 	return {
 		id: postResponse.id,
 		key: `post-${postResponse.id}`,
 		avatar: parseImage(postResponse.header.avatar),
 		title: postResponse.header.author,
 		text: postResponse.post_content.text,
-		files: postResponse.post_content.file.map((file) => parseImage(file)),
+		files: files ? files.map((file) => parseImage(file)) : [],
 		date: parseTime(postResponse.post_content.created_at),
 		hasDeleteButton: false,
 		hasEditButton: false,
