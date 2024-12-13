@@ -1,9 +1,12 @@
 import { FilePayload } from '../../models/file';
 import fileType from '../../modules/fileType';
 import Component, { ComponentConfig } from '../Component';
+import { Loader } from '../Loader/Loader';
 
 export enum FileType {
+	Empty = 'empty',
 	Image = 'image',
+	File = 'file',
 }
 
 export interface AttachmentConfig extends ComponentConfig {
@@ -22,6 +25,10 @@ export class Attachment extends Component {
 		return fileType(this._config.file) === FileType.Image;
 	}
 
+	get isLoading(): boolean {
+		return fileType(this._config.file) == FileType.Empty;
+	}
+
 	render(): string {
 		this._prerender();
 		return this._render('Attachment.hbs');
@@ -29,9 +36,12 @@ export class Attachment extends Component {
 
 	protected _prerender(): void {
 		super._prerender();
+		const loader = new Loader({ key: 'loader' }, this).render();
 		this._templateContext = {
 			...this._templateContext,
 			isImage: this.isImage,
+			isLoading: this.isLoading,
+			loader,
 		};
 	}
 }
