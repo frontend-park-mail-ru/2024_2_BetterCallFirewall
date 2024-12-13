@@ -334,6 +334,10 @@ input::placeholder, textarea::placeholder {
     display: none;
 }
 
+.image {
+    width: 100%;
+}
+
 @media (max-width: 2560px) {
     * {
         font-size: 1.2vw;
