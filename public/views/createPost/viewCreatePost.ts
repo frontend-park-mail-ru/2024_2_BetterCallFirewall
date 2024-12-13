@@ -107,10 +107,10 @@ export class ViewCreatePost extends ViewHome {
 				if (formData) {
 					if (
 						formData.get('text') ||
-						(formData.get('file') as File).name
+						formData.getAll('files[]').length
 					) {
 						const fileStr = await fileToString(
-							formData.get('file') as File,
+							formData.get('files[]') as File,
 						);
 						if (fileStr === null) {
 							this._createPostForm.printError(
