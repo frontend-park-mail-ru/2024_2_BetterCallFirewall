@@ -224,6 +224,16 @@ export class ViewChat extends ViewHome {
 				
 			},
 		});
+
+		this._chat.emojiOpenBtn.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				// this.sendAction(
+				// 	new ActionEmojiOpen(),
+				// );
+			},
+		});
 	}
 
 	private _addEscapeHandler() {

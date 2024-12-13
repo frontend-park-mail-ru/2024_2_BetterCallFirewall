@@ -59,6 +59,10 @@ export class Chat extends Component {
 		return this._findVNodeByClass('emoji-button');
 	}
 
+	get emojiOpenBtn(): VNode {
+		return this._findVNodeByKey('svg-[object SVGAnimatedString]-1');
+	}
+
 	get emojiVNode(): VNode {
 		return this._findVNodeByClass('chat__emoji-btn');
 	}

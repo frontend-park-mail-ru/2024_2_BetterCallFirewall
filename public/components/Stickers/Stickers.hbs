@@ -1,11 +1,17 @@
 <div class="stickers">
     <div class="stickers__header">
-        <span>Стикеры</span>
-        <button class="button-action button-no-decorations" href="">Добавить стикер</button>
+        <h2>Стикеры</h2>
+    </div>
+    <div class="stickers__add">
+        <form id="stickerForm">
+            <label for="stickerInput">Выберите изображение:</label>
+            <input type="file" id="fileInput" accept="image/*">
+            <button class="button-action button-no-decorations">Добавить стикер</button>
+        </form>
+    </div>
+    <div class="stickers__all">
         {{#each stickers}}
             {{{this}}}
         {{/each}}
-    </div>
-    <div class="stickers__all">
     </div>
 </div>
