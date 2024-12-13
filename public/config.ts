@@ -27,7 +27,9 @@ const DEBUG: boolean = false;
 
 export const ROOT: string = DEBUG
 	? 'http://127.0.0.1:8000'
-	: 'http://vilka.online';
+	: 'https://vilka.online';
+
+const ROOT_WS = ROOT.replace('https', 'wss');
 
 export const PAGE_URLS = {
 	feed: '/feed',
@@ -522,8 +524,6 @@ const editPostConfig: ViewPostEditConfig = {
 	postId: -1,
 };
 
-const ROOT_WS = ROOT.replace('http', 'ws');
-
 const apiv1 = '/api/v1';
 
 const URL: URLInterface = DEBUG
@@ -561,6 +561,7 @@ const URL: URLInterface = DEBUG
 			csat: '',
 			csatMetrics: '',
 			image: '',
+			file: '',
 			comments: '',
 			comment: '',
 		}
@@ -601,6 +602,7 @@ const URL: URLInterface = DEBUG
 			csat: ROOT + apiv1 + '/csat',
 			csatMetrics: ROOT + apiv1 + '/csat/metrics',
 			image: ROOT + '/image',
+			file: ROOT + '/image',
 		};
 
 const config: AppConfig = {

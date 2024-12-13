@@ -64,6 +64,12 @@
         </div>
     </div>
     <div class="post__comments {{#unless this.commentsOpen}}post__comments_hidden{{/unless}}">
+        {{#if this.hasSortSelect}}
+            <select name="sort" class="comments__sort-select">
+                <option value="{{this.sortOptions.Asc}}" selected>Сначала новые</option>
+                <option value="{{this.sortOptions.Desc}}">Сначала старые</option>
+            </select>
+        {{/if}}
         {{#each this.comments}}
             {{{this}}}
         {{/each}}

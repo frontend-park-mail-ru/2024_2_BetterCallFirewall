@@ -5,6 +5,7 @@ import {
 } from '../../actions/actionComment';
 import {
 	ActionPostCommentsOpenSwitch,
+	ActionPostCommentsSortChange,
 	ActionPostLike,
 	ActionPostUnlike,
 } from '../../actions/actionPost';
@@ -14,6 +15,11 @@ import { INPUT_LIMITS } from '../../modules/validation';
 import { findVNodeByClass, VNode } from '../../modules/vdom';
 import { Comment, CommentConfig } from '../Comment/Comment';
 import Component, { ComponentConfig } from '../Component';
+
+export enum SortOptions {
+	Asc = 'asc',
+	Desc = 'desc',
+}
 
 export interface PostConfig extends ComponentConfig {
 	id: number;
@@ -33,6 +39,7 @@ export interface PostConfig extends ComponentConfig {
 	commentsConfigs: CommentConfig[];
 	commentsOpen: boolean;
 	commentEditId: number;
+	commentsSort: string;
 }
 
 /**
@@ -64,7 +71,11 @@ export class Post extends Component {
 	}
 
 	get hasCloseCommentsButton(): boolean {
-		return this._config.commentsConfigs.length ? true : false;
+		return this._config.commentsConfigs.length > 0;
+	}
+
+	get hasSortSelect(): boolean {
+		return this._config.commentsConfigs.length > 1;
 	}
 
 	get editButtonVNode(): VNode {
@@ -115,6 +126,10 @@ export class Post extends Component {
 		return this._findVNodeByClass('comments__close-button');
 	}
 
+	get commentsSortSelectVNode(): VNode {
+		return this._findVNodeByClass('comments__sort-select');
+	}
+
 	addLikeHandler() {
 		this.likeButtonVNode.handlers.push({
 			event: 'click',
@@ -134,6 +149,7 @@ export class Post extends Component {
 					new ActionPostCommentsOpenSwitch(
 						!this._config.commentsOpen,
 						this._config.id,
+						this._config.commentsSort,
 					),
 				);
 			},
@@ -153,6 +169,7 @@ export class Post extends Component {
 					this._sendAction(
 						new ActionCommentRequest(
 							this._config.id,
+							this._config.commentsSort,
 							this._config.commentsConfigs[
 								this._config.commentsConfigs.length - 1
 							].id,
@@ -174,6 +191,21 @@ export class Post extends Component {
 						new ActionPostCommentsOpenSwitch(
 							false,
 							this._config.id,
+							this._config.commentsSort,
+						),
+					);
+				},
+			});
+		}
+		if (this.hasSortSelect) {
+			this.commentsSortSelectVNode.handlers.push({
+				event: 'change',
+				callback: (event) => {
+					event.preventDefault();
+					this._sendAction(
+						new ActionPostCommentsSortChange(
+							this._config.id,
+							(event.target as HTMLSelectElement).value,
 						),
 					);
 				},
@@ -200,6 +232,8 @@ export class Post extends Component {
 				return comment.render();
 			}),
 			isMoreComments: this.isMoreComments,
+			hasSortSelect: this.hasSortSelect,
+			sortOptions: SortOptions,
 			hasCloseCommentsButton: this.hasCloseCommentsButton,
 			commentTextLimit: INPUT_LIMITS.commentText,
 		};

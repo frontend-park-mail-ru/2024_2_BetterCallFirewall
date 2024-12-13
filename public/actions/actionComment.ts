@@ -19,10 +19,10 @@ export const ACTION_COMMENT_TYPES = {
 
 export class ActionCommentRequest implements Action {
 	type: ActionType = ACTION_COMMENT_TYPES.request;
-	data: { postId: number; lastId?: number };
+	data: { postId: number; sort: string; lastId?: number };
 
-	constructor(postId: number, lastId?: number) {
-		this.data = { postId, lastId };
+	constructor(postId: number, sort: string, lastId?: number) {
+		this.data = { postId, sort, lastId };
 	}
 }
 export class ActionCommentRequestSuccess implements Action {

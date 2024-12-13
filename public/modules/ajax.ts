@@ -16,6 +16,7 @@ import {
 	ShortProfileResponse,
 } from '../models/profile';
 import { CommentPayload, CommentResponse } from '../models/comment';
+import { SortOptions } from '../components';
 
 type AjaxPromiseConfig = {
 	request: Request;
@@ -468,12 +469,12 @@ class Ajax {
 	}
 
 	/**
-	 * Отправить изображение
+	 * Отправить файл
 	 */
-	async sendImage(image: File): Promise<AjaxResponse<string>> {
+	async sendFile(image: File): Promise<AjaxResponse<string>> {
 		const formData = new FormData();
 		formData.append('file', image);
-		const request = this._postFormRequest(app.config.URL.image, formData);
+		const request = this._postFormRequest(app.config.URL.file, formData);
 		return this._genericResponse(request);
 	}
 
@@ -493,11 +494,15 @@ class Ajax {
 	 */
 	async getComments(
 		postId: number,
+		sort: string,
 		lastId?: number,
 	): Promise<AjaxResponse<CommentResponse[]>> {
 		let url = replaceId(app.config.URL.comments, postId);
 		if (lastId) {
 			url = insertQueryParams(url, { id: `${lastId}` });
+		}
+		if (sort === SortOptions.Desc) {
+			url = insertQueryParams(url, { sort: 'old' });
 		}
 		return this._genericRequestResponse(url, 'get');
 	}

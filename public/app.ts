@@ -126,6 +126,7 @@ export interface URLInterface {
 	csat: string;
 	csatMetrics: string;
 	image: string;
+	file: string;
 }
 
 export interface AppConfig {
@@ -400,6 +401,7 @@ class App {
 		this._stores.feed.subscribe(ACTION_POST_TYPES.likeFail);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.commentsOpenSwitch);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.commentEdit);
+		this._stores.feed.subscribe(ACTION_POST_TYPES.commentsSortChange);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.createSuccess);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.editSuccess);
@@ -436,6 +438,7 @@ class App {
 		this._stores.profile.subscribe(ACTION_POST_TYPES.likeFail);
 		this._stores.profile.subscribe(ACTION_POST_TYPES.commentsOpenSwitch);
 		this._stores.profile.subscribe(ACTION_POST_TYPES.commentEdit);
+		this._stores.profile.subscribe(ACTION_POST_TYPES.commentsSortChange);
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.createSuccess);
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.editSuccess);
@@ -518,6 +521,7 @@ class App {
 		this._stores.groupPage.subscribe(ACTION_POST_TYPES.likeFail);
 		this._stores.groupPage.subscribe(ACTION_POST_TYPES.commentsOpenSwitch);
 		this._stores.groupPage.subscribe(ACTION_POST_TYPES.commentEdit);
+		this._stores.groupPage.subscribe(ACTION_POST_TYPES.commentsSortChange);
 		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.createSuccess);
 		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.editSuccess);

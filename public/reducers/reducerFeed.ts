@@ -15,6 +15,7 @@ import {
 	ACTION_POST_TYPES,
 	ActionPostCommentEdit,
 	ActionPostCommentsOpenSwitch,
+	ActionPostCommentsSortChange,
 	ActionPostLikeData,
 } from '../actions/actionPost';
 import { STATUS } from '../api/api';
@@ -91,6 +92,7 @@ export const reducerFeed = (
 	switch (true) {
 		case action instanceof ActionPostCommentsOpenSwitch:
 		case action instanceof ActionPostCommentEdit:
+		case action instanceof ActionPostCommentsSortChange:
 		case action instanceof ActionCommentRequestSuccess:
 		case action instanceof ActionCommentCreateSuccess:
 		case action instanceof ActionCommentEditSuccess:

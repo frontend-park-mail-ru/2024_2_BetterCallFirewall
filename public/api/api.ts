@@ -217,7 +217,11 @@ class API {
 				this.deleteProfile();
 				break;
 			case action instanceof ActionCommentRequest:
-				this.getComments(action.data.postId, action.data.lastId);
+				this.getComments(
+					action.data.postId,
+					action.data.sort,
+					action.data.lastId,
+				);
 				break;
 			case action instanceof ActionCommentCreate:
 				this.createComment(
@@ -798,13 +802,13 @@ class API {
 		}
 	}
 
-	async sendImage(image: File) {
-		const response = await ajax.sendImage(image);
+	async sendFile(image: File) {
+		const response = await ajax.sendFile(image);
 		return response.data;
 	}
 
-	async getComments(postId: number, lastId?: number) {
-		const response = await ajax.getComments(postId, lastId);
+	async getComments(postId: number, sort: string, lastId?: number) {
+		const response = await ajax.getComments(postId, sort, lastId);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {

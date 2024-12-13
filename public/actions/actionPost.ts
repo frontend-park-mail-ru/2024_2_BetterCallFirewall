@@ -7,6 +7,7 @@ export const ACTION_POST_TYPES = {
 	likeFail: 'actionPostLikeFail',
 	commentsOpenSwitch: 'actionPostCommentsOpenSwitch',
 	commentEdit: 'actionPostCommentEdit',
+	commentsSortChange: 'actionPostCommentsSortChange',
 };
 
 export interface ActionPostLikeData {
@@ -54,10 +55,10 @@ export class ActionPostLikeFail implements Action {
 
 export class ActionPostCommentsOpenSwitch implements Action {
 	type: ActionType = ACTION_POST_TYPES.commentsOpenSwitch;
-	data: { show: boolean; postId: number };
+	data: { show: boolean; postId: number; sort: string };
 
-	constructor(show: boolean, postId: number) {
-		this.data = { show, postId };
+	constructor(show: boolean, postId: number, sort: string) {
+		this.data = { show, postId, sort };
 	}
 }
 
@@ -67,5 +68,14 @@ export class ActionPostCommentEdit implements Action {
 
 	constructor(postId: number, commentId: number) {
 		this.data = { postId, commentId };
+	}
+}
+
+export class ActionPostCommentsSortChange implements Action {
+	type: string = ACTION_POST_TYPES.commentsSortChange;
+	data: { postId: number; sort: string };
+
+	constructor(postId: number, sort: string) {
+		this.data = { postId, sort };
 	}
 }
