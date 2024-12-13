@@ -123,7 +123,7 @@ export class ViewChat extends ViewHome {
 		this._addEnterSendHandler();
 		this._addCompanionLink();
 		this._addScrollHandler();
-		// this._addEmojiHandlers();
+		this._addEmojiHandlers();
 		this._addEscapeHandler();
 		this._chat.settingsButtonVNode.handlers.push({
 			event: 'click',
