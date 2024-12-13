@@ -27,6 +27,7 @@
 @use 'components/Metric/Metric';
 @use 'components/Comment/Comment.scss';
 @use 'components/Confirm/Confirm.scss';
+@use 'components/AttachmentsInput/AttachmentsInput.scss';
 
 * {
     box-sizing: border-box;
@@ -327,6 +328,10 @@ input::placeholder, textarea::placeholder {
             }
         }
     }
+}
+
+.hidden {
+    display: none;
 }
 
 @media (max-width: 2560px) {

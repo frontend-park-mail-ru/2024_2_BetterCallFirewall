@@ -1,12 +1,10 @@
 import { VNode } from '../../modules/vdom';
+import { AttachmentsInputConfig } from '../AttachmentsInput/AttachmentsInput';
 import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
 import Component from '../Component';
-import { InputConfig } from '../Input/Input';
 
 export interface CreatePostFormConfig extends BaseFormConfig {
-	inputs: {
-		image: InputConfig;
-	};
+	attachmentsInput: AttachmentsInputConfig;
 }
 
 export class CreatePostForm extends BaseForm {
@@ -43,8 +41,8 @@ export class CreatePostForm extends BaseForm {
 		return html;
 	}
 
-	get fileInputVNode(): VNode {
-		return this._findVNodeByKey(this._config.inputs.image.key);
+	get filesInputVNode(): VNode {
+		return this._findVNodeByKey(this._config.attachmentsInput.key);
 	}
 
 	get label(): HTMLElement {

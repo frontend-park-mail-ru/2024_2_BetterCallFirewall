@@ -238,15 +238,12 @@ const createPostConfig: ViewCreatePostConfig = {
 				name: 'text',
 			},
 		},
-		inputs: {
-			image: {
-				key: 'image-input',
-				name: 'file',
-				type: 'file',
-				accept: 'image/*',
-				placeholder: 'Прикрепить картинку',
-				// extra: 'multiple',
-			},
+		attachmentsInput: {
+			key: 'files-input',
+			name: 'files[]',
+			type: 'file',
+			placeholder: 'Прикрепить файлы',
+			extra: 'multiple',
 		},
 		button: {
 			key: 'submitButton',
