@@ -1,9 +1,9 @@
 <div class="attachments-input form__input" data-key="{{this.key}}">
     <div class="form__file">
-        <label for="{{this.name}}" class="form__upload">{{this.placeholder}}</label>
         {{#each attachments}}
             {{{this}}}
         {{/each}}
+        <label for="{{this.name}}" class="form__upload">{{this.placeholder}}</label>
     </div>
     <input class="hidden" type="{{this.type}}" value="{{this.text}}" id="{{this.name}}" name="{{this.name}}" placeholder="{{this.placeholder}}" accept="{{this.accept}}" data-key="input" {{this.extra}}>
     <span class="form__input-error"></span>
