@@ -1,7 +1,9 @@
 <div class="attachments-input form__input" data-key="{{this.key}}">
     <div class="form__file">
         {{#each attachments}}
-            {{{this}}}
+            <div class="attachments-input__preview">
+                {{{this}}}
+            </div>
         {{/each}}
         <label for="{{this.name}}" class="form__upload">{{this.placeholder}}</label>
     </div>
