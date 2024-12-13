@@ -13,7 +13,7 @@ const fileType = (file: FilePayload): FileType => {
 	if (!file.src || !file.type) {
 		return FileType.Empty;
 	}
-	if (file.type in imageMimeTypes) {
+	if (imageMimeTypes.includes(file.type)) {
 		return FileType.Image;
 	}
 	return FileType.File;
