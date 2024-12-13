@@ -3,6 +3,10 @@ import { FilePayload } from '../models/file';
 
 const imageMimeTypes = {
 	jpeg: 'image/jpeg',
+	png: 'image/png',
+	webp: 'image/webp',
+	gif: 'image/gif',
+	ico: 'image/x-icon',
 };
 
 const fileType = (file: FilePayload): FileType => {
