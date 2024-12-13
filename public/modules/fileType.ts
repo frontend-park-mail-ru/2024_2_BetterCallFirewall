@@ -1,13 +1,13 @@
 import { FileType } from '../components/Attachment/Attachment';
 import { FilePayload } from '../models/file';
 
-const imageMimeTypes = {
-	jpeg: 'image/jpeg',
-	png: 'image/png',
-	webp: 'image/webp',
-	gif: 'image/gif',
-	ico: 'image/x-icon',
-};
+const imageMimeTypes = [
+	'image/jpeg',
+	'image/png',
+	'image/webp',
+	'image/gif',
+	'image/x-icon',
+];
 
 const fileType = (file: FilePayload): FileType => {
 	if (!file.src || !file.type) {
