@@ -11,7 +11,6 @@ import {
 import { PAGE_URLS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import { PostPayload } from '../../models/post';
-import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangeCreatePost } from '../../stores/storeCreatePost';
@@ -109,10 +108,16 @@ export class ViewCreatePost extends ViewHome {
 						formData.get('text') ||
 						formData.getAll('files[]').length
 					) {
-						const fileStr = await fileToString(
-							formData.get('files[]') as File,
-						);
-						if (fileStr === null) {
+						const files =
+							this._configCreatePost.createPostForm
+								.attachmentsInput.files;
+						const filesStr = files.map((file) => file.src);
+						const emptyFiles = filesStr.filter((file) => {
+							if (!file) {
+								return file;
+							}
+						});
+						if (emptyFiles.length) {
 							this._createPostForm.printError(
 								'Что-то пошло не так',
 							);
@@ -121,7 +126,7 @@ export class ViewCreatePost extends ViewHome {
 						const postPayload: PostPayload = {
 							post_content: {
 								text: formData.get('text') as string,
-								file: fileStr,
+								file: filesStr,
 							},
 						};
 						const url = new URL(app.router.href);

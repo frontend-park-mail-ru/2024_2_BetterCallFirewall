@@ -122,7 +122,7 @@ export class ViewPostEdit extends ViewHome {
 						const postPayload: PostPayload = {
 							post_content: {
 								text: formData.get('text') as string,
-								file: fileStr,
+								file: [fileStr],
 							},
 						};
 						const url = new URL(app.router.href);

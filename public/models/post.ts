@@ -66,6 +66,6 @@ export const groupPostResponseToPostConfig = (
 export interface PostPayload {
 	post_content: {
 		text: string;
-		file: string;
+		file: string[];
 	};
 }
