@@ -81,6 +81,7 @@ import {
 import { StoreGroupEdit } from './stores/storeGroupEdit';
 import { ACTION_COMMENT_TYPES } from './actions/actionComment';
 import { ACTION_CONFIRM_TYPES } from './actions/actionConfirm';
+import { ACTION_ATTACHMENTS_INPUT_TYPES } from './actions/actionAttachmentsInput';
 
 export const PAGES = {
 	home: 'home',
@@ -475,6 +476,12 @@ class App {
 		this._stores.createPost.subscribe(ACTION_FEED_TYPES.postCreateFail);
 		this._stores.createPost.subscribe(
 			ACTION_FEED_TYPES.postGroupCreateSuccess,
+		);
+		this._stores.createPost.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.addFiles,
+		);
+		this._stores.createPost.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.fileLoaded,
 		);
 
 		this._stores.createGroup.subscribe(

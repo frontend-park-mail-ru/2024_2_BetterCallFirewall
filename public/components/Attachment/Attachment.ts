@@ -1,3 +1,5 @@
+import { FilePayload } from '../../models/file';
+import fileType from '../../modules/fileType';
 import Component, { ComponentConfig } from '../Component';
 
 export enum FileType {
@@ -5,8 +7,7 @@ export enum FileType {
 }
 
 export interface AttachmentConfig extends ComponentConfig {
-	file: string;
-	type: FileType;
+	file: FilePayload;
 }
 
 export class Attachment extends Component {
@@ -18,7 +19,7 @@ export class Attachment extends Component {
 	}
 
 	get isImage(): boolean {
-		return this._config.type === FileType.Image;
+		return fileType(this._config.file) === FileType.Image;
 	}
 
 	render(): string {

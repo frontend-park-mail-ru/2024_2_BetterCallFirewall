@@ -1,5 +1,9 @@
 import { Action } from '../actions/action';
 import {
+	ActionAttachmentsInputAddFiles,
+	ActionAttachmentsInputFileLoaded,
+} from '../actions/actionAttachmentsInput';
+import {
 	ACTION_CREATE_POST_TYPES,
 	ActionUpdateCreatePostData,
 } from '../actions/actionCreatePost';
@@ -28,7 +32,22 @@ export const reducerCreatePost = (
 	switch (action.type) {
 		case ACTION_CREATE_POST_TYPES.updateCreatePost:
 			return { ...state, ...(action.data as ActionUpdateCreatePostData) };
-		default:
-			return newState;
 	}
+	switch (true) {
+		case action instanceof ActionAttachmentsInputAddFiles: {
+			const files = newState.createPostForm.attachmentsInput.files;
+			const oldLength = files.length;
+			files.length += action.data.filesCount;
+			newState.createPostForm.attachmentsInput.files = files.fill(
+				{ src: '', type: '' },
+				oldLength,
+			);
+			break;
+		}
+		case action instanceof ActionAttachmentsInputFileLoaded:
+			newState.createPostForm.attachmentsInput.files[action.data.index] =
+				action.data.filePayload;
+			break;
+	}
+	return newState;
 };

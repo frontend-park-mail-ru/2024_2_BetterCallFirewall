@@ -244,6 +244,7 @@ const createPostConfig: ViewCreatePostConfig = {
 			type: 'file',
 			placeholder: 'Прикрепить файлы',
 			extra: 'multiple',
+			files: [],
 		},
 		button: {
 			key: 'submitButton',
