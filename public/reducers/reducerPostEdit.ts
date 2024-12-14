@@ -11,6 +11,7 @@ import {
 	ActionPostEditUpdateData,
 } from '../actions/actionPostEdit';
 import config from '../config';
+import { filePayloadFromURL } from '../models/file';
 import deepClone from '../modules/deepClone';
 import { ViewPostEditConfig } from '../views/PostEdit/viewPostEdit';
 import { reducerAttachmentsInput } from './reducerAttachmentsInput';
@@ -33,6 +34,10 @@ export const reducerPostEdit = (
 				textAreas.text.text = actionData.postConfig.text;
 			}
 			newState.postId = actionData.postConfig.id;
+			newState.postEditForm.attachmentsInput.files =
+				actionData.postConfig.files.map((file) =>
+					filePayloadFromURL(file),
+				);
 			break;
 		}
 		case ACTION_FEED_TYPES.postCreateFail:
