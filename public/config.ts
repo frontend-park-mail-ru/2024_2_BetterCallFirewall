@@ -22,7 +22,7 @@ import { ICreateGroupFormConfig } from './components/CreateGroupForm/CreateGroup
 import { IGroupEditFormConfig } from './components/GroupEditForm/GroupEditForm';
 import { ViewGroupEditConfig } from './views/groupEdit/viewGroupEdit';
 
-const DEBUG: boolean = true;
+const DEBUG: boolean = false;
 
 export const ROOT: string = DEBUG
 	? 'http://127.0.0.1:8000'
