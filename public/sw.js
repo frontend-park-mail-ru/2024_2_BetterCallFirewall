@@ -17,7 +17,7 @@ this.addEventListener('fetch', (event) => {
 				if (
 					networkResponse &&
 					networkResponse.ok &&
-					event.request.method !== 'DELETE'
+					event.request.method === 'GET'
 				) {
 					caches.open(CACHE_NAME).then((cache) => {
 						cache.put(event.request, responseToCache);
