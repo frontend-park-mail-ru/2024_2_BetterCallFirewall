@@ -139,6 +139,10 @@ export class ViewPostEdit extends ViewHome {
 							this._configPostEdit.postId,
 							url.search,
 						);
+					} else {
+						this._postEditForm.printError(
+							'Пост не должен быть пустым',
+						);
 					}
 				}
 			},
