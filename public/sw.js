@@ -11,15 +11,18 @@ this.addEventListener('install', (event) => {
 
 this.addEventListener('fetch', (event) => {
 	event.respondWith(
-		fetch(event.request).then((networkResponse) => {
-			if (networkResponse && networkResponse.ok) {
-				caches.open(CACHE_NAME).then((cache) => {
-					cache.put(event.request, networkResponse.clone());
-				});
+		fetch(event.request)
+			.then((networkResponse) => {
+				if (networkResponse && networkResponse.ok) {
+					caches.open(CACHE_NAME).then((cache) => {
+						cache.put(event.request, networkResponse.clone());
+					});
+				}
 				return networkResponse;
-			}
-			return caches.match(event.request);
-		}),
+			})
+			.catch(() => {
+				return caches.match(event.request);
+			}),
 		/*
 		caches.match(event.request).then((response) => {
 			// if (response) {
