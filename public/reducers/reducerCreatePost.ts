@@ -12,6 +12,7 @@ import { CreatePostFormConfig } from '../components/CreatePostForm/CreatePostFor
 import config from '../config';
 import deepClone from '../modules/deepClone';
 import { ViewCreatePostConfig } from '../views/createPost/viewCreatePost';
+import { reducerAttachmentsInput } from './reducerAttachmentsInput';
 
 const initialCreatePostState: CreatePostFormConfig = deepClone(
 	config.createPostConfig.createPostForm,
@@ -35,25 +36,13 @@ export const reducerCreatePost = (
 			return { ...state, ...(action.data as ActionUpdateCreatePostData) };
 	}
 	switch (true) {
-		case action instanceof ActionAttachmentsInputAddFiles: {
-			const files = newState.createPostForm.attachmentsInput.files;
-			const oldLength = files.length;
-			files.length += action.data.filesCount;
-			newState.createPostForm.attachmentsInput.files = files.fill(
-				{ src: '', mimeType: '' },
-				oldLength,
-			);
-			break;
-		}
+		case action instanceof ActionAttachmentsInputAddFiles:
 		case action instanceof ActionAttachmentsInputFileLoaded:
-			newState.createPostForm.attachmentsInput.files[action.data.index] =
-				action.data.filePayload;
-			break;
 		case action instanceof ActionAttachmentsInputDeleteFile:
-			newState.createPostForm.attachmentsInput.files =
-				newState.createPostForm.attachmentsInput.files.filter(
-					(file, i) => action.data.index !== i,
-				);
+			newState.createPostForm.attachmentsInput = reducerAttachmentsInput(
+				newState.createPostForm.attachmentsInput,
+				action,
+			);
 			break;
 	}
 	return newState;

@@ -489,15 +489,13 @@ const postEditFormConfig: PostEditFormConfig = {
 			name: 'text',
 		},
 	},
-	inputs: {
-		image: {
-			key: 'image',
-			name: 'file',
-			type: 'file',
-			accept: 'image/*',
-			placeholder: 'Изменить картинку',
-			// extra: 'multiple',
-		},
+	attachmentsInput: {
+		key: 'files-input',
+		name: 'files[]',
+		type: 'file',
+		placeholder: 'Прикрепить файлы',
+		extra: 'multiple',
+		files: [],
 	},
 	button: {
 		key: 'submitButton',

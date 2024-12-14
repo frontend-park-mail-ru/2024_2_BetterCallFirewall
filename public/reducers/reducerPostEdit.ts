@@ -1,4 +1,9 @@
 import { Action } from '../actions/action';
+import {
+	ActionAttachmentsInputAddFiles,
+	ActionAttachmentsInputDeleteFile,
+	ActionAttachmentsInputFileLoaded,
+} from '../actions/actionAttachmentsInput';
 import { ACTION_FEED_TYPES } from '../actions/actionFeed';
 import {
 	ACTION_POST_EDIT_TYPES,
@@ -8,6 +13,7 @@ import {
 import config from '../config';
 import deepClone from '../modules/deepClone';
 import { ViewPostEditConfig } from '../views/PostEdit/viewPostEdit';
+import { reducerAttachmentsInput } from './reducerAttachmentsInput';
 
 const initialState: ViewPostEditConfig = deepClone(config.editPostConfig);
 
@@ -36,6 +42,16 @@ export const reducerPostEdit = (
 			return { ...state, ...(action.data as ActionPostEditUpdateData) };
 		default:
 			return state;
+	}
+	switch (true) {
+		case action instanceof ActionAttachmentsInputAddFiles:
+		case action instanceof ActionAttachmentsInputFileLoaded:
+		case action instanceof ActionAttachmentsInputDeleteFile:
+			newState.postEditForm.attachmentsInput = reducerAttachmentsInput(
+				newState.postEditForm.attachmentsInput,
+				action,
+			);
+			break;
 	}
 	return newState;
 };

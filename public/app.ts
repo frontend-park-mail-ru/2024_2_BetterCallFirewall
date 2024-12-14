@@ -544,6 +544,15 @@ class App {
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.goToPostEdit);
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestSuccess);
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestFail);
+		this._stores.postEdit.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.addFiles,
+		);
+		this._stores.postEdit.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.deleteFile,
+		);
+		this._stores.postEdit.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.fileLoaded,
+		);
 
 		this._stores.groupPage.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.groupPage.subscribe(ACTION_GROUPS_TYPES.groupsFollowGroup);

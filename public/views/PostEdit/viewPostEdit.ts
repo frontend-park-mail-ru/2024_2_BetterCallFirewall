@@ -9,7 +9,6 @@ import {
 } from '../../components/PostEditForm/PostEditForm';
 import { PAGE_URLS } from '../../config';
 import { PostPayload } from '../../models/post';
-import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangePostEdit } from '../../stores/storePostEdit';
@@ -113,16 +112,25 @@ export class ViewPostEdit extends ViewHome {
 						formData.get('text') ||
 						(formData.get('file') as File).name
 					) {
-						const fileStr = await fileToString(
-							formData.get('file') as File,
-						);
-						if (fileStr === null) {
+						const files =
+							this._configPostEdit.postEditForm.attachmentsInput
+								.files;
+						const filesStr = files.map((file) => file.src);
+						const emptyFiles = filesStr.filter((file) => {
+							if (!file) {
+								return file;
+							}
+						});
+						if (emptyFiles.length) {
+							this._postEditForm.printError(
+								'Что-то пошло не так',
+							);
 							return;
 						}
 						const postPayload: PostPayload = {
 							post_content: {
 								text: formData.get('text') as string,
-								file: [fileStr],
+								file: filesStr,
 							},
 						};
 						const url = new URL(app.router.href);
