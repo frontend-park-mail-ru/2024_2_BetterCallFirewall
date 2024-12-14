@@ -526,6 +526,7 @@ class App {
 		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.deleteSuccess);
 		this._stores.groupPage.subscribe(ACTION_CONFIRM_TYPES.close);
 
+		this._stores.profileEdit.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.updateProfileEdit,
 		);

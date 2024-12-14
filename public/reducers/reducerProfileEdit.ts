@@ -1,4 +1,5 @@
 import { Action } from '../actions/action';
+import { ActionAppGoTo } from '../actions/actionApp';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileRequestSuccessData,
@@ -6,6 +7,7 @@ import {
 import {
 	ACTION_PROFILE_EDIT_TYPES,
 	ActionProfileChangePasswordFail,
+	ActionProfileChangePasswordSuccess,
 	ActionProfileEditUpdateData,
 } from '../actions/actionProfileEdit';
 import { STATUS } from '../api/api';
@@ -78,6 +80,11 @@ export const reducerProfileEdit = (
 			if (action.data.status === STATUS.badRequest) {
 				newState.changePasswordForm.error = 'Неверный пароль';
 			}
+			break;
+		case action instanceof ActionProfileChangePasswordSuccess:
+		case action instanceof ActionAppGoTo:
+			newState.changePasswordForm.error = '';
+			break;
 	}
 	return newState;
 };

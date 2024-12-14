@@ -16,6 +16,7 @@ import {
 } from '../../components/ProfileEditForm/ProfileEditForm';
 import { ProfilePayload } from '../../models/profile';
 import fileToString from '../../modules/fileToString';
+import { throttle } from '../../modules/throttle';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangeProfileEdit } from '../../stores/storeProfileEditForm';
@@ -73,11 +74,7 @@ export class ViewProfileEdit extends ViewHome {
 			);
 		}
 		this._render();
-		this.sendAction(
-			new ActionProfileRequest(
-				`/${this._configProfileEdit.main.header.profile.id}`,
-			),
-		);
+		this._requestProfile();
 	}
 
 	updateViewProfileEdit(data: ViewProfileEditConfig): void {
@@ -195,4 +192,12 @@ export class ViewProfileEdit extends ViewHome {
 			},
 		);
 	}
+
+	private _requestProfile = throttle(() => {
+		this.sendAction(
+			new ActionProfileRequest(
+				`/${this._configProfileEdit.main.header.profile.id}`,
+			),
+		);
+	}, 1000);
 }
