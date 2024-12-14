@@ -6,9 +6,13 @@
     &__file {
         display: flex;
         align-items: center;
+        gap: 1rem;
         &-icon {
-            width: 5rem;
-            height: 5rem;
+            width: 2rem;
+            height: 2rem;
+            img {
+                border-radius: 0;
+            }
         }
     }
     &__delete-button {

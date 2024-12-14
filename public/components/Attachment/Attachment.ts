@@ -1,5 +1,5 @@
 import { FilePayload } from '../../models/file';
-import { fileTypeFromName } from '../../modules/files';
+import { fileNameFromURL, fileTypeFromName } from '../../modules/files';
 import { VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
 import { Loader } from '../Loader/Loader';
@@ -53,6 +53,7 @@ export class Attachment extends Component {
 		const loader = new Loader({ key: 'loader' }, this).render();
 		this._templateContext = {
 			...this._templateContext,
+			fileName: fileNameFromURL(this._config.file.src),
 			isImage: this.isImage,
 			isFile: this.isFile,
 			isLoading: this.isLoading,

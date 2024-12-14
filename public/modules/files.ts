@@ -36,3 +36,12 @@ export const fileTypeFromName = (file: string): FileType => {
 	}
 	return FileType.File;
 };
+
+export const fileNameFromURL = (file: string): string => {
+	const substr = 'files/';
+	const start = file.indexOf(substr);
+	if (start === -1) {
+		return file;
+	}
+	return file.slice(start + substr.length);
+};
