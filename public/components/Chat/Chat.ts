@@ -1,8 +1,6 @@
 import { VNode } from '../../modules/vdom';
-import {
-	AttachmentsInput,
-	AttachmentsInputConfig,
-} from '../AttachmentsInput/AttachmentsInput';
+import { AttachmentsInputConfig } from '../AttachmentsInput/AttachmentsInput';
+import { ChatAttachmentInput } from '../ChatAttachmentInput/ChatAttachmentInput';
 import { ChatMessage, ChatMessageConfig } from '../ChatMessage/ChatMessage';
 import Component, { ComponentConfig } from '../Component';
 
@@ -24,6 +22,7 @@ export interface ChatConfig extends ComponentConfig {
 export class Chat extends Component {
 	protected _config: ChatConfig;
 	private _messages: ChatMessage[] = [];
+	private _attachmentInput: ChatAttachmentInput;
 
 	/**
 	 * Instance of chat
@@ -34,6 +33,11 @@ export class Chat extends Component {
 	constructor(config: ChatConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
+
+		this._attachmentInput = new ChatAttachmentInput(
+			this._config.attachmentInput,
+			this,
+		);
 	}
 
 	get config(): ChatConfig {
@@ -91,6 +95,10 @@ export class Chat extends Component {
 		return this._messages;
 	}
 
+	get attachButtonVNode(): VNode {
+		return this._findVNodeByClass('chat__attach-button');
+	}
+
 	render(): string {
 		this._prerender();
 		return this._render('Chat.hbs');
@@ -101,16 +109,29 @@ export class Chat extends Component {
 		this._messages = this._config.messages.map((config) => {
 			return new ChatMessage(config, this);
 		});
-		const attachmentInput = new AttachmentsInput(
+		this._attachmentInput = new ChatAttachmentInput(
 			this._config.attachmentInput,
 			this,
-		).render();
+		);
 		this._templateContext = {
 			...this._templateContext,
 			messages: this._messages.map((message) => {
 				return message.render();
 			}),
-			attachmentInput,
+			attachmentInput: this._attachmentInput.render(),
 		};
+	}
+
+	protected _addHandlers(): void {
+		super._addHandlers();
+		this.attachButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				(
+					this._attachmentInput.inputVNode.element as HTMLInputElement
+				).click();
+			},
+		});
 	}
 }
