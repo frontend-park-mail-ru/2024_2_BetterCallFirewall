@@ -45,8 +45,6 @@ export const reducerPostEdit = (
 			return newState;
 		case ACTION_POST_EDIT_TYPES.updatePostEdit:
 			return { ...state, ...(action.data as ActionPostEditUpdateData) };
-		default:
-			return state;
 	}
 	switch (true) {
 		case action instanceof ActionAttachmentsInputAddFiles:
