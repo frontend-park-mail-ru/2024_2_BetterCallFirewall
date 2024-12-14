@@ -900,7 +900,9 @@ class API {
 				this.sendAction(new ActionProfileChangePasswordSuccess());
 				break;
 			default:
-				this.sendAction(new ActionProfileChangePasswordFail());
+				this.sendAction(
+					new ActionProfileChangePasswordFail(response.status),
+				);
 		}
 	}
 }

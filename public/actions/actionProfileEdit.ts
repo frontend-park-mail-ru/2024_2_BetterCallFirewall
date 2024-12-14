@@ -65,5 +65,9 @@ export class ActionProfileChangePasswordSuccess implements Action {
 }
 export class ActionProfileChangePasswordFail implements Action {
 	type: string = ACTION_PROFILE_EDIT_TYPES.changePasswordFail;
-	data: object = {};
+	data: { status: number };
+
+	constructor(status: number) {
+		this.data = { status };
+	}
 }

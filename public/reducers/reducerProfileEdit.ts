@@ -5,8 +5,10 @@ import {
 } from '../actions/actionProfile';
 import {
 	ACTION_PROFILE_EDIT_TYPES,
+	ActionProfileChangePasswordFail,
 	ActionProfileEditUpdateData,
 } from '../actions/actionProfileEdit';
+import { STATUS } from '../api/api';
 import { ChangePasswordFormConfig } from '../components/ChangePasswordForm/ChangePasswordForm';
 import {
 	IProfileEditFormConfig,
@@ -70,9 +72,14 @@ export const reducerProfileEdit = (
 			}
 			return newState;
 		}
-		default:
-			return newState;
 	}
+	switch (true) {
+		case action instanceof ActionProfileChangePasswordFail:
+			if (action.data.status === STATUS.badRequest) {
+				newState.changePasswordForm.error = 'Неверный пароль';
+			}
+	}
+	return newState;
 };
 
 const profileResponseToInputs = (

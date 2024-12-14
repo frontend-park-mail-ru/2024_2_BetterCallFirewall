@@ -541,6 +541,12 @@ class App {
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_TYPES.profileRequestSuccess,
 		);
+		this._stores.profileEdit.subscribe(
+			ACTION_PROFILE_EDIT_TYPES.changePasswordSuccess,
+		);
+		this._stores.profileEdit.subscribe(
+			ACTION_PROFILE_EDIT_TYPES.changePasswordFail,
+		);
 
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.goToPostEdit);
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestSuccess);
