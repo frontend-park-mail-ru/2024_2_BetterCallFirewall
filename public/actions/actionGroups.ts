@@ -27,15 +27,16 @@ export class ActionGroupsGetGroups implements Action {
 
 export interface ActionGroupsGetGroupsSuccessData {
 	groups: ShortGroupResponse[];
+	append?: boolean;
 }
 
 export class ActionGroupsGetGroupsSuccess implements Action {
 	type: ActionType;
 	data: ActionGroupsGetGroupsSuccessData;
 
-	constructor(data: ActionGroupsGetGroupsSuccessData) {
+	constructor(groups: ShortGroupResponse[], append?: boolean) {
 		this.type = ACTION_GROUPS_TYPES.getGroupsSuccess;
-		this.data = data;
+		this.data = { groups, append };
 	}
 }
 

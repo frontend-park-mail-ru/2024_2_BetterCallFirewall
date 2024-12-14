@@ -557,15 +557,14 @@ class API {
 					break;
 				}
 				this.sendAction(
-					new ActionGroupsGetGroupsSuccess({
-						groups: response.data,
-					}),
+					new ActionGroupsGetGroupsSuccess(
+						response.data,
+						lastId ? true : false,
+					),
 				);
 				break;
 			case STATUS.noMoreContent:
-				this.sendAction(
-					new ActionGroupsGetGroupsSuccess({ groups: [] }),
-				);
+				this.sendAction(new ActionGroupsGetGroupsSuccess([], true));
 				break;
 		}
 	}
