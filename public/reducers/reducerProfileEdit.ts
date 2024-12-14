@@ -7,6 +7,7 @@ import {
 	ACTION_PROFILE_EDIT_TYPES,
 	ActionProfileEditUpdateData,
 } from '../actions/actionProfileEdit';
+import { ChangePasswordFormConfig } from '../components/ChangePasswordForm/ChangePasswordForm';
 import {
 	IProfileEditFormConfig,
 	ProfileEditFormInputs,
@@ -20,9 +21,14 @@ const initialProfileEditState: IProfileEditFormConfig = deepClone(
 	config.profileEditConfig.profileEditForm,
 );
 
+const initialChangePasswordFormState: ChangePasswordFormConfig = deepClone(
+	config.profileEditConfig.changePasswordForm,
+);
+
 const initialState: ViewProfileEditConfig = {
 	...config.homeConfig,
 	profileEditForm: initialProfileEditState,
+	changePasswordForm: initialChangePasswordFormState,
 };
 
 export const reducerProfileEdit = (
