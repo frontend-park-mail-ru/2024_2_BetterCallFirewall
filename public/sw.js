@@ -13,9 +13,10 @@ this.addEventListener('fetch', (event) => {
 	event.respondWith(
 		fetch(event.request)
 			.then((networkResponse) => {
+				const responseToCache = networkResponse.clone();
 				if (networkResponse && networkResponse.ok) {
 					caches.open(CACHE_NAME).then((cache) => {
-						cache.put(event.request, networkResponse.clone());
+						cache.put(event.request, responseToCache);
 					});
 				}
 				return networkResponse;
