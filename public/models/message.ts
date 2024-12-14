@@ -4,7 +4,7 @@ import parseTime from '../modules/parseTime';
 
 interface MessageContent {
 	text: string;
-	file_path: string;
+	file_path: string[];
 	sticker_path: string;
 }
 
