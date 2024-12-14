@@ -24,30 +24,6 @@ this.addEventListener('fetch', (event) => {
 			.catch(() => {
 				return caches.match(event.request);
 			}),
-		/*
-		caches.match(event.request).then((response) => {
-			// if (response) {
-			// 	return response;
-			// }
-			return fetch(event.request).then((networkResponse) => {
-				// if (!networkResponse || networkResponse.status !== 200) {
-				// 	return networkResponse;
-				// }
-				if (networkResponse && networkResponse.ok) {
-					return caches.open(CACHE_NAME).then((cache) => {
-						cache.put(event.request, networkResponse.clone());
-						return networkResponse;
-					});
-				} else {
-					return response;
-				}
-				// return caches.open(CACHE_NAME).then((cache) => {
-				// 	cache.put(event.request, networkResponse.clone());
-				// 	return networkResponse;
-				// });
-			});
-		}),
-		*/
 	);
 });
 
