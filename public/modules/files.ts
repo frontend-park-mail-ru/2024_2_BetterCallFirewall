@@ -12,10 +12,10 @@ const imageMimeTypes = [
 const imageExtensions = ['jpeg', 'png', 'webp', 'gif', 'x-icon'];
 
 export const fileType = (file: FilePayload): FileType => {
-	if (!file.src || !file.type) {
+	if (!file.src || !file.mimeType) {
 		return FileType.Empty;
 	}
-	if (imageMimeTypes.includes(file.type)) {
+	if (imageMimeTypes.includes(file.mimeType)) {
 		return FileType.Image;
 	}
 	return FileType.File;

@@ -40,7 +40,7 @@ export const reducerCreatePost = (
 			const oldLength = files.length;
 			files.length += action.data.filesCount;
 			newState.createPostForm.attachmentsInput.files = files.fill(
-				{ src: '', type: '' },
+				{ src: '', mimeType: '' },
 				oldLength,
 			);
 			break;

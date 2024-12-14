@@ -65,7 +65,7 @@ export class AttachmentsInput extends Input {
 					if (fileStr) {
 						this._sendAction(
 							new ActionAttachmentsInputFileLoaded(
-								{ src: fileStr, type: file.type },
+								{ src: fileStr, mimeType: file.type },
 								oldFilesLength + i,
 							),
 						);

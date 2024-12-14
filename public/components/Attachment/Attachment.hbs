@@ -3,6 +3,10 @@
         {{#if this.isImage}}
             <img src="{{file.src}}" alt="" class="image">
         {{/if}}
+        {{#if isFile}}
+            <object data="/public/img/file.svg" type="image/svg+xml"></object>
+            <span>{{file.src}}</span>
+        {{/if}}
         {{#if isLoading}}
             {{{loader}}}
         {{/if}}

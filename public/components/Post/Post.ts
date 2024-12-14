@@ -232,7 +232,7 @@ export class Post extends Component {
 			return new Attachment(
 				{
 					key: `attachment-${i}`,
-					file: { src: file, type: fileTypeFromName(file) },
+					file: { src: file, mimeType: fileTypeFromName(file) },
 					hasDeleteButton: false,
 				},
 				this,

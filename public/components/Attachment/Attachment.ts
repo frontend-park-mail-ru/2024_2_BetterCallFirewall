@@ -31,6 +31,10 @@ export class Attachment extends Component {
 		return fileTypeFromName(this._config.file.src) === FileType.Image;
 	}
 
+	get isFile(): boolean {
+		return fileTypeFromName(this._config.file.src) === FileType.File;
+	}
+
 	get isLoading(): boolean {
 		return fileTypeFromName(this._config.file.src) == FileType.Empty;
 	}
@@ -50,6 +54,7 @@ export class Attachment extends Component {
 		this._templateContext = {
 			...this._templateContext,
 			isImage: this.isImage,
+			isFile: this.isFile,
 			isLoading: this.isLoading,
 			loader,
 		};

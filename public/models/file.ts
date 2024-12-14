@@ -1,4 +1,4 @@
 export interface FilePayload {
 	src: string;
-	type: string;
+	mimeType: string;
 }
