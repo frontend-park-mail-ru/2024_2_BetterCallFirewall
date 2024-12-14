@@ -372,6 +372,13 @@ const emptyChatComponentConfig: ChatConfig = {
 	myAvatar: '',
 	inputText: '',
 	inputKey: 'chat-input',
+	attachmentInput: {
+		key: 'attachmentInput',
+		name: 'files[]',
+		type: 'file',
+		extra: 'multiple',
+		files: [],
+	},
 };
 
 const chatConfig: ViewChatConfig = {

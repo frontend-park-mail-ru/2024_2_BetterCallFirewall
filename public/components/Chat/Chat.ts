@@ -1,4 +1,8 @@
 import { VNode } from '../../modules/vdom';
+import {
+	AttachmentsInput,
+	AttachmentsInputConfig,
+} from '../AttachmentsInput/AttachmentsInput';
 import { ChatMessage, ChatMessageConfig } from '../ChatMessage/ChatMessage';
 import Component, { ComponentConfig } from '../Component';
 
@@ -14,6 +18,7 @@ export interface ChatConfig extends ComponentConfig {
 	myAvatar: string;
 	inputText: string;
 	inputKey: string;
+	attachmentInput: AttachmentsInputConfig;
 }
 
 export class Chat extends Component {
@@ -96,11 +101,16 @@ export class Chat extends Component {
 		this._messages = this._config.messages.map((config) => {
 			return new ChatMessage(config, this);
 		});
+		const attachmentInput = new AttachmentsInput(
+			this._config.attachmentInput,
+			this,
+		).render();
 		this._templateContext = {
 			...this._templateContext,
 			messages: this._messages.map((message) => {
 				return message.render();
 			}),
+			attachmentInput,
 		};
 	}
 }
