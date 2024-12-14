@@ -17,11 +17,11 @@ export const ACTION_GROUPS_TYPES = {
 
 export class ActionGroupsGetGroups implements Action {
 	type: ActionType;
-	data: object;
+	data: { lastId?: number };
 
-	constructor() {
+	constructor(lastId?: number) {
 		this.type = ACTION_GROUPS_TYPES.getGroups;
-		this.data = {};
+		this.data = { lastId };
 	}
 }
 

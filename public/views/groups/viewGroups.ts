@@ -1,8 +1,14 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
-import { ACTION_GROUPS_TYPES, ActionGroupsFollowGroup, ActionGroupsGetGroups, ActionGroupsUnfollowGroup } from '../../actions/actionGroups';
+import {
+	ACTION_GROUPS_TYPES,
+	ActionGroupsFollowGroup,
+	ActionGroupsGetGroups,
+	ActionGroupsUnfollowGroup,
+} from '../../actions/actionGroups';
 import { Root } from '../../components';
 import { Groups, GroupsConfig } from '../../components/Groups/Groups';
 import { PAGE_LINKS, PAGE_URLS } from '../../config';
+import { throttle } from '../../modules/throttle';
 import { update } from '../../modules/vdom';
 import { ChangeGroups } from '../../stores/storeGroups';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
@@ -74,15 +80,26 @@ export class ViewGroups extends ViewHome {
 	}
 
 	updateViewGroups(data: ViewGroupsConfig) {
-		super.updateViewHome(data); 
+		super.updateViewHome(data);
 		this._configGroups = Object.assign(this._configGroups, data);
 		this._render();
 	}
 
 	render(): void {
 		this._render();
-		// this.sendAction(new ActionFriendsGetFriends());
 		this.sendAction(new ActionGroupsGetGroups());
+	}
+
+	private _addScrollHandler() {
+		this._root.addDocumentHandler({
+			event: 'scroll',
+			callback: (event) => {
+				event.preventDefault();
+				if (this._isNearBottom()) {
+					this._scrollHandler();
+				}
+			},
+		});
 	}
 
 	private _addGroupsHandlers(groups: Groups) {
@@ -93,7 +110,9 @@ export class ViewGroups extends ViewHome {
 					event: 'click',
 					callback: (event) => {
 						event.preventDefault();
-						this.sendAction(new ActionGroupsUnfollowGroup(group.id));
+						this.sendAction(
+							new ActionGroupsUnfollowGroup(group.id),
+						);
 					},
 				});
 			}
@@ -111,7 +130,9 @@ export class ViewGroups extends ViewHome {
 				callback: (event) => {
 					event.preventDefault();
 					this.sendAction(
-						new ActionAppGoTo(PAGE_URLS.groups + `/${group.config.id}`),
+						new ActionAppGoTo(
+							PAGE_URLS.groups + `/${group.config.id}`,
+						),
 					);
 				},
 			});
@@ -120,7 +141,9 @@ export class ViewGroups extends ViewHome {
 				callback: (event) => {
 					event.preventDefault();
 					this.sendAction(
-						new ActionAppGoTo(PAGE_URLS.groups + `/${group.config.id}`),
+						new ActionAppGoTo(
+							PAGE_URLS.groups + `/${group.config.id}`,
+						),
 					);
 				},
 			});
@@ -133,4 +156,9 @@ export class ViewGroups extends ViewHome {
 			},
 		});
 	}
+
+	private _scrollHandler = throttle(() => {
+		const groups = this._configGroups.groups.groupsConfig;
+		this.sendAction(new ActionGroupsGetGroups(groups.at(-1)?.id));
+	}, 200);
 }

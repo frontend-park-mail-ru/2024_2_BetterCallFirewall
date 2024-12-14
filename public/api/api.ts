@@ -42,6 +42,7 @@ import {
 	ActionGroupsEditSuccess,
 	ActionGroupsFollowGroupData,
 	ActionGroupsFollowGroupSuccess,
+	ActionGroupsGetGroups,
 	ActionGroupsUnfollowGroupSuccess,
 } from '../actions/actionGroups';
 import {
@@ -180,9 +181,6 @@ class API {
 			case ACTION_POST_TYPES.unlike:
 				this.unlikePost((action.data as ActionPostLikeData).postId);
 				break;
-			case ACTION_GROUPS_TYPES.getGroups:
-				this.requestGroups();
-				break;
 			case ACTION_GROUP_PAGE_TYPES.groupPageRequest:
 				this.requestGroupPage(
 					(action.data as ActionGroupPageRequestData).href,
@@ -245,6 +243,9 @@ class API {
 				break;
 			case action instanceof ActionProfileChangePassword:
 				this.changePassword(action.data.payload);
+				break;
+			case action instanceof ActionGroupsGetGroups:
+				this.requestGroups(action.data.lastId);
 				break;
 		}
 	}
@@ -548,12 +549,11 @@ class API {
 		}
 	}
 
-	async requestGroups() {
-		const response = await ajax.getGroups();
+	async requestGroups(lastId?: number) {
+		const response = await ajax.getGroups(lastId);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
-					// this.sendAction();
 					break;
 				}
 				this.sendAction(

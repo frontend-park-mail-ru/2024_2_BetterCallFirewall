@@ -337,11 +337,22 @@ class Ajax {
 		return this._deleteObjectResponse(url);
 	}
 
-	async getGroups(): Promise<AjaxResponse<ShortGroupResponse[]>> {
-		const url = app.config.URL.groups;
+	/**
+	 * Получить группы
+	 */
+	async getGroups(
+		lastId?: number,
+	): Promise<AjaxResponse<ShortGroupResponse[]>> {
+		let url = app.config.URL.groups;
+		if (lastId) {
+			url = insertQueryParams(url, { id: `${lastId}` });
+		}
 		return this._getShortGroupResponse(url);
 	}
 
+	/**
+	 * Создать группу
+	 */
 	async createGroup(formData: GroupPayload): Promise<AjaxResponse<number>> {
 		return this._genericRequestResponse(
 			app.config.URL.groups,
