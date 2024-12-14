@@ -23,6 +23,10 @@ export abstract class BaseAttachmentInput extends Input {
 		this._config = config;
 	}
 
+	get config(): BaseAttachmentInputConfig {
+		return this._config;
+	}
+
 	get inputVNode(): VNode {
 		return this._findVNodeByKey('input');
 	}

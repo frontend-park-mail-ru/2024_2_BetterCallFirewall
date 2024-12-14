@@ -249,8 +249,11 @@ export class ViewChat extends ViewHome {
 		if (!chatText) {
 			return;
 		}
+		const files = this._chat.attachmentInput.config.files.map(
+			(file) => file.src,
+		);
 		const message: MessagePayload = {
-			content: { text: chatText, file_path: [], sticker_path: '' },
+			content: { text: chatText, file_path: files, sticker_path: '' },
 			receiver: this._chat.config.companionId,
 		};
 		this._chat.textarea.value = '';

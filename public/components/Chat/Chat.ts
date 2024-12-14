@@ -99,6 +99,10 @@ export class Chat extends Component {
 		return this._findVNodeByClass('chat__attach-button');
 	}
 
+	get attachmentInput(): ChatAttachmentInput {
+		return this._attachmentInput;
+	}
+
 	render(): string {
 		this._prerender();
 		return this._render('Chat.hbs');
