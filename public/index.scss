@@ -28,7 +28,9 @@
 @use 'components/Comment/Comment.scss';
 @use 'components/Confirm/Confirm.scss';
 @use 'components/AttachmentsInput/AttachmentsInput.scss';
+@use 'components/BaseAttachmentInput/BaseAttachmentInput.scss';
 @use 'components/Attachment/Attachment.scss';
+@use 'components/ChatAttachmentInput/ChatAttachmentInput.scss';
 @use 'components/ChangePasswordForm/ChangePasswordForm.scss';
 
 * {
