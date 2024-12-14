@@ -25,6 +25,9 @@ export const toChatMessageConfig = (
 	messageResponse: MessageResponse,
 ): ChatMessageConfig => {
 	const isCompanion = messageResponse.sender === chatConfig.companionId;
+	const files = messageResponse.content.file_path
+		? messageResponse.content.file_path.map((file) => parseFile(file))
+		: [];
 	return {
 		key: `chat-message-${messageResponse.sender}`,
 		userId: isCompanion ? messageResponse.sender : chatConfig.companionId,
@@ -36,6 +39,6 @@ export const toChatMessageConfig = (
 		createdAt: parseTime(messageResponse.created_at),
 		createdAtISO: messageResponse.created_at,
 		isAuthor: !isCompanion,
-		files: messageResponse.content.file_path.map((file) => parseFile(file)),
+		files,
 	};
 };
