@@ -13,7 +13,7 @@ export interface Header {
 
 interface Content {
 	text: string;
-	file: string;
+	file: string[];
 	created_at: string;
 	updated_at: string;
 }
@@ -49,7 +49,7 @@ export const toCommentConfig = (
 
 export interface CommentPayload {
 	text: string;
-	file: string;
+	file: string[];
 }
 
 export const commentPayloadToResponse = (

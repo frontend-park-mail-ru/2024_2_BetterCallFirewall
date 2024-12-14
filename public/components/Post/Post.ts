@@ -269,7 +269,7 @@ export class Post extends Component {
 		}
 		const commentPayload: CommentPayload = {
 			text,
-			file: '',
+			file: [],
 		};
 		textarea.value = '';
 		if (this._config.commentEditId) {
