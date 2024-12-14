@@ -1,11 +1,8 @@
 import app from './app';
 import './index.scss';
 
-console.log('navigator:', navigator);
 if ('serviceWorker' in navigator) {
-	console.log('add event listener');
 	window.addEventListener('load', () => {
-		console.log('load');
 		navigator.serviceWorker
 			.register('./sw.js')
 			.then((registration) => {
