@@ -56,6 +56,7 @@ export class ViewGroups extends ViewHome {
 
 	protected _addHandlers() {
 		super._addHandlers();
+		this._addScrollHandler();
 		this._addGroupsHandlers(this.groups);
 	}
 
