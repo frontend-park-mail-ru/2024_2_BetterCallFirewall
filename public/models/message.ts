@@ -9,7 +9,7 @@ interface MessageContent {
 }
 
 export interface MessagePayload {
-	content: string;
+	content: MessageContent;
 	receiver: number;
 }
 

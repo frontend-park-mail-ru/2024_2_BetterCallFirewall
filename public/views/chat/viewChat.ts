@@ -248,7 +248,7 @@ export class ViewChat extends ViewHome {
 			return;
 		}
 		const message: MessagePayload = {
-			content: chatText,
+			content: { text: chatText, file_path: [], sticker_path: '' },
 			receiver: this._chat.config.companionId,
 		};
 		this._chat.textarea.value = '';
