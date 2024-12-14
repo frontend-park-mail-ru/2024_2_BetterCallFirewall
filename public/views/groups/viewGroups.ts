@@ -49,16 +49,6 @@ export class ViewGroups extends ViewHome {
 			case ACTION_GROUPS_TYPES.groupsUnfollowGroupSuccess:
 				this.sendAction(new ActionGroupsGetGroups());
 				break;
-			case ACTION_GROUPS_TYPES.getGroupsSuccess:
-				if (this._isNearBottom()) {
-					const lastId =
-						this._configGroups.groups.groupsConfig.at(-1)?.id;
-					if (lastId) {
-						this.sendAction(new ActionGroupsGetGroups(lastId));
-					}
-				}
-				this.updateViewGroups(change.data);
-				break;
 			default:
 				this.updateViewGroups(change.data);
 		}
