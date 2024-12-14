@@ -1,0 +1,45 @@
+<div class="group-page" data-key="{{this.key}}">
+    <div class="group-page__header">
+        <div class="group-page__header-img">
+            <img class="avatar" src="{{img}}" alt="">
+        </div>
+        <div class="group-page__header-info">
+            <div class="group-page__name">
+                <h1>{{name}}</h1>
+            </div>
+            <span>{{description}}</span>
+            <span>Количество подписчиков: {{countSubscribers}}</span>
+            {{!-- <div class="group-page__community">
+                <a href=""><span>Friends: {{friendsCount}}</span></a>
+                <a href=""><span>Groups: {{groupsCount}}</span></a>
+            </div> --}}
+            <div class="group-page__actions">
+                {{#if this.isAdmin}}
+                    <button class="header__link button-action-negative button-no-decorations" data-key="deleteGroup">Удалить группу</button>
+                    <a class="profile-edit" href="" data-key="groupEdit">Редактировать группу</a>
+                {{else}}
+                    {{#if this.isFollow}}
+                        <button class="header__link button-action-negative button-no-decorations" data-key="unfollow">Отписаться</button>
+                    {{else}}
+                        <button class="header__link button-action button-no-decorations" data-key="follow">Подписаться</button>
+                    {{/if}}
+                {{/if}}
+            </div>
+        </div>
+        <div class="group-page__edit"></div>
+    </div>
+    <hr>
+    <div class="group-page__content">
+        <div class="group-page__posts-header">
+            <h2>Посты</h2>
+            {{#if this.isAdmin}}
+                <a class="header__link button-action button-no-decorations" href="{{this.createPostHref}}" data-key="createPost">Создать пост</a>
+            {{/if}}
+            </div>
+        <div class="group-page__posts">
+            {{#each posts}}
+                {{{this}}}
+            {{/each}}
+        </div>
+    </div>
+</div>

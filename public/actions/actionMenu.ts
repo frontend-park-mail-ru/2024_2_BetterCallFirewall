@@ -1,22 +1,13 @@
 import { Action, ActionType } from './action';
 
 export const ACTION_MENU_TYPES = {
-	menuLinkClick: 'menuLinkClick',
 	titleClick: 'menuTitleClick',
 	updateProfileLinkHref: 'menuUpdateProfileLinkHref',
+	openSwitch: 'actionMenuOpenSwitch',
 };
 
 export interface ActionMenuLinkClickData {
 	href: string;
-}
-
-export class ActionMenuLinkClick implements Action {
-	type: ActionType;
-	data: ActionMenuLinkClickData;
-	constructor(data: ActionMenuLinkClickData) {
-		this.type = ACTION_MENU_TYPES.menuLinkClick;
-		this.data = data;
-	}
 }
 
 export class ActionMenuTitleClick implements Action {
@@ -40,5 +31,18 @@ export class ActionMenuUpdateProfileLinkHref implements Action {
 	constructor(href: string) {
 		this.type = ACTION_MENU_TYPES.updateProfileLinkHref;
 		this.data = { href };
+	}
+}
+
+export interface ActionMenuOpenSwitchData {
+	show: boolean;
+}
+
+export class ActionMenuOpenSwitch implements Action {
+	type: ActionType = ACTION_MENU_TYPES.openSwitch;
+	data: ActionMenuOpenSwitchData;
+
+	constructor(show: boolean) {
+		this.data = { show };
 	}
 }

@@ -12,7 +12,7 @@ import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileRequestSuccessData,
 } from '../actions/actionProfile';
-import { IChatConfig } from '../components/Chat/Chat';
+import { ChatConfig } from '../components/Chat/Chat';
 import config from '../config';
 import { MessageResponse, toChatMessageConfig } from '../models/message';
 import { toChatConfig } from '../models/profile';
@@ -20,7 +20,7 @@ import deepClone from '../modules/deepClone';
 import { ViewChatConfig } from '../views/chat/viewChat';
 import { reducerHome } from './reducerHome';
 
-const initialChatState: IChatConfig = deepClone(config.chatConfig.chat);
+const initialChatState: ChatConfig = deepClone(config.chatConfig.chat);
 
 const initialState: ViewChatConfig = {
 	...config.homeConfig,
@@ -48,24 +48,31 @@ export const reducerChat = (
 			return newState;
 		case ACTION_CHAT_TYPES.sendMessage: {
 			const actionData = action.data as ActionChatSendMessageData;
-			const messageResponse: MessageResponse = {
-				sender: newState.main.header.profile.id,
-				content: actionData.message.content,
-				created_at: new Date().toISOString(),
-			};
-			newState.chat.messages.push(
-				toChatMessageConfig(newState.chat, messageResponse),
-			);
+			if (newState.chat.companionId !== newState.chat.myId) {
+				const messageResponse: MessageResponse = {
+					sender: newState.main.header.profile.id,
+					content: actionData.message.content,
+					created_at: new Date().toISOString(),
+				};
+				newState.chat.messages.push(
+					toChatMessageConfig(newState.chat, messageResponse),
+				);
+			}
+			newState.chat.inputText = '';
 			return newState;
 		}
 		case ACTION_MESSAGES_TYPES.newMessage: {
 			const actionData = action.data as ActionMessagesNewMessageData;
-			newState.chat.messages.push(
-				toChatMessageConfig(newState.chat, actionData.messageResponse),
-			);
-			// alert(
-			// 	`Новое сообщение: ${actionData.messageResponse.content} от ${actionData.messageResponse.sender}`,
-			// ); // tmp
+			if (
+				actionData.messageResponse.sender === newState.chat.companionId
+			) {
+				newState.chat.messages.push(
+					toChatMessageConfig(
+						newState.chat,
+						actionData.messageResponse,
+					),
+				);
+			}
 			return newState;
 		}
 		case ACTION_CHAT_TYPES.requestChatSuccess: {

@@ -1,20 +1,25 @@
-import { IBaseComponent } from '../BaseComponent';
-import { BaseForm, IBaseForm, IBaseFormConfig } from '../BaseForm/BaseForm';
+import { VNode } from '../../modules/vdom';
+import {
+	AttachmentsInput,
+	AttachmentsInputConfig,
+} from '../AttachmentsInput/AttachmentsInput';
+import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
+import Component from '../Component';
 
-export interface ICreatePostFormConfig extends IBaseFormConfig {}
+export interface CreatePostFormConfig extends BaseFormConfig {
+	attachmentsInput: AttachmentsInputConfig;
+}
 
-export interface ICreatePostForm extends IBaseForm {}
+export class CreatePostForm extends BaseForm {
+	protected override _config: CreatePostFormConfig;
 
-export class CreatePostForm extends BaseForm implements ICreatePostForm {
-	protected override _config: ICreatePostFormConfig;
-
-	constructor(config: ICreatePostFormConfig, parent: IBaseComponent) {
+	constructor(config: CreatePostFormConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 	}
 
 	get form(): HTMLElement {
-		const html = this.htmlElement.querySelector('.form') as HTMLElement;
+		const html = document.querySelector('.form') as HTMLElement;
 		if (html) {
 			return html;
 		}
@@ -22,9 +27,7 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 	}
 
 	get submitButton(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.form__button',
-		) as HTMLElement;
+		const html = document.querySelector('.form__button') as HTMLElement;
 		if (!html) {
 			throw new Error('submit button not found');
 		}
@@ -32,15 +35,21 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 	}
 
 	get fileInput(): HTMLElement {
-		const html = this.htmlElement.querySelector('input[type="file"]') as HTMLElement;
+		const html = document.querySelector(
+			'input[type="file"]',
+		) as HTMLElement;
 		if (!html) {
 			throw new Error('input file not found');
 		}
 		return html;
 	}
 
+	get filesInputVNode(): VNode {
+		return this._findVNodeByKey(this._config.attachmentsInput.key);
+	}
+
 	get label(): HTMLElement {
-		const html = this.htmlElement.querySelector('.form__upload') as HTMLElement;
+		const html = document.querySelector('.form__upload') as HTMLElement;
 		if (!html) {
 			throw new Error('label not found');
 		}
@@ -48,7 +57,7 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 	}
 
 	get img(): HTMLElement {
-		const html = this.htmlElement.querySelector('.form__img') as HTMLElement;
+		const html = document.querySelector('.form__img') as HTMLElement;
 		if (!html) {
 			throw new Error('label not found');
 		}
@@ -57,22 +66,20 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 
 	protected _prerender(): void {
 		super._prerender();
+		const attachmentsInput = new AttachmentsInput(
+			this._config.attachmentsInput,
+			this,
+		);
 		this._templateContext = {
 			...this._templateContext,
 			className: 'send-post',
+			attachmentsInput: attachmentsInput.render(),
 		};
 	}
 
 	render(): string {
 		this._prerender();
-		this._render('CreatePostForm.hbs');
-		return this.htmlElement.outerHTML;
-	}
-
-	update(data: ICreatePostFormConfig): void {
-		this._config = { ...this._config, ...data };
-		this.removeForUpdate();
-		this.render();
+		return this._render('CreatePostForm.hbs');
 	}
 
 	/**
@@ -81,8 +88,7 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 	 */
 	printError(error: string) {
 		if (error) {
-			const messageElement =
-				this.htmlElement.querySelector('.form__error');
+			const messageElement = document.querySelector('.form__error');
 			if (!messageElement) {
 				throw new Error('message element not found');
 			}
@@ -94,7 +100,7 @@ export class CreatePostForm extends BaseForm implements ICreatePostForm {
 	 * Clear error above submit button
 	 */
 	clearError() {
-		const messageElement = this.htmlElement.querySelector('.form__error');
+		const messageElement = document.querySelector('.form__error');
 		if (!messageElement) {
 			throw new Error('message element not found');
 		}

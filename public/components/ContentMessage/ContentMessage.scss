@@ -4,8 +4,9 @@
     width: 100%;
     padding-top: 2rem;
     padding-bottom: 2rem;
-}
-
-.content-message-text {
-    color: red;
+    &__text {
+        &_error {
+            color: red;
+        }
+    }
 }

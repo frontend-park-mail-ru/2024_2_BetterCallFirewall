@@ -1,7 +1,9 @@
 <div class="post" data-key="{{this.key}}">
     <div class="post__header">
         <div class="post__header-avatar">
-            <img class="post__avatar avatar" src="{{this.avatar}}" alt="avatar">
+            <a class="post__author-link" href="{{this.authorHref}}">
+                <img class="post__avatar avatar" src="{{this.avatar}}" alt="avatar">
+            </a>
         </div>
         <div class="post__header-text">
             <span class="post__title header-text">{{this.title}}</span>
@@ -31,11 +33,62 @@
     <hr>
     <div class="post__content">
         <span class="post__content-text">{{this.text}}</span>
-        <div class="post__content-image">
-            <img src="{{this.img}}" alt="">
-        </div>
+        {{#each attachments}}
+            <div class="post__content-image">
+                {{{this}}}
+            </div>
+        {{/each}}
     </div>
     <div class="post__footer">
-
+        <div class="post__like">
+            <div class="post__like-button {{#if this.likedByUser}}post__like-button_liked{{/if}}">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 422.686 422.686" style="enable-background:new 0 0 422.686 422.686;" xml:space="preserve">
+                <path d="M212.79,397.817l-5.576-4.975c-4.519-4.024-11.201-11.234-21.329-22.142 c-25.044-26.962-71.645-93.422-151.777-166.498l-1.528-1.479l-0.041,0.049l-2.032-2.113C10.9,181.361,0,156.032,0,129.541 C0,71.82,51.129,24.869,113.971,24.869c49.162,0,86.602,49.909,96.901,65.207l1.211-0.285 c10.023-15.013,47.455-64.923,96.641-64.923c62.834,0,113.963,46.951,113.963,104.672c0,29.206-12.957,56.404-36.481,76.628 l-0.39,0.415c-83.57,76.238-127.456,141.722-151.037,168.164c-7.747,8.689-12.868,14.428-16.558,17.932L212.79,397.817z M44.228,191.424l0.829,0.756c80.635,73.539,127.537,140.324,152.744,167.465c5.942,6.405,10.852,11.689,14.656,15.607 c2.772-3.008,6.17-6.82,10.185-11.323c23.776-26.662,68.02-92.56,151.809-168.969l0.87-0.886 c20.069-17.111,31.108-40.033,31.108-64.533c0-48.755-43.837-88.415-97.714-88.415c-32.693,0-64.533,29.978-83.432,58.03 c-2.934,4.398-8.161,7.031-13.949,7.031c-5.788,0-11.006-2.634-13.965-7.047c-18.883-28.035-50.714-58.014-83.407-58.014 c-53.876,0-97.706,39.659-97.706,88.415c0,22.102,9.177,43.317,25.849,59.729l1.162,1.219l-5.154,6.365l5.747-5.747 C43.976,191.204,44.098,191.318,44.228,191.424L44.228,191.424z M38.115,196.854l-5.487,5.828l3.089-2.642L38.115,196.854z" fill="#ffffff" stroke-width="10"/>
+                </svg>
+            </div>
+            <div class="post__like-counter">
+                {{this.likes}}
+            </div>
+        </div>
+        <div class="post__comment">
+            <div class="post__comment-button {{#if this.commentsOpen}}post__comment-button_opened{{/if}}">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+                <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+                <path d="M568 4930 c-222 -38 -407 -179 -504 -385 -67 -142 -65 -82 -62 -1590 l3 -1360 27 -80 c75 -220 246 -383 473 -451 55 -16 138 -18 1060 -23 l1000 -6 31 -22 c57 -41 64 -71 64 -270 0 -213 11 -288 52 -365 39 -73 92 -121 177 -162 58 -27 77 -31 152 -31 79 0 91 3 160 38 65 33 125 86 489 427 l415 389 175 1 c96 0 207 5 247 10 261 34 478 217 565 475 l23 70 3 1360 c3 1508 5 1445 -62 1590 -82 176 -221 298 -411 363 l-80 27 -1975 1 c-1086 1 -1996 -2 -2022 -6z m3975 -360 c83 -26 155 -88 194 -168 l28 -57 0 -1355 0 -1355 -27 -52 c-56 -106 -130 -162 -242 -182 -33 -6 -158 -11 -277 -11 -120 0 -229 -4 -244 -10 -14 -5 -88 -67 -163 -137 -75 -70 -270 -251 -432 -402 -162 -151 -305 -284 -318 -295 -23 -21 -24 -21 -38 -2 -11 16 -14 63 -14 222 0 172 -3 211 -20 265 -48 158 -180 291 -338 339 -62 19 -95 20 -1016 20 -642 0 -972 4 -1012 11 -111 20 -194 83 -246 188 l-23 46 0 1355 0 1355 28 57 c38 78 112 142 191 167 60 19 106 20 1982 20 1898 1 1923 1 1987 -19z" fill="#ffffff"/>
+                </g>
+                </svg>
+            </div>
+            <div class="post__comment-counter">
+                {{this.commentsCount}}
+            </div>
+        </div>
+    </div>
+    <div class="post__comments {{#unless this.commentsOpen}}post__comments_hidden{{/unless}}">
+        {{#if this.hasSortSelect}}
+            <select name="sort" class="comments__sort-select">
+                <option value="{{this.sortOptions.Asc}}" selected>Сначала новые</option>
+                <option value="{{this.sortOptions.Desc}}">Сначала старые</option>
+            </select>
+        {{/if}}
+        {{#each this.comments}}
+            {{{this}}}
+        {{/each}}
+        <div class="post__comments-actions">
+            {{#if this.isMoreComments}}
+                <span class="comments__action-button comments__more-button">Показать следующие комментарии</span>
+            {{/if}}
+            {{#if this.hasCloseCommentsButton}}
+                <span class="comments__action-button comments__close-button">Закрыть комментарии</span>
+            {{/if}}
+        </div>
+        <form action="" class="post__comments sender" data-key="comment-form">
+            <textarea class="sender__input post__comments-input" type="text" placeholder="Напишите комментарий.." maxlength="{{this.commentTextLimit}}" data-key="comment-textarea">{{this.inputText}}</textarea>
+            <button class="sender__send button-no-decorations post__comments-sender">
+                <svg viewBox="0 0 40 40" fill="none">
+                    <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#1DC67F"/>
+                    <path d="M29.9249 18.3575L14.1692 9.36691C13.837 9.18083 13.4561 9.10029 13.077 9.13602C12.6979 9.17174 12.3387 9.32203 12.0471 9.5669C11.7555 9.81177 11.5454 10.1396 11.4447 10.5068C11.344 10.874 11.3574 11.2632 11.4833 11.6225L14.3127 20L11.4833 28.3775C11.3838 28.6602 11.3535 28.9625 11.395 29.2592C11.4364 29.556 11.5483 29.8385 11.7214 30.0831C11.8944 30.3276 12.1236 30.5272 12.3896 30.665C12.6557 30.8028 12.9509 30.8748 13.2505 30.875C13.5727 30.8744 13.8893 30.7911 14.1702 30.6332L14.1786 30.6275L29.9286 21.621C30.2174 21.4575 30.4576 21.2203 30.6248 20.9337C30.7919 20.647 30.88 20.3211 30.88 19.9893C30.88 19.6574 30.7919 19.3315 30.6248 19.0449C30.4576 18.7582 30.2174 18.521 29.9286 18.3575H29.9249ZM13.9246 28.1807L16.3077 21.125H21.5005C21.7989 21.125 22.085 21.0065 22.296 20.7955C22.507 20.5846 22.6255 20.2984 22.6255 20C22.6255 19.7017 22.507 19.4155 22.296 19.2045C22.085 18.9936 21.7989 18.875 21.5005 18.875H16.3077L13.9236 11.8175L28.2449 19.9897L13.9246 28.1807Z" fill="#1DC67F"/>
+                </svg>
+            </button>
+        </form>
     </div>
 </div>

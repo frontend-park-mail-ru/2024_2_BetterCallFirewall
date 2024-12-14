@@ -1,33 +1,28 @@
-import BaseComponent, {
-	IBaseComponent,
-	IBaseComponentConfig,
-} from '../BaseComponent';
-import { FormButton, IFormButtonConfig } from '../FormButton/FormButton';
-import { IInputConfig, Input } from '../Input/Input';
-import { ITextAreaConfig, TextArea } from '../TextArea/TextArea';
+import {
+	findVNodebyTagName,
+	findVNodebyTagNameAll,
+	VNode,
+} from '../../modules/vdom';
+import Component, { ComponentConfig } from '../Component';
+import { FormButton, FormButtonConfig } from '../FormButton/FormButton';
+import { InputConfig, Input } from '../Input/Input';
+import { TextAreaConfig, TextArea } from '../TextArea/TextArea';
 
-export type ConfigInputs = Record<string, IInputConfig>;
-export type ConfigInputsItems = [string, IInputConfig][];
-export type ConfigTextAreas = Record<string, ITextAreaConfig>;
-export type ConfigTextAreaItems = [string, ITextAreaConfig][];
-export type Items = { [key: string]: IBaseComponent };
+export type ConfigInputs = Record<string, InputConfig>;
+export type ConfigInputsItems = [string, InputConfig][];
+export type ConfigTextAreas = Record<string, TextAreaConfig>;
+export type ConfigTextAreaItems = [string, TextAreaConfig][];
+export type Items = { [key: string]: Component };
 
-export interface IBaseFormConfig extends IBaseComponentConfig {
-	inputs?: Record<string, IInputConfig>;
-	button: IFormButtonConfig;
-	textAreas?: Record<string, ITextAreaConfig>;
+export interface BaseFormConfig extends ComponentConfig {
+	inputs?: ConfigInputs;
+	button: FormButtonConfig;
+	textAreas?: Record<string, TextAreaConfig>;
 	error?: string;
 }
 
-export interface IBaseForm extends IBaseComponent {
-	get configInputsItems(): ConfigInputsItems;
-	get configTextAreaItems(): ConfigTextAreaItems;
-	get items(): Items;
-	get form(): HTMLElement;
-}
-
-export abstract class BaseForm extends BaseComponent implements IBaseForm {
-	protected override _config: IBaseFormConfig;
+export abstract class BaseForm extends Component {
+	protected override _config: BaseFormConfig;
 	protected _inputs: Input[] = [];
 	protected _textAreas: TextArea[] = [];
 	protected _items: Items = {};
@@ -41,7 +36,7 @@ export abstract class BaseForm extends BaseComponent implements IBaseForm {
 	 * @param {ILoginFormConfig} config - configuration for the form
 	 * @param {IBaseComponent} parent - the parent HTML element
 	 */
-	constructor(config: IBaseFormConfig, parent: IBaseComponent) {
+	constructor(config: BaseFormConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 		if (config.inputs) {
@@ -80,30 +75,37 @@ export abstract class BaseForm extends BaseComponent implements IBaseForm {
 		return this._items;
 	}
 
-	/**
-	 * Printing error above submit button
-	 * @param {string} error
-	 */
+	get formVNode(): VNode {
+		const vnode = findVNodebyTagName(this.vnode, 'form');
+		if (!vnode) {
+			throw new Error('form vnode not found');
+		}
+		return vnode;
+	}
+
+	get textInputFieldsVNodes(): VNode[] {
+		const vnodes: VNode[] = [];
+		vnodes.push(...findVNodebyTagNameAll(this.vnode, 'input'));
+		vnodes.push(...findVNodebyTagNameAll(this.vnode, 'textarea'));
+		return vnodes;
+	}
+
+	clearError() {
+		const messageElement = document.querySelector('.form__error');
+		if (!messageElement) {
+			throw new Error('message element not found');
+		}
+		messageElement.textContent = '';
+	}
+
 	printError(error: string) {
 		if (error) {
-			const messageElement =
-				this.htmlElement.querySelector('.error-message');
+			const messageElement = document.querySelector('.form__error');
 			if (!messageElement) {
 				throw new Error('message element not found');
 			}
 			messageElement.textContent = error;
 		}
-	}
-
-	/**
-	 * Clear error above submit button
-	 */
-	clearError() {
-		const messageElement = this.htmlElement.querySelector('.error-message');
-		if (!messageElement) {
-			throw new Error('message element not found');
-		}
-		messageElement.textContent = '';
 	}
 
 	protected _prerender(): void {
@@ -122,13 +124,11 @@ export abstract class BaseForm extends BaseComponent implements IBaseForm {
 		this._items.button = button;
 
 		this._templateContext = {
-			key: this._config?.key,
-			inputs: this._inputs.map((input) => input.render(false)),
-			button: button.render(false),
-			textAreas: this._textAreas.map((textArea) =>
-				textArea.render(false),
-			),
-			error: this._config?.error,
+			key: this._config.key,
+			inputs: this._inputs.map((input) => input.render()),
+			button: button.render(),
+			textAreas: this._textAreas.map((textArea) => textArea.render()),
+			error: this._config.error,
 		};
 	}
 

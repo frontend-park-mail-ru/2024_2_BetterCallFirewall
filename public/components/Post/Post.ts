@@ -1,74 +1,292 @@
-import BaseComponent, {
-	IBaseComponent,
-	IBaseComponentConfig,
-} from '../BaseComponent';
+import {
+	ActionCommentCreate,
+	ActionCommentEdit,
+	ActionCommentRequest,
+} from '../../actions/actionComment';
+import {
+	ActionPostCommentsOpenSwitch,
+	ActionPostCommentsSortChange,
+	ActionPostLike,
+	ActionPostUnlike,
+} from '../../actions/actionPost';
+import { CommentPayload } from '../../models/comment';
+import { fileTypeFromName } from '../../modules/files';
+import { throttle } from '../../modules/throttle';
+import { INPUT_LIMITS } from '../../modules/validation';
+import { findVNodeByClass, VNode } from '../../modules/vdom';
+import { Attachment } from '../Attachment/Attachment';
+import { Comment, CommentConfig } from '../Comment/Comment';
+import Component, { ComponentConfig } from '../Component';
 
-export interface IPostConfig extends IBaseComponentConfig {
+export enum SortOptions {
+	Asc = 'asc',
+	Desc = 'desc',
+}
+
+export interface PostConfig extends ComponentConfig {
 	id: number;
+	groupId?: number;
 	key: string;
 	avatar: string;
 	title: string;
 	text: string;
-	img?: string;
+	files: string[];
 	date: string;
 	hasDeleteButton: boolean;
 	hasEditButton: boolean;
+	likes: number;
+	likedByUser: boolean;
+	authorHref: string;
+	commentsCount: number;
+	commentsConfigs: CommentConfig[];
+	commentsOpen: boolean;
+	commentEditId: number;
+	commentsSort: string;
 }
-
-export interface IPost extends IBaseComponent {}
 
 /**
  * Class of post
  */
-export class Post extends BaseComponent implements IPost {
-	protected _config: IPostConfig;
+export class Post extends Component {
+	protected _config: PostConfig;
+	private _comments: Comment[] = [];
 
 	/**
 	 * Instance of post
 	 *
-	 * @param {IPostConfig} config - post data
-	 * @param {IBaseComponent} parent - parent element
+	 * @param {PostConfig} config - post data
+	 * @param {Component} parent - parent element
 	 */
-	constructor(config: IPostConfig, parent: IBaseComponent | null) {
+	constructor(config: PostConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 	}
 
-	get config(): IPostConfig {
+	get config(): PostConfig {
 		return this._config;
 	}
 
-	get editButton(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.post__header-edit',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('editButton not found');
-		}
-		return html;
+	get isMoreComments(): boolean {
+		return this._config.commentsConfigs.length
+			? this._config.commentsCount > this._config.commentsConfigs.length
+			: false;
 	}
 
-	get deleteButton(): HTMLElement {
-		const html = this.htmlElement.querySelector(
-			'.post__header-delete',
-		) as HTMLElement;
-		if (!html) {
-			throw new Error('deleteButton not found');
-		}
-		return html;
+	get hasCloseCommentsButton(): boolean {
+		return this._config.commentsConfigs.length > 0;
 	}
 
-	render(show: boolean = true): string {
+	get hasSortSelect(): boolean {
+		return this._config.commentsConfigs.length > 1;
+	}
+
+	get editButtonVNode(): VNode {
+		const vnode = findVNodeByClass(this.vnode, 'post__header-edit');
+		if (!vnode) {
+			throw new Error('editButton vnode not found');
+		}
+		return vnode;
+	}
+
+	get deleteButtonVNode(): VNode {
+		const vnode = findVNodeByClass(this.vnode, 'post__header-delete');
+		if (!vnode) {
+			throw new Error('deleteButton vnode not found');
+		}
+		return vnode;
+	}
+
+	get likeButtonVNode(): VNode {
+		return this._findVNodeByClass('post__like-button');
+	}
+
+	get authorLinkVNode(): VNode {
+		return this._findVNodeByClass('post__author-link');
+	}
+
+	get commentFormVNode(): VNode {
+		return this._findVNodeByKey('comment-form');
+	}
+
+	get commentTextareaVNode(): VNode {
+		return this._findVNodeByKey('comment-textarea');
+	}
+
+	get commentTextareaHTML(): HTMLTextAreaElement {
+		return this.commentTextareaVNode.element as HTMLTextAreaElement;
+	}
+
+	get commentButtonVNode(): VNode {
+		return this._findVNodeByClass('post__comment-button');
+	}
+
+	get moreCommentsButtonVNode(): VNode {
+		return this._findVNodeByClass('comments__more-button');
+	}
+
+	get closeCommentsButtonVNode(): VNode {
+		return this._findVNodeByClass('comments__close-button');
+	}
+
+	get commentsSortSelectVNode(): VNode {
+		return this._findVNodeByClass('comments__sort-select');
+	}
+
+	addLikeHandler() {
+		this.likeButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this._like();
+			},
+		});
+	}
+
+	addCommentHandlers() {
+		this.commentButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this._sendAction(
+					new ActionPostCommentsOpenSwitch(
+						!this._config.commentsOpen,
+						this._config.id,
+						this._config.commentsSort,
+					),
+				);
+			},
+		});
+		this.commentFormVNode.handlers.push({
+			event: 'submit',
+			callback: (event) => {
+				event.preventDefault();
+				this._sendComment();
+			},
+		});
+		if (this.isMoreComments) {
+			this.moreCommentsButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this._sendAction(
+						new ActionCommentRequest(
+							this._config.id,
+							this._config.commentsSort,
+							this._config.commentsConfigs[
+								this._config.commentsConfigs.length - 1
+							].id,
+						),
+					);
+				},
+			});
+		}
+		if (this.hasCloseCommentsButton) {
+			this.closeCommentsButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.commentButtonVNode.element.scrollIntoView({
+						behavior: 'smooth',
+						block: 'center',
+					});
+					this._sendAction(
+						new ActionPostCommentsOpenSwitch(
+							false,
+							this._config.id,
+							this._config.commentsSort,
+						),
+					);
+				},
+			});
+		}
+		if (this.hasSortSelect) {
+			this.commentsSortSelectVNode.handlers.push({
+				event: 'change',
+				callback: (event) => {
+					event.preventDefault();
+					this._sendAction(
+						new ActionPostCommentsSortChange(
+							this._config.id,
+							(event.target as HTMLSelectElement).value,
+						),
+					);
+				},
+			});
+		}
+		this._comments.forEach((comment) => {
+			comment.addActionButtonHandlers(this);
+		});
+	}
+
+	render(): string {
 		this._prerender();
-		const renderResult = this._render('Post.hbs', show);
-		return renderResult;
+		return this._render('Post.hbs');
 	}
 
-	update(data: IPostConfig): void {
-		this._config = { ...this._config, ...data };
-	}
 	protected _prerender(): void {
 		super._prerender();
-		this._templateContext = { ...this.config };
+		this._comments = this._config.commentsConfigs.map((config) => {
+			return new Comment(config, this);
+		});
+		const attachments = this._config.files.map((file, i) => {
+			return new Attachment(
+				{
+					key: `attachment-${i}`,
+					file: { src: file, mimeType: fileTypeFromName(file) },
+					hasDeleteButton: false,
+				},
+				this,
+			).render();
+		});
+		this._templateContext = {
+			...this._templateContext,
+			comments: this._comments.map((comment) => {
+				return comment.render();
+			}),
+			isMoreComments: this.isMoreComments,
+			hasSortSelect: this.hasSortSelect,
+			sortOptions: SortOptions,
+			hasCloseCommentsButton: this.hasCloseCommentsButton,
+			commentTextLimit: INPUT_LIMITS.commentText,
+			attachments,
+		};
+	}
+
+	private _like = throttle(() => {
+		if (this._config.likedByUser) {
+			this._sendAction(new ActionPostUnlike(this._config.id));
+		} else {
+			this._sendAction(new ActionPostLike(this._config.id));
+		}
+	}, 1000);
+
+	private _sendComment() {
+		const textarea = this.commentTextareaVNode
+			.element as HTMLTextAreaElement;
+		const text = textarea.value;
+		if (!text) {
+			return;
+		}
+		const commentPayload: CommentPayload = {
+			text,
+			file: [],
+		};
+		textarea.value = '';
+		if (this._config.commentEditId) {
+			this._sendAction(
+				new ActionCommentEdit(
+					this._config.id,
+					this._config.commentEditId,
+					this._config.commentsConfigs.filter((config) => {
+						return config.id === this._config.commentEditId;
+					})[0],
+					commentPayload,
+				),
+			);
+		} else {
+			this._sendAction(
+				new ActionCommentCreate(this._config.id, commentPayload),
+			);
+		}
 	}
 }

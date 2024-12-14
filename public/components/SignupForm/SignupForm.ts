@@ -1,27 +1,54 @@
-import { IBaseComponent } from '../BaseComponent';
-import { BaseForm, IBaseForm, IBaseFormConfig } from '../BaseForm/BaseForm';
-import { FormLink, IFormLinkConfig } from '../FormLink/FormLink';
+import { findVNodeByClass, findVNodeByKey, VNode } from '../../modules/vdom';
+import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
+import Component from '../Component';
+import { FormLink, FormLinkConfig } from '../FormLink/FormLink';
+import { InputConfig } from '../Input/Input';
 
-export interface ISignupFormConfig extends IBaseFormConfig {
-	toLoginLink: IFormLinkConfig;
+export interface SignupFormConfig extends BaseFormConfig {
+	inputs: {
+		firstName: InputConfig;
+		secondName: InputConfig;
+		email: InputConfig;
+		password: InputConfig;
+		passwordAgain: InputConfig;
+	};
+	toLoginLink: FormLinkConfig;
 }
 
-export interface ISignupForm extends IBaseForm {}
+export class SignupForm extends BaseForm {
+	protected override _config: SignupFormConfig;
 
-export class SignupForm extends BaseForm implements ISignupForm {
-	protected override _config: ISignupFormConfig;
-
-	constructor(config: ISignupFormConfig, parent: IBaseComponent) {
+	constructor(config: SignupFormConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
 	}
 
+	get config(): SignupFormConfig {
+		return this._config;
+	}
+
 	get form(): HTMLElement {
-		const html = this.htmlElement.querySelector('.form') as HTMLElement;
+		const html = document.querySelector('.form') as HTMLElement;
 		if (html) {
 			return html;
 		}
 		throw new Error('form not found');
+	}
+
+	get toLoginLinkVNode(): VNode {
+		const vnode = findVNodeByKey(this.vnode, this._config.toLoginLink.key);
+		if (!vnode) {
+			throw new Error('toLoginLink vnode not found');
+		}
+		return vnode;
+	}
+
+	get titleLinkVNode(): VNode {
+		const vnode = findVNodeByClass(this.vnode, 'title');
+		if (!vnode) {
+			throw new Error('titleLink vnode not found');
+		}
+		return vnode;
 	}
 
 	protected _prerender(): void {
@@ -30,23 +57,12 @@ export class SignupForm extends BaseForm implements ISignupForm {
 		this._items.toLoginLink = toLoginLink;
 		this._templateContext = {
 			...this._templateContext,
-			toLoginLink: toLoginLink.render(false),
+			toLoginLink: toLoginLink.render(),
 		};
 	}
 
 	render(): string {
 		this._prerender();
-		this._render('SignupForm.hbs');
-
-		const toLoginLinkHTML = this.htmlElement.querySelector(
-			`[data-key=${this._config.toLoginLink.key}]`,
-		);
-		if (!toLoginLinkHTML) {
-			throw new Error('toLoginLinkHTML not found');
-		}
-		this.items.toLoginLink.htmlElement = toLoginLinkHTML as HTMLElement;
-		console.log(this.items.toLoginLink.htmlElement);
-
-		return this.htmlElement.outerHTML;
+		return this._render('SignupForm.hbs');
 	}
 }

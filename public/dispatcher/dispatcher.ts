@@ -1,4 +1,9 @@
 import { Action, ActionType } from '../actions/action';
+import { ActionCommentRequest } from '../actions/actionComment';
+import {
+	ActionPostCommentsOpenSwitch,
+	ActionPostCommentsSortChange,
+} from '../actions/actionPost';
 import api from '../api/api';
 import app from '../app';
 import { Router } from '../router/router';
@@ -11,15 +16,16 @@ export class Dispatcher {
 	private _router?: Router;
 
 	getAction(action: Action) {
+		this._handleAction(action);
 		this.dispatch(action);
 	}
 
 	dispatch(action: Action) {
 		console.log('dispatcher: action:', action);
 		const stores = this.subscribed[action.type];
+		console.log('dispatcher: to stores:', stores);
 		if (stores) {
 			stores.forEach((store) => {
-				console.log('to store:', store);
 				store.handleAction(action);
 			});
 		}
@@ -37,6 +43,28 @@ export class Dispatcher {
 
 	addRouter(router: Router) {
 		this._router = router;
+	}
+
+	private _handleAction(action: Action) {
+		switch (true) {
+			case action instanceof ActionPostCommentsOpenSwitch:
+				if (action.data.show) {
+					this.dispatch(
+						new ActionCommentRequest(
+							action.data.postId,
+							action.data.sort,
+						),
+					);
+				}
+				break;
+			case action instanceof ActionPostCommentsSortChange:
+				this.dispatch(
+					new ActionCommentRequest(
+						action.data.postId,
+						action.data.sort,
+					),
+				);
+		}
 	}
 }
 

@@ -1,10 +1,22 @@
 import { STATUS } from '../api/api';
 import app from '../app';
 import { ChatResponse } from '../models/chat';
+import {
+	FullGroupResponse,
+	GroupPayload,
+	ShortGroupResponse,
+} from '../models/group';
+import { CsatResult } from '../models/csatResult';
 import { HeaderResponse } from '../models/header';
 import { MessageResponse } from '../models/message';
-import { PostResponse } from '../models/post';
-import { FullProfileResponse, ShortProfileResponse } from '../models/profile';
+import { PostPayload, PostResponse } from '../models/post';
+import {
+	FullProfileResponse,
+	ProfilePayload,
+	ShortProfileResponse,
+} from '../models/profile';
+import { CommentPayload, CommentResponse } from '../models/comment';
+import { SortOptions } from '../components';
 
 type AjaxPromiseConfig = {
 	request: Request;
@@ -30,18 +42,23 @@ export interface AjaxResponse<T> extends FetchResponse<T> {
 	status: number;
 }
 
-export type QueryParams = Record<string, string>;
+export type QueryParams = Record<string, string | undefined>;
 
 const replaceId = (url: string, id: number): string => {
-	return url.replace('{id}', `${id}`);
+	return url.replace('{id}', `${id}`).replace('%7Bid%7D', `${id}`);
 };
 
-const insertQueryParams = (baseUrl: string, params: QueryParams) => {
-	let url = baseUrl;
+export const insertQueryParams = (baseUrl: string, params?: QueryParams) => {
+	if (!params) {
+		return baseUrl;
+	}
+	const url = new URL(baseUrl);
 	Object.entries(params).forEach(([key, value]) => {
-		url += `?${key}=${value}`;
+		if (value) {
+			url.searchParams.append(key, value);
+		}
 	});
-	return url;
+	return url.toString();
 };
 
 class Ajax {
@@ -95,8 +112,14 @@ class Ajax {
 	/**
 	 * Создать пост
 	 */
-	async createPost(formData: FormData): Promise<AjaxResponse<PostResponse>> {
-		const request = this._postFormRequest(app.config.URL.feed, formData);
+	async createPost(
+		formData: PostPayload,
+		query: string,
+	): Promise<AjaxResponse<PostResponse>> {
+		const request = this._postRequest(
+			app.config.URL.feed + query,
+			formData,
+		);
 		return this._postResponse(request);
 	}
 
@@ -104,21 +127,40 @@ class Ajax {
 	 * Отредактировать пост
 	 */
 	async editPost(
-		formData: FormData,
+		formData: PostPayload,
 		postId: number,
+		query?: string,
 	): Promise<AjaxResponse<PostResponse>> {
 		const url = app.config.URL.post.replace('{id}', `${postId}`);
-		const request = this._putFormRequest(url, formData);
-		return this._postResponse(request);
+		return this._genericRequestResponse(url + query, 'put', formData);
 	}
 
 	/**
 	 * Удалить пост
 	 */
-	async deletePost(postId: number): Promise<AjaxResponse<object>> {
+	async deletePost(
+		postId: number,
+		query?: string,
+	): Promise<AjaxResponse<object>> {
 		const url = app.config.URL.post.replace('{id}', `${postId}`);
-		const request = this._deleteRequest(url);
+		const request = this._deleteRequest(query ? url + query : url);
 		return await this._objectResponse(request);
+	}
+
+	/**
+	 * Лайкнуть пост
+	 */
+	async likePost(postId: number): Promise<AjaxResponse<object>> {
+		const url = app.config.URL.postLike.replace('{id}', `${postId}`);
+		return await this._postRequestObjectResponse(url);
+	}
+
+	/**
+	 * Убрать лайк с поста
+	 */
+	async unlikePost(postId: number): Promise<AjaxResponse<object>> {
+		const url = app.config.URL.postUnlike.replace('{id}', `${postId}`);
+		return await this._postRequestObjectResponse(url);
 	}
 
 	/**
@@ -168,14 +210,21 @@ class Ajax {
 	 * Редактировать профиль
 	 */
 	async editProfile(
-		formData: FormData,
+		formData: ProfilePayload,
 	): Promise<AjaxResponse<FullProfileResponse>> {
-		const request = this._formRequest(
+		return this._genericRequestResponse(
 			app.config.URL.profile,
-			formData,
 			'put',
+			formData,
 		);
-		return this._fullProfileResponse(request);
+	}
+
+	/**
+	 * Удалить профиль
+	 */
+	async deleteProfile(): Promise<AjaxResponse<object>> {
+		const url = app.config.URL.profile;
+		return this._genericRequestResponse(url, 'delete');
 	}
 
 	/**
@@ -227,9 +276,14 @@ class Ajax {
 	async getProfiles(
 		lastId?: number,
 	): Promise<AjaxResponse<ShortProfileResponse[]>> {
-		const url = insertQueryParams(app.config.URL.profiles, {
-			id: `${lastId}`,
-		});
+		let url;
+		if (lastId) {
+			url = insertQueryParams(app.config.URL.profiles, {
+				last_id: `${lastId}`,
+			});
+		} else {
+			url = app.config.URL.profiles;
+		}
 		return this._getShortProfileResponse(url);
 	}
 
@@ -250,7 +304,7 @@ class Ajax {
 	async subscribeToProfile(profileId: number): Promise<AjaxResponse<object>> {
 		let url = app.config.URL.subscribeToProfile;
 		url = url.replace('{id}', `${profileId}`);
-		return this._postObjectResponse(url);
+		return this._postRequestObjectResponse(url);
 	}
 
 	/**
@@ -259,7 +313,7 @@ class Ajax {
 	async acceptFriend(profileId: number): Promise<AjaxResponse<object>> {
 		let url = app.config.URL.acceptFriend;
 		url = url.replace('{id}', `${profileId}`);
-		return this._postObjectResponse(url);
+		return this._postRequestObjectResponse(url);
 	}
 
 	/**
@@ -270,7 +324,7 @@ class Ajax {
 	): Promise<AjaxResponse<object>> {
 		let url = app.config.URL.unsubscribeFromProfile;
 		url = url.replace('{id}', `${profileId}`);
-		return this._postObjectResponse(url);
+		return this._postRequestObjectResponse(url);
 	}
 
 	/**
@@ -282,11 +336,75 @@ class Ajax {
 		return this._deleteObjectResponse(url);
 	}
 
+	async getGroups(): Promise<AjaxResponse<ShortGroupResponse[]>> {
+		const url = app.config.URL.groups;
+		return this._getShortGroupResponse(url);
+	}
+
+	async createGroup(formData: GroupPayload): Promise<AjaxResponse<number>> {
+		return this._genericRequestResponse(
+			app.config.URL.groups,
+			'post',
+			formData,
+		);
+	}
+
+	async groupEdit(
+		groupPayload: GroupPayload,
+		id: number,
+	): Promise<AjaxResponse<object>> {
+		return this._genericRequestResponse(
+			replaceId(app.config.URL.groupEdit, id),
+			'put',
+			groupPayload,
+		);
+	}
+
+	async getGroupPage(
+		groupPagePath: string,
+	): Promise<AjaxResponse<FullGroupResponse>> {
+		let url = app.config.URL.group;
+		const groupId = groupPagePath.split('/').pop();
+		url = url.replace('{id}', `${groupId}`);
+		const request = this._getRequest(url);
+		const response = await this._response(request);
+		let groupPageResponse: AjaxResponse<FullGroupResponse> = {
+			status: response.status,
+			success: false,
+		};
+		switch (groupPageResponse.status) {
+			case STATUS.ok: {
+				const body =
+					(await response.json()) as FetchResponse<FullGroupResponse>;
+				groupPageResponse = Object.assign(groupPageResponse, body);
+			}
+		}
+		return groupPageResponse;
+	}
+
+	async unfollowGroup(groupId: number): Promise<AjaxResponse<object>> {
+		let url = app.config.URL.groupLeave;
+		url = url.replace('{id}', `${groupId}`);
+		return this._postRequestObjectResponse(url);
+	}
+
+	async followGroup(groupId: number): Promise<AjaxResponse<object>> {
+		let url = app.config.URL.groupJoin;
+		url = url.replace('{id}', `${groupId}`);
+		return this._postRequestObjectResponse(url);
+	}
+
+	async deleteGroup(groupId: number): Promise<AjaxResponse<object>> {
+		let url = app.config.URL.group;
+		url = url.replace('{id}', `${groupId}`);
+		return this._deleteObjectResponse(url);
+	}
+
 	/**
 	 * Запрос списка чатов
 	 */
 	async getMessages(): Promise<AjaxResponse<ChatResponse[]>> {
-		return this._genericRequest(app.config.URL.messages, 'get');
+		return this._genericRequestResponse(app.config.URL.messages, 'get');
 	}
 
 	/**
@@ -299,7 +417,119 @@ class Ajax {
 		const url = lastTime
 			? insertQueryParams(app.config.URL.chat, { lastTime })
 			: app.config.URL.chat;
-		return this._genericRequest(replaceId(url, profileId), 'get');
+		return this._genericRequestResponse(replaceId(url, profileId), 'get');
+	}
+
+	/**
+	 * Поиск профилей
+	 */
+	async profilesSearch(
+		str: string,
+		userId?: number,
+	): Promise<AjaxResponse<ShortProfileResponse[]>> {
+		const url = insertQueryParams(app.config.URL.profilesSearch, {
+			q: str,
+			id: userId ? `${userId}` : undefined,
+		});
+		return this._genericRequestResponse(url, 'get');
+	}
+
+	/**
+	 * Поиск групп
+	 */
+	async groupsSearch(
+		str: string,
+		lastId?: number,
+	): Promise<AjaxResponse<ShortGroupResponse[]>> {
+		const url = insertQueryParams(app.config.URL.groupsSearch, {
+			q: str,
+			id: lastId ? `${lastId}` : undefined,
+		});
+		return this._genericRequestResponse(url, 'get');
+	}
+
+	/**
+	 * Отправка результатов CSAT
+	 */
+	async csatSend(
+		inTotal: number,
+		feed: number,
+	): Promise<AjaxResponse<object>> {
+		return this._genericRequestResponse(app.config.URL.csat, 'post', {
+			in_total: inTotal,
+			feed,
+		});
+	}
+
+	/**
+	 * Получение метрик CSAT
+	 */
+	async csatMetrics(): Promise<AjaxResponse<CsatResult>> {
+		return this._genericRequestResponse(app.config.URL.csatMetrics, 'get');
+	}
+
+	/**
+	 * Отправить файл
+	 */
+	async sendFile(image: File): Promise<AjaxResponse<string>> {
+		const formData = new FormData();
+		formData.append('file', image);
+		const request = this._postFormRequest(app.config.URL.file, formData);
+		return this._genericResponse(request);
+	}
+
+	/**
+	 * Создать комментарий
+	 */
+	async createComment(
+		postId: number,
+		comment: CommentPayload,
+	): Promise<AjaxResponse<CommentResponse>> {
+		const url = replaceId(app.config.URL.post, postId);
+		return this._genericRequestResponse(url, 'post', comment);
+	}
+
+	/**
+	 * Получить комментарии к посту
+	 */
+	async getComments(
+		postId: number,
+		sort: string,
+		lastId?: number,
+	): Promise<AjaxResponse<CommentResponse[]>> {
+		let url = replaceId(app.config.URL.comments, postId);
+		if (lastId) {
+			url = insertQueryParams(url, { id: `${lastId}` });
+		}
+		if (sort === SortOptions.Desc) {
+			url = insertQueryParams(url, { sort: 'old' });
+		}
+		return this._genericRequestResponse(url, 'get');
+	}
+
+	/**
+	 * Редактировать комментарий
+	 */
+	async editComment(
+		postId: number,
+		commentId: number,
+		commentPayload: CommentPayload,
+	): Promise<AjaxResponse<object>> {
+		let url = replaceId(app.config.URL.comment, postId);
+		url = url.replace('{comment_id}', `${commentId}`);
+		return this._genericRequestResponse(url, 'put', commentPayload);
+	}
+
+	/**
+	 * Удалить комментарий
+	 */
+	async deleteComment(
+		postId: number,
+		commentId: number,
+	): Promise<AjaxResponse<object>> {
+		let url = replaceId(app.config.URL.comment, postId);
+		url = url.replace('{comment_id}', `${commentId}`);
+		return this._genericRequestResponse(url, 'delete');
 	}
 
 	/**
@@ -346,12 +576,18 @@ class Ajax {
 			.catch((error) => config.callback(null, error));
 	}
 
-	private async _genericRequest<T>(
-		baseUrl: string,
+	private async _genericRequestResponse<T>(
+		url: string,
 		method: string,
 		data?: object,
 	): Promise<AjaxResponse<T>> {
-		const request = this._jsonRequest(baseUrl, method, data);
+		const request = this._jsonRequest(url, method, data);
+		return this._genericResponse(request);
+	}
+
+	private async _genericResponse<T>(
+		request: Request,
+	): Promise<AjaxResponse<T>> {
 		const response = await this._response(request);
 		try {
 			const body = await response.json();
@@ -361,6 +597,26 @@ class Ajax {
 		} catch {
 			return { status: response.status, success: false };
 		}
+	}
+
+	private async _getShortGroupResponse(
+		url: string,
+	): Promise<AjaxResponse<ShortGroupResponse[]>> {
+		const request = this._getRequest(url);
+		const response = await this._response(request);
+		let shortGroupResponse: AjaxResponse<ShortGroupResponse[]> = {
+			status: response.status,
+			success: false,
+		};
+		switch (shortGroupResponse.status) {
+			case STATUS.ok: {
+				const body = (await response.json()) as FetchResponse<
+					ShortGroupResponse[]
+				>;
+				shortGroupResponse = Object.assign(shortGroupResponse, body);
+			}
+		}
+		return shortGroupResponse;
 	}
 
 	/**
@@ -425,15 +681,18 @@ class Ajax {
 	}
 
 	/**
-	 * post запрос и ответ в виде object
+	 * Пустой post запрос и ответ в виде object
 	 */
-	private async _postObjectResponse(
+	private async _postRequestObjectResponse(
 		url: string,
 	): Promise<AjaxResponse<object>> {
 		const request = this._postRequest(url, {});
 		return await this._objectResponse(request);
 	}
 
+	/**
+	 * Пустой delete запрос и ответ в виде object
+	 */
 	private async _deleteObjectResponse(
 		url: string,
 	): Promise<AjaxResponse<object>> {
@@ -464,8 +723,7 @@ class Ajax {
 	 * get запрос
 	 */
 	private _getRequest(baseUrl: string, queryParams?: QueryParams) {
-		const params = new URLSearchParams(queryParams);
-		const url = queryParams ? `${baseUrl}?${params}` : `${baseUrl}`;
+		const url = insertQueryParams(baseUrl, queryParams);
 		return new Request(url, {
 			method: 'get',
 			credentials: 'include',
@@ -487,7 +745,7 @@ class Ajax {
 	}
 
 	/**
-	 * Запрос, содержащий jsons
+	 * Запрос, содержащий json
 	 */
 	private _jsonRequest(baseUrl: string, method: string, body?: object) {
 		return new Request(baseUrl, {

@@ -1,4 +1,10 @@
-import { IInputConfig } from '../components/index';
+import { InputConfig } from '../components/index';
+import { validators } from '../config';
+
+export const INPUT_LIMITS = {
+	commentText: 500,
+};
+
 export default class Validator {
 	/**
 	 * Deleting content in elements with class '.error'
@@ -7,12 +13,13 @@ export default class Validator {
 	 */
 	errorsDelete(parentElem: HTMLElement): void {
 		const errors: NodeListOf<HTMLElement> =
-			parentElem.querySelectorAll('.error');
+			parentElem.querySelectorAll('.form__input-error');
 		errors.forEach((error) => (error.textContent = ''));
 	}
 
 	static shieldingData(data: string): string {
-		return data.replace(/&/g, '&amp;')
+		return data
+			.replace(/&/g, '&amp;')
 			.replace(/</g, '&lt;')
 			.replace(/>/g, '&gt;')
 			.replace(/"/g, '&quot;')
@@ -20,13 +27,13 @@ export default class Validator {
 	}
 
 	static validateImg(file: File): string {
-		if (!file) {
-			return 'Файл не выбран';
+		if (!file || !file.name) {
+			return '';
 		}
 
-		const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+		const validImageTypes = ['image/jpeg', 'image/png', 'image/webp'];
 		if (!validImageTypes.includes(file.type)) {
-			return 'Разрешены только изображения (JPEG, PNG, GIF)';
+			return 'Разрешены только изображения (jpeg, png, webp)';
 		}
 
 		const maxSizeInMB = 5;
@@ -120,8 +127,16 @@ export default class Validator {
 		}
 		if (nameValue.length < 3) {
 			return 'Поле должно содержать не менее 3 символов.';
-		} else if (nameValue.length > 20) {
-			return 'Поле должно содержать не более 20 символов.';
+		} else if (nameValue.length > 30) {
+			return 'Поле должно содержать не более 30 символов.';
+		}
+		return '';
+	}
+
+	static validateDescription(description: string): string {
+		const nameValue: string = Validator.shieldingData(description);
+		if (nameValue.length > 60) {
+			return 'Поле должно содержать не более 60 символов.';
 		}
 		return '';
 	}
@@ -147,8 +162,8 @@ export default class Validator {
 	 * @param {Object} config
 	 */
 	configItems(
-		config: Record<string, IInputConfig>,
-	): Array<[string, IInputConfig]> {
+		config: Record<string, InputConfig>,
+	): Array<[string, InputConfig]> {
 		return Object.entries(config);
 	}
 
@@ -161,43 +176,20 @@ export default class Validator {
 			let error: string = '';
 			if (typeof value === 'string') {
 				updatedValue = value.trim();
-				switch (key) {
-					case 'first_name':
-					case 'last_name':
-						error = Validator.validateName(value);
-						break;
-					case 'email':
-						error = Validator.validateEmail(value);
-						break;
-					case 'password':
-						error = Validator.validatePassword(value);
-						break;
-					case 'password_again':
-						error = Validator.validateConfirmation(value);
-						break;
-					case 'text':
-						error = Validator.validatePost(value);
-						break;
-				}
 			}
-
-			if (value instanceof File) {
-				switch (key) {
-					case 'img':
-					case 'avatar':
-						error = Validator.validateImg(value);
-						break;
+			const validator = validators[key];
+			if (validator) {
+				error = validator(updatedValue);
+				if (error) {
+					this.printError(
+						form.querySelector(`[name="${key}"]`)
+							?.parentElement as HTMLInputElement,
+						error,
+					);
+					hasErrors = true;
+				} else {
+					formData.set(key, updatedValue);
 				}
-				error = Validator.validateImg(value);
-			}
-			if (error) {
-				this.printError(form.querySelector(`[name="${key}"]`)?.parentElement as HTMLInputElement, error);
-				console.log('error:  ', key);
-				hasErrors = true;
-				error = '';
-			} else {
-				formData.delete(key);
-				formData.append(key, updatedValue);
 			}
 		}
 

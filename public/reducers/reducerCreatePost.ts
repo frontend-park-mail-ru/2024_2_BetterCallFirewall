@@ -1,15 +1,20 @@
 import { Action } from '../actions/action';
 import {
+	ActionAttachmentsInputAddFiles,
+	ActionAttachmentsInputDeleteFile,
+	ActionAttachmentsInputFileLoaded,
+} from '../actions/actionAttachmentsInput';
+import {
 	ACTION_CREATE_POST_TYPES,
 	ActionUpdateCreatePostData,
 } from '../actions/actionCreatePost';
-import { ACTION_FEED_TYPES } from '../actions/actionFeed';
-import { ICreatePostFormConfig } from '../components/CreatePostForm/CreatePostForm';
+import { CreatePostFormConfig } from '../components/CreatePostForm/CreatePostForm';
 import config from '../config';
 import deepClone from '../modules/deepClone';
 import { ViewCreatePostConfig } from '../views/createPost/viewCreatePost';
+import { reducerAttachmentsInput } from './reducerAttachmentsInput';
 
-const initialCreatePostState: ICreatePostFormConfig = deepClone(
+const initialCreatePostState: CreatePostFormConfig = deepClone(
 	config.createPostConfig.createPostForm,
 );
 
@@ -27,13 +32,18 @@ export const reducerCreatePost = (
 	}
 	const newState = deepClone(state);
 	switch (action.type) {
-		case ACTION_CREATE_POST_TYPES.goToCreatePost:
-		case ACTION_FEED_TYPES.postCreateFail:
-		case ACTION_FEED_TYPES.postCreateSuccess:
-			return newState;
 		case ACTION_CREATE_POST_TYPES.updateCreatePost:
 			return { ...state, ...(action.data as ActionUpdateCreatePostData) };
-		default:
-			return state;
 	}
+	switch (true) {
+		case action instanceof ActionAttachmentsInputAddFiles:
+		case action instanceof ActionAttachmentsInputFileLoaded:
+		case action instanceof ActionAttachmentsInputDeleteFile:
+			newState.createPostForm.attachmentsInput = reducerAttachmentsInput(
+				newState.createPostForm.attachmentsInput,
+				action,
+			);
+			break;
+	}
+	return newState;
 };

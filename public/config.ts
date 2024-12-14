@@ -1,8 +1,8 @@
 import { AppConfig, URLInterface } from './app';
-import { ILoginFormConfig, ISignupFormConfig } from './components';
-import { IChatConfig } from './components/Chat/Chat';
-import { IMessageConfig } from './components/Message/Message';
-import { IProfileConfig } from './components/Profile/Profile';
+import { ILoginFormConfig, SignupFormConfig } from './components';
+import { ChatConfig } from './components/Chat/Chat';
+import { MessageConfig } from './components/Message/Message';
+import { ProfileConfig } from './components/Profile/Profile';
 import { ViewChatConfig } from './views/chat/viewChat';
 import { ViewMessagesConfig } from './views/messages/viewMessages';
 import { ViewFeedConfig } from './views/feed/viewFeed';
@@ -12,9 +12,23 @@ import { ViewProfileConfig } from './views/profile/viewProfile';
 import { ViewCreatePostConfig } from './views/createPost/viewCreatePost';
 import { ViewProfileEditConfig } from './views/profileEdit/viewProfileEdit';
 import { ViewPostEditConfig } from './views/PostEdit/viewPostEdit';
-import { IPostEditFormConfig } from './components/PostEditForm/PostEditForm';
+import { PostEditFormConfig } from './components/PostEditForm/PostEditForm';
+import Validator from './modules/validation';
+import { ViewGroupsConfig } from './views/groups/viewGroups';
+import { ViewGroupPageConfig } from './views/groupPage/viewGroupPage';
+import { GroupPageConfig } from './components/GroupPage/GroupPage';
+import { ViewCreateGroupConfig } from './views/createGroup/viewCreateGroup';
+import { ICreateGroupFormConfig } from './components/CreateGroupForm/CreateGroupForm';
+import { IGroupEditFormConfig } from './components/GroupEditForm/GroupEditForm';
+import { ViewGroupEditConfig } from './views/groupEdit/viewGroupEdit';
 
 const DEBUG: boolean = true;
+
+export const ROOT: string = DEBUG
+	? 'http://127.0.0.1:8000'
+	: 'https://vilka.online';
+
+const ROOT_WS = ROOT.replace('https', 'wss');
 
 export const PAGE_URLS = {
 	feed: '/feed',
@@ -27,11 +41,23 @@ export const PAGE_URLS = {
 	profileEdit: '/profile-edit',
 	profile: '',
 	postEdit: '/post-edit',
+	groups: '/groups',
+	createGroup: '/create-group',
+	groupPage: '/groups',
+	groupEdit: '/group-edit',
+	csat: '/csat/question',
+	question: '/csat/question',
+	metrics: '/csat/metrics',
 };
 
 export const PAGE_LINKS = { ...PAGE_URLS };
+PAGE_LINKS.groupPage += '/\\d+';
 PAGE_LINKS.chat += '/\\d+';
 PAGE_LINKS.profile += '/([\\w-]+)';
+
+export const THROTTLE_LIMITS = {
+	buttonClick: 500,
+};
 
 const homeConfig: HomeConfig = {
 	menu: {
@@ -47,7 +73,7 @@ const homeConfig: HomeConfig = {
 				text: 'Лента',
 				href: PAGE_LINKS.feed,
 				icon: `
-				<svg claas="logo__feed" viewBox="0 0 20 21" fill="none">
+				<svg class="logo__feed" viewBox="0 0 20 21" fill="none">
 					<path d="M18.8256 8.92346L11.3256 1.42346C10.974 1.07195 10.4972 0.874481 10 0.874481C9.50283 0.874481 9.026 1.07195 8.67438 1.42346L1.17438 8.92346C0.999566 9.0972 0.860985 9.30393 0.766679 9.53165C0.672372 9.75937 0.624218 10.0035 0.62501 10.25V19.25C0.62501 19.5484 0.743536 19.8345 0.954515 20.0455C1.16549 20.2565 1.45164 20.375 1.75001 20.375H18.25C18.5484 20.375 18.8345 20.2565 19.0455 20.0455C19.2565 19.8345 19.375 19.5484 19.375 19.25V10.25C19.3758 10.0035 19.3276 9.75937 19.2333 9.53165C19.139 9.30393 19.0005 9.0972 18.8256 8.92346ZM17.125 18.125H2.87501V10.4047L10 3.27971L17.125 10.4047V18.125Z"/>
 				</svg>`,
 			},
@@ -74,8 +100,17 @@ const homeConfig: HomeConfig = {
 				text: 'Сообщения',
 				href: PAGE_LINKS.messages,
 				icon: `
-				<svg class="logo__messages" viewBox="0 0 24 24" fill="none">
-					<path d="M21.0039 12C21.0039 16.9706 16.9745 21 12.0039 21C9.9675 21 3.00463 21 3.00463 21C3.00463 21 4.56382 17.2561 3.93982 16.0008C3.34076 14.7956 3.00391 13.4372 3.00391 12C3.00391 7.02944 7.03334 3 12.0039 3C16.9745 3 21.0039 7.02944 21.0039 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M3 7.2C3 6.07989 3 5.51984 3.21799 5.09202C3.40973 4.71569 3.71569 4.40973 4.09202 4.21799C4.51984 4 5.0799 4 6.2 4H17.8C18.9201 4 19.4802 4 19.908 4.21799C20.2843 4.40973 20.5903 4.71569 20.782 5.09202C21 5.51984 21 6.0799 21 7.2V20L17.6757 18.3378C17.4237 18.2118 17.2977 18.1488 17.1656 18.1044C17.0484 18.065 16.9277 18.0365 16.8052 18.0193C16.6672 18 16.5263 18 16.2446 18H6.2C5.07989 18 4.51984 18 4.09202 17.782C3.71569 17.5903 3.40973 17.2843 3.21799 16.908C3 16.4802 3 15.9201 3 14.8V7.2Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>`,
+			},
+			groups: {
+				key: 'groups',
+				text: 'Группы',
+				href: PAGE_LINKS.groups,
+				icon: `	
+				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M7.125 6C7.125 5.70163 7.24353 5.41548 7.45451 5.2045C7.66548 4.99353 7.95163 4.875 8.25 4.875H20.25C20.5484 4.875 20.8345 4.99353 21.0455 5.2045C21.2565 5.41548 21.375 5.70163 21.375 6C21.375 6.29837 21.2565 6.58452 21.0455 6.7955C20.8345 7.00647 20.5484 7.125 20.25 7.125H8.25C7.95163 7.125 7.66548 7.00647 7.45451 6.7955C7.24353 6.58452 7.125 6.29837 7.125 6ZM20.25 10.875H8.25C7.95163 10.875 7.66548 10.9935 7.45451 11.2045C7.24353 11.4155 7.125 11.7016 7.125 12C7.125 12.2984 7.24353 12.5845 7.45451 12.7955C7.66548 13.0065 7.95163 13.125 8.25 13.125H20.25C20.5484 13.125 20.8345 13.0065 21.0455 12.7955C21.2565 12.5845 21.375 12.2984 21.375 12C21.375 11.7016 21.2565 11.4155 21.0455 11.2045C20.8345 10.9935 20.5484 10.875 20.25 10.875ZM20.25 16.875H8.25C7.95163 16.875 7.66548 16.9935 7.45451 17.2045C7.24353 17.4155 7.125 17.7016 7.125 18C7.125 18.2984 7.24353 18.5845 7.45451 18.7955C7.66548 19.0065 7.95163 19.125 8.25 19.125H20.25C20.5484 19.125 20.8345 19.0065 21.0455 18.7955C21.2565 18.5845 21.375 18.2984 21.375 18C21.375 17.7016 21.2565 17.4155 21.0455 17.2045C20.8345 16.9935 20.5484 16.875 20.25 16.875ZM4.125 10.5C3.82833 10.5 3.53832 10.588 3.29165 10.7528C3.04497 10.9176 2.85271 11.1519 2.73918 11.426C2.62565 11.7001 2.59594 12.0017 2.65382 12.2926C2.7117 12.5836 2.85456 12.8509 3.06434 13.0607C3.27412 13.2704 3.54139 13.4133 3.83237 13.4712C4.12334 13.5291 4.42494 13.4994 4.69903 13.3858C4.97312 13.2723 5.20738 13.08 5.37221 12.8334C5.53703 12.5867 5.625 12.2967 5.625 12C5.625 11.6022 5.46697 11.2206 5.18566 10.9393C4.90436 10.658 4.52283 10.5 4.125 10.5ZM4.125 4.5C3.82833 4.5 3.53832 4.58797 3.29165 4.7528C3.04497 4.91762 2.85271 5.15189 2.73918 5.42597C2.62565 5.70006 2.59594 6.00166 2.65382 6.29264C2.7117 6.58361 2.85456 6.85088 3.06434 7.06066C3.27412 7.27044 3.54139 7.4133 3.83237 7.47118C4.12334 7.52906 4.42494 7.49935 4.69903 7.38582C4.97312 7.27229 5.20738 7.08003 5.37221 6.83336C5.53703 6.58668 5.625 6.29667 5.625 6C5.625 5.60218 5.46697 5.22064 5.18566 4.93934C4.90436 4.65804 4.52283 4.5 4.125 4.5ZM4.125 16.5C3.82833 16.5 3.53832 16.588 3.29165 16.7528C3.04497 16.9176 2.85271 17.1519 2.73918 17.426C2.62565 17.7001 2.59594 18.0017 2.65382 18.2926C2.7117 18.5836 2.85456 18.8509 3.06434 19.0607C3.27412 19.2704 3.54139 19.4133 3.83237 19.4712C4.12334 19.5291 4.42494 19.4994 4.69903 19.3858C4.97312 19.2723 5.20738 19.08 5.37221 18.8334C5.53703 18.5867 5.625 18.2967 5.625 18C5.625 17.6022 5.46697 17.2206 5.18566 16.9393C4.90436 16.658 4.52283 16.5 4.125 16.5Z" />
 				</svg>`,
 			},
 		},
@@ -85,25 +120,40 @@ const homeConfig: HomeConfig = {
 		className: 'main',
 		header: {
 			key: 'header',
+			search: {
+				img: `${ROOT}/img/search.svg`,
+				placeholder: 'Поиск друзей, сообществ',
+			},
 			profile: {
 				id: -1,
 				name: '',
 				avatar: 'img/avatar.png',
 			},
+			showSearchResults: false,
+			profilesSearch: [],
+			groupsSearch: [],
+			searchInfoMessage: '',
 		},
 		content: {
 			key: 'content',
 			className: 'content',
+			errorMessage: '',
+			infoMessage: '',
+			showLoader: false,
 		},
 		aside: {
 			key: 'aside',
 			className: 'aside',
 		},
 	},
-	errorMessage: '',
+	csat: {
+		key: 'csat',
+		src: PAGE_LINKS.csat,
+		show: false,
+	},
 };
 
-const signupConfig: ISignupFormConfig = {
+const signupConfig: SignupFormConfig = {
 	key: 'signupForm',
 	inputs: {
 		firstName: {
@@ -188,15 +238,13 @@ const createPostConfig: ViewCreatePostConfig = {
 				name: 'text',
 			},
 		},
-		inputs: {
-			image: {
-				key: 'image',
-				name: 'file',
-				type: 'file',
-				accept: 'image/*',
-				placeholder: 'Прикрепить картинку',
-				// extra: 'multiple',
-			},
+		attachmentsInput: {
+			key: 'files-input',
+			name: 'files[]',
+			type: 'file',
+			placeholder: 'Прикрепить файлы',
+			extra: 'multiple',
+			files: [],
 		},
 		button: {
 			key: 'submitButton',
@@ -248,9 +296,10 @@ const profileEditConfig: ViewProfileEditConfig = {
 const feedConfig: ViewFeedConfig = {
 	...homeConfig,
 	posts: [],
+	pendingPostRequest: false,
 };
 
-const profileComponentConfig: IProfileConfig = {
+const profileComponentConfig: ProfileConfig = {
 	id: -1,
 	key: 'profile',
 	firstName: '',
@@ -260,10 +309,13 @@ const profileComponentConfig: IProfileConfig = {
 	groupsCount: -1,
 	img: '',
 	createPostHref: PAGE_LINKS.createPost,
+	editProfileHref: PAGE_LINKS.profileEdit,
 	isAuthor: false,
 	isFriend: false,
 	isSubscriber: false,
 	isSubscription: false,
+	isUnknown: false,
+	posts: [],
 };
 
 const profileConfig: ViewProfileConfig = {
@@ -272,14 +324,14 @@ const profileConfig: ViewProfileConfig = {
 	path: '/',
 };
 
-const messagesComponentConfig: IMessageConfig[] = [];
+const messagesComponentConfig: MessageConfig[] = [];
 
 const messagesConfig: ViewMessagesConfig = {
 	...homeConfig,
 	messages: messagesComponentConfig,
 };
 
-const emptyChatComponentConfig: IChatConfig = {
+const emptyChatComponentConfig: ChatConfig = {
 	companionId: -1,
 	key: 'chat',
 	companionAvatar: '',
@@ -290,6 +342,8 @@ const emptyChatComponentConfig: IChatConfig = {
 	myId: -1,
 	myName: '',
 	myAvatar: '',
+	inputText: '',
+	inputKey: 'chat-input',
 };
 
 const chatConfig: ViewChatConfig = {
@@ -303,25 +357,128 @@ const friendsConfig: ViewFriendsConfig = {
 		key: 'friends',
 		headerText: 'Друзья',
 		friendsConfig: [],
+		messageText: '',
 	},
 	subscribers: {
 		key: 'subscribers',
 		headerText: 'Подписчики',
 		friendsConfig: [],
+		messageText: '',
 	},
 	subscriptions: {
 		key: 'subscriptions',
 		headerText: 'Подписки',
 		friendsConfig: [],
+		messageText: '',
 	},
 	users: {
 		key: 'users',
-		headerText: 'Поиск друзей',
+		headerText: 'Все люди',
 		friendsConfig: [],
+		messageText: '',
+	},
+	pendingUsersRequest: false,
+};
+
+const groupsConfig: ViewGroupsConfig = {
+	...homeConfig,
+	groups: {
+		key: 'groups',
+		headerText: 'Группы',
+		groupsConfig: [],
 	},
 };
 
-const postEditFormConfig: IPostEditFormConfig = {
+const groupPageComponentConfig: GroupPageConfig = {
+	id: -1,
+	key: 'group',
+	name: '',
+	description: '',
+	img: '',
+	posts: [],
+	isFollow: false,
+	createPostHref: PAGE_LINKS.createPost,
+	isAdmin: false,
+	countSubscribers: 0,
+};
+
+const groupPageConfig: ViewGroupPageConfig = {
+	...homeConfig,
+	groupPage: groupPageComponentConfig,
+	path: '/',
+	followRequestPending: false,
+};
+
+const groupFormConfig: ICreateGroupFormConfig = {
+	key: 'createGroupForm',
+	inputs: {
+		name: {
+			key: 'name',
+			type: 'text',
+			placeholder: 'Название группы',
+			name: 'name',
+		},
+		description: {
+			key: 'description',
+			type: 'text',
+			placeholder: 'Описание группы',
+			name: 'description',
+		},
+		avatar: {
+			key: 'avatar',
+			name: 'file',
+			type: 'file',
+			accept: 'image/*',
+			placeholder: 'Добавить фото',
+		},
+	},
+	button: {
+		key: 'submitButton',
+		text: 'Создать группу',
+	},
+};
+
+const createGroupConfig: ViewCreateGroupConfig = {
+	...homeConfig,
+	createGroupForm: groupFormConfig,
+};
+
+const editGroupFormConfig: IGroupEditFormConfig = {
+	key: 'editGroupForm',
+	inputs: {
+		name: {
+			key: 'name',
+			type: 'text',
+			placeholder: 'Название группы',
+			name: 'name',
+		},
+		description: {
+			key: 'description',
+			type: 'text',
+			placeholder: 'Описание группы',
+			name: 'description',
+		},
+		avatar: {
+			key: 'avatar',
+			name: 'file',
+			type: 'file',
+			accept: 'image/*',
+			placeholder: 'Изменить фото',
+		},
+	},
+	button: {
+		key: 'submitButton',
+		text: 'Изменить группу',
+	},
+};
+
+const editGroupConfig: ViewGroupEditConfig = {
+	...homeConfig,
+	groupEditForm: editGroupFormConfig,
+	groupId: 0,
+};
+
+const postEditFormConfig: PostEditFormConfig = {
 	key: 'postEditForm',
 	textAreas: {
 		text: {
@@ -332,15 +489,13 @@ const postEditFormConfig: IPostEditFormConfig = {
 			name: 'text',
 		},
 	},
-	inputs: {
-		image: {
-			key: 'image',
-			name: 'file',
-			type: 'file',
-			accept: 'image/*',
-			placeholder: 'Изменить картинку',
-			// extra: 'multiple',
-		},
+	attachmentsInput: {
+		key: 'files-input',
+		name: 'files[]',
+		type: 'file',
+		placeholder: 'Прикрепить файлы',
+		extra: 'multiple',
+		files: [],
 	},
 	button: {
 		key: 'submitButton',
@@ -354,12 +509,6 @@ const editPostConfig: ViewPostEditConfig = {
 	postId: -1,
 };
 
-export const ROOT: string = DEBUG
-	? 'http://127.0.0.1:8000'
-	: 'http://185.241.194.197:8080';
-
-const ROOT_WS = ROOT.replace('http', 'ws');
-
 const apiv1 = '/api/v1';
 
 const URL: URLInterface = DEBUG
@@ -369,6 +518,7 @@ const URL: URLInterface = DEBUG
 			logout: ROOT + '/auth/logout',
 			feed: ROOT + '/api/post',
 			profile: ROOT + '/api/profile',
+			profileById: '',
 			profileYourOwn: ROOT + '/api/profile',
 			profiles: ROOT + '/api/profiles',
 			subscribers: ROOT + '/api/profile/{id}/subscribers',
@@ -383,6 +533,22 @@ const URL: URLInterface = DEBUG
 			messages: '',
 			chat: '',
 			chatWS: '',
+			postLike: '',
+			postUnlike: '',
+			postLikeCount: '',
+			groups: '',
+			group: '',
+			groupEdit: '',
+			groupJoin: '',
+			groupLeave: '',
+			profilesSearch: '',
+			groupsSearch: '',
+			csat: '',
+			csatMetrics: '',
+			image: '',
+			file: '',
+			comments: '',
+			comment: '',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -390,6 +556,7 @@ const URL: URLInterface = DEBUG
 			logout: ROOT + '/api/v1/auth/logout',
 			feed: ROOT + '/api/v1/feed',
 			profile: ROOT + '/api/v1/profile',
+			profileById: ROOT + apiv1 + '/profile/{id}',
 			profileYourOwn: ROOT + '/api/v1/profile',
 			profiles: ROOT + '/api/v1/profiles',
 			subscribers: ROOT + '/api/v1/profile/{id}/subscribers',
@@ -402,9 +569,25 @@ const URL: URLInterface = DEBUG
 			removeFriend: ROOT + '/api/v1/profile/{id}/friend/remove',
 			profileSubscriptions: ROOT + apiv1 + '/profile/{id}/subscriptions',
 			post: ROOT + apiv1 + '/feed/{id}',
+			comments: ROOT + apiv1 + '/feed/{id}/comments',
+			comment: ROOT + apiv1 + '/feed/{id}/{comment_id}',
 			messages: ROOT + apiv1 + '/messages/chats',
 			chat: ROOT + apiv1 + '/messages/chat/{id}',
-			chatWS: ROOT_WS + apiv1 + '/ws',
+			chatWS: ROOT_WS + apiv1 + '/message/ws',
+			postLike: ROOT + apiv1 + '/feed/{id}/like',
+			postUnlike: ROOT + apiv1 + '/feed/{id}/unlike',
+			postLikeCount: ROOT + apiv1 + '/like/count/post/{id}',
+			groups: ROOT + apiv1 + '/community',
+			group: ROOT + apiv1 + '/community/{id}',
+			groupEdit: ROOT + apiv1 + '/community/{id}',
+			groupJoin: ROOT + apiv1 + '/community/{id}/join',
+			groupLeave: ROOT + apiv1 + '/community/{id}/leave',
+			profilesSearch: ROOT + apiv1 + '/profile/search/',
+			groupsSearch: ROOT + apiv1 + '/community/search/',
+			csat: ROOT + apiv1 + '/csat',
+			csatMetrics: ROOT + apiv1 + '/csat/metrics',
+			image: ROOT + '/image',
+			file: ROOT + '/image',
 		};
 
 const config: AppConfig = {
@@ -419,7 +602,92 @@ const config: AppConfig = {
 	messagesConfig,
 	chatConfig,
 	friendsConfig,
+	groupsConfig,
+	createGroupConfig,
+	groupPageConfig,
 	editPostConfig,
+	editGroupConfig,
+	questionConfig: {
+		question: {
+			id: 1,
+			key: 'question',
+			name: 'Насколько вы готовы рекомендовать  Vilka друзьям и знакомым?',
+			scoresConfig: [
+				{
+					key: '1',
+					id: 1,
+					color: `score-${1}`,
+				},
+				{
+					key: '2',
+					id: 2,
+					color: `score-${2}`,
+				},
+				{
+					key: '3',
+					id: 3,
+					color: `score-${3}`,
+				},
+				{
+					key: '4',
+					id: 4,
+					color: `score-${4}`,
+				},
+				{
+					key: '5',
+					id: 5,
+					color: `score-${5}`,
+				},
+			],
+		},
+	},
+	metricsConfig: {
+		metrics: {
+			key: 'metrics',
+			id: 1,
+			metricsConfig: [
+				{
+					key: 'score',
+					id: 1,
+					name: 'Насколько вы довольны Vilka?',
+					average: 4,
+				},
+				{
+					key: 'score',
+					id: 2,
+					name: 'Оцените общение в сервисе',
+					average: 4,
+				},
+			],
+		},
+	},
 };
+
+export const validators: Record<string, (value: string | File) => string> = {
+	first_name: (value) => Validator.validateName(value as string),
+	last_name: (value) => Validator.validateName(value as string),
+	email: (value) => Validator.validateEmail(value as string),
+	password: (value) => Validator.validatePassword(value as string),
+	password_again: (value) => Validator.validateConfirmation(value as string),
+	text: (value) => Validator.validatePost(value as string),
+	file: (value) => Validator.validateImg(value as File),
+	bio: (value) => Validator.validatePost(value as string),
+	avatar: (value) => Validator.validateImg(value as File),
+	description: (value) => Validator.validateDescription(value as string),
+	name: (value) => Validator.validateName(value as string),
+};
+
+interface Question {
+	name: string;
+}
+
+export const questionNames: Question[] = [
+	{
+		name: 'Насколько вы довольны Vilka?',
+	},
+	{
+		name: 'Оцените общение в сервисе',
+	},
+];
 
 export default config;

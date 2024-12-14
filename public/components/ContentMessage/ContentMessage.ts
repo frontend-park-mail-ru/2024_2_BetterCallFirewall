@@ -1,21 +1,17 @@
-import BaseComponent, {
-	IBaseComponent,
-	IBaseComponentConfig,
-} from '../BaseComponent';
+import Component, { ComponentConfig } from '../Component';
 
-export interface IContentMessageConfig extends IBaseComponentConfig {
+export interface ContentMessageConfig extends ComponentConfig {
 	text: string;
+	error?: boolean;
 }
 
-export interface IContentMessage extends IBaseComponent {}
-
-export class ContentMessage extends BaseComponent implements IContentMessage {
+export class ContentMessage extends Component {
 	/**
 	 * Creates instance of ContentMessage
-	 * @param {IContentMessageConfig} config
+	 * @param {ContentMessageConfig} config
 	 * @param {IBaseComponent} parent
 	 */
-	constructor(config: IContentMessageConfig, parent: IBaseComponent) {
+	constructor(config: ContentMessageConfig, parent: Component) {
 		super(config, parent);
 	}
 
@@ -24,13 +20,12 @@ export class ContentMessage extends BaseComponent implements IContentMessage {
 	 * @returns {string} - HTML element
 	 */
 	render(): string {
-		const template = Handlebars.templates['ContentMessage.hbs'];
-		const html = template(this._config);
-		this._parent?.htmlElement.insertAdjacentHTML('beforeend', html);
-		return html;
+		this._prerender();
+		return this._render('ContentMessage.hbs');
 	}
 
-	update(data: IContentMessageConfig): void {
-		this._config = data;
+	protected _prerender(): void {
+		super._prerender();
+		this._templateContext = { ...this._templateContext, ...this._config };
 	}
 }

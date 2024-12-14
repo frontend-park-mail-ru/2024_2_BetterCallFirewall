@@ -1,18 +1,33 @@
 import { Action } from '../actions/action';
+import { ACTION_APP_TYPES } from '../actions/actionApp';
+import {
+	ActionCommentCreateSuccess,
+	ActionCommentDeleteSuccess,
+	ActionCommentEditSuccess,
+	ActionCommentRequestSuccess,
+} from '../actions/actionComment';
+import {
+	ACTION_POST_TYPES,
+	ActionPostCommentEdit,
+	ActionPostCommentsOpenSwitch,
+	ActionPostCommentsSortChange,
+	ActionPostLikeSuccessData,
+} from '../actions/actionPost';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileGetYourOwnProfileSuccessData,
 	ActionProfileRequestSuccessData,
-	ActionUpdateProfileData,
 } from '../actions/actionProfile';
 import {
 	ACTION_PROFILE_EDIT_TYPES,
 	ActionProfileEditRequestSuccessData,
 } from '../actions/actionProfileEdit';
+import app from '../app';
 import config from '../config';
 import { toProfileConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
 import { ViewProfileConfig } from '../views/profile/viewProfile';
+import { reducerPost } from './reducerPost';
 
 const initialState: ViewProfileConfig = deepClone(config.profileConfig);
 
@@ -23,6 +38,9 @@ export const reducerProfile = (
 	const newState = deepClone(state);
 	let actionData;
 	switch (action?.type) {
+		case ACTION_APP_TYPES.goTo:
+			newState.path = app.router.path;
+			return newState;
 		case ACTION_PROFILE_EDIT_TYPES.requestSuccess: {
 			actionData = action.data as ActionProfileEditRequestSuccessData;
 			const profileConfig = toProfileConfig(
@@ -33,10 +51,6 @@ export const reducerProfile = (
 			newState.profile = Object.assign(newState.profile, profileConfig);
 			return newState;
 		}
-		case ACTION_PROFILE_TYPES.updateProfile:
-			actionData = action.data as ActionUpdateProfileData;
-			newState.profile = Object.assign(newState.profile, actionData);
-			return newState;
 		case ACTION_PROFILE_TYPES.profileRequestSuccess: {
 			actionData = action.data as ActionProfileRequestSuccessData;
 			const profileConfig = toProfileConfig(
@@ -58,11 +72,35 @@ export const reducerProfile = (
 			newState.profile = Object.assign(newState.profile, profileConfig);
 			return newState;
 		}
-		case ACTION_PROFILE_TYPES.profileRequestFail:
-		case ACTION_PROFILE_TYPES.goToProfile:
-		case ACTION_PROFILE_TYPES.getYourOwnProfileFail:
-		case ACTION_PROFILE_TYPES.getYourOwnProfile:
-		default:
-			return state;
+		case ACTION_POST_TYPES.likeSuccess: {
+			const actionData = action.data as ActionPostLikeSuccessData;
+			newState.profile.posts.forEach((postConfig) => {
+				if (postConfig.id === actionData.postId) {
+					postConfig.likedByUser = !postConfig.likedByUser;
+					if (postConfig.likedByUser) {
+						postConfig.likes++;
+					} else {
+						postConfig.likes--;
+					}
+				}
+			});
+			return newState;
+		}
 	}
+	switch (true) {
+		case action instanceof ActionPostCommentsOpenSwitch:
+		case action instanceof ActionPostCommentEdit:
+		case action instanceof ActionPostCommentsSortChange:
+		case action instanceof ActionCommentRequestSuccess:
+		case action instanceof ActionCommentCreateSuccess:
+		case action instanceof ActionCommentEditSuccess:
+		case action instanceof ActionCommentDeleteSuccess:
+			newState.profile.posts.forEach((post) => {
+				if (post.id === action.data.postId) {
+					Object.assign(post, reducerPost(post, action));
+				}
+			});
+			break;
+	}
+	return newState;
 };

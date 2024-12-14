@@ -10,17 +10,20 @@ export const ACTION_FRIENDS_TYPES = {
 	getSubscriptionsSuccess: 'actionFriendsGetSubscriptionsSuccess',
 	getUsersSuccess: 'actionFriendsGetUsersSuccess',
 	getUsersFail: 'actionFriendsGetUsersFail',
+	subscribe: 'actionFriendsSubscribe',
 	subscribeSuccess: 'actionFriendsSubscribeSuccess',
 	subscribeFail: 'actionFriendsSubscribeFail',
+	unsubscribe: 'actionFriendsUnsubscribe',
 	unsubscribeSuccess: 'actionFriendsUnsubscribeSuccess',
 	unsubscribeFail: 'actionFriendsUnsubscribeFail',
+	accept: 'actionFriendsAccept',
 	acceptSuccess: 'actionFriendsAcceptSuccess',
 	acceptFail: 'actionFriendsAcceptFail',
 	removeSuccess: 'actionFriendsRemoveSuccess',
 	removeFail: 'actionFriendsRemoveFail',
 };
 
-export class ActionProfileGetFriends implements Action {
+export class ActionFriendsGetFriends implements Action {
 	type: ActionType;
 	data: object;
 
@@ -30,59 +33,68 @@ export class ActionProfileGetFriends implements Action {
 	}
 }
 
-export interface ActionProfileGetFriendsSuccessData {
+export interface ActionFriendsGetFriendsSuccessData {
 	friends: ShortProfileResponse[];
 }
 
-export class ActionProfileGetFriendsSuccess implements Action {
+export class ActionFriendsGetFriendsSuccess implements Action {
 	type: ActionType;
-	data: ActionProfileGetFriendsSuccessData;
+	data: ActionFriendsGetFriendsSuccessData;
 
-	constructor(data: ActionProfileGetFriendsSuccessData) {
+	constructor(data: ActionFriendsGetFriendsSuccessData) {
 		this.type = ACTION_FRIENDS_TYPES.getFriendsSuccess;
 		this.data = data;
 	}
 }
 
-export interface ActionProfileGetSubscribersSuccessData {
+export interface ActionFriendsGetSubscribersSuccessData {
 	subscribers: ShortProfileResponse[];
 }
 
-export class ActionProfileGetSubscribersSuccess implements Action {
+export class ActionFriendsGetSubscribersSuccess implements Action {
 	type: ActionType;
-	data: ActionProfileGetSubscribersSuccessData;
+	data: ActionFriendsGetSubscribersSuccessData;
 
-	constructor(data: ActionProfileGetSubscribersSuccessData) {
+	constructor(data: ActionFriendsGetSubscribersSuccessData) {
 		this.type = ACTION_FRIENDS_TYPES.getSubscribersSuccess;
 		this.data = data;
 	}
 }
 
-export interface ActionProfileGetSubscriptionsSuccessData {
+export interface ActionFriendsGetSubscriptionsSuccessData {
 	subscriptions: ShortProfileResponse[];
 }
 
-export class ActionProfileGetSubscriptionsSuccess implements Action {
+export class ActionFriendsGetSubscriptionsSuccess implements Action {
 	type: ActionType;
-	data: ActionProfileGetSubscriptionsSuccessData;
+	data: ActionFriendsGetSubscriptionsSuccessData;
 
-	constructor(data: ActionProfileGetSubscriptionsSuccessData) {
+	constructor(data: ActionFriendsGetSubscriptionsSuccessData) {
 		this.type = ACTION_FRIENDS_TYPES.getSubscriptionsSuccess;
 		this.data = data;
 	}
 }
 
-export interface ActionProfileGetUsersSuccessData {
+export interface ActionFriendsGetUsersSuccessData {
 	users: ShortProfileResponse[];
 }
 
-export class ActionProfileGetUsersSuccess implements Action {
+export class ActionFriendsGetUsersSuccess implements Action {
 	type: ActionType;
-	data: ActionProfileGetUsersSuccessData;
+	data: ActionFriendsGetUsersSuccessData;
 
-	constructor(data: ActionProfileGetUsersSuccessData) {
+	constructor(data: ActionFriendsGetUsersSuccessData) {
 		this.type = ACTION_FRIENDS_TYPES.getUsersSuccess;
 		this.data = data;
+	}
+}
+
+export class ActionFriendsSubscribe implements Action {
+	type: ActionType = ACTION_FRIENDS_TYPES.subscribe;
+	data: { profileId: number };
+
+	constructor(profileId: number) {
+		this.data = { profileId };
 	}
 }
 
@@ -96,6 +108,15 @@ export class ActionFriendsSubscribeFail implements Action {
 	data: object = {};
 }
 
+export class ActionFriendsUnsubscribe implements Action {
+	type: ActionType = ACTION_FRIENDS_TYPES.unsubscribe;
+	data: { profileId: number };
+
+	constructor(profileId: number) {
+		this.data = { profileId };
+	}
+}
+
 export class ActionFriendsUnsubscribeSuccess implements Action {
 	type: ActionType = ACTION_FRIENDS_TYPES.unsubscribeSuccess;
 	data: object = {};
@@ -104,6 +125,19 @@ export class ActionFriendsUnsubscribeSuccess implements Action {
 export class actionFriendsUnsubscribeFail implements Action {
 	type: ActionType = ACTION_FRIENDS_TYPES.unsubscribeFail;
 	data: object = {};
+}
+
+export interface ActionFriendsAcceptData {
+	id: number;
+}
+
+export class ActionFriendsAccept implements Action {
+	type: ActionType = ACTION_FRIENDS_TYPES.accept;
+	data: ActionFriendsAcceptData;
+
+	constructor(profileId: number) {
+		this.data = { id: profileId };
+	}
 }
 
 export class ActionFriendsAcceptSuccess implements Action {

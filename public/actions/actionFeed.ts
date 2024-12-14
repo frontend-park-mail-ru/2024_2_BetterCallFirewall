@@ -2,10 +2,13 @@ import { PostResponse } from '../models/post';
 import { Action, ActionType } from './action';
 
 export const ACTION_FEED_TYPES = {
+	postsRequest: 'actionFeedPostsRequest',
 	postsRequestSuccess: 'actionFeedPostsRequestSuccess',
 	postsRequestFail: 'actionFeedPostsRequestFail',
 	postCreateSuccess: 'actionFeedPostCreateSuccess',
+	postGroupCreateSuccess: 'actionFeedPostGroupCreateSuccess',
 	postCreateFail: 'actionFeedPostCreateFail',
+	update: 'actionFeedUpdate',
 };
 
 export type ActionPostsRequestSuccessData = {
@@ -51,7 +54,20 @@ export class ActionFeedPostCreateSuccess implements Action {
 	}
 }
 
-export class actionFeedPostCreateFail implements Action {
+export interface ActionFeedPostGroupCreateSuccessData {
+	post: PostResponse;
+}
+export class ActionFeedPostGroupCreateSuccess implements Action {
+	type: ActionType;
+	data: ActionFeedPostGroupCreateSuccessData;
+
+	constructor(data: ActionFeedPostGroupCreateSuccessData) {
+		this.type = ACTION_FEED_TYPES.postGroupCreateSuccess;
+		this.data = data;
+	}
+}
+
+export class ActionFeedPostCreateFail implements Action {
 	type: ActionType;
 	data: object;
 
@@ -59,4 +75,22 @@ export class actionFeedPostCreateFail implements Action {
 		this.type = ACTION_FEED_TYPES.postCreateFail;
 		this.data = {};
 	}
+}
+
+export interface ActionFeedPostsRequestData {
+	lastId?: number;
+}
+
+export class ActionFeedPostsRequest implements Action {
+	type: ActionType = ACTION_FEED_TYPES.postsRequest;
+	data: ActionFeedPostsRequestData;
+
+	constructor(lastId?: number) {
+		this.data = { lastId };
+	}
+}
+
+export class ActionFeedUpdate implements Action {
+	type: ActionType = ACTION_FEED_TYPES.update;
+	data: object = {};
 }

@@ -1,9 +1,8 @@
 import { HeaderResponse } from '../models/header';
-import { FullProfileResponse } from '../models/profile';
+import { FullProfileResponse, ShortProfileResponse } from '../models/profile';
 import { Action, ActionType } from './action';
 
 export const ACTION_PROFILE_TYPES = {
-	goToProfile: 'goToProfile',
 	updateProfile: 'updateProfile',
 	profileRequest: 'actionProfileRequest',
 	profileRequestSuccess: 'profileRequestSuccess',
@@ -16,17 +15,19 @@ export const ACTION_PROFILE_TYPES = {
 	getHeaderFail: 'getHeaderFail',
 	deletePostSuccess: 'actionProfileDeletePostSuccess',
 	deletePostFail: 'actionProfileDeletePostFail',
+	search: 'actionProfileSearch',
+	searchSuccess: 'actionProfileSearchSuccess',
+	searchFail: 'actionProfileSearchFail',
+	delete: 'actionProfileDelete',
+	deleteSuccess: 'actionProfileDeleteSuccess',
+	deleteFail: 'actionProfileDeleteFail',
 };
 
 export interface ActionUpdateProfileData {}
 
 export class ActionUpdateProfile implements Action {
-	type: ActionType;
-	data: ActionUpdateProfileData;
-	constructor(data: ActionUpdateProfileData) {
-		this.type = ACTION_PROFILE_TYPES.updateProfile;
-		this.data = data;
-	}
+	type: ActionType = ACTION_PROFILE_TYPES.updateProfile;
+	data: ActionUpdateProfileData = {};
 }
 
 export interface ActionProfileRequestData {
@@ -155,5 +156,52 @@ export class ActionProfileDeletePostSuccess implements Action {
 
 export class ActionProfileDeletePostFail implements Action {
 	type: ActionType = ACTION_PROFILE_TYPES.deletePostFail;
+	data: object = {};
+}
+
+export interface ActionProfileSearchData {
+	str: string;
+	lastId?: number;
+}
+
+export class ActionProfileSearch implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.search;
+	data: ActionProfileSearchData;
+
+	constructor(str: string, lastId?: number) {
+		this.data = { str, lastId };
+	}
+}
+
+export interface ActionProfileSearchSuccessData {
+	profilesResponses: ShortProfileResponse[];
+}
+
+export class ActionProfileSearchSuccess implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.searchSuccess;
+	data: ActionProfileSearchSuccessData;
+
+	constructor(profilesResponses: ShortProfileResponse[]) {
+		this.data = { profilesResponses };
+	}
+}
+
+export class ActionProfileSearchFail implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.searchFail;
+	data: object = {};
+}
+
+export class ActionProfileDelete implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.delete;
+	data: object = {};
+}
+
+export class ActionProfileDeleteSuccess implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.deleteSuccess;
+	data: object = {};
+}
+
+export class ActionProfileDeleteFail implements Action {
+	type: ActionType = ACTION_PROFILE_TYPES.deleteFail;
 	data: object = {};
 }

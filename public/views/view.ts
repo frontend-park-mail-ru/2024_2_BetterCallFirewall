@@ -1,23 +1,13 @@
 import { Action } from '../actions/action';
 import { Root } from '../components';
-import { IBaseComponent } from '../components/BaseComponent';
+import Component from '../components/Component';
 import dispatcher from '../dispatcher/dispatcher';
 import { Change, Store } from '../stores/store';
 
 export type ViewData = object;
-export type Components = Record<string, IBaseComponent>;
+export type Components = Record<string, Component>;
 
-export interface View {
-	sendAction(action: Action): void;
-	clear(): void;
-	handleChange(change: Change): void;
-	render(): void;
-	register(store: Store): void;
-	unregister(store: Store): void;
-	unregisterAllStores(): void;
-}
-
-export abstract class BaseView implements View {
+export abstract class View {
 	protected _root: Root;
 	protected _registeredStores: Store[] = [];
 	private _isActive: boolean;
@@ -45,9 +35,9 @@ export abstract class BaseView implements View {
 	}
 
 	clear() {
-		Object.entries(this._root.children).forEach(([, child]) => {
-			child.remove();
-		});
+		// Object.entries(this._root.children).forEach(([, child]) => {
+		// 	child.remove();
+		// });
 	}
 
 	unregister(store: Store) {
@@ -61,6 +51,7 @@ export abstract class BaseView implements View {
 		this._registeredStores.forEach((store) => this.unregister(store));
 	}
 
-	abstract render(): void;
+	abstract get config(): object;
+	abstract render(data?: ViewData): void;
 	abstract handleChange(change: Change): void;
 }

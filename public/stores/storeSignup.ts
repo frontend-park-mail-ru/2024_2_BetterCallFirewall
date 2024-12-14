@@ -1,15 +1,15 @@
 import { Action } from '../actions/action';
-import { ISignupFormConfig } from '../components';
+import { SignupFormConfig } from '../components';
 import { reducerSignup } from '../reducers/reducerSignup';
 import { ViewSignup } from '../views/signup/viewSignup';
 import { BaseStore, Change, Store } from './store';
 
 export interface ChangeSignup extends Change {
-	data: ISignupFormConfig;
+	data: SignupFormConfig;
 }
 
 export class StoreSignup extends BaseStore implements Store {
-	private _state: ISignupFormConfig;
+	private _state: SignupFormConfig;
 	protected _registeredViews: ViewSignup[] = [];
 
 	constructor() {
