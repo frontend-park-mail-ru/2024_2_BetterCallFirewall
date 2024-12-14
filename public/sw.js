@@ -19,7 +19,7 @@ this.addEventListener('fetch', (event) => {
 				// if (!networkResponse || networkResponse.status !== 200) {
 				// 	return networkResponse;
 				// }
-				if (networkResponse) {
+				if (networkResponse && networkResponse.ok) {
 					return caches.open(CACHE_NAME).then((cache) => {
 						cache.put(event.request, networkResponse.clone());
 						return networkResponse;
