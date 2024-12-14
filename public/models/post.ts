@@ -1,7 +1,7 @@
 import { PostConfig, SortOptions } from '../components';
 import { GroupPageConfig } from '../components/GroupPage/GroupPage';
 import { PAGE_URLS } from '../config';
-import parseImage from '../modules/parseImage';
+import parseFile from '../modules/parseFile';
 import parseTime from '../modules/parseTime';
 
 export interface Header {
@@ -34,10 +34,10 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 	return {
 		id: postResponse.id,
 		key: `post-${postResponse.id}`,
-		avatar: parseImage(postResponse.header.avatar),
+		avatar: parseFile(postResponse.header.avatar),
 		title: postResponse.header.author,
 		text: postResponse.post_content.text,
-		files: files ? files.map((file) => parseImage(file)) : [],
+		files: files ? files.map((file) => parseFile(file)) : [],
 		date: parseTime(postResponse.post_content.created_at),
 		hasDeleteButton: false,
 		hasEditButton: false,

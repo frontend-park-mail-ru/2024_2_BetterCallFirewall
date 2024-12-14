@@ -1,5 +1,6 @@
 import { ChatConfig } from '../components/Chat/Chat';
 import { ChatMessageConfig } from '../components/ChatMessage/ChatMessage';
+import parseFile from '../modules/parseFile';
 import parseTime from '../modules/parseTime';
 
 interface MessageContent {
@@ -35,5 +36,6 @@ export const toChatMessageConfig = (
 		createdAt: parseTime(messageResponse.created_at),
 		createdAtISO: messageResponse.created_at,
 		isAuthor: !isCompanion,
+		files: messageResponse.content.file_path.map((file) => parseFile(file)),
 	};
 };

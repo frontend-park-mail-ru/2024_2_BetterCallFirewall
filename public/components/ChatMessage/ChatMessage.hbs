@@ -10,5 +10,10 @@
         <div class="chat-message__text">
             {{this.messageText}}
         </div>
+        <div class="chat-message__attachments">
+            {{#each attachments}}
+                {{{this}}}
+            {{/each}}
+        </div>
     </div>
 </div>

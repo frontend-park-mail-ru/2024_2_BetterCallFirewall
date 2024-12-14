@@ -5,7 +5,7 @@ import { ProfileConfig } from '../components/Profile/Profile';
 import { SearchResultConfig } from '../components/SearchResult/SearchResult';
 import { PAGE_LINKS, PAGE_URLS } from '../config';
 import deepClone from '../modules/deepClone';
-import parseImage from '../modules/parseImage';
+import parseFile from '../modules/parseFile';
 import { PostResponse, toPostConfig } from './post';
 
 export interface ShortProfileResponse {
@@ -51,7 +51,7 @@ export const toProfileConfig = (
 		key: `profile-${profileResponse.id}`,
 		firstName: profileResponse.first_name,
 		secondName: profileResponse.last_name,
-		img: parseImage(profileResponse.avatar),
+		img: parseFile(profileResponse.avatar),
 		description: profileResponse.bio,
 		posts: profileResponse.posts
 			? profileResponse.posts.map((postResponse) =>
@@ -82,7 +82,7 @@ export const toFriendConfig = (
 		id: profileResponse.id,
 		key: `friend-${profileResponse.id}`,
 		name: `${profileResponse.first_name} ${profileResponse.last_name}`,
-		avatar: parseImage(profileResponse.avatar),
+		avatar: parseFile(profileResponse.avatar),
 		isFriend: profileResponse.is_friend,
 		isSubscriber: profileResponse.is_subscriber,
 		isSubscription: profileResponse.is_subscription,
@@ -97,7 +97,7 @@ export const toChatConfig = (
 	const newChatConfig = deepClone(chatConfig);
 	newChatConfig.companionId = response.id;
 	newChatConfig.companionName = `${response.first_name} ${response.last_name}`;
-	newChatConfig.companionAvatar = parseImage(response.avatar);
+	newChatConfig.companionAvatar = parseFile(response.avatar);
 	return newChatConfig;
 };
 
@@ -107,7 +107,7 @@ export const toHeaderProfile = (
 	return {
 		id: profileResponse.id,
 		name: `${profileResponse.first_name} ${profileResponse.last_name}`,
-		avatar: parseImage(profileResponse.avatar),
+		avatar: parseFile(profileResponse.avatar),
 	};
 };
 
@@ -117,7 +117,7 @@ export const shortProfileResponseToSearchResultConfig = (
 	return {
 		id: respone.id,
 		key: `search-result-${respone.id}`,
-		avatar: parseImage(respone.avatar),
+		avatar: parseFile(respone.avatar),
 		name: `${respone.first_name} ${respone.last_name}`,
 	};
 };
