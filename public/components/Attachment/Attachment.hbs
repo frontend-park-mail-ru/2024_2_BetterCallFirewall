@@ -4,8 +4,14 @@
             <img src="{{file.src}}" alt="" class="image">
         {{/if}}
         {{#if isFile}}
-            <object data="/img/file.svg" type="image/svg+xml"></object>
-            <span>{{file.src}}</span>
+            <div class="attachment__file">
+                <div class="attachment__file-icon">
+                    <img src="/img/file.svg" alt=""></img>
+                </div>
+                <div class="attachment__file-name">
+                    <a href="{{file.src}}" download>{{file.src}}</a>
+                </div>
+            </div>
         {{/if}}
         {{#if isLoading}}
             {{{loader}}}

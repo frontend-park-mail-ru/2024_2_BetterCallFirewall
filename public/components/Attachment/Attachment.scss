@@ -3,6 +3,14 @@
     &__content {
         width: 100%;
     }
+    &__file {
+        display: flex;
+        align-items: center;
+        &-icon {
+            width: 5rem;
+            height: 5rem;
+        }
+    }
     &__delete-button {
         cursor: pointer;
         position: absolute;
