@@ -671,7 +671,7 @@ export const validators: Record<string, (value: string | File) => string> = {
 	password_again: (value) => Validator.validateConfirmation(value as string),
 	text: (value) => Validator.validatePost(value as string),
 	file: (value) => Validator.validateImg(value as File),
-	bio: (value) => Validator.validatePost(value as string),
+	bio: (value) => Validator.validateDescription(value as string),
 	avatar: (value) => Validator.validateImg(value as File),
 	description: (value) => Validator.validateDescription(value as string),
 	name: (value) => Validator.validateName(value as string),
