@@ -12,7 +12,7 @@ this.addEventListener('install', (event) => {
 this.addEventListener('fetch', (event) => {
 	event.respondWith(
 		fetch(event.request).then((networkResponse) => {
-			if (networkResponse.ok) {
+			if (networkResponse && networkResponse.ok) {
 				caches.open(CACHE_NAME).then((cache) => {
 					cache.put(event.request, networkResponse.clone());
 				});
