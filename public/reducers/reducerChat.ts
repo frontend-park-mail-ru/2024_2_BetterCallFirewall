@@ -1,5 +1,10 @@
 import { Action } from '../actions/action';
 import {
+	ActionAttachmentsInputAddFiles,
+	ActionAttachmentsInputDeleteFile,
+	ActionAttachmentsInputFileLoaded,
+} from '../actions/actionAttachmentsInput';
+import {
 	ACTION_CHAT_TYPES,
 	ActionChatRequestSuccessData,
 	ActionChatSendMessageData,
@@ -18,6 +23,7 @@ import { MessageResponse, toChatMessageConfig } from '../models/message';
 import { toChatConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
 import { ViewChatConfig } from '../views/chat/viewChat';
+import { reducerAttachmentsInput } from './reducerAttachmentsInput';
 import { reducerHome } from './reducerHome';
 
 const initialChatState: ChatConfig = deepClone(config.chatConfig.chat);
@@ -91,7 +97,16 @@ export const reducerChat = (
 			newState.chat.messages = [];
 			return newState;
 		}
-		default:
-			return state;
 	}
+	switch (true) {
+		case action instanceof ActionAttachmentsInputAddFiles:
+		case action instanceof ActionAttachmentsInputDeleteFile:
+		case action instanceof ActionAttachmentsInputFileLoaded:
+			newState.chat.attachmentInput = reducerAttachmentsInput(
+				newState.chat.attachmentInput,
+				action,
+			);
+			break;
+	}
+	return newState;
 };
