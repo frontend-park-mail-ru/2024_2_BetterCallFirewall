@@ -57,6 +57,7 @@ export class ViewGroups extends ViewHome {
 						this.sendAction(new ActionGroupsGetGroups(lastId));
 					}
 				}
+				this.updateViewGroups(change.data);
 				break;
 			default:
 				this.updateViewGroups(change.data);
