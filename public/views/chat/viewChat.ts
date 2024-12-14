@@ -78,6 +78,8 @@ export class ViewChat extends ViewHome {
 			case ACTION_CHAT_TYPES.updateChat:
 				this.updateViewChat(change.data);
 				break;
+			default:
+				this.updateViewChat(change.data);
 		}
 	}
 
