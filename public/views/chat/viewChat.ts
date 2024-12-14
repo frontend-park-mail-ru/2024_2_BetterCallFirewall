@@ -15,7 +15,7 @@ import { Root } from '../../components';
 import { Chat, ChatConfig } from '../../components/Chat/Chat';
 import { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
-import { MessageSend } from '../../models/message';
+import { MessagePayload } from '../../models/message';
 import { throttle } from '../../modules/throttle';
 import { update } from '../../modules/vdom';
 import { ChangeChat } from '../../stores/storeChat';
@@ -247,7 +247,7 @@ export class ViewChat extends ViewHome {
 		if (!chatText) {
 			return;
 		}
-		const message: MessageSend = {
+		const message: MessagePayload = {
 			content: chatText,
 			receiver: this._chat.config.companionId,
 		};

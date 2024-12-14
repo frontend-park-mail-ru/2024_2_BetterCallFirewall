@@ -2,14 +2,20 @@ import { ChatConfig } from '../components/Chat/Chat';
 import { ChatMessageConfig } from '../components/ChatMessage/ChatMessage';
 import parseTime from '../modules/parseTime';
 
-export interface MessageSend {
+interface MessageContent {
+	text: string;
+	file_path: string;
+	sticker_path: string;
+}
+
+export interface MessagePayload {
 	content: string;
 	receiver: number;
 }
 
 export interface MessageResponse {
 	sender: number;
-	content: string;
+	content: MessageContent;
 	created_at: string;
 }
 
@@ -25,7 +31,7 @@ export const toChatMessageConfig = (
 			? chatConfig.companionAvatar
 			: chatConfig.myAvatar,
 		messageName: isCompanion ? chatConfig.companionName : chatConfig.myName,
-		messageText: messageResponse.content,
+		messageText: messageResponse.content.text,
 		createdAt: parseTime(messageResponse.created_at),
 		createdAtISO: messageResponse.created_at,
 		isAuthor: !isCompanion,
