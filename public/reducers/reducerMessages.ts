@@ -47,7 +47,7 @@ export const reducerMessages = (
 					messageConfig.authorId === actionData.messageResponse.sender
 				) {
 					messageConfig.lastMessage =
-						actionData.messageResponse.content;
+						actionData.messageResponse.content.text;
 					messageConfig.date = parseTime(
 						actionData.messageResponse.created_at,
 					);

@@ -51,7 +51,11 @@ export const reducerChat = (
 			if (newState.chat.companionId !== newState.chat.myId) {
 				const messageResponse: MessageResponse = {
 					sender: newState.main.header.profile.id,
-					content: actionData.message.content,
+					content: {
+						text: actionData.message.content,
+						file_path: [],
+						sticker_path: '',
+					},
 					created_at: new Date().toISOString(),
 				};
 				newState.chat.messages.push(
