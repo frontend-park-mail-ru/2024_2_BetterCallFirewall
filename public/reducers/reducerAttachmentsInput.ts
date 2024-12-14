@@ -4,6 +4,8 @@ import {
 	ActionAttachmentsInputDeleteFile,
 	ActionAttachmentsInputFileLoaded,
 } from '../actions/actionAttachmentsInput';
+import { ActionFeedPostCreateSuccess } from '../actions/actionFeed';
+import { ActionPostEditRequestSuccess } from '../actions/actionPostEdit';
 import { AttachmentsInputConfig } from '../components/AttachmentsInput/AttachmentsInput';
 import deepClone from '../modules/deepClone';
 
@@ -27,6 +29,10 @@ export const reducerAttachmentsInput = (
 			newState.files = newState.files.filter(
 				(file, i) => action.data.index !== i,
 			);
+			break;
+		case action instanceof ActionFeedPostCreateSuccess:
+		case action instanceof ActionPostEditRequestSuccess:
+			newState.files = [];
 			break;
 	}
 	return newState;

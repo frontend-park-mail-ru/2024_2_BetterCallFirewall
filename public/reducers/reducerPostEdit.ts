@@ -8,6 +8,7 @@ import { ACTION_FEED_TYPES } from '../actions/actionFeed';
 import {
 	ACTION_POST_EDIT_TYPES,
 	ActionPostEditGoToData,
+	ActionPostEditRequestSuccess,
 	ActionPostEditUpdateData,
 } from '../actions/actionPostEdit';
 import config from '../config';
@@ -50,6 +51,7 @@ export const reducerPostEdit = (
 		case action instanceof ActionAttachmentsInputAddFiles:
 		case action instanceof ActionAttachmentsInputFileLoaded:
 		case action instanceof ActionAttachmentsInputDeleteFile:
+		case action instanceof ActionPostEditRequestSuccess:
 			newState.postEditForm.attachmentsInput = reducerAttachmentsInput(
 				newState.postEditForm.attachmentsInput,
 				action,

@@ -8,6 +8,7 @@ import {
 	ACTION_CREATE_POST_TYPES,
 	ActionUpdateCreatePostData,
 } from '../actions/actionCreatePost';
+import { ActionFeedPostCreateSuccess } from '../actions/actionFeed';
 import { CreatePostFormConfig } from '../components/CreatePostForm/CreatePostForm';
 import config from '../config';
 import deepClone from '../modules/deepClone';
@@ -39,6 +40,7 @@ export const reducerCreatePost = (
 		case action instanceof ActionAttachmentsInputAddFiles:
 		case action instanceof ActionAttachmentsInputFileLoaded:
 		case action instanceof ActionAttachmentsInputDeleteFile:
+		case action instanceof ActionFeedPostCreateSuccess:
 			newState.createPostForm.attachmentsInput = reducerAttachmentsInput(
 				newState.createPostForm.attachmentsInput,
 				action,
