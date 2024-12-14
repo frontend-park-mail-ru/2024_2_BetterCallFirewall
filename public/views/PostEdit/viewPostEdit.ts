@@ -155,42 +155,42 @@ export class ViewPostEdit extends ViewHome {
 	}
 
 	private _addHandlerInput(): void {
-		this._postEditForm.fileInputVNode.handlers.push(
-			{
-				event: 'click',
-				callback: (event) => {
-					const label = this._postEditForm.label;
-					const preview = this._postEditForm.img as HTMLImageElement;
-					const input = event.target as HTMLInputElement;
-					if (input.value) {
-						input.value = '';
-						event.preventDefault();
-						label?.classList.remove('active');
-						label.textContent = 'Прикрепить картинку';
-						preview.src = '';
-					}
-				},
-			},
-			{
-				event: 'change',
-				callback: (event) => {
-					const label = this._postEditForm.label;
-					const preview = this._postEditForm.img as HTMLImageElement;
-					const input = event.target as HTMLInputElement;
-					if (input.files && input.files.length > 0) {
-						if (label) {
-							label.classList.add('active');
-							label.textContent =
-								'Картинка выбрана, нажмите, чтобы отменить';
-						}
-						const reader = new FileReader();
-						reader.onload = function (e) {
-							preview.src = e.target?.result as string;
-						};
-						reader.readAsDataURL(input.files[0]);
-					}
-				},
-			},
-		);
+		// this._postEditForm.fileInputVNode.handlers.push(
+		// 	{
+		// 		event: 'click',
+		// 		callback: (event) => {
+		// 			const label = this._postEditForm.label;
+		// 			const preview = this._postEditForm.img as HTMLImageElement;
+		// 			const input = event.target as HTMLInputElement;
+		// 			if (input.value) {
+		// 				input.value = '';
+		// 				event.preventDefault();
+		// 				label?.classList.remove('active');
+		// 				label.textContent = 'Прикрепить картинку';
+		// 				preview.src = '';
+		// 			}
+		// 		},
+		// 	},
+		// 	{
+		// 		event: 'change',
+		// 		callback: (event) => {
+		// 			const label = this._postEditForm.label;
+		// 			const preview = this._postEditForm.img as HTMLImageElement;
+		// 			const input = event.target as HTMLInputElement;
+		// 			if (input.files && input.files.length > 0) {
+		// 				if (label) {
+		// 					label.classList.add('active');
+		// 					label.textContent =
+		// 						'Картинка выбрана, нажмите, чтобы отменить';
+		// 				}
+		// 				const reader = new FileReader();
+		// 				reader.onload = function (e) {
+		// 					preview.src = e.target?.result as string;
+		// 				};
+		// 				reader.readAsDataURL(input.files[0]);
+		// 			}
+		// 		},
+		// 	},
+		// );
 	}
 }
