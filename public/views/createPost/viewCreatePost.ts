@@ -104,13 +104,10 @@ export class ViewCreatePost extends ViewHome {
 					this._createPostForm.form,
 				);
 				if (formData) {
-					if (
-						formData.get('text') ||
-						(formData.get('files[]') as File).name
-					) {
-						const files =
-							this._configCreatePost.createPostForm
-								.attachmentsInput.files;
+					const files =
+						this._configCreatePost.createPostForm.attachmentsInput
+							.files;
+					if (formData.get('text') || files.length) {
 						const filesStr = files.map((file) => file.src);
 						const emptyFiles = filesStr.filter((file) => {
 							if (!file) {
@@ -140,7 +137,6 @@ export class ViewCreatePost extends ViewHome {
 				}
 			},
 		});
-		this._addHandlerInput();
 	}
 
 	private get _createPostForm(): CreatePostForm {
@@ -149,47 +145,5 @@ export class ViewCreatePost extends ViewHome {
 			throw new Error('form not found');
 		}
 		return form;
-	}
-
-	private _addHandlerInput(): void {
-		// this._createPostForm.fileInputVNode.handlers.push(
-		// 	{
-		// 		event: 'click',
-		// 		callback: (event) => {
-		// 			const label = this._createPostForm.label;
-		// 			const preview = this._createPostForm
-		// 				.img as HTMLImageElement;
-		// 			const input = event.target as HTMLInputElement;
-		// 			if (input.value) {
-		// 				input.value = '';
-		// 				event.preventDefault();
-		// 				label?.classList.remove('active');
-		// 				label.textContent = 'Прикрепить картинку';
-		// 				preview.src = '';
-		// 			}
-		// 		},
-		// 	},
-		// 	{
-		// 		event: 'change',
-		// 		callback: (event) => {
-		// 			const label = this._createPostForm.label;
-		// 			const preview = this._createPostForm
-		// 				.img as HTMLImageElement;
-		// 			const input = event.target as HTMLInputElement;
-		// 			if (input.files && input.files.length > 0) {
-		// 				if (label) {
-		// 					label.classList.add('active');
-		// 					label.textContent =
-		// 						'Картинка выбрана, нажмите, чтобы отменить';
-		// 				}
-		// 				const reader = new FileReader();
-		// 				reader.onload = function (e) {
-		// 					preview.src = e.target?.result as string;
-		// 				};
-		// 				reader.readAsDataURL(input.files[0]);
-		// 			}
-		// 		},
-		// 	},
-		// );
 	}
 }
