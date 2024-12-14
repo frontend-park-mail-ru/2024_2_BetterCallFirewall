@@ -98,6 +98,7 @@ export interface URLInterface {
 	profileById: string;
 	profileYourOwn: string;
 	profiles: string;
+	changePassword: string;
 	subscribeToProfile: string;
 	acceptFriend: string;
 	unsubscribeFromProfile: string;

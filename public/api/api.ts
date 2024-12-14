@@ -95,6 +95,9 @@ import {
 	ActionProfileDelete,
 } from '../actions/actionProfile';
 import {
+	ActionProfileChangePassword,
+	ActionProfileChangePasswordFail,
+	ActionProfileChangePasswordSuccess,
 	ActionProfileEditRequestFail,
 	ActionProfileEditRequestSuccess,
 } from '../actions/actionProfileEdit';
@@ -107,7 +110,7 @@ import dispatcher from '../dispatcher/dispatcher';
 import { GroupPayload } from '../models/group';
 import { PostPayload } from '../models/post';
 import ajax, { QueryParams } from '../modules/ajax';
-import { ProfilePayload } from '../models/profile';
+import { ChangePasswordPayload, ProfilePayload } from '../models/profile';
 import { ActionCreateGroupSuccess } from '../actions/actionCreateGroup';
 import {
 	ActionCommentCreate,
@@ -239,6 +242,9 @@ class API {
 				break;
 			case action instanceof ActionCommentDelete:
 				this.deleteComment(action.data.postId, action.data.commentId);
+				break;
+			case action instanceof ActionProfileChangePassword:
+				this.changePassword(action.data.payload);
 				break;
 		}
 	}
@@ -884,6 +890,17 @@ class API {
 				break;
 			default:
 				this.sendAction(new ActionCommentDeleteFail());
+		}
+	}
+
+	async changePassword(payload: ChangePasswordPayload) {
+		const response = await ajax.changePassword(payload);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionProfileChangePasswordSuccess());
+				break;
+			default:
+				this.sendAction(new ActionProfileChangePasswordFail());
 		}
 	}
 }

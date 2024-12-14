@@ -11,6 +11,7 @@ import { HeaderResponse } from '../models/header';
 import { MessageResponse } from '../models/message';
 import { PostPayload, PostResponse } from '../models/post';
 import {
+	ChangePasswordPayload,
 	FullProfileResponse,
 	ProfilePayload,
 	ShortProfileResponse,
@@ -530,6 +531,19 @@ class Ajax {
 		let url = replaceId(app.config.URL.comment, postId);
 		url = url.replace('{comment_id}', `${commentId}`);
 		return this._genericRequestResponse(url, 'delete');
+	}
+
+	/**
+	 * Сменить пароль
+	 */
+	async changePassword(
+		payload: ChangePasswordPayload,
+	): Promise<AjaxResponse<string>> {
+		return this._genericRequestResponse(
+			app.config.URL.changePassword,
+			'put',
+			payload,
+		);
 	}
 
 	/**

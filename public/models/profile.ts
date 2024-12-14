@@ -25,6 +25,18 @@ export interface FullProfileResponse extends ShortProfileResponse {
 	posts?: PostResponse[];
 }
 
+export interface ProfilePayload {
+	first_name: string;
+	last_name: string;
+	bio: string;
+	avatar: string;
+}
+
+export interface ChangePasswordPayload {
+	old_password: string;
+	new_password: string;
+}
+
 export const toProfileConfig = (
 	config: ProfileConfig,
 	profileResponse: FullProfileResponse,
@@ -109,10 +121,3 @@ export const shortProfileResponseToSearchResultConfig = (
 		name: `${respone.first_name} ${respone.last_name}`,
 	};
 };
-
-export interface ProfilePayload {
-	first_name: string;
-	last_name: string;
-	bio: string;
-	avatar: string;
-}

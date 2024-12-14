@@ -291,6 +291,33 @@ const profileEditConfig: ViewProfileEditConfig = {
 			text: 'Сохранить',
 		},
 	},
+	changePasswordForm: {
+		key: 'changePasswordForm',
+		inputs: {
+			oldPassword: {
+				key: 'oldPassword',
+				name: 'oldPassword',
+				type: 'password',
+				placeholder: 'Старый пароль',
+			},
+			newPassword: {
+				key: 'newPassword',
+				name: 'password',
+				type: 'password',
+				placeholder: 'Новый пароль',
+			},
+			repeatPassword: {
+				key: 'repeatPassword',
+				name: 'password_again',
+				type: 'password',
+				placeholder: 'Повторите пароль',
+			},
+		},
+		button: {
+			key: 'changePasswordButton',
+			text: 'Сменить пароль',
+		},
+	},
 };
 
 const feedConfig: ViewFeedConfig = {
@@ -521,6 +548,7 @@ const URL: URLInterface = DEBUG
 			profileById: '',
 			profileYourOwn: ROOT + '/api/profile',
 			profiles: ROOT + '/api/profiles',
+			changePassword: '',
 			subscribers: ROOT + '/api/profile/{id}/subscribers',
 			header: ROOT + '/api/profile/header',
 			friends: ROOT + '/api/profile/{id}/friends',
@@ -559,6 +587,7 @@ const URL: URLInterface = DEBUG
 			profileById: ROOT + apiv1 + '/profile/{id}',
 			profileYourOwn: ROOT + '/api/v1/profile',
 			profiles: ROOT + '/api/v1/profiles',
+			changePassword: ROOT + apiv1 + '/profile/password',
 			subscribers: ROOT + '/api/v1/profile/{id}/subscribers',
 			header: ROOT + '/api/v1/profile/header',
 			friends: ROOT + '/api/v1/profile/{id}/friends',
