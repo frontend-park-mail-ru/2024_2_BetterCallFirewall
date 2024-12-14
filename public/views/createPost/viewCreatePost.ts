@@ -106,7 +106,7 @@ export class ViewCreatePost extends ViewHome {
 				if (formData) {
 					if (
 						formData.get('text') ||
-						formData.getAll('files[]').length
+						(formData.get('files[]') as File).name
 					) {
 						const files =
 							this._configCreatePost.createPostForm

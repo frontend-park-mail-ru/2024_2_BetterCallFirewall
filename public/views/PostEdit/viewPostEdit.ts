@@ -110,7 +110,7 @@ export class ViewPostEdit extends ViewHome {
 				if (formData) {
 					if (
 						formData.get('text') ||
-						(formData.get('file') as File).name
+						(formData.get('files[]') as File).name
 					) {
 						const files =
 							this._configPostEdit.postEditForm.attachmentsInput
