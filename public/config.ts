@@ -57,6 +57,7 @@ PAGE_LINKS.profile += '/([\\w-]+)';
 
 export const THROTTLE_LIMITS = {
 	buttonClick: 500,
+	batchLoading: 500,
 };
 
 const homeConfig: HomeConfig = {

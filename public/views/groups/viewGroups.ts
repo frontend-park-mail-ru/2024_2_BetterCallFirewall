@@ -7,7 +7,7 @@ import {
 } from '../../actions/actionGroups';
 import { Root } from '../../components';
 import { Groups, GroupsConfig } from '../../components/Groups/Groups';
-import { PAGE_LINKS, PAGE_URLS } from '../../config';
+import { PAGE_LINKS, PAGE_URLS, THROTTLE_LIMITS } from '../../config';
 import { throttle } from '../../modules/throttle';
 import { update } from '../../modules/vdom';
 import { ChangeGroups } from '../../stores/storeGroups';
@@ -48,6 +48,15 @@ export class ViewGroups extends ViewHome {
 			case ACTION_GROUPS_TYPES.groupsFollowGroupSuccess:
 			case ACTION_GROUPS_TYPES.groupsUnfollowGroupSuccess:
 				this.sendAction(new ActionGroupsGetGroups());
+				break;
+			case ACTION_GROUPS_TYPES.getGroupsSuccess:
+				if (this._isNearBottom()) {
+					const lastId =
+						this._configGroups.groups.groupsConfig.at(-1)?.id;
+					if (lastId) {
+						this.sendAction(new ActionGroupsGetGroups(lastId));
+					}
+				}
 				break;
 			default:
 				this.updateViewGroups(change.data);
@@ -161,5 +170,5 @@ export class ViewGroups extends ViewHome {
 	private _scrollHandler = throttle(() => {
 		const groups = this._configGroups.groups.groupsConfig;
 		this.sendAction(new ActionGroupsGetGroups(groups.at(-1)?.id));
-	}, 200);
+	}, THROTTLE_LIMITS.batchLoading);
 }
