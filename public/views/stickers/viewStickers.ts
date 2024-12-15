@@ -49,6 +49,7 @@ export class ViewStickers extends ViewHome {
 
 	protected _addFormHandlers() {
 		console.log(this.stickers.stickerCreateForm);
+		console.log(this.stickers.stickerCreateFormVNode);
 		// console.log(this.stickers.stickerCreateForm.vnode);
 	// 	this.stickers.stickerCreateForm.vnode.handlers.push({
 	// 		event: 'submit',
