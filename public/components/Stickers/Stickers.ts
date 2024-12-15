@@ -33,6 +33,10 @@ export class Stickers extends Component {
 		return this._stickerCreateForm;
 	}
 
+	// get stickerCreateFormVNode(): VNode {
+	// 	return this._findVNodeByKey();
+	// }
+
 	get fileInputVNode(): VNode {
 		return this._findVNodeByKey('LABEL-form__upload-1');
 	}
