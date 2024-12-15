@@ -49,6 +49,7 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		commentsOpen: false,
 		commentEditId: 0,
 		commentsSort: SortOptions.Asc,
+		expanded: false,
 	};
 };
 

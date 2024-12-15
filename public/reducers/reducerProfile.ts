@@ -11,6 +11,7 @@ import {
 	ActionPostCommentEdit,
 	ActionPostCommentsOpenSwitch,
 	ActionPostCommentsSortChange,
+	ActionPostExpandSwitch,
 	ActionPostLikeSuccessData,
 } from '../actions/actionPost';
 import {
@@ -91,6 +92,7 @@ export const reducerProfile = (
 		case action instanceof ActionPostCommentsOpenSwitch:
 		case action instanceof ActionPostCommentEdit:
 		case action instanceof ActionPostCommentsSortChange:
+		case action instanceof ActionPostExpandSwitch:
 		case action instanceof ActionCommentRequestSuccess:
 		case action instanceof ActionCommentCreateSuccess:
 		case action instanceof ActionCommentEditSuccess:

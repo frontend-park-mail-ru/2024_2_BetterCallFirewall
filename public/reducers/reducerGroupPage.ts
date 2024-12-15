@@ -22,6 +22,7 @@ import {
 	ActionPostCommentEdit,
 	ActionPostCommentsOpenSwitch,
 	ActionPostCommentsSortChange,
+	ActionPostExpandSwitch,
 	ActionPostLikeSuccess,
 } from '../actions/actionPost';
 import { STATUS } from '../api/api';
@@ -113,6 +114,7 @@ export const reducerGroupPage = (
 		case action instanceof ActionPostCommentsOpenSwitch:
 		case action instanceof ActionPostCommentEdit:
 		case action instanceof ActionPostCommentsSortChange:
+		case action instanceof ActionPostExpandSwitch:
 		case action instanceof ActionCommentRequestSuccess:
 		case action instanceof ActionCommentCreateSuccess:
 		case action instanceof ActionCommentEditSuccess:

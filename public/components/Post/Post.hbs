@@ -31,7 +31,7 @@
         {{/if}}
     </div>
     <hr>
-    <div class="post__content">
+    <div class="post__content {{#if expanded}}post__content_expanded{{/if}}">
         <span class="post__content-text">{{this.text}}</span>
         {{#each attachments}}
             <div class="post__content-image">
@@ -61,6 +61,15 @@
             <div class="post__comment-counter">
                 {{this.commentsCount}}
             </div>
+        </div>
+        <div class="post__expand">
+            <span class="post__expand-button">
+                {{#if expanded}}
+                    Свернуть
+                {{else}}
+                    Развернуть
+                {{/if}}
+            </span>
         </div>
     </div>
     <div class="post__comments {{#unless this.commentsOpen}}post__comments_hidden{{/unless}}">

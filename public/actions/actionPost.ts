@@ -8,6 +8,7 @@ export const ACTION_POST_TYPES = {
 	commentsOpenSwitch: 'actionPostCommentsOpenSwitch',
 	commentEdit: 'actionPostCommentEdit',
 	commentsSortChange: 'actionPostCommentsSortChange',
+	expandSwitch: 'actionPostExpandSwitch',
 };
 
 export interface ActionPostLikeData {
@@ -77,5 +78,14 @@ export class ActionPostCommentsSortChange implements Action {
 
 	constructor(postId: number, sort: string) {
 		this.data = { postId, sort };
+	}
+}
+
+export class ActionPostExpandSwitch implements Action {
+	type: string = ACTION_POST_TYPES.expandSwitch;
+	data: { postId: number; expand: boolean };
+
+	constructor(postId: number, expand: boolean) {
+		this.data = { postId, expand };
 	}
 }

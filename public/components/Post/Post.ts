@@ -6,6 +6,7 @@ import {
 import {
 	ActionPostCommentsOpenSwitch,
 	ActionPostCommentsSortChange,
+	ActionPostExpandSwitch,
 	ActionPostLike,
 	ActionPostUnlike,
 } from '../../actions/actionPost';
@@ -42,6 +43,7 @@ export interface PostConfig extends ComponentConfig {
 	commentsOpen: boolean;
 	commentEditId: number;
 	commentsSort: string;
+	expanded: boolean;
 }
 
 /**
@@ -130,6 +132,14 @@ export class Post extends Component {
 
 	get commentsSortSelectVNode(): VNode {
 		return this._findVNodeByClass('comments__sort-select');
+	}
+
+	get expandButtonVNode(): VNode {
+		return this._findVNodeByClass('post__expand-button');
+	}
+
+	get contentVNode(): VNode {
+		return this._findVNodeByClass('post__content');
 	}
 
 	addLikeHandler() {
@@ -223,6 +233,24 @@ export class Post extends Component {
 		return this._render('Post.hbs');
 	}
 
+	protected _addHandlers(): void {
+		super._addHandlers();
+		(this.expandButtonVNode.element as HTMLElement).style.display =
+			this._bigContentHeight() ? 'block' : 'none';
+		this.expandButtonVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this._sendAction(
+					new ActionPostExpandSwitch(
+						this._config.id,
+						!this._config.expanded,
+					),
+				);
+			},
+		});
+	}
+
 	protected _prerender(): void {
 		super._prerender();
 		this._comments = this._config.commentsConfigs.map((config) => {
@@ -288,5 +316,12 @@ export class Post extends Component {
 				new ActionCommentCreate(this._config.id, commentPayload),
 			);
 		}
+	}
+
+	private _bigContentHeight() {
+		const rootFontSize = parseFloat(
+			getComputedStyle(document.documentElement).fontSize,
+		);
+		return this.contentVNode.element.scrollHeight > rootFontSize * 50;
 	}
 }
