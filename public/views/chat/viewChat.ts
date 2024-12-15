@@ -231,19 +231,19 @@ export class ViewChat extends ViewHome {
 	private _addEmojiBtnHandlers(emoji: Emoji) {
 		console.log(emoji.config.key);
 		console.log(emoji.vnode);
-		// emoji.emojiBtnVNode.handlers.push({ //?
-		// 	event: 'click',
-		// 	callback: (event) => {
-		// 		event.preventDefault();
-		// 		const target = event.target as HTMLElement;
-		// 		if (target) {
-		// 			const emoji = target.textContent;
-		// 			const textarea = this._chat.textarea;
-		// 			textarea.value += emoji;
-		// 			textarea.focus();
-		// 		}
-		// 	},
-		// });
+		emoji.vnode.handlers.push({ //?
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				const target = event.target as HTMLElement;
+				if (target) {
+					const emoji = target.textContent;
+					const textarea = this._chat.textarea;
+					textarea.value += emoji;
+					textarea.focus();
+				}
+			},
+		});
 	}
 
 	private _addEscapeHandler() {
