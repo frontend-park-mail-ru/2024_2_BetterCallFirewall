@@ -1,4 +1,5 @@
 import {
+	ActionCommentCancelEdit,
 	ActionCommentCreate,
 	ActionCommentEdit,
 	ActionCommentRequest,
@@ -156,6 +157,14 @@ export class Post extends Component {
 		return this._findVNodeByClass('post__comments-attach-button');
 	}
 
+	get isCommentEdit(): boolean {
+		return this._config.commentEditId ? true : false;
+	}
+
+	get cancelEditButtonVNode(): VNode {
+		return this._findVNodeByClass('sender__cancel');
+	}
+
 	addLikeHandler() {
 		this.likeButtonVNode.handlers.push({
 			event: 'click',
@@ -187,6 +196,20 @@ export class Post extends Component {
 				this._sendComment();
 			},
 		});
+		if (this.isCommentEdit) {
+			this.cancelEditButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this._sendAction(
+						new ActionCommentCancelEdit(
+							this._config.id,
+							this._config.commentEditId,
+						),
+					);
+				},
+			});
+		}
 		if (this.isMoreComments) {
 			this.moreCommentsButtonVNode.handlers.push({
 				event: 'click',
@@ -315,6 +338,7 @@ export class Post extends Component {
 			commentTextLimit: INPUT_LIMITS.commentText,
 			attachments,
 			commentAttachmentInput: this._commentAttachmentInput.render(),
+			isEdit: this.isCommentEdit,
 		};
 	}
 

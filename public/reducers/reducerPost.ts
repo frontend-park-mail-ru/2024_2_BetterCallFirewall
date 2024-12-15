@@ -5,6 +5,7 @@ import {
 	ActionAttachmentsInputFileLoaded,
 } from '../actions/actionAttachmentsInput';
 import {
+	ActionCommentCancelEdit,
 	ActionCommentCreate,
 	ActionCommentCreateSuccess,
 	ActionCommentDeleteSuccess,
@@ -66,6 +67,7 @@ export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 			newState.files = comment.files;
 			break;
 		}
+		case action instanceof ActionCommentCancelEdit:
 		case action instanceof ActionCommentEdit:
 			newState.commentEditId = 0;
 			break;
@@ -90,6 +92,7 @@ export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 		case action instanceof ActionAttachmentsInputFileLoaded:
 		case action instanceof ActionCommentCreate:
 		case action instanceof ActionCommentEdit:
+		case action instanceof ActionCommentCancelEdit:
 			newState.commentAttachmentInput = reducerAttachmentsInput(
 				newState.commentAttachmentInput,
 				action,

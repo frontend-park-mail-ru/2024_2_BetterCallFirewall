@@ -7,6 +7,7 @@ import {
 } from '../actions/actionAttachmentsInput';
 import { ActionChatSendMessage } from '../actions/actionChat';
 import {
+	ActionCommentCancelEdit,
 	ActionCommentCreate,
 	ActionCommentEdit,
 } from '../actions/actionComment';
@@ -45,6 +46,7 @@ export const reducerAttachmentsInput = (
 		case action instanceof ActionAppGoTo:
 		case action instanceof ActionCommentCreate:
 		case action instanceof ActionCommentEdit:
+		case action instanceof ActionCommentCancelEdit:
 			newState.files = [];
 			break;
 	}

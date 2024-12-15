@@ -15,6 +15,7 @@ export const ACTION_COMMENT_TYPES = {
 	delete: 'actionCommentDelete',
 	deleteSuccess: 'actionCommentDeleteSuccess',
 	deleteFail: 'actionCommentDeleteFail',
+	cancelEdit: 'actionCommentCancelEdit',
 };
 
 export class ActionCommentRequest implements Action {
@@ -117,4 +118,13 @@ export class ActionCommentDeleteSuccess implements Action {
 export class ActionCommentDeleteFail implements Action {
 	type: string = ACTION_COMMENT_TYPES.deleteFail;
 	data: object = {};
+}
+
+export class ActionCommentCancelEdit implements Action {
+	type: string = ACTION_COMMENT_TYPES.cancelEdit;
+	data: { postId: number; commentId: number };
+
+	constructor(postId: number, commentId: number) {
+		this.data = { postId, commentId };
+	}
 }
