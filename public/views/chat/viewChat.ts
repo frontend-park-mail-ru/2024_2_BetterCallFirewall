@@ -249,7 +249,7 @@ export class ViewChat extends ViewHome {
 		const files = this._chat.attachmentInput.config.files.map(
 			(file) => file.src,
 		);
-		if (!chatText && files.length) {
+		if (!chatText && !files.length) {
 			return;
 		}
 		const message: MessagePayload = {
