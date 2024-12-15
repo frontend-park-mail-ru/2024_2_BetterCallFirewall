@@ -460,6 +460,7 @@ class App {
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.sendMessage);
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.newMessage);
 
+		this._stores.chat.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.goToChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.updateChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChat);
@@ -473,6 +474,7 @@ class App {
 		this._stores.chat.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.deleteFile);
 		this._stores.chat.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.fileLoaded);
 
+		this._stores.createPost.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.createPost.subscribe(
 			ACTION_CREATE_POST_TYPES.updateCreatePost,
 		);

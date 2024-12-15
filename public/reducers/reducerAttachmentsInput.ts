@@ -1,4 +1,5 @@
 import { Action } from '../actions/action';
+import { ActionAppGoTo } from '../actions/actionApp';
 import {
 	ActionAttachmentsInputAddFiles,
 	ActionAttachmentsInputDeleteFile,
@@ -34,6 +35,7 @@ export const reducerAttachmentsInput = (
 		case action instanceof ActionFeedPostCreateSuccess:
 		case action instanceof ActionPostEditRequestSuccess:
 		case action instanceof ActionChatSendMessage:
+		case action instanceof ActionAppGoTo:
 			newState.files = [];
 			break;
 	}
