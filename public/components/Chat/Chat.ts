@@ -3,6 +3,10 @@ import { AttachmentsInputConfig } from '../AttachmentsInput/AttachmentsInput';
 import { ChatAttachmentInput } from '../ChatAttachmentInput/ChatAttachmentInput';
 import { ChatMessage, ChatMessageConfig } from '../ChatMessage/ChatMessage';
 import Component, { ComponentConfig } from '../Component';
+import { Emoji, EmojiConfig } from '../Emoji/Emoji';
+
+type Emojis = Emoji[];
+
 
 export interface ChatConfig extends ComponentConfig {
 	companionId: number;
@@ -18,13 +22,14 @@ export interface ChatConfig extends ComponentConfig {
 	inputKey: string;
 	showEmojiPanel: boolean;
 	attachmentInput: AttachmentsInputConfig;
+	emojis: EmojiConfig[];
 }
 
 export class Chat extends Component {
 	protected _config: ChatConfig;
 	private _messages: ChatMessage[] = [];
 	private _attachmentInput: ChatAttachmentInput;
-
+	private _emojis: Emojis = [];
 	/**
 	 * Instance of chat
 	 *
@@ -43,6 +48,10 @@ export class Chat extends Component {
 
 	get config(): ChatConfig {
 		return this._config;
+	}
+
+	get emojis(): Emoji[] {
+		return this._emojis;
 	}
 
 	get backButtonVNode(): VNode {
@@ -126,12 +135,18 @@ export class Chat extends Component {
 			this._config.attachmentInput,
 			this,
 		);
+		this._emojis = this._config.emojis.map((config) => {
+			return new Emoji(config, this);
+		});
 		this._templateContext = {
 			...this._templateContext,
 			messages: this._messages.map((message) => {
 				return message.render();
 			}),
 			attachmentInput: this._attachmentInput.render(),
+			emojis: this._emojis.map((emoji) => {
+				return emoji.render();
+			}),
 		};
 	}
 

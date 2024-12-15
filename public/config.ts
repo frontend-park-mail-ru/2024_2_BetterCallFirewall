@@ -377,6 +377,8 @@ const messagesConfig: ViewMessagesConfig = {
 	messages: messagesComponentConfig,
 };
 
+const emojiSymbols = ['😀', '😂', '😍', '🥶', '😎', '😊', '😜', '😡', '🤔'];
+
 const emptyChatComponentConfig: ChatConfig = {
 	companionId: -1,
 	key: 'chat',
@@ -399,6 +401,10 @@ const emptyChatComponentConfig: ChatConfig = {
 		files: [],
 		filesCountLimit: ATTACHMENT_COUNT_LIMIT.chat,
 	},
+	emojis: emojiSymbols.map((emoji, index) => ({
+		key: `emoji-${index}`,
+		emoji,
+	})),
 };
 
 const chatConfig: ViewChatConfig = {

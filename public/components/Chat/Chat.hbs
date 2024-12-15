@@ -38,22 +38,9 @@
                 </svg>
             </div>
             <div class="chat__emoji-panel {{#unless this.showEmojiPanel}}chat__emoji-panel_hidden{{/unless}}" data-key="emoji-panel">
-                <button class="emoji-button button-no-decorations">😂</button>
-                <button class="emoji-button button-no-decorations">😃</button>
-                <button class="emoji-button button-no-decorations">🥶</button>
-                <button class="emoji-button button-no-decorations">😭</button>
-                <button class="emoji-button button-no-decorations">👽</button>
-                <button class="emoji-button button-no-decorations">🤑</button>
-                <button class="emoji-button button-no-decorations">🤢</button>
-                <button class="emoji-button button-no-decorations">🤮</button>
-                <button class="emoji-button button-no-decorations">😸</button>
-                <button class="emoji-button button-no-decorations">👻</button>
-                <button class="emoji-button button-no-decorations">💩</button>
-                <button class="emoji-button button-no-decorations">🤡</button>
-                <button class="emoji-button button-no-decorations">😈</button>
-                <button class="emoji-button button-no-decorations">🥳</button>
-                <button class="emoji-button button-no-decorations">🤩</button>
-                <button class="emoji-button button-no-decorations">😎</button>
+                {{#each emojis}}
+                    {{{this}}}
+                {{/each}}
             </div>
         <div class="chat__attach-button svg-button">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 30.58 30.58" style="enable-background:new 0 0 30.58 30.58;" xml:space="preserve">

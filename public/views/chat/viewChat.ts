@@ -14,6 +14,7 @@ import {
 import app from '../../app';
 import { Root } from '../../components';
 import { Chat, ChatConfig } from '../../components/Chat/Chat';
+import { Emoji } from '../../components/Emoji/Emoji';
 import { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import { MessagePayload } from '../../models/message';
@@ -216,25 +217,29 @@ export class ViewChat extends ViewHome {
 	}
 
 	private _addEmojiHandlers(): void {
-		this._chat.emojiVNode.handlers.push({
-			event: 'click',
-			callback: (event) => {
-				event.preventDefault();
-				const target = event.target as HTMLElement;
-				if (target && target.textContent) {
-					const emoji = target.textContent;
-					const textarea = this._chat.textarea;
-					textarea.value += emoji;
-					textarea.focus();
-				}
-			},
-		});
+		this._chat.emojis.forEach((emoji) => this._addEmojiBtnHandlers(emoji));
 
 		this._chat.emojiOpenBtn.handlers.push({
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
 				this.sendAction(new ActionEmojiPanelSwitch(!this._chat.config.showEmojiPanel));
+			},
+		});
+	}
+
+	private _addEmojiBtnHandlers(emoji: Emoji) {
+		emoji.vnode.handlers.push({ //?
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				const target = event.target as HTMLElement;
+				if (target) {
+					const emoji = target.textContent;
+					const textarea = this._chat.textarea;
+					textarea.value += emoji;
+					textarea.focus();
+				}
 			},
 		});
 	}
