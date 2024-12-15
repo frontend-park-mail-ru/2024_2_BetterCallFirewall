@@ -12,6 +12,7 @@ import { Input, InputConfig } from '../Input/Input';
 
 export interface BaseAttachmentInputConfig extends InputConfig {
 	files: FilePayload[];
+	filesCountLimit: number;
 }
 
 export abstract class BaseAttachmentInput extends Input {
@@ -59,6 +60,11 @@ export abstract class BaseAttachmentInput extends Input {
 				this._sendAction(
 					new ActionAttachmentsInputAddFiles(files.length),
 				);
+				if (files.length > this._config.filesCountLimit) {
+					this.printError(
+						`Можно прикрепить не более ${this._config.filesCountLimit} файлов`,
+					);
+				}
 				files.forEach(async (file, i) => {
 					const fileStr = await fileToString(file);
 					if (fileStr) {
@@ -86,4 +92,6 @@ export abstract class BaseAttachmentInput extends Input {
 			}
 		});
 	}
+
+	abstract printError(error: string): void;
 }

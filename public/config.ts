@@ -60,6 +60,11 @@ export const THROTTLE_LIMITS = {
 	batchLoading: 500,
 };
 
+export const ATTACHMENT_COUNT_LIMIT = {
+	post: 10,
+	chat: 5,
+};
+
 const homeConfig: HomeConfig = {
 	menu: {
 		key: 'menu',
@@ -246,6 +251,7 @@ const createPostConfig: ViewCreatePostConfig = {
 			placeholder: 'Прикрепить файлы',
 			extra: 'multiple',
 			files: [],
+			filesCountLimit: ATTACHMENT_COUNT_LIMIT.post,
 		},
 		button: {
 			key: 'submitButton',
@@ -378,6 +384,7 @@ const emptyChatComponentConfig: ChatConfig = {
 		type: 'file',
 		extra: 'multiple',
 		files: [],
+		filesCountLimit: ATTACHMENT_COUNT_LIMIT.chat,
 	},
 };
 
@@ -531,6 +538,7 @@ const postEditFormConfig: PostEditFormConfig = {
 		placeholder: 'Прикрепить файлы',
 		extra: 'multiple',
 		files: [],
+		filesCountLimit: ATTACHMENT_COUNT_LIMIT.post,
 	},
 	button: {
 		key: 'submitButton',

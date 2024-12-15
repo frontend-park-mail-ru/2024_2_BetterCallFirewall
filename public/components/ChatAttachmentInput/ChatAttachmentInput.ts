@@ -1,3 +1,4 @@
+import { VNode } from '../../modules/vdom';
 import {
 	BaseAttachmentInput,
 	BaseAttachmentInputConfig,
@@ -12,6 +13,14 @@ export class ChatAttachmentInput extends BaseAttachmentInput {
 	constructor(config: ChatAttachmentInputConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
+	}
+
+	get errorFieldVNode(): VNode {
+		return this._findVNodeByClass('form__input-error');
+	}
+
+	printError(error: string): void {
+		this.errorFieldVNode.element.textContent = error;
 	}
 
 	render(): string {
