@@ -378,7 +378,7 @@ const messagesConfig: ViewMessagesConfig = {
 	messages: messagesComponentConfig,
 };
 
-const emojiSymbols = ['😀', '😂', '😍', '🥶', '😎', '😊', '😜', '😡', '🤔'];
+const emojiSymbols = ['😀', '👻', '🤡', '😂', '😍', '🥶', '😎', '😊', '😜', '😡', '🤔', '🥳', '💩', '🙀', '😈', '👽', '😡', '🤪', '😎', '😃'];
 
 const emptyChatComponentConfig: ChatConfig = {
 	companionId: -1,
