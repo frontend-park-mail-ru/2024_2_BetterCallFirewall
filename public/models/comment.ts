@@ -3,7 +3,6 @@ import { CommentConfig } from '../components/Comment/Comment';
 import { ROOT } from '../config';
 import parseFile from '../modules/parseFile';
 import parseTime from '../modules/parseTime';
-import { filePayloadFromURL } from './file';
 
 export interface Header {
 	author_id: number;
@@ -33,9 +32,9 @@ export const toCommentConfig = (
 	const userId = app.stores.home.state.main.header.profile.id;
 	const hasEditButton = userId === commentResponse.header.author_id;
 	const hasDeleteButton = hasEditButton;
-	const files = commentResponse.content.file
-		? commentResponse.content.file.map((file) => filePayloadFromURL(file))
-		: [];
+	// const files = commentResponse.content.file
+	// 	? commentResponse.content.file.map((file) => filePayloadFromURL(file))
+	// 	: [];
 	return {
 		id: commentResponse.id,
 		communityId: commentResponse.header.community_id,
@@ -48,7 +47,7 @@ export const toCommentConfig = (
 		text: commentResponse.content.text,
 		hasEditButton,
 		hasDeleteButton,
-		files,
+		// files,
 	};
 };
 
