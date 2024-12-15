@@ -229,19 +229,20 @@ export class ViewChat extends ViewHome {
 	}
 
 	private _addEmojiBtnHandlers(emoji: Emoji) {
-		emoji.emojiBtnVNode.handlers.push({ //?
-			event: 'click',
-			callback: (event) => {
-				event.preventDefault();
-				const target = event.target as HTMLElement;
-				if (target) {
-					const emoji = target.textContent;
-					const textarea = this._chat.textarea;
-					textarea.value += emoji;
-					textarea.focus();
-				}
-			},
-		});
+		console.log(emoji.config.emoji);
+		// emoji.emojiBtnVNode.handlers.push({ //?
+		// 	event: 'click',
+		// 	callback: (event) => {
+		// 		event.preventDefault();
+		// 		const target = event.target as HTMLElement;
+		// 		if (target) {
+		// 			const emoji = target.textContent;
+		// 			const textarea = this._chat.textarea;
+		// 			textarea.value += emoji;
+		// 			textarea.focus();
+		// 		}
+		// 	},
+		// });
 	}
 
 	private _addEscapeHandler() {
