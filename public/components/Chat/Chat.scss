@@ -104,8 +104,8 @@
         display: flex;
         overflow-y: auto; 
         flex-wrap: wrap;
-        width: 8rem;
-        height: 8rem;
+        width: 10rem;
+        height: 10rem;
         gap: .3rem;
         bottom: 6rem;
         right: 2rem;
@@ -113,10 +113,15 @@
         padding: .5rem;
         border: var(--border);
         border-radius: 1rem;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
         &_hidden {
             display: none;
         }
     }
+    &__emoji-panel::-webkit-scrollbar {
+        display: none;
+      }
 }
 
 .emoji-btn {
