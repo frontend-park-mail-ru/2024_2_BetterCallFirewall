@@ -40,8 +40,14 @@ export const fileTypeFromName = (file: string): FileType => {
 export const fileNameFromURL = (file: string): string => {
 	const substr = '|';
 	const start = file.indexOf(substr);
+	const stop = file.lastIndexOf('.');
 	if (start === -1) {
-		return file;
+		const substr = 'files/';
+		const start = file.indexOf(substr);
+		if (start === -1) {
+			return file;
+		}
+		return file.slice(start + substr.length, stop);
 	}
-	return file.slice(start + substr.length);
+	return file.slice(start + substr.length, stop);
 };
