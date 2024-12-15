@@ -1,14 +1,7 @@
-import { BaseForm, BaseFormConfig, ConfigInputs } from '../BaseForm/BaseForm';
+import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
 import Component from '../Component';
-import { InputConfig } from '../Input/Input';
-
-export interface CreateStickerFormInputs extends ConfigInputs {
-	name: InputConfig;
-	avatar: InputConfig;
-}
 
 export interface ICreateStickerFormConfig extends BaseFormConfig {
-	inputs: CreateStickerFormInputs;
 }
 
 export class CreateStickerForm extends BaseForm {
