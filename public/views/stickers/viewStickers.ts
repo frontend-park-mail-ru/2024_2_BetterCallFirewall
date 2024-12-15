@@ -44,14 +44,14 @@ export class ViewStickers extends ViewHome {
 
 	protected _addHandlers() {
 		super._addHandlers();
-		this._addFormHandlers();
+		// this._addFormHandlers();
 	}
 
-	protected _addFormHandlers() {
-		this.stickers.stickerCreateForm.vnode.handlers.push({
-			event: 'submit',
-			callback: async (event) => {
-				event.preventDefault();
+	// protected _addFormHandlers() {
+	// 	this.stickers.stickerCreateForm.vnode.handlers.push({
+	// 		event: 'submit',
+	// 		callback: async (event) => {
+	// 			event.preventDefault();
 				// const validator = new Validator();
 				// const formData = validator.validateForm(
 				// 	stickerForm.formData,
@@ -72,10 +72,10 @@ export class ViewStickers extends ViewHome {
 				// // };
 				// // api.stickerCreate(stickerPayload);
 				// stickerForm.clearError();
-			},
-		});
-		// this._addInputHandler();
-	}
+	// 		},
+	// 	});
+	// 	// this._addInputHandler();
+	// }
 
 	private _addInputHandler(): void {
 		this.stickers.fileInputVNode.handlers.push(
