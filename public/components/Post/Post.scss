@@ -160,8 +160,10 @@
                 }
             }
         }
-        &-send-action {
+        &-send-actions {
             display: flex;
+            flex-direction: row;
+            align-items: center;
         }
         &-edit {
             &-cancel {
