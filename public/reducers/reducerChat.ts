@@ -3,6 +3,7 @@ import {
 	ACTION_CHAT_TYPES,
 	ActionChatRequestSuccessData,
 	ActionChatSendMessageData,
+	ActionEmojiPanelSwitchData,
 } from '../actions/actionChat';
 import {
 	ACTION_MESSAGES_TYPES,
@@ -89,6 +90,12 @@ export const reducerChat = (
 			return newState;
 		case ACTION_CHAT_TYPES.goToChat: {
 			newState.chat.messages = [];
+			return newState;
+		}
+		case ACTION_CHAT_TYPES.switchEmojiPanel: {
+			newState.chat.showEmojiPanel = (
+				action.data as ActionEmojiPanelSwitchData
+			).show;
 			return newState;
 		}
 		default:

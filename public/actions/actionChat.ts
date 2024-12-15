@@ -8,6 +8,7 @@ export const ACTION_CHAT_TYPES = {
 	requestChatSuccess: 'ActionChatRequestSuccess',
 	requestChatFail: 'ActionChatRequestFail',
 	sendMessage: 'ActionChatSendMessage',
+	switchEmojiPanel: 'ActionSwitchEmojiPanel',
 };
 
 export class ActionUpdateChat implements Action {
@@ -75,5 +76,18 @@ export class ActionChatSendMessage implements Action {
 
 	constructor(message: MessageSend) {
 		this.data = { message };
+	}
+}
+
+export interface ActionEmojiPanelSwitchData {
+	show: boolean;
+}
+
+export class ActionEmojiPanelSwitch implements Action {
+	type: string = ACTION_CHAT_TYPES.switchEmojiPanel;
+	data: ActionEmojiPanelSwitchData;
+
+	constructor(show: boolean) {
+		this.data = { show };
 	}
 }

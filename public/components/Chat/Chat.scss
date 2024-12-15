@@ -101,7 +101,6 @@
     
     &__emoji-panel {
         position: absolute;
-        display: none;
         display: flex;
         overflow-y: scroll; 
         flex-wrap: wrap;
@@ -116,6 +115,9 @@
         padding: .5rem;
         border: var(--border);
         border-radius: 1rem;
+        &_hidden {
+            display: none;
+        }
     }
 }
 

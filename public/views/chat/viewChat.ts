@@ -3,6 +3,7 @@ import {
 	ACTION_CHAT_TYPES,
 	ActionChatRequest,
 	ActionChatSendMessage,
+	ActionEmojiPanelSwitch,
 	ActionUpdateChat,
 } from '../../actions/actionChat';
 import { ACTION_MESSAGES_TYPES } from '../../actions/actionMessages';
@@ -131,6 +132,15 @@ export class ViewChat extends ViewHome {
 				event.preventDefault();
 			},
 		});
+		this._root.addDocumentHandler({
+			event: 'click',
+			callback: (event) => {
+				console.log(event);
+				if (this._chat.config.showEmojiPanel) {
+					this.sendAction(new ActionEmojiPanelSwitch(false));
+				}
+			},
+		});
 	}
 
 	private _addBackButtonHandler() {
@@ -221,7 +231,6 @@ export class ViewChat extends ViewHome {
 					textarea.value += emoji;
 					textarea.focus();
 				}
-				
 			},
 		});
 
@@ -229,9 +238,7 @@ export class ViewChat extends ViewHome {
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
-				// this.sendAction(
-				// 	new ActionEmojiOpen(),
-				// );
+				this.sendAction(new ActionEmojiPanelSwitch(true));
 			},
 		});
 	}

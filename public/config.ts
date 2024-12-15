@@ -358,6 +358,7 @@ const emptyChatComponentConfig: ChatConfig = {
 	myAvatar: '',
 	inputText: '',
 	inputKey: 'chat-input',
+	showEmojiPanel: false,
 };
 
 const chatConfig: ViewChatConfig = {

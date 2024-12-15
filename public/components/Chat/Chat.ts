@@ -14,6 +14,7 @@ export interface ChatConfig extends ComponentConfig {
 	myAvatar: string;
 	inputText: string;
 	inputKey: string;
+	showEmojiPanel: boolean;
 }
 
 export class Chat extends Component {
@@ -60,7 +61,7 @@ export class Chat extends Component {
 	}
 
 	get emojiOpenBtn(): VNode {
-		return this._findVNodeByKey('svg-[object SVGAnimatedString]-1');
+		return this._findVNodeByKey('emoji-btn');
 	}
 
 	get emojiVNode(): VNode {
