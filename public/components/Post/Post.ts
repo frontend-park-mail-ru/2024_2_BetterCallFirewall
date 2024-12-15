@@ -196,6 +196,19 @@ export class Post extends Component {
 				this._sendComment();
 			},
 		});
+		this.commentTextareaVNode.handlers.push({
+			event: 'keydown',
+			callback: (event) => {
+				const keyboardEvent = event as KeyboardEvent;
+				if (keyboardEvent.key === 'Enter' && keyboardEvent.shiftKey) {
+					return;
+				}
+				if (keyboardEvent.key === 'Enter') {
+					event.preventDefault();
+					this._sendComment();
+				}
+			},
+		});
 		if (this.isCommentEdit) {
 			this.cancelEditButtonVNode.handlers.push({
 				event: 'click',
