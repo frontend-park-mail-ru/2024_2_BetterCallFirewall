@@ -233,10 +233,13 @@ export class Post extends Component {
 		return this._render('Post.hbs');
 	}
 
+	onMount(): void {
+		(this.expandButtonVNode.element as HTMLElement).style.display =
+			this._isContentHeightBig() ? 'block' : 'none';
+	}
+
 	protected _addHandlers(): void {
 		super._addHandlers();
-		(this.expandButtonVNode.element as HTMLElement).style.display =
-			this._bigContentHeight() ? 'block' : 'none';
 		this.expandButtonVNode.handlers.push({
 			event: 'click',
 			callback: (event) => {
@@ -318,7 +321,7 @@ export class Post extends Component {
 		}
 	}
 
-	private _bigContentHeight() {
+	private _isContentHeightBig() {
 		const rootFontSize = parseFloat(
 			getComputedStyle(document.documentElement).fontSize,
 		);

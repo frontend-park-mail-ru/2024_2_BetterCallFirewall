@@ -178,6 +178,11 @@
             margin: 0.75rem;
         }
     }
+    &__expand {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
     &__expand-button {
         cursor: pointer;
         color: var(--main-color);

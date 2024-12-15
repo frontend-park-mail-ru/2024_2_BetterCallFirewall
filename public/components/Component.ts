@@ -76,6 +76,10 @@ export default abstract class Component {
 		this._children = [];
 	}
 
+	onMount() {
+		this._children.forEach((child) => child.onMount());
+	}
+
 	protected _addHandlers() {
 		this._children.forEach((child) => {
 			child._addHandlers();
