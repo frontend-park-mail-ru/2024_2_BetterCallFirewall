@@ -132,6 +132,12 @@ export class ViewChat extends ViewHome {
 				event.preventDefault();
 			},
 		});
+		this._root.addDocumentHandler({
+			event: 'DOMContentLoaded',
+			callback: () => {
+				this._scrollToBottom();
+			},
+		});
 	}
 
 	private _addBackButtonHandler() {
