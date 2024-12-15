@@ -1,7 +1,9 @@
 <div class="publish-form" data-key="{{this.key}}">
     <h2 class="publish-form__title">Создайте новый стикер</h2>
     <form method="post" class="form" id="formCreateSticker" data-key="stickerForm">
-        {{ input }}
+        {{#each inputs}}
+            {{{this}}}
+        {{/each}}
         <span class="form__error">
             {{error}}
         </span>
