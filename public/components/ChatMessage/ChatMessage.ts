@@ -1,4 +1,4 @@
-import { fileTypeFromName } from '../../modules/files';
+import { filePayloadFromURL } from '../../models/file';
 import { Attachment } from '../Attachment/Attachment';
 import Component, { ComponentConfig } from '../Component';
 
@@ -32,7 +32,7 @@ export class ChatMessage extends Component {
 			return new Attachment(
 				{
 					key: `attachment-${i}`,
-					file: { src: file, mimeType: fileTypeFromName(file) },
+					file: filePayloadFromURL(file),
 					hasDeleteButton: false,
 				},
 				this,

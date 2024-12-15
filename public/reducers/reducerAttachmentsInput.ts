@@ -21,7 +21,10 @@ export const reducerAttachmentsInput = (
 			const files = newState.files;
 			const oldLength = files.length;
 			files.length += action.data.filesCount;
-			newState.files = files.fill({ src: '', mimeType: '' }, oldLength);
+			newState.files = files.fill(
+				{ src: '', name: '', mimeType: '' },
+				oldLength,
+			);
 			break;
 		}
 		case action instanceof ActionAttachmentsInputFileLoaded:

@@ -3,7 +3,7 @@ import {
 	ActionAttachmentsInputDeleteFile,
 	ActionAttachmentsInputFileLoaded,
 } from '../../actions/actionAttachmentsInput';
-import { FilePayload } from '../../models/file';
+import { FilePayload, filePayloadFromURL } from '../../models/file';
 import fileToString from '../../modules/fileToString';
 import { VNode } from '../../modules/vdom';
 import { Attachment } from '../Attachment/Attachment';
@@ -74,7 +74,7 @@ export abstract class BaseAttachmentInput extends Input {
 					if (fileStr) {
 						this._sendAction(
 							new ActionAttachmentsInputFileLoaded(
-								{ src: fileStr, mimeType: file.type },
+								filePayloadFromURL(fileStr),
 								oldFilesLength + i,
 							),
 						);

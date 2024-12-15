@@ -11,7 +11,7 @@ import {
 	ActionPostUnlike,
 } from '../../actions/actionPost';
 import { CommentPayload } from '../../models/comment';
-import { fileTypeFromName } from '../../modules/files';
+import { filePayloadFromURL } from '../../models/file';
 import { throttle } from '../../modules/throttle';
 import { INPUT_LIMITS } from '../../modules/validation';
 import { findVNodeByClass, VNode } from '../../modules/vdom';
@@ -269,7 +269,7 @@ export class Post extends Component {
 			return new Attachment(
 				{
 					key: `attachment-${i}`,
-					file: { src: file, mimeType: fileTypeFromName(file) },
+					file: filePayloadFromURL(file),
 					hasDeleteButton: false,
 				},
 				this,
