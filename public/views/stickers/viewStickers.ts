@@ -44,10 +44,12 @@ export class ViewStickers extends ViewHome {
 
 	protected _addHandlers() {
 		super._addHandlers();
-		// this._addFormHandlers();
+		this._addFormHandlers();
 	}
 
-	// protected _addFormHandlers() {
+	protected _addFormHandlers() {
+		console.log(this.stickers.stickerCreateForm);
+		console.log(this.stickers.stickerCreateForm.vnode);
 	// 	this.stickers.stickerCreateForm.vnode.handlers.push({
 	// 		event: 'submit',
 	// 		callback: async (event) => {
@@ -75,7 +77,7 @@ export class ViewStickers extends ViewHome {
 	// 		},
 	// 	});
 	// 	// this._addInputHandler();
-	// }
+	}
 
 	private _addInputHandler(): void {
 		this.stickers.fileInputVNode.handlers.push(
