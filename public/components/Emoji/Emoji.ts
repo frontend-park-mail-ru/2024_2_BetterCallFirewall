@@ -23,8 +23,7 @@ export class Emoji extends Component {
 	}
 	
 	get emojiBtnVNode(): VNode {
-		// return this._findVNodeByClass('emoji-button');
-		return this._findVNodeByKey('BUTTON-emoji-button');
+		return this._findVNodeByClass('emoji-button');
 	}
 
 	protected _prerender(): void {
