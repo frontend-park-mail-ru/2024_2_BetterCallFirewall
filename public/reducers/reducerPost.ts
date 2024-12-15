@@ -58,9 +58,14 @@ export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 				}
 			});
 			break;
-		case action instanceof ActionPostCommentEdit:
+		case action instanceof ActionPostCommentEdit: {
 			newState.commentEditId = action.data.commentId;
+			const comment = newState.commentsConfigs.filter((comment) => {
+				return comment.id === action.data.commentId;
+			})[0];
+			newState.files = comment.files;
 			break;
+		}
 		case action instanceof ActionCommentEdit:
 			newState.commentEditId = 0;
 			break;
