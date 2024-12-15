@@ -12,7 +12,9 @@
         </div>
         <div class="chat-message__attachments">
             {{#each attachments}}
-                {{{this}}}
+                <div class="chat-message__attachment-container">
+                    {{{this}}}
+                </div>
             {{/each}}
         </div>
     </div>
