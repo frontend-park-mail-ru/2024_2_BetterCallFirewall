@@ -47,7 +47,7 @@ export const fileNameFromURL = (file: string): string => {
 		if (start === -1) {
 			return file;
 		}
-		return file.slice(start + substr.length, stop);
+		return file.slice(start + substr.length);
 	}
 	return file.slice(start + substr.length, stop);
 };
