@@ -1,6 +1,8 @@
 import { ActionStickersGetStickers } from '../../actions/actionStickers';
 import { Root } from '../../components';
 import { Stickers, StickersConfig } from '../../components/Stickers/Stickers';
+import fileToString from '../../modules/fileToString';
+import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangeStickers } from '../../stores/storeStickers';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
@@ -44,39 +46,39 @@ export class ViewStickers extends ViewHome {
 
 	protected _addHandlers() {
 		super._addHandlers();
-		// this._addFormHandlers();
+		this._addFormHandlers();
 	}
 
-	// protected _addFormHandlers() {
-	// 	const stickerForm = this.stickers.stickerCreateForm;
-	// 	this.stickers.stickerCreateFormVNode.handlers.push({
-	// 		event: 'submit',
-	// 		callback: async (event) => {
-	// 			event.preventDefault();
-	// 			const validator = new Validator();
-	// 			const formData = validator.validateForm(
-	// 				stickerForm.formData,
-	// 				stickerForm.form,
-	// 			);
-	// 			if (!formData) {
-	// 				return;
-	// 			}
-	// 			const fileStr = await fileToString(
-	// 				formData.get('file') as File,
-	// 			);
-	// 			if (fileStr === null) {
-	// 				stickerForm.printError('Что-то пошло не так');
-	// 				return;
-	// 			}
-	// 			// const stickerPayload: StickerPayload = {
-	// 			// 	file: fileStr,
-	// 			// };
-	// 			// api.stickerCreate(stickerPayload);
-	// 			stickerForm.clearError();
-	// 		},
-	// 	});
-	// 	this._addInputHandler();
-	// }
+	protected _addFormHandlers() {
+		const stickerForm = this.stickers.stickerCreateForm;
+		this.stickers.stickerCreateFormVNode.handlers.push({
+			event: 'submit',
+			callback: async (event) => {
+				event.preventDefault();
+				const validator = new Validator();
+				const formData = validator.validateForm(
+					stickerForm.formData,
+					stickerForm.form,
+				);
+				if (!formData) {
+					return;
+				}
+				const fileStr = await fileToString(
+					formData.get('file') as File,
+				);
+				if (fileStr === null) {
+					stickerForm.printError('Что-то пошло не так');
+					return;
+				}
+				// const stickerPayload: StickerPayload = {
+				// 	file: fileStr,
+				// };
+				// api.stickerCreate(stickerPayload);
+				stickerForm.clearError();
+			},
+		});
+		this._addInputHandler();
+	}
 
 	private _addInputHandler(): void {
 		this.stickers.fileInputVNode.handlers.push(
