@@ -4,6 +4,7 @@ import {
 	ActionAttachmentsInputDeleteFile,
 	ActionAttachmentsInputFileLoaded,
 } from '../actions/actionAttachmentsInput';
+import { ActionChatSendMessage } from '../actions/actionChat';
 import {
 	ACTION_CREATE_POST_TYPES,
 	ActionUpdateCreatePostData,
@@ -41,6 +42,7 @@ export const reducerCreatePost = (
 		case action instanceof ActionAttachmentsInputFileLoaded:
 		case action instanceof ActionAttachmentsInputDeleteFile:
 		case action instanceof ActionFeedPostCreateSuccess:
+		case action instanceof ActionChatSendMessage:
 			newState.createPostForm.attachmentsInput = reducerAttachmentsInput(
 				newState.createPostForm.attachmentsInput,
 				action,

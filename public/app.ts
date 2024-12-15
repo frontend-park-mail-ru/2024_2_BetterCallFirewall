@@ -490,6 +490,7 @@ class App {
 		this._stores.createPost.subscribe(
 			ACTION_ATTACHMENTS_INPUT_TYPES.deleteFile,
 		);
+		this._stores.createPost.subscribe(ACTION_CHAT_TYPES.sendMessage);
 
 		this._stores.createGroup.subscribe(
 			ACTION_CREATE_GROUP_TYPES.goToCreateGroup,
