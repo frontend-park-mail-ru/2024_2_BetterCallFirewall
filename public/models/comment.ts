@@ -47,7 +47,7 @@ export const toCommentConfig = (
 		text: commentResponse.content.text,
 		hasEditButton,
 		hasDeleteButton,
-		// files,
+		files: [],
 	};
 };
 

@@ -1,6 +1,7 @@
 import { ActionCommentDelete } from '../../actions/actionComment';
 import { ActionConfirmOpen } from '../../actions/actionConfirm';
 import { ActionPostCommentEdit } from '../../actions/actionPost';
+import { FilePayload } from '../../models/file';
 import { groupPageHref, profileHref } from '../../modules/urls';
 import { VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
@@ -18,6 +19,7 @@ export interface CommentConfig extends ComponentConfig {
 	text: string;
 	hasEditButton: boolean;
 	hasDeleteButton: boolean;
+	files: FilePayload[];
 }
 
 export class Comment extends Component {
