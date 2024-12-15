@@ -133,6 +133,8 @@ import { StickerPayload } from '../models/sticker';
 import {
 	ActionStickerCreateFail,
 	ActionStickerCreateSuccess,
+	ActionStickersCreate,
+	ActionStickersGet,
 	ActionStickersGetFail,
 	ActionStickersGetSuccess,
 } from '../actions/actionStickers';
@@ -253,6 +255,12 @@ class API {
 				break;
 			case action instanceof ActionGroupsGetGroups:
 				this.requestGroups(action.data.lastId);
+				break;
+			case action instanceof ActionStickersGet:
+				this.getStickers();
+				break;
+			case action instanceof ActionStickersCreate:
+				this.createSticker(action.data.payload);
 				break;
 		}
 	}
