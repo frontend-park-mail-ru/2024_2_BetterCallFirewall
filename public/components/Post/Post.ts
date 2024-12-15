@@ -356,7 +356,7 @@ export class Post extends Component {
 			.element as HTMLTextAreaElement;
 		const text = textarea.value;
 		const files = this._commentAttachmentInput.config.files.map(
-			(file) => file.src,
+			(file) => file.name,
 		);
 		if (!text && !files.length) {
 			return;
