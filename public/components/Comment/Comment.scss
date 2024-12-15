@@ -36,6 +36,9 @@
         margin: 0.5rem;
         display: none;
     }
+    &__attachments-container {
+        width: 70%;
+    }
     &:hover {
         .comment__edit {
             display: block;

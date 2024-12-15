@@ -248,10 +248,8 @@ export class Post extends Component {
 	}
 
 	onMount(): void {
-		setTimeout(() => {
-			(this.expandButtonVNode.element as HTMLElement).style.display =
-				this._isContentHeightBig() ? 'block' : 'none';
-		}, 500);
+		(this.expandButtonVNode.element as HTMLElement).style.display =
+			this._isContentHeightBig() ? 'block' : 'none';
 	}
 
 	protected _addHandlers(): void {
