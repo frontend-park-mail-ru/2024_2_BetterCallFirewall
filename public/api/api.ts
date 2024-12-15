@@ -130,6 +130,12 @@ import {
 import { CommentPayload, commentPayloadToResponse } from '../models/comment';
 import { CommentConfig } from '../components/Comment/Comment';
 import { StickerPayload } from '../models/sticker';
+import {
+	ActionStickerCreateFail,
+	ActionStickerCreateSuccess,
+	ActionStickersGetFail,
+	ActionStickersGetSuccess,
+} from '../actions/actionStickers';
 
 export const STATUS = {
 	ok: 200,
@@ -907,19 +913,29 @@ class API {
 	}
 
 	async createSticker(payload: StickerPayload) {
-		await ajax.createSticker(payload);
-		//  const response = await ajax.createSticker(payload);
-		//  switch (response.status) {
-		// 	case STATUS.ok:
-		// 		if (!response.data) {
-		// 			this.sendAction(new ActionStickerCreateFail());
-		// 			break;
-		// 		}
-		// 		this.sendAction(new ActionStickerCreateSuccess(response.data));
-		// 		break;
-		// 	default:
-		// 		this.sendAction(new ActionStickerCreateFail());
-		//  }
+		const response = await ajax.createSticker(payload);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionStickerCreateSuccess());
+				break;
+			default:
+				this.sendAction(new ActionStickerCreateFail());
+		}
+	}
+
+	async getStickers() {
+		const response = await ajax.getStickers();
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					this.sendAction(new ActionStickersGetFail());
+					break;
+				}
+				this.sendAction(new ActionStickersGetSuccess(response.data));
+				break;
+			default:
+				this.sendAction(new ActionStickersGetFail());
+		}
 	}
 }
 
