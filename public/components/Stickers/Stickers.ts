@@ -38,7 +38,7 @@ export class Stickers extends Component {
 	}
 
 	get fileInputVNode(): VNode {
-		return this._findVNodeByKey('LABEL-form__upload-1');
+		return this._findVNodeByKey('INPUT--3');
 	}
 
 	protected _prerender(): void {
