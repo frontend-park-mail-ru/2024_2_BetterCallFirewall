@@ -34,7 +34,7 @@ export class Stickers extends Component {
 	}
 
 	get stickerCreateFormVNode(): VNode {
-		return this._findVNodeByKey('FORM-form-3');
+		return this._findVNodeByKey('stickerForm');
 	}
 
 	get fileInputVNode(): VNode {
