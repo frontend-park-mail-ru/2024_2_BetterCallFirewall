@@ -17,5 +17,9 @@ if ('serviceWorker' in navigator) {
 	});
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+	console.log('dom loaded');
+});
+
 app.router.goToPage(window.location.pathname);
 app.init();
