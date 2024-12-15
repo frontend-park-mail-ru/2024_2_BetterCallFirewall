@@ -477,6 +477,7 @@ class App {
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChatSuccess);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChatFail);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.sendMessage);
+		this._stores.chat.subscribe(ACTION_CHAT_TYPES.switchEmojiPanel);
 		this._stores.chat.subscribe(ACTION_MESSAGES_TYPES.sendMessage);
 		this._stores.chat.subscribe(ACTION_MESSAGES_TYPES.newMessage);
 		this._stores.chat.subscribe(ACTION_PROFILE_TYPES.profileRequestSuccess);
