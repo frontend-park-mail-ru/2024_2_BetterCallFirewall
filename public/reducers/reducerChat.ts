@@ -93,6 +93,7 @@ export const reducerChat = (
 			return newState;
 		}
 		case ACTION_CHAT_TYPES.switchEmojiPanel: {
+			console.log('switch emoji reducer');
 			newState.chat.showEmojiPanel = (
 				action.data as ActionEmojiPanelSwitchData
 			).show;
