@@ -64,6 +64,7 @@ export abstract class BaseAttachmentInput extends Input {
 					this.printError(
 						`Можно прикрепить не более ${this._config.filesCountLimit} файлов`,
 					);
+					return;
 				}
 				files.forEach(async (file, i) => {
 					const fileStr = await fileToString(file);
