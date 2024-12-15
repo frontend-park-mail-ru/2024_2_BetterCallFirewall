@@ -1,0 +1,14 @@
+.publish-form {
+    margin-top: 2rem;
+    width: 42rem;
+    max-width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: .5rem;
+
+    &__title {
+        margin-bottom: 2rem;
+        font-size: 2.4rem;
+    }
+}

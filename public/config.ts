@@ -22,6 +22,7 @@ import { ICreateGroupFormConfig } from './components/CreateGroupForm/CreateGroup
 import { IGroupEditFormConfig } from './components/GroupEditForm/GroupEditForm';
 import { ViewGroupEditConfig } from './views/groupEdit/viewGroupEdit';
 import { ViewStickersConfig } from './views/stickers/viewStickers';
+import { ICreateStickerFormConfig } from './components/CreateStickerForm/CreateStickerForm';
 
 const DEBUG: boolean = false;
 
@@ -450,15 +451,6 @@ const groupsConfig: ViewGroupsConfig = {
 	},
 };
 
-const stickersConfig: ViewStickersConfig = {
-	...homeConfig,
-	stickers: {
-		key: 'stickers',
-		headerText: 'Стикеры',
-		stickersConfig: [],
-	},
-};
-
 const groupPageComponentConfig: GroupPageConfig = {
 	id: -1,
 	key: 'group',
@@ -511,6 +503,39 @@ const groupFormConfig: ICreateGroupFormConfig = {
 const createGroupConfig: ViewCreateGroupConfig = {
 	...homeConfig,
 	createGroupForm: groupFormConfig,
+};
+
+const stickerFormConfig: ICreateStickerFormConfig = {
+	key: 'createStickerForm',
+	inputs: {
+		name: {
+			key: 'name',
+			type: 'text',
+			placeholder: 'Название стикера',
+			name: 'name',
+		},
+		avatar: {
+			key: 'avatar',
+			name: 'file',
+			type: 'file',
+			accept: 'image/*',
+			placeholder: 'Выбрать стикер',
+		},
+	},
+	button: {
+		key: 'submitButton',
+		text: 'Создать стикер',
+	},
+};
+
+const stickersConfig: ViewStickersConfig = {
+	...homeConfig,
+	stickerCreateForm: stickerFormConfig,
+	stickers: {
+		key: 'stickers',
+		headerText: 'Стикеры',
+		stickersConfig: [],
+	},
 };
 
 const editGroupFormConfig: IGroupEditFormConfig = {
@@ -676,11 +701,11 @@ const config: AppConfig = {
 	chatConfig,
 	friendsConfig,
 	groupsConfig,
-	stickersConfig,
 	createGroupConfig,
 	groupPageConfig,
 	editPostConfig,
 	editGroupConfig,
+	stickersConfig,
 	questionConfig: {
 		question: {
 			id: 1,

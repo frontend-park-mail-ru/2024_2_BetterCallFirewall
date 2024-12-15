@@ -229,7 +229,7 @@ export class ViewChat extends ViewHome {
 	}
 
 	private _addEmojiBtnHandlers(emoji: Emoji) {
-		emoji.vnode.handlers.push({ //?
+		emoji.emojiBtnVNode.handlers.push({ //?
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
