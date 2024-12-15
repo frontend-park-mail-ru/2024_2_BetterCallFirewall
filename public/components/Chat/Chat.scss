@@ -121,7 +121,12 @@
     }
     &__emoji-panel::-webkit-scrollbar {
         display: none;
-      }
+    }
+
+    &__attach-button {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
 }
 
 .emoji-btn {
@@ -133,9 +138,5 @@
     }
     &:active {
         stroke: var(--main-text-color);
-    }
-    &__attach-button {
-        width: 1.5rem;
-        height: 1.5rem;
     }
 }
