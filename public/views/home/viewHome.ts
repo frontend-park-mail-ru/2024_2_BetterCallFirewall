@@ -199,6 +199,11 @@ export abstract class ViewHome extends View {
 		);
 	};
 
+	// true, если высота документа больше 2-х экранов
+	protected _isTwoScreenHeights() {
+		return window.innerHeight * 2 < document.body.offsetHeight;
+	}
+
 	private get menu(): Menu {
 		const menu = this._components.menu;
 		if (!menu) {

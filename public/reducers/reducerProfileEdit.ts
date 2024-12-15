@@ -1,12 +1,17 @@
 import { Action } from '../actions/action';
+import { ActionAppGoTo } from '../actions/actionApp';
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileRequestSuccessData,
 } from '../actions/actionProfile';
 import {
 	ACTION_PROFILE_EDIT_TYPES,
+	ActionProfileChangePasswordFail,
+	ActionProfileChangePasswordSuccess,
 	ActionProfileEditUpdateData,
 } from '../actions/actionProfileEdit';
+import { STATUS } from '../api/api';
+import { ChangePasswordFormConfig } from '../components/ChangePasswordForm/ChangePasswordForm';
 import {
 	IProfileEditFormConfig,
 	ProfileEditFormInputs,
@@ -20,9 +25,14 @@ const initialProfileEditState: IProfileEditFormConfig = deepClone(
 	config.profileEditConfig.profileEditForm,
 );
 
+const initialChangePasswordFormState: ChangePasswordFormConfig = deepClone(
+	config.profileEditConfig.changePasswordForm,
+);
+
 const initialState: ViewProfileEditConfig = {
 	...config.homeConfig,
 	profileEditForm: initialProfileEditState,
+	changePasswordForm: initialChangePasswordFormState,
 };
 
 export const reducerProfileEdit = (
@@ -64,9 +74,19 @@ export const reducerProfileEdit = (
 			}
 			return newState;
 		}
-		default:
-			return newState;
 	}
+	switch (true) {
+		case action instanceof ActionProfileChangePasswordFail:
+			if (action.data.status === STATUS.badRequest) {
+				newState.changePasswordForm.error = 'Неверный пароль';
+			}
+			break;
+		case action instanceof ActionProfileChangePasswordSuccess:
+		case action instanceof ActionAppGoTo:
+			newState.changePasswordForm.error = '';
+			break;
+	}
+	return newState;
 };
 
 const profileResponseToInputs = (

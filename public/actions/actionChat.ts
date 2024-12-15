@@ -1,4 +1,4 @@
-import { MessageResponse, MessageSend } from '../models/message';
+import { MessageResponse, MessagePayload } from '../models/message';
 import { Action, ActionType } from './action';
 
 export const ACTION_CHAT_TYPES = {
@@ -67,14 +67,14 @@ export class ActionChatRequestFail implements Action {
 }
 
 export interface ActionChatSendMessageData {
-	message: MessageSend;
+	message: MessagePayload;
 }
 
 export class ActionChatSendMessage implements Action {
 	type: ActionType = ACTION_CHAT_TYPES.sendMessage;
 	data: ActionChatSendMessageData;
 
-	constructor(message: MessageSend) {
+	constructor(message: MessagePayload) {
 		this.data = { message };
 	}
 }

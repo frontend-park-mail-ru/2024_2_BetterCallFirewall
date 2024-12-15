@@ -1,6 +1,6 @@
 import { MessageConfig } from '../components/Message/Message';
 import { ChatResponse } from '../models/chat';
-import { MessageResponse, MessageSend } from '../models/message';
+import { MessageResponse, MessagePayload } from '../models/message';
 import { Action, ActionType } from './action';
 
 export const ACTION_MESSAGES_TYPES = {
@@ -84,14 +84,14 @@ export class ActionMessagesNewMessage implements Action {
 }
 
 export interface ActionMesssagesSendMessageData {
-	message: MessageSend;
+	message: MessagePayload;
 }
 
 export class ActionMesssagesSendMessage implements Action {
 	type: ActionType = ACTION_MESSAGES_TYPES.sendMessage;
 	data: ActionMesssagesSendMessageData;
 
-	constructor(message: MessageSend) {
+	constructor(message: MessagePayload) {
 		this.data = { message };
 	}
 }

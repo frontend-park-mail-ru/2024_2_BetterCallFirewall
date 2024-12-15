@@ -59,6 +59,12 @@ PAGE_LINKS.profile += '/([\\w-]+)';
 
 export const THROTTLE_LIMITS = {
 	buttonClick: 500,
+	batchLoading: 500,
+};
+
+export const ATTACHMENT_COUNT_LIMIT = {
+	post: 10,
+	chat: 5,
 };
 
 const homeConfig: HomeConfig = {
@@ -250,15 +256,14 @@ const createPostConfig: ViewCreatePostConfig = {
 				name: 'text',
 			},
 		},
-		inputs: {
-			image: {
-				key: 'image-input',
-				name: 'file',
-				type: 'file',
-				accept: 'image/*',
-				placeholder: 'Прикрепить картинку',
-				// extra: 'multiple',
-			},
+		attachmentsInput: {
+			key: 'files-input',
+			name: 'files[]',
+			type: 'file',
+			placeholder: 'Прикрепить файлы',
+			extra: 'multiple',
+			files: [],
+			filesCountLimit: ATTACHMENT_COUNT_LIMIT.post,
 		},
 		button: {
 			key: 'submitButton',
@@ -303,6 +308,33 @@ const profileEditConfig: ViewProfileEditConfig = {
 		button: {
 			key: 'profileEditButton',
 			text: 'Сохранить',
+		},
+	},
+	changePasswordForm: {
+		key: 'changePasswordForm',
+		inputs: {
+			oldPassword: {
+				key: 'oldPassword',
+				name: 'oldPassword',
+				type: 'password',
+				placeholder: 'Старый пароль',
+			},
+			newPassword: {
+				key: 'newPassword',
+				name: 'password',
+				type: 'password',
+				placeholder: 'Новый пароль',
+			},
+			repeatPassword: {
+				key: 'repeatPassword',
+				name: 'password_again',
+				type: 'password',
+				placeholder: 'Повторите пароль',
+			},
+		},
+		button: {
+			key: 'changePasswordButton',
+			text: 'Сменить пароль',
 		},
 	},
 };
@@ -359,6 +391,14 @@ const emptyChatComponentConfig: ChatConfig = {
 	inputText: '',
 	inputKey: 'chat-input',
 	showEmojiPanel: false,
+	attachmentInput: {
+		key: 'attachmentInput',
+		name: 'files[]',
+		type: 'file',
+		extra: 'multiple',
+		files: [],
+		filesCountLimit: ATTACHMENT_COUNT_LIMIT.chat,
+	},
 };
 
 const chatConfig: ViewChatConfig = {
@@ -513,15 +553,14 @@ const postEditFormConfig: PostEditFormConfig = {
 			name: 'text',
 		},
 	},
-	inputs: {
-		image: {
-			key: 'image',
-			name: 'file',
-			type: 'file',
-			accept: 'image/*',
-			placeholder: 'Изменить картинку',
-			// extra: 'multiple',
-		},
+	attachmentsInput: {
+		key: 'files-input',
+		name: 'files[]',
+		type: 'file',
+		placeholder: 'Прикрепить файлы',
+		extra: 'multiple',
+		files: [],
+		filesCountLimit: ATTACHMENT_COUNT_LIMIT.post,
 	},
 	button: {
 		key: 'submitButton',
@@ -547,6 +586,7 @@ const URL: URLInterface = DEBUG
 			profileById: '',
 			profileYourOwn: ROOT + '/api/profile',
 			profiles: ROOT + '/api/profiles',
+			changePassword: '',
 			subscribers: ROOT + '/api/profile/{id}/subscribers',
 			header: ROOT + '/api/profile/header',
 			friends: ROOT + '/api/profile/{id}/friends',
@@ -585,6 +625,7 @@ const URL: URLInterface = DEBUG
 			profileById: ROOT + apiv1 + '/profile/{id}',
 			profileYourOwn: ROOT + '/api/v1/profile',
 			profiles: ROOT + '/api/v1/profiles',
+			changePassword: ROOT + apiv1 + '/profile/password',
 			subscribers: ROOT + '/api/v1/profile/{id}/subscribers',
 			header: ROOT + '/api/v1/profile/header',
 			friends: ROOT + '/api/v1/profile/{id}/friends',
@@ -698,7 +739,7 @@ export const validators: Record<string, (value: string | File) => string> = {
 	password_again: (value) => Validator.validateConfirmation(value as string),
 	text: (value) => Validator.validatePost(value as string),
 	file: (value) => Validator.validateImg(value as File),
-	bio: (value) => Validator.validatePost(value as string),
+	bio: (value) => Validator.validateDescription(value as string),
 	avatar: (value) => Validator.validateImg(value as File),
 	description: (value) => Validator.validateDescription(value as string),
 	name: (value) => Validator.validateName(value as string),

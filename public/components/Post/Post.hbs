@@ -33,11 +33,11 @@
     <hr>
     <div class="post__content">
         <span class="post__content-text">{{this.text}}</span>
-        <div class="post__content-image">
-            {{#if this.img}}
-                <img src="{{this.img}}" alt="">
-            {{/if}}
-        </div>
+        {{#each attachments}}
+            <div class="post__content-image">
+                {{{this}}}
+            </div>
+        {{/each}}
     </div>
     <div class="post__footer">
         <div class="post__like">

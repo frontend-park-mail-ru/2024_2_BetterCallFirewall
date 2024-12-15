@@ -9,7 +9,6 @@ import {
 } from '../../components/PostEditForm/PostEditForm';
 import { PAGE_URLS } from '../../config';
 import { PostPayload } from '../../models/post';
-import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangePostEdit } from '../../stores/storePostEdit';
@@ -109,20 +108,26 @@ export class ViewPostEdit extends ViewHome {
 					this._postEditForm.form,
 				);
 				if (formData) {
-					if (
-						formData.get('text') ||
-						(formData.get('file') as File).name
-					) {
-						const fileStr = await fileToString(
-							formData.get('file') as File,
-						);
-						if (fileStr === null) {
+					const files =
+						this._configPostEdit.postEditForm.attachmentsInput
+							.files;
+					if (formData.get('text') || files.length) {
+						const filesStr = files.map((file) => file.src);
+						const emptyFiles = filesStr.filter((file) => {
+							if (!file) {
+								return file;
+							}
+						});
+						if (emptyFiles.length) {
+							this._postEditForm.printError(
+								'Что-то пошло не так',
+							);
 							return;
 						}
 						const postPayload: PostPayload = {
 							post_content: {
 								text: formData.get('text') as string,
-								file: fileStr,
+								file: filesStr,
 							},
 						};
 						const url = new URL(app.router.href);
@@ -131,11 +136,14 @@ export class ViewPostEdit extends ViewHome {
 							this._configPostEdit.postId,
 							url.search,
 						);
+					} else {
+						this._postEditForm.printError(
+							'Пост не должен быть пустым',
+						);
 					}
 				}
 			},
 		});
-		this._addHandlerInput();
 	}
 
 	private get _postEditForm(): PostEditForm {
@@ -144,45 +152,5 @@ export class ViewPostEdit extends ViewHome {
 			throw new Error('postEditForm not found');
 		}
 		return form;
-	}
-
-	private _addHandlerInput(): void {
-		this._postEditForm.fileInputVNode.handlers.push(
-			{
-				event: 'click',
-				callback: (event) => {
-					const label = this._postEditForm.label;
-					const preview = this._postEditForm.img as HTMLImageElement;
-					const input = event.target as HTMLInputElement;
-					if (input.value) {
-						input.value = '';
-						event.preventDefault();
-						label?.classList.remove('active');
-						label.textContent = 'Прикрепить картинку';
-						preview.src = '';
-					}
-				},
-			},
-			{
-				event: 'change',
-				callback: (event) => {
-					const label = this._postEditForm.label;
-					const preview = this._postEditForm.img as HTMLImageElement;
-					const input = event.target as HTMLInputElement;
-					if (input.files && input.files.length > 0) {
-						if (label) {
-							label.classList.add('active');
-							label.textContent =
-								'Картинка выбрана, нажмите, чтобы отменить';
-						}
-						const reader = new FileReader();
-						reader.onload = function (e) {
-							preview.src = e.target?.result as string;
-						};
-						reader.readAsDataURL(input.files[0]);
-					}
-				},
-			},
-		);
 	}
 }

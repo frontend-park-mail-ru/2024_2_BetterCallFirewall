@@ -24,10 +24,15 @@ export const reducerGroups = (
 			return newState;
 		case ACTION_GROUPS_TYPES.getGroupsSuccess: {
 			const actionData = action.data as ActionGroupsGetGroupsSuccessData;
-			newState.groups.groupsConfig =
-				actionData.groups.map((group) => {
-					return toGroupsConfig(group);
-				});
+			const groups = actionData.groups.map((group) => {
+				return toGroupsConfig(group);
+			});
+			if (actionData.append) {
+				newState.groups.groupsConfig =
+					newState.groups.groupsConfig.concat(groups);
+			} else {
+				newState.groups.groupsConfig = groups;
+			}
 			return newState;
 		}
 	}

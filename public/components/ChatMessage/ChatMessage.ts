@@ -1,3 +1,5 @@
+import { fileTypeFromName } from '../../modules/files';
+import { Attachment } from '../Attachment/Attachment';
 import Component, { ComponentConfig } from '../Component';
 
 export interface ChatMessageConfig extends ComponentConfig {
@@ -8,6 +10,7 @@ export interface ChatMessageConfig extends ComponentConfig {
 	createdAt: string;
 	createdAtISO: string;
 	isAuthor: boolean;
+	files: string[];
 }
 
 export class ChatMessage extends Component {
@@ -21,5 +24,20 @@ export class ChatMessage extends Component {
 	render(): string {
 		this._prerender();
 		return this._render('ChatMessage.hbs');
+	}
+
+	protected _prerender(): void {
+		super._prerender();
+		const attachments = this._config.files.map((file, i) => {
+			return new Attachment(
+				{
+					key: `attachment-${i}`,
+					file: { src: file, mimeType: fileTypeFromName(file) },
+					hasDeleteButton: false,
+				},
+				this,
+			).render();
+		});
+		this._templateContext = { ...this._templateContext, attachments };
 	}
 }

@@ -129,4 +129,8 @@
     &:active {
         stroke: var(--main-text-color);
     }
+    &__attach-button {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
 }

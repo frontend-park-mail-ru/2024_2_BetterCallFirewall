@@ -83,6 +83,7 @@ import { ACTION_COMMENT_TYPES } from './actions/actionComment';
 import { ACTION_CONFIRM_TYPES } from './actions/actionConfirm';
 import { ViewStickers, ViewStickersConfig } from './views/stickers/viewStickers';
 import { StoreStickers } from './stores/storeStickers';
+import { ACTION_ATTACHMENTS_INPUT_TYPES } from './actions/actionAttachmentsInput';
 
 export const PAGES = {
 	home: 'home',
@@ -99,6 +100,7 @@ export interface URLInterface {
 	profileById: string;
 	profileYourOwn: string;
 	profiles: string;
+	changePassword: string;
 	subscribeToProfile: string;
 	acceptFriend: string;
 	unsubscribeFromProfile: string;
@@ -471,6 +473,7 @@ class App {
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.sendMessage);
 		this._stores.messages.subscribe(ACTION_MESSAGES_TYPES.newMessage);
 
+		this._stores.chat.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.goToChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.updateChat);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChat);
@@ -481,7 +484,11 @@ class App {
 		this._stores.chat.subscribe(ACTION_MESSAGES_TYPES.sendMessage);
 		this._stores.chat.subscribe(ACTION_MESSAGES_TYPES.newMessage);
 		this._stores.chat.subscribe(ACTION_PROFILE_TYPES.profileRequestSuccess);
+		this._stores.chat.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.addFiles);
+		this._stores.chat.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.deleteFile);
+		this._stores.chat.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.fileLoaded);
 
+		this._stores.createPost.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.createPost.subscribe(
 			ACTION_CREATE_POST_TYPES.updateCreatePost,
 		);
@@ -490,6 +497,16 @@ class App {
 		this._stores.createPost.subscribe(
 			ACTION_FEED_TYPES.postGroupCreateSuccess,
 		);
+		this._stores.createPost.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.addFiles,
+		);
+		this._stores.createPost.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.fileLoaded,
+		);
+		this._stores.createPost.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.deleteFile,
+		);
+		this._stores.createPost.subscribe(ACTION_CHAT_TYPES.sendMessage);
 
 		this._stores.createGroup.subscribe(
 			ACTION_CREATE_GROUP_TYPES.goToCreateGroup,
@@ -529,6 +546,7 @@ class App {
 		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.deleteSuccess);
 		this._stores.groupPage.subscribe(ACTION_CONFIRM_TYPES.close);
 
+		this._stores.profileEdit.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_EDIT_TYPES.updateProfileEdit,
 		);
@@ -544,10 +562,25 @@ class App {
 		this._stores.profileEdit.subscribe(
 			ACTION_PROFILE_TYPES.profileRequestSuccess,
 		);
+		this._stores.profileEdit.subscribe(
+			ACTION_PROFILE_EDIT_TYPES.changePasswordSuccess,
+		);
+		this._stores.profileEdit.subscribe(
+			ACTION_PROFILE_EDIT_TYPES.changePasswordFail,
+		);
 
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.goToPostEdit);
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestSuccess);
 		this._stores.postEdit.subscribe(ACTION_POST_EDIT_TYPES.requestFail);
+		this._stores.postEdit.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.addFiles,
+		);
+		this._stores.postEdit.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.deleteFile,
+		);
+		this._stores.postEdit.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.fileLoaded,
+		);
 
 		this._stores.groupPage.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.groupPage.subscribe(ACTION_GROUPS_TYPES.groupsFollowGroup);

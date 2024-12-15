@@ -7,11 +7,16 @@ import { ACTION_PROFILE_EDIT_TYPES } from '../../actions/actionProfileEdit';
 import api from '../../api/api';
 import { Root } from '../../components';
 import {
+	ChangePasswordForm,
+	ChangePasswordFormConfig,
+} from '../../components/ChangePasswordForm/ChangePasswordForm';
+import {
 	ProfileEditForm,
 	IProfileEditFormConfig,
 } from '../../components/ProfileEditForm/ProfileEditForm';
 import { ProfilePayload } from '../../models/profile';
 import fileToString from '../../modules/fileToString';
+import { throttle } from '../../modules/throttle';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangeProfileEdit } from '../../stores/storeProfileEditForm';
@@ -19,10 +24,12 @@ import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
 
 export type ComponentsProfileEdit = {
 	profileEditForm?: ProfileEditForm;
+	changePasswordForm?: ChangePasswordForm;
 } & ComponentsHome;
 
 export interface ViewProfileEditConfig extends HomeConfig {
 	profileEditForm: IProfileEditFormConfig;
+	changePasswordForm: ChangePasswordFormConfig;
 }
 
 export class ViewProfileEdit extends ViewHome {
@@ -45,6 +52,7 @@ export class ViewProfileEdit extends ViewHome {
 			case ACTION_PROFILE_EDIT_TYPES.requestFail:
 				this.updateViewProfileEdit(change.data);
 				break;
+			case ACTION_PROFILE_EDIT_TYPES.changePasswordSuccess:
 			case ACTION_PROFILE_EDIT_TYPES.requestSuccess:
 				this.sendAction(new ActionAppGoTo(this._profileLinkHref));
 				break;
@@ -66,11 +74,7 @@ export class ViewProfileEdit extends ViewHome {
 			);
 		}
 		this._render();
-		this.sendAction(
-			new ActionProfileRequest(
-				`/${this._configProfileEdit.main.header.profile.id}`,
-			),
-		);
+		this._requestProfile();
 	}
 
 	updateViewProfileEdit(data: ViewProfileEditConfig): void {
@@ -84,6 +88,7 @@ export class ViewProfileEdit extends ViewHome {
 
 		super._render();
 		this._renderProfileEditForm();
+		this._renderChangePasswordForm();
 
 		const rootVNode = this._root.newVNode();
 
@@ -95,6 +100,13 @@ export class ViewProfileEdit extends ViewHome {
 	protected _renderProfileEditForm(): void {
 		this._components.profileEditForm = new ProfileEditForm(
 			this._configProfileEdit.profileEditForm,
+			this.content,
+		);
+	}
+
+	protected _renderChangePasswordForm(): void {
+		this._components.changePasswordForm = new ChangePasswordForm(
+			this._configProfileEdit.changePasswordForm,
 			this.content,
 		);
 	}
@@ -180,4 +192,12 @@ export class ViewProfileEdit extends ViewHome {
 			},
 		);
 	}
+
+	private _requestProfile = throttle(() => {
+		this.sendAction(
+			new ActionProfileRequest(
+				`/${this._configProfileEdit.main.header.profile.id}`,
+			),
+		);
+	}, 1000);
 }

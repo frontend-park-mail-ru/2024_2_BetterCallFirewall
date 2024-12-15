@@ -1,0 +1,11 @@
+.chat-attachments-input {
+    &__attachments-container {
+        display: flex;
+        justify-content: start;
+        flex-wrap: wrap;
+        gap: 0.1rem;
+    }
+    &__preview {
+        width: 15%;
+    }
+}

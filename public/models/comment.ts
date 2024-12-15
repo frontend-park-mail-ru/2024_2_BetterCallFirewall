@@ -1,7 +1,7 @@
 import app from '../app';
 import { CommentConfig } from '../components/Comment/Comment';
 import { ROOT } from '../config';
-import parseImage from '../modules/parseImage';
+import parseFile from '../modules/parseFile';
 import parseTime from '../modules/parseTime';
 
 export interface Header {
@@ -13,7 +13,7 @@ export interface Header {
 
 interface Content {
 	text: string;
-	file: string;
+	file: string[];
 	created_at: string;
 	updated_at: string;
 }
@@ -37,7 +37,7 @@ export const toCommentConfig = (
 		communityId: commentResponse.header.community_id,
 		key: `comment-${commentResponse.id}`,
 		authorId: commentResponse.header.author_id,
-		avatar: parseImage(commentResponse.header.avatar),
+		avatar: parseFile(commentResponse.header.avatar),
 		authorName: commentResponse.header.author,
 		createdAt: parseTime(commentResponse.content.created_at),
 		createdAtISO: commentResponse.content.created_at,
@@ -49,7 +49,7 @@ export const toCommentConfig = (
 
 export interface CommentPayload {
 	text: string;
-	file: string;
+	file: string[];
 }
 
 export const commentPayloadToResponse = (

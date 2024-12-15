@@ -1,0 +1,14 @@
+<div class="attachments-input form__input" data-key="{{this.key}}">
+    <div class="form__file">
+        <div class="chat-attachments-input__attachments-container">
+            {{#each attachments}}
+                <div class="attachments-input__preview chat-attachments-input__preview">
+                    {{{this}}}
+                </div>
+            {{/each}}
+        </div>
+        <label for="{{this.name}}" class="form__upload hidden">{{this.placeholder}}</label>
+    </div>
+    <input class="hidden" type="{{this.type}}" value="{{this.text}}" id="{{this.name}}" name="{{this.name}}" placeholder="{{this.placeholder}}" accept="{{this.accept}}" data-key="input" {{this.extra}}>
+    <span class="form__input-error"></span>
+</div>

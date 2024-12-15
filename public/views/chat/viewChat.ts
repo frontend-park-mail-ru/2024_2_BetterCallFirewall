@@ -16,7 +16,7 @@ import { Root } from '../../components';
 import { Chat, ChatConfig } from '../../components/Chat/Chat';
 import { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
-import { MessageSend } from '../../models/message';
+import { MessagePayload } from '../../models/message';
 import { throttle } from '../../modules/throttle';
 import { update } from '../../modules/vdom';
 import { ChangeChat } from '../../stores/storeChat';
@@ -82,6 +82,8 @@ export class ViewChat extends ViewHome {
 			case ACTION_CHAT_TYPES.switchEmojiPanel:
 				this.updateViewChat(change.data);
 				break;
+			default:
+				this.updateViewChat(change.data);
 		}
 	}
 
@@ -273,11 +275,14 @@ export class ViewChat extends ViewHome {
 
 	private _sendMessage() {
 		const chatText = this._chat.text;
-		if (!chatText) {
+		const files = this._chat.attachmentInput.config.files.map(
+			(file) => file.src,
+		);
+		if (!chatText && !files.length) {
 			return;
 		}
-		const message: MessageSend = {
-			content: chatText,
+		const message: MessagePayload = {
+			content: { text: chatText, file_path: files, sticker_path: '' },
 			receiver: this._chat.config.companionId,
 		};
 		this._chat.textarea.value = '';

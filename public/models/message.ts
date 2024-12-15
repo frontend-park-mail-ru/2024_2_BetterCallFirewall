@@ -1,15 +1,22 @@
 import { ChatConfig } from '../components/Chat/Chat';
 import { ChatMessageConfig } from '../components/ChatMessage/ChatMessage';
+import parseFile from '../modules/parseFile';
 import parseTime from '../modules/parseTime';
 
-export interface MessageSend {
-	content: string;
+interface MessageContent {
+	text: string;
+	file_path: string[];
+	sticker_path: string;
+}
+
+export interface MessagePayload {
+	content: MessageContent;
 	receiver: number;
 }
 
 export interface MessageResponse {
 	sender: number;
-	content: string;
+	content: MessageContent;
 	created_at: string;
 }
 
@@ -18,6 +25,9 @@ export const toChatMessageConfig = (
 	messageResponse: MessageResponse,
 ): ChatMessageConfig => {
 	const isCompanion = messageResponse.sender === chatConfig.companionId;
+	const files = messageResponse.content.file_path
+		? messageResponse.content.file_path.map((file) => parseFile(file))
+		: [];
 	return {
 		key: `chat-message-${messageResponse.sender}`,
 		userId: isCompanion ? messageResponse.sender : chatConfig.companionId,
@@ -25,9 +35,10 @@ export const toChatMessageConfig = (
 			? chatConfig.companionAvatar
 			: chatConfig.myAvatar,
 		messageName: isCompanion ? chatConfig.companionName : chatConfig.myName,
-		messageText: messageResponse.content,
+		messageText: messageResponse.content.text,
 		createdAt: parseTime(messageResponse.created_at),
 		createdAtISO: messageResponse.created_at,
 		isAuthor: !isCompanion,
+		files,
 	};
 };

@@ -30,6 +30,11 @@
 @use 'components/Emoji/Emoji.scss';
 @use 'components/Sticker/Sticker.scss';
 @use 'components/Stickers/Stickers.scss';
+@use 'components/AttachmentsInput/AttachmentsInput.scss';
+@use 'components/BaseAttachmentInput/BaseAttachmentInput.scss';
+@use 'components/Attachment/Attachment.scss';
+@use 'components/ChatAttachmentInput/ChatAttachmentInput.scss';
+@use 'components/ChangePasswordForm/ChangePasswordForm.scss';
 
 * {
     box-sizing: border-box;
@@ -330,6 +335,14 @@ input::placeholder, textarea::placeholder {
             }
         }
     }
+}
+
+.hidden {
+    display: none;
+}
+
+.image {
+    width: 100%;
 }
 
 @media (max-width: 2560px) {

@@ -42,6 +42,7 @@ import {
 	ActionGroupsEditSuccess,
 	ActionGroupsFollowGroupData,
 	ActionGroupsFollowGroupSuccess,
+	ActionGroupsGetGroups,
 	ActionGroupsUnfollowGroupSuccess,
 } from '../actions/actionGroups';
 import {
@@ -95,6 +96,9 @@ import {
 	ActionProfileDelete,
 } from '../actions/actionProfile';
 import {
+	ActionProfileChangePassword,
+	ActionProfileChangePasswordFail,
+	ActionProfileChangePasswordSuccess,
 	ActionProfileEditRequestFail,
 	ActionProfileEditRequestSuccess,
 } from '../actions/actionProfileEdit';
@@ -107,7 +111,7 @@ import dispatcher from '../dispatcher/dispatcher';
 import { GroupPayload } from '../models/group';
 import { PostPayload } from '../models/post';
 import ajax, { QueryParams } from '../modules/ajax';
-import { ProfilePayload } from '../models/profile';
+import { ChangePasswordPayload, ProfilePayload } from '../models/profile';
 import { ActionCreateGroupSuccess } from '../actions/actionCreateGroup';
 import {
 	ActionCommentCreate,
@@ -177,9 +181,6 @@ class API {
 			case ACTION_POST_TYPES.unlike:
 				this.unlikePost((action.data as ActionPostLikeData).postId);
 				break;
-			case ACTION_GROUPS_TYPES.getGroups:
-				this.requestGroups();
-				break;
 			case ACTION_GROUP_PAGE_TYPES.groupPageRequest:
 				this.requestGroupPage(
 					(action.data as ActionGroupPageRequestData).href,
@@ -239,6 +240,12 @@ class API {
 				break;
 			case action instanceof ActionCommentDelete:
 				this.deleteComment(action.data.postId, action.data.commentId);
+				break;
+			case action instanceof ActionProfileChangePassword:
+				this.changePassword(action.data.payload);
+				break;
+			case action instanceof ActionGroupsGetGroups:
+				this.requestGroups(action.data.lastId);
 				break;
 		}
 	}
@@ -542,24 +549,22 @@ class API {
 		}
 	}
 
-	async requestGroups() {
-		const response = await ajax.getGroups();
+	async requestGroups(lastId?: number) {
+		const response = await ajax.getGroups(lastId);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
-					// this.sendAction();
 					break;
 				}
 				this.sendAction(
-					new ActionGroupsGetGroupsSuccess({
-						groups: response.data,
-					}),
+					new ActionGroupsGetGroupsSuccess(
+						response.data,
+						lastId ? true : false,
+					),
 				);
 				break;
 			case STATUS.noMoreContent:
-				this.sendAction(
-					new ActionGroupsGetGroupsSuccess({ groups: [] }),
-				);
+				this.sendAction(new ActionGroupsGetGroupsSuccess([], true));
 				break;
 		}
 	}
@@ -884,6 +889,19 @@ class API {
 				break;
 			default:
 				this.sendAction(new ActionCommentDeleteFail());
+		}
+	}
+
+	async changePassword(payload: ChangePasswordPayload) {
+		const response = await ajax.changePassword(payload);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionProfileChangePasswordSuccess());
+				break;
+			default:
+				this.sendAction(
+					new ActionProfileChangePasswordFail(response.status),
+				);
 		}
 	}
 }

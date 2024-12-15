@@ -11,7 +11,6 @@ import {
 import { PAGE_URLS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
 import { PostPayload } from '../../models/post';
-import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangeCreatePost } from '../../stores/storeCreatePost';
@@ -105,14 +104,17 @@ export class ViewCreatePost extends ViewHome {
 					this._createPostForm.form,
 				);
 				if (formData) {
-					if (
-						formData.get('text') ||
-						(formData.get('file') as File).name
-					) {
-						const fileStr = await fileToString(
-							formData.get('file') as File,
-						);
-						if (fileStr === null) {
+					const files =
+						this._configCreatePost.createPostForm.attachmentsInput
+							.files;
+					if (formData.get('text') || files.length) {
+						const filesStr = files.map((file) => file.src);
+						const emptyFiles = filesStr.filter((file) => {
+							if (!file) {
+								return file;
+							}
+						});
+						if (emptyFiles.length) {
 							this._createPostForm.printError(
 								'Что-то пошло не так',
 							);
@@ -121,7 +123,7 @@ export class ViewCreatePost extends ViewHome {
 						const postPayload: PostPayload = {
 							post_content: {
 								text: formData.get('text') as string,
-								file: fileStr,
+								file: filesStr,
 							},
 						};
 						const url = new URL(app.router.href);
@@ -135,7 +137,6 @@ export class ViewCreatePost extends ViewHome {
 				}
 			},
 		});
-		this._addHandlerInput();
 	}
 
 	private get _createPostForm(): CreatePostForm {
@@ -144,47 +145,5 @@ export class ViewCreatePost extends ViewHome {
 			throw new Error('form not found');
 		}
 		return form;
-	}
-
-	private _addHandlerInput(): void {
-		this._createPostForm.fileInputVNode.handlers.push(
-			{
-				event: 'click',
-				callback: (event) => {
-					const label = this._createPostForm.label;
-					const preview = this._createPostForm
-						.img as HTMLImageElement;
-					const input = event.target as HTMLInputElement;
-					if (input.value) {
-						input.value = '';
-						event.preventDefault();
-						label?.classList.remove('active');
-						label.textContent = 'Прикрепить картинку';
-						preview.src = '';
-					}
-				},
-			},
-			{
-				event: 'change',
-				callback: (event) => {
-					const label = this._createPostForm.label;
-					const preview = this._createPostForm
-						.img as HTMLImageElement;
-					const input = event.target as HTMLInputElement;
-					if (input.files && input.files.length > 0) {
-						if (label) {
-							label.classList.add('active');
-							label.textContent =
-								'Картинка выбрана, нажмите, чтобы отменить';
-						}
-						const reader = new FileReader();
-						reader.onload = function (e) {
-							preview.src = e.target?.result as string;
-						};
-						reader.readAsDataURL(input.files[0]);
-					}
-				},
-			},
-		);
 	}
 }

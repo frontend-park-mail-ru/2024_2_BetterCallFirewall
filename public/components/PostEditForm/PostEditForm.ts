@@ -1,12 +1,13 @@
 import { VNode } from '../../modules/vdom';
+import {
+	AttachmentsInput,
+	AttachmentsInputConfig,
+} from '../AttachmentsInput/AttachmentsInput';
 import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
 import Component from '../Component';
-import { InputConfig } from '../Input/Input';
 
 export interface PostEditFormConfig extends BaseFormConfig {
-	inputs: {
-		image: InputConfig;
-	};
+	attachmentsInput: AttachmentsInputConfig;
 }
 
 export class PostEditForm extends BaseForm {
@@ -36,7 +37,7 @@ export class PostEditForm extends BaseForm {
 	}
 
 	get fileInputVNode(): VNode {
-		return this._findVNodeByKey(this._config.inputs.image.key);
+		return this._findVNodeByKey(this._config.attachmentsInput.key);
 	}
 
 	get label(): HTMLElement {
@@ -57,9 +58,14 @@ export class PostEditForm extends BaseForm {
 
 	protected _prerender(): void {
 		super._prerender();
+		const attachmentsInput = new AttachmentsInput(
+			this._config.attachmentsInput,
+			this,
+		);
 		this._templateContext = {
 			...this._templateContext,
 			className: 'edit-post',
+			attachmentsInput: attachmentsInput.render(),
 		};
 	}
 

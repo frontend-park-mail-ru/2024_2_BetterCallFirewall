@@ -1,4 +1,10 @@
 import { Action } from '../actions/action';
+import { ActionAppGoTo } from '../actions/actionApp';
+import {
+	ActionAttachmentsInputAddFiles,
+	ActionAttachmentsInputDeleteFile,
+	ActionAttachmentsInputFileLoaded,
+} from '../actions/actionAttachmentsInput';
 import {
 	ACTION_CHAT_TYPES,
 	ActionChatRequestSuccessData,
@@ -19,6 +25,7 @@ import { MessageResponse, toChatMessageConfig } from '../models/message';
 import { toChatConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
 import { ViewChatConfig } from '../views/chat/viewChat';
+import { reducerAttachmentsInput } from './reducerAttachmentsInput';
 import { reducerHome } from './reducerHome';
 
 const initialChatState: ChatConfig = deepClone(config.chatConfig.chat);
@@ -60,6 +67,10 @@ export const reducerChat = (
 				);
 			}
 			newState.chat.inputText = '';
+			newState.chat.attachmentInput = reducerAttachmentsInput(
+				newState.chat.attachmentInput,
+				action,
+			);
 			return newState;
 		}
 		case ACTION_MESSAGES_TYPES.newMessage: {
@@ -101,7 +112,17 @@ export const reducerChat = (
 			console.log(newState.chat.showEmojiPanel);
 			return newState;
 		}
-		default:
-			return state;
 	}
+	switch (true) {
+		case action instanceof ActionAttachmentsInputAddFiles:
+		case action instanceof ActionAttachmentsInputDeleteFile:
+		case action instanceof ActionAttachmentsInputFileLoaded:
+		case action instanceof ActionAppGoTo:
+			newState.chat.attachmentInput = reducerAttachmentsInput(
+				newState.chat.attachmentInput,
+				action,
+			);
+			break;
+	}
+	return newState;
 };
