@@ -217,7 +217,7 @@ export class ViewChat extends ViewHome {
 	}
 
 	private _addEmojiHandlers(): void {
-		// this._chat.emojis.forEach((emoji) => this._addEmojiBtnHandlers(emoji));
+		this._chat.emojis.forEach((emoji) => this._addEmojiBtnHandlers(emoji));
 
 		this._chat.emojiOpenBtn.handlers.push({
 			event: 'click',
@@ -228,21 +228,21 @@ export class ViewChat extends ViewHome {
 		});
 	}
 
-	// private _addEmojiBtnHandlers(emoji: Emoji) {
-	// 	emoji.emojiBtnVNode.handlers.push({ //?
-	// 		event: 'click',
-	// 		callback: (event) => {
-	// 			event.preventDefault();
-	// 			const target = event.target as HTMLElement;
-	// 			if (target) {
-	// 				const emoji = target.textContent;
-	// 				const textarea = this._chat.textarea;
-	// 				textarea.value += emoji;
-	// 				textarea.focus();
-	// 			}
-	// 		},
-	// 	});
-	// }
+	private _addEmojiBtnHandlers(emoji: Emoji) {
+		emoji.emojiBtnVNode.handlers.push({ //?
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				const target = event.target as HTMLElement;
+				if (target) {
+					const emoji = target.textContent;
+					const textarea = this._chat.textarea;
+					textarea.value += emoji;
+					textarea.focus();
+				}
+			},
+		});
+	}
 
 	private _addEscapeHandler() {
 		this._root.addDocumentHandler({
