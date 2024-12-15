@@ -40,7 +40,6 @@
         flex-direction: column;
         max-height: 50rem;
         overflow: hidden;
-        transition: max-height 0.3s ease;
         &_expanded {
             max-height: none;
         }

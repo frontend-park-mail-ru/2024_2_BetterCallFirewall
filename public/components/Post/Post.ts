@@ -250,6 +250,12 @@ export class Post extends Component {
 						!this._config.expanded,
 					),
 				);
+				if (this._config.expanded) {
+					this.commentButtonVNode.element.scrollIntoView({
+						behavior: 'smooth',
+						block: 'center',
+					});
+				}
 			},
 		});
 	}
