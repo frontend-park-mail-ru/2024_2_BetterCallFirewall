@@ -6,6 +6,11 @@ import {
 	ActionAttachmentsInputFileLoaded,
 } from '../actions/actionAttachmentsInput';
 import { ActionChatSendMessage } from '../actions/actionChat';
+import {
+	ActionCommentCancelEdit,
+	ActionCommentCreate,
+	ActionCommentEdit,
+} from '../actions/actionComment';
 import { ActionFeedPostCreateSuccess } from '../actions/actionFeed';
 import { ActionPostEditRequestSuccess } from '../actions/actionPostEdit';
 import { AttachmentsInputConfig } from '../components/AttachmentsInput/AttachmentsInput';
@@ -21,7 +26,10 @@ export const reducerAttachmentsInput = (
 			const files = newState.files;
 			const oldLength = files.length;
 			files.length += action.data.filesCount;
-			newState.files = files.fill({ src: '', mimeType: '' }, oldLength);
+			newState.files = files.fill(
+				{ src: '', name: '', mimeType: '' },
+				oldLength,
+			);
 			break;
 		}
 		case action instanceof ActionAttachmentsInputFileLoaded:
@@ -36,6 +44,9 @@ export const reducerAttachmentsInput = (
 		case action instanceof ActionPostEditRequestSuccess:
 		case action instanceof ActionChatSendMessage:
 		case action instanceof ActionAppGoTo:
+		case action instanceof ActionCommentCreate:
+		case action instanceof ActionCommentEdit:
+		case action instanceof ActionCommentCancelEdit:
 			newState.files = [];
 			break;
 	}

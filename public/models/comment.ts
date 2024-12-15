@@ -32,6 +32,7 @@ export const toCommentConfig = (
 	const userId = app.stores.home.state.main.header.profile.id;
 	const hasEditButton = userId === commentResponse.header.author_id;
 	const hasDeleteButton = hasEditButton;
+	const files = commentResponse.content.file || [];
 	return {
 		id: commentResponse.id,
 		communityId: commentResponse.header.community_id,
@@ -44,6 +45,7 @@ export const toCommentConfig = (
 		text: commentResponse.content.text,
 		hasEditButton,
 		hasDeleteButton,
+		files,
 	};
 };
 

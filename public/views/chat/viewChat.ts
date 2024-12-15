@@ -167,6 +167,9 @@ export class ViewChat extends ViewHome {
 			event: 'keydown',
 			callback: (event) => {
 				const keyboardEvent = event as KeyboardEvent;
+				if (keyboardEvent.key === 'Enter' && keyboardEvent.shiftKey) {
+					return;
+				}
 				if (keyboardEvent.key === 'Enter') {
 					event.preventDefault();
 					this._sendMessage();

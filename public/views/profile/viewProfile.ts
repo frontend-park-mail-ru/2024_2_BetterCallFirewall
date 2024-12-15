@@ -101,6 +101,8 @@ export class ViewProfile extends ViewHome {
 		this._addHandlers();
 
 		update(rootNode, rootVNode);
+
+		this._root.onMount();
 	}
 
 	protected _renderProfile(): void {

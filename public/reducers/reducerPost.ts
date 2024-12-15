@@ -1,5 +1,12 @@
 import { Action } from '../actions/action';
 import {
+	ActionAttachmentsInputAddFiles,
+	ActionAttachmentsInputDeleteFile,
+	ActionAttachmentsInputFileLoaded,
+} from '../actions/actionAttachmentsInput';
+import {
+	ActionCommentCancelEdit,
+	ActionCommentCreate,
 	ActionCommentCreateSuccess,
 	ActionCommentDeleteSuccess,
 	ActionCommentEdit,
@@ -10,10 +17,13 @@ import {
 	ActionPostCommentEdit,
 	ActionPostCommentsOpenSwitch,
 	ActionPostCommentsSortChange,
+	ActionPostExpandSwitch,
 } from '../actions/actionPost';
 import { PostConfig } from '../components';
 import { toCommentConfig } from '../models/comment';
+import { filePayloadFromURL } from '../models/file';
 import deepClone from '../modules/deepClone';
+import { reducerAttachmentsInput } from './reducerAttachmentsInput';
 
 export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 	const newState = deepClone(state);
@@ -50,9 +60,17 @@ export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 				}
 			});
 			break;
-		case action instanceof ActionPostCommentEdit:
+		case action instanceof ActionPostCommentEdit: {
 			newState.commentEditId = action.data.commentId;
+			const comment = newState.commentsConfigs.filter((comment) => {
+				return comment.id === action.data.commentId;
+			})[0];
+			newState.commentAttachmentInput.files = comment.files.map((file) =>
+				filePayloadFromURL(file),
+			);
 			break;
+		}
+		case action instanceof ActionCommentCancelEdit:
 		case action instanceof ActionCommentEdit:
 			newState.commentEditId = 0;
 			break;
@@ -66,6 +84,22 @@ export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 			break;
 		case action instanceof ActionPostCommentsSortChange:
 			newState.commentsSort = action.data.sort;
+			break;
+		case action instanceof ActionPostExpandSwitch:
+			newState.expanded = action.data.expand;
+			break;
+	}
+	switch (true) {
+		case action instanceof ActionAttachmentsInputAddFiles:
+		case action instanceof ActionAttachmentsInputDeleteFile:
+		case action instanceof ActionAttachmentsInputFileLoaded:
+		case action instanceof ActionCommentCreate:
+		case action instanceof ActionCommentEdit:
+		case action instanceof ActionCommentCancelEdit:
+			newState.commentAttachmentInput = reducerAttachmentsInput(
+				newState.commentAttachmentInput,
+				action,
+			);
 			break;
 	}
 	return newState;

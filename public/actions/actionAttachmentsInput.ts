@@ -9,27 +9,27 @@ export const ACTION_ATTACHMENTS_INPUT_TYPES = {
 
 export class ActionAttachmentsInputAddFiles implements Action {
 	type: string = ACTION_ATTACHMENTS_INPUT_TYPES.addFiles;
-	data: { filesCount: number };
+	data: { filesCount: number; postId?: number };
 
-	constructor(filesCount: number) {
-		this.data = { filesCount };
+	constructor(filesCount: number, postId?: number) {
+		this.data = { filesCount, postId };
 	}
 }
 
 export class ActionAttachmentsInputFileLoaded implements Action {
 	type: string = ACTION_ATTACHMENTS_INPUT_TYPES.fileLoaded;
-	data: { filePayload: FilePayload; index: number };
+	data: { filePayload: FilePayload; index: number; postId?: number };
 
-	constructor(filePayload: FilePayload, index: number) {
-		this.data = { filePayload, index };
+	constructor(filePayload: FilePayload, index: number, postId?: number) {
+		this.data = { filePayload, index, postId };
 	}
 }
 
 export class ActionAttachmentsInputDeleteFile implements Action {
 	type: string = ACTION_ATTACHMENTS_INPUT_TYPES.deleteFile;
-	data: { index: number };
+	data: { index: number; postId?: number };
 
-	constructor(index: number) {
-		this.data = { index };
+	constructor(index: number, postId?: number) {
+		this.data = { index, postId };
 	}
 }

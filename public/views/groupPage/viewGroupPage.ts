@@ -119,6 +119,8 @@ export class ViewGroupPage extends ViewHome {
 		this._addHandlers();
 
 		update(rootNode, rootVNode);
+
+		this._root.onMount();
 	}
 
 	protected _renderGroupPage(): void {

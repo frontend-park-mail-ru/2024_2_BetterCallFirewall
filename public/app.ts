@@ -406,11 +406,18 @@ class App {
 		this._stores.feed.subscribe(ACTION_POST_TYPES.commentsOpenSwitch);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.commentEdit);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.commentsSortChange);
+		this._stores.feed.subscribe(ACTION_POST_TYPES.expandSwitch);
+		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.create);
+		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.edit);
+		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.cancelEdit);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.createSuccess);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.editSuccess);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.deleteSuccess);
 		this._stores.feed.subscribe(ACTION_CONFIRM_TYPES.close);
+		this._stores.feed.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.addFiles);
+		this._stores.feed.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.deleteFile);
+		this._stores.feed.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.fileLoaded);
 
 		this._stores.profile.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);
@@ -443,11 +450,22 @@ class App {
 		this._stores.profile.subscribe(ACTION_POST_TYPES.commentsOpenSwitch);
 		this._stores.profile.subscribe(ACTION_POST_TYPES.commentEdit);
 		this._stores.profile.subscribe(ACTION_POST_TYPES.commentsSortChange);
+		this._stores.profile.subscribe(ACTION_POST_TYPES.expandSwitch);
+		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.create);
+		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.edit);
+		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.cancelEdit);
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.createSuccess);
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.editSuccess);
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.deleteSuccess);
 		this._stores.profile.subscribe(ACTION_CONFIRM_TYPES.close);
+		this._stores.profile.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.addFiles);
+		this._stores.profile.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.deleteFile,
+		);
+		this._stores.profile.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.fileLoaded,
+		);
 
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.subscribeSuccess);
@@ -542,11 +560,24 @@ class App {
 		this._stores.groupPage.subscribe(ACTION_POST_TYPES.commentsOpenSwitch);
 		this._stores.groupPage.subscribe(ACTION_POST_TYPES.commentEdit);
 		this._stores.groupPage.subscribe(ACTION_POST_TYPES.commentsSortChange);
+		this._stores.groupPage.subscribe(ACTION_POST_TYPES.expandSwitch);
+		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.create);
+		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.edit);
+		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.cancelEdit);
 		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.createSuccess);
 		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.editSuccess);
 		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.deleteSuccess);
 		this._stores.groupPage.subscribe(ACTION_CONFIRM_TYPES.close);
+		this._stores.groupPage.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.addFiles,
+		);
+		this._stores.groupPage.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.deleteFile,
+		);
+		this._stores.groupPage.subscribe(
+			ACTION_ATTACHMENTS_INPUT_TYPES.fileLoaded,
+		);
 
 		this._stores.profileEdit.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.profileEdit.subscribe(

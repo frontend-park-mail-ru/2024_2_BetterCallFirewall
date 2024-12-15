@@ -3,12 +3,13 @@ import {
 	ActionAttachmentsInputDeleteFile,
 	ActionAttachmentsInputFileLoaded,
 } from '../../actions/actionAttachmentsInput';
-import { FilePayload } from '../../models/file';
+import { FilePayload, filePayloadFromURL } from '../../models/file';
 import fileToString from '../../modules/fileToString';
 import { VNode } from '../../modules/vdom';
 import { Attachment } from '../Attachment/Attachment';
 import Component from '../Component';
 import { Input, InputConfig } from '../Input/Input';
+import { Post } from '../Post/Post';
 
 export interface BaseAttachmentInputConfig extends InputConfig {
 	files: FilePayload[];
@@ -66,16 +67,21 @@ export abstract class BaseAttachmentInput extends Input {
 					);
 					return;
 				}
+				let postId = 0;
+				if (this._parent instanceof Post) {
+					postId = this._parent.config.id;
+				}
 				this._sendAction(
-					new ActionAttachmentsInputAddFiles(files.length),
+					new ActionAttachmentsInputAddFiles(files.length, postId),
 				);
 				files.forEach(async (file, i) => {
 					const fileStr = await fileToString(file);
 					if (fileStr) {
 						this._sendAction(
 							new ActionAttachmentsInputFileLoaded(
-								{ src: fileStr, mimeType: file.type },
+								filePayloadFromURL(fileStr),
 								oldFilesLength + i,
+								postId,
 							),
 						);
 					}
@@ -88,8 +94,12 @@ export abstract class BaseAttachmentInput extends Input {
 					event: 'click',
 					callback: (event) => {
 						event.preventDefault();
+						let postId;
+						if (this._parent instanceof Post) {
+							postId = this._parent.config.id;
+						}
 						this._sendAction(
-							new ActionAttachmentsInputDeleteFile(i),
+							new ActionAttachmentsInputDeleteFile(i, postId),
 						);
 					},
 				});

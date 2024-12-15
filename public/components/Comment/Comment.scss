@@ -3,12 +3,16 @@
     margin: 1rem;
     &__avatar {
         margin-right: 0.5rem;
+        margin-top: 0.5rem;
         img {
             width: 2.2rem;
             height: 2.2rem;
         }
     }
     &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
         max-width: 80%;
     }
     &__header {
@@ -35,6 +39,12 @@
         height: 1rem;
         margin: 0.5rem;
         display: none;
+    }
+    &__attachments-container {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
     }
     &:hover {
         .comment__edit {

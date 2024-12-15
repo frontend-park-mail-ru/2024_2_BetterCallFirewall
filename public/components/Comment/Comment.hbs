@@ -10,6 +10,11 @@
         <div class="comment__text">
             {{this.text}}
         </div>
+        <div class="comment__attachments-container">
+            {{#each attachments}}
+                {{{this}}}
+            {{/each}}
+        </div>
     </div>
     <div class="comment__actions">
         {{#if this.hasEditButton}}
