@@ -1,4 +1,4 @@
-import { ActionStickersGetStickers } from '../../actions/actionStickers';
+import { ActionStickersGet } from '../../actions/actionStickers';
 import api from '../../api/api';
 import { Root } from '../../components';
 import { Stickers, StickersConfig } from '../../components/Stickers/Stickers';
@@ -88,7 +88,8 @@ export class ViewStickers extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					const label = this.stickers.stickerCreateForm.label;
-					const preview = this.stickers.stickerCreateForm.img as HTMLImageElement;
+					const preview = this.stickers.stickerCreateForm
+						.img as HTMLImageElement;
 					const input = event.target as HTMLInputElement;
 					if (input.value) {
 						input.value = '';
@@ -103,7 +104,8 @@ export class ViewStickers extends ViewHome {
 				event: 'change',
 				callback: (event) => {
 					const label = this.stickers.stickerCreateForm.label;
-					const preview = this.stickers.stickerCreateForm.img as HTMLImageElement;
+					const preview = this.stickers.stickerCreateForm
+						.img as HTMLImageElement;
 					const input = event.target as HTMLInputElement;
 					if (input.files && input.files.length > 0) {
 						if (label) {
@@ -150,6 +152,6 @@ export class ViewStickers extends ViewHome {
 
 	render(): void {
 		this._render();
-		this.sendAction(new ActionStickersGetStickers());
+		this.sendAction(new ActionStickersGet());
 	}
 }

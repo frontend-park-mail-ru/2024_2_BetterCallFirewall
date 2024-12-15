@@ -1,7 +1,7 @@
 import { Action } from '../actions/action';
 import {
 	ACTION_STICKERS_TYPES,
-	ActionStickersGetStickersSuccessData,
+	ActionStickersGetSuccessData,
 } from '../actions/actionStickers';
 import config from '../config';
 import { toStickersConfig } from '../models/sticker';
@@ -19,12 +19,11 @@ export const reducerStickers = (
 	}
 	const newState = deepClone(state);
 	switch (action.type) {
-		case ACTION_STICKERS_TYPES.getStickers:
+		case ACTION_STICKERS_TYPES.get:
 			newState.stickers.stickersConfig = [];
 			return newState;
-		case ACTION_STICKERS_TYPES.getStickersSuccess: {
-			const actionData =
-				action.data as ActionStickersGetStickersSuccessData;
+		case ACTION_STICKERS_TYPES.getSuccess: {
+			const actionData = action.data as ActionStickersGetSuccessData;
 			newState.stickers.stickersConfig = actionData.stickers.map(
 				(sticker) => {
 					return toStickersConfig(sticker);

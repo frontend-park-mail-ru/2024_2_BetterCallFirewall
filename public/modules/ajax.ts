@@ -548,20 +548,21 @@ class Ajax {
 	/**
 	 * Создать стикер
 	 */
-	async createSticker(formData: StickerPayload): Promise<AjaxResponse<PostResponse>> {
-		const request = this._postRequest(
+	async createSticker(
+		formData: StickerPayload,
+	): Promise<AjaxResponse<PostResponse>> {
+		return this._genericRequestResponse(
 			app.config.URL.stickers,
+			'post',
 			formData,
 		);
-		return this._postResponse(request);
 	}
 
 	/**
 	 * Получить стикеры
 	 */
 	async getStickers(): Promise<AjaxResponse<StickerResponse[]>> {
-		const url = app.config.URL.stickersAll;
-		return this._getStickerResponse(url);
+		return this._genericRequestResponse(app.config.URL.stickersAll, 'get');
 	}
 
 	/**
