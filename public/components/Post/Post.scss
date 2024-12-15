@@ -176,6 +176,12 @@
         &-sender {
             margin: 0.75rem;
         }
+        &-attach-button {
+            display: flex;
+            align-items: center;
+            width: 1.5rem;
+            height: 1.5rem;
+        }
     }
     &__expand {
         display: flex;

@@ -1,5 +1,10 @@
 import { Action } from '../actions/action';
 import {
+	ActionAttachmentsInputAddFiles,
+	ActionAttachmentsInputDeleteFile,
+	ActionAttachmentsInputFileLoaded,
+} from '../actions/actionAttachmentsInput';
+import {
 	ActionCommentCreateSuccess,
 	ActionCommentDeleteSuccess,
 	ActionCommentEdit,
@@ -15,6 +20,7 @@ import {
 import { PostConfig } from '../components';
 import { toCommentConfig } from '../models/comment';
 import deepClone from '../modules/deepClone';
+import { reducerAttachmentsInput } from './reducerAttachmentsInput';
 
 export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 	const newState = deepClone(state);
@@ -70,6 +76,14 @@ export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 			break;
 		case action instanceof ActionPostExpandSwitch:
 			newState.expanded = action.data.expand;
+			break;
+		case action instanceof ActionAttachmentsInputAddFiles:
+		case action instanceof ActionAttachmentsInputDeleteFile:
+		case action instanceof ActionAttachmentsInputFileLoaded:
+			newState.commentAttachmentInput = reducerAttachmentsInput(
+				newState.commentAttachmentInput,
+				action,
+			);
 			break;
 	}
 	return newState;

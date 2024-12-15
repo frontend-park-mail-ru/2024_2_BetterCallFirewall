@@ -397,6 +397,9 @@ class App {
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.editSuccess);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.deleteSuccess);
 		this._stores.feed.subscribe(ACTION_CONFIRM_TYPES.close);
+		this._stores.feed.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.addFiles);
+		this._stores.feed.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.deleteFile);
+		this._stores.feed.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.fileLoaded);
 
 		this._stores.profile.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.profile.subscribe(ACTION_PROFILE_TYPES.updateProfile);

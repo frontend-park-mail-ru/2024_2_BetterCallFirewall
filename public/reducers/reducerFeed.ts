@@ -1,5 +1,10 @@
 import { Action } from '../actions/action';
 import {
+	ActionAttachmentsInputAddFiles,
+	ActionAttachmentsInputDeleteFile,
+	ActionAttachmentsInputFileLoaded,
+} from '../actions/actionAttachmentsInput';
+import {
 	ActionCommentCreateSuccess,
 	ActionCommentDeleteSuccess,
 	ActionCommentEditSuccess,
@@ -99,6 +104,9 @@ export const reducerFeed = (
 		case action instanceof ActionCommentCreateSuccess:
 		case action instanceof ActionCommentEditSuccess:
 		case action instanceof ActionCommentDeleteSuccess:
+		case action instanceof ActionAttachmentsInputAddFiles:
+		case action instanceof ActionAttachmentsInputDeleteFile:
+		case action instanceof ActionAttachmentsInputFileLoaded:
 			newState.posts.forEach((post) => {
 				if (post.id === action.data.postId) {
 					Object.assign(post, reducerPost(post, action));
