@@ -640,6 +640,8 @@ const URL: URLInterface = DEBUG
 			file: '',
 			comments: '',
 			comment: '',
+			stickers: '',
+			stickersAll: '',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -680,6 +682,8 @@ const URL: URLInterface = DEBUG
 			csatMetrics: ROOT + apiv1 + '/csat/metrics',
 			image: ROOT + '/image',
 			file: ROOT + '/image',
+			stickers: ROOT + apiv1 + '/stickers',
+			stickersAll: ROOT + apiv1 + '/stickers/all',
 		};
 
 const config: AppConfig = {

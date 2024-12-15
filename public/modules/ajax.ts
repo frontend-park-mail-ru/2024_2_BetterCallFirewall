@@ -18,6 +18,7 @@ import {
 } from '../models/profile';
 import { CommentPayload, CommentResponse } from '../models/comment';
 import { SortOptions } from '../components';
+import { StickerPayload, StickerResponse } from '../models/sticker';
 
 type AjaxPromiseConfig = {
 	request: Request;
@@ -545,6 +546,25 @@ class Ajax {
 	}
 
 	/**
+	 * Создать стикер
+	 */
+	async createSticker(formData: StickerPayload): Promise<AjaxResponse<PostResponse>> {
+		const request = this._postRequest(
+			app.config.URL.stickers,
+			formData,
+		);
+		return this._postResponse(request);
+	}
+
+	/**
+	 * Получить стикеры
+	 */
+	async getStickers(): Promise<AjaxResponse<StickerResponse[]>> {
+		const url = app.config.URL.stickersAll;
+		return this._getStickerResponse(url);
+	}
+
+	/**
 	 * Сменить пароль
 	 */
 	async changePassword(
@@ -642,6 +662,26 @@ class Ajax {
 			}
 		}
 		return shortGroupResponse;
+	}
+
+	private async _getStickerResponse(
+		url: string,
+	): Promise<AjaxResponse<StickerResponse[]>> {
+		const request = this._getRequest(url);
+		const response = await this._response(request);
+		let stickerResponse: AjaxResponse<StickerResponse[]> = {
+			status: response.status,
+			success: false,
+		};
+		switch (stickerResponse.status) {
+			case STATUS.ok: {
+				const body = (await response.json()) as FetchResponse<
+					StickerResponse[]
+				>;
+				stickerResponse = Object.assign(stickerResponse, body);
+			}
+		}
+		return stickerResponse;
 	}
 
 	/**

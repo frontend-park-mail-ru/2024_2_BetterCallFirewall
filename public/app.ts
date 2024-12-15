@@ -129,6 +129,8 @@ export interface URLInterface {
 	csatMetrics: string;
 	image: string;
 	file: string;
+	stickers: string,
+	stickersAll: string,
 }
 
 export interface AppConfig {
