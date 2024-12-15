@@ -530,11 +530,11 @@ const stickerFormConfig: ICreateStickerFormConfig = {
 
 const stickersConfig: ViewStickersConfig = {
 	...homeConfig,
-	stickerCreateForm: stickerFormConfig,
 	stickers: {
 		key: 'stickers',
 		headerText: 'Стикеры',
 		stickersConfig: [],
+		stickerCreateForm: stickerFormConfig,
 	},
 };
 

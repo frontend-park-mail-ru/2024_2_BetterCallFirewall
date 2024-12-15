@@ -1,6 +1,5 @@
 import { ActionStickersGetStickers } from '../../actions/actionStickers';
 import { Root } from '../../components';
-import { ICreateStickerFormConfig } from '../../components/CreateStickerForm/CreateStickerForm';
 import { Stickers, StickersConfig } from '../../components/Stickers/Stickers';
 import { update } from '../../modules/vdom';
 import { ChangeStickers } from '../../stores/storeStickers';
@@ -12,7 +11,6 @@ export type ComponentsStickers = {
 
 export interface ViewStickersConfig extends HomeConfig {
 	stickers: StickersConfig;
-	stickerCreateForm: ICreateStickerFormConfig;
 }
 
 export class ViewStickers extends ViewHome {

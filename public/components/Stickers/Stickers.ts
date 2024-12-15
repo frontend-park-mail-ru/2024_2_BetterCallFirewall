@@ -1,18 +1,22 @@
 import Component, { ComponentConfig } from '../Component';
+import { CreateStickerForm, ICreateStickerFormConfig } from '../CreateStickerForm/CreateStickerForm';
 import { Sticker, StickerConfig } from '../Sticker/Sticker';
 
 export interface StickersConfig extends ComponentConfig {
 	headerText: string;
 	stickersConfig: StickerConfig[];
+	stickerCreateForm: ICreateStickerFormConfig;
 }
 
 export class Stickers extends Component {
 	protected _config: StickersConfig;
+	private _stickerCreateForm: CreateStickerForm;
 	private _stickers: Sticker[] = [];
 
 	constructor(config: StickersConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
+		this._stickerCreateForm = new CreateStickerForm(this._config.stickerCreateForm, this);
 	}
 
 	render(): string {
@@ -34,6 +38,7 @@ export class Stickers extends Component {
 			stickers: this._stickers.map((sticker) => {
 				return sticker.render();
 			}),
+			stickerCreateForm: this._stickerCreateForm.render(),
 		};
 	}
 }
