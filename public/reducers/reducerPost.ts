@@ -21,6 +21,7 @@ import {
 } from '../actions/actionPost';
 import { PostConfig } from '../components';
 import { toCommentConfig } from '../models/comment';
+import { filePayloadFromURL } from '../models/file';
 import deepClone from '../modules/deepClone';
 import { reducerAttachmentsInput } from './reducerAttachmentsInput';
 
@@ -64,7 +65,9 @@ export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 			const comment = newState.commentsConfigs.filter((comment) => {
 				return comment.id === action.data.commentId;
 			})[0];
-			newState.files = comment.files;
+			newState.commentAttachmentInput.files = comment.files.map((file) =>
+				filePayloadFromURL(file),
+			);
 			break;
 		}
 		case action instanceof ActionCommentCancelEdit:
