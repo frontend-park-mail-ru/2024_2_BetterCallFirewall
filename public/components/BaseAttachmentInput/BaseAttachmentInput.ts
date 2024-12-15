@@ -57,15 +57,18 @@ export abstract class BaseAttachmentInput extends Input {
 				}
 				const oldFilesLength = this._config.files.length;
 				const files = Array.from(fileList);
-				this._sendAction(
-					new ActionAttachmentsInputAddFiles(files.length),
-				);
-				if (files.length > this._config.filesCountLimit) {
+				if (
+					oldFilesLength + files.length >
+					this._config.filesCountLimit
+				) {
 					this.printError(
 						`Можно прикрепить не более ${this._config.filesCountLimit} файлов`,
 					);
 					return;
 				}
+				this._sendAction(
+					new ActionAttachmentsInputAddFiles(files.length),
+				);
 				files.forEach(async (file, i) => {
 					const fileStr = await fileToString(file);
 					if (fileStr) {
