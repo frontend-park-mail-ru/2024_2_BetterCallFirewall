@@ -1,6 +1,8 @@
 import { ActionStickersGetStickers } from '../../actions/actionStickers';
+import api from '../../api/api';
 import { Root } from '../../components';
 import { Stickers, StickersConfig } from '../../components/Stickers/Stickers';
+import { StickerPayload } from '../../models/sticker';
 import fileToString from '../../modules/fileToString';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
@@ -70,10 +72,10 @@ export class ViewStickers extends ViewHome {
 					stickerForm.printError('Что-то пошло не так');
 					return;
 				}
-				// const stickerPayload: StickerPayload = {
-				// 	file: fileStr,
-				// };
-				// api.stickerCreate(stickerPayload);
+				const stickerPayload: StickerPayload = {
+					file: fileStr,
+				};
+				api.createSticker(stickerPayload);
 				stickerForm.clearError();
 			},
 		});
