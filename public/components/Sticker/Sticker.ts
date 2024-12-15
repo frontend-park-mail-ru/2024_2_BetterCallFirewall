@@ -1,7 +1,6 @@
 import Component, { ComponentConfig } from '../Component';
 
 export interface StickerConfig extends ComponentConfig {
-	id: number;
     file: string;
 }
 

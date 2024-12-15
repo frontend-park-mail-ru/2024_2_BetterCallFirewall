@@ -1,18 +1,20 @@
-import { StickerConfig } from "../components/Sticker/Sticker";
+import { StickerConfig } from '../components/Sticker/Sticker';
 
 export interface StickerResponse {
-	id: number;
 	file: string;
 }
 
 export const toStickersConfig = (
-    stickerResponse: StickerResponse,
+	stickerResponse: StickerResponse,
 ): StickerConfig => {
-    const stickerData: StickerConfig = {
-        id: stickerResponse.id,
-        key: `sticker-${stickerResponse.id}`,
-        file: stickerResponse.file,
-    };
+	const stickerData: StickerConfig = {
+		key: `sticker-${stickerResponse}`,
+		file: stickerResponse.file,
+	};
 
-    return stickerData;
+	return stickerData;
 };
+
+export interface StickerPayload {
+	file: string;
+}

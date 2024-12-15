@@ -1,6 +1,8 @@
 import { ActionStickersGetStickers } from '../../actions/actionStickers';
 import { Root } from '../../components';
 import { Stickers, StickersConfig } from '../../components/Stickers/Stickers';
+import fileToString from '../../modules/fileToString';
+import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangeStickers } from '../../stores/storeStickers';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
@@ -44,6 +46,78 @@ export class ViewStickers extends ViewHome {
 
 	protected _addHandlers() {
 		super._addHandlers();
+		this._addFormHandlers();
+	}
+
+	protected _addFormHandlers() {
+		const stickerForm = this.stickers.stickerCreateForm;
+		stickerForm.vnode.handlers.push({
+			event: 'submit',
+			callback: async (event) => {
+				event.preventDefault();
+				const validator = new Validator();
+				const formData = validator.validateForm(
+					stickerForm.formData,
+					stickerForm.form,
+				);
+				if (!formData) {
+					return;
+				}
+				const fileStr = await fileToString(
+					formData.get('file') as File,
+				);
+				if (fileStr === null) {
+					stickerForm.printError('Что-то пошло не так');
+					return;
+				}
+				// const stickerPayload: StickerPayload = {
+				// 	file: fileStr,
+				// };
+				// api.stickerCreate(stickerPayload);
+				stickerForm.clearError();
+			},
+		});
+		this._addInputHandler();
+	}
+
+	private _addInputHandler(): void {
+		this.stickers.fileInputVNode.handlers.push(
+			{
+				event: 'click',
+				callback: (event) => {
+					const label = this.stickers.stickerCreateForm.label;
+					const preview = this.stickers.stickerCreateForm.img as HTMLImageElement;
+					const input = event.target as HTMLInputElement;
+					if (input.value) {
+						input.value = '';
+						event.preventDefault();
+						label?.classList.remove('active');
+						label.textContent = 'Прикрепить картинку';
+						preview.src = '';
+					}
+				},
+			},
+			{
+				event: 'change',
+				callback: (event) => {
+					const label = this.stickers.stickerCreateForm.label;
+					const preview = this.stickers.stickerCreateForm.img as HTMLImageElement;
+					const input = event.target as HTMLInputElement;
+					if (input.files && input.files.length > 0) {
+						if (label) {
+							label.classList.add('active');
+							label.textContent =
+								'Картинка выбрана, нажмите, чтобы отменить';
+						}
+						const reader = new FileReader();
+						reader.onload = function (e) {
+							preview.src = e.target?.result as string;
+						};
+						reader.readAsDataURL(input.files[0]);
+					}
+				},
+			},
+		);
 	}
 
 	protected _render(): void {

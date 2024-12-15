@@ -53,13 +53,6 @@ export class CreateStickerForm extends BaseForm {
 		return html;
 	}
 
-    protected _prerender(): void {
-		super._prerender();
-		this._templateContext = {
-			...this._templateContext,
-		};
-	}
-
 	render(): string {
 		this._prerender();
 		return this._render('CreateStickerForm.hbs');

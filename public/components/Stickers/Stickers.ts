@@ -1,3 +1,4 @@
+import { VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
 import { CreateStickerForm, ICreateStickerFormConfig } from '../CreateStickerForm/CreateStickerForm';
 import { Sticker, StickerConfig } from '../Sticker/Sticker';
@@ -26,6 +27,14 @@ export class Stickers extends Component {
 
 	get listStickers(): Sticker[] {
 		return this._stickers;
+	}
+
+	get stickerCreateForm(): CreateStickerForm {
+		return this._stickerCreateForm;
+	}
+
+	get fileInputVNode(): VNode {
+		return this._findVNodeByKey('LABEL-form__upload-1');
 	}
 
 	protected _prerender(): void {

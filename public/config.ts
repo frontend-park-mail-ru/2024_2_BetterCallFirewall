@@ -508,12 +508,6 @@ const createGroupConfig: ViewCreateGroupConfig = {
 const stickerFormConfig: ICreateStickerFormConfig = {
 	key: 'createStickerForm',
 	inputs: {
-		name: {
-			key: 'name',
-			type: 'text',
-			placeholder: 'Название стикера',
-			name: 'name',
-		},
 		avatar: {
 			key: 'avatar',
 			name: 'file',

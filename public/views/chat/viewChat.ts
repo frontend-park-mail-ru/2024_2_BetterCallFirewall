@@ -229,8 +229,6 @@ export class ViewChat extends ViewHome {
 	}
 
 	private _addEmojiBtnHandlers(emoji: Emoji) {
-		console.log(emoji.config.key);
-		console.log(emoji.vnode);
 		emoji.vnode.handlers.push({ //?
 			event: 'click',
 			callback: (event) => {
