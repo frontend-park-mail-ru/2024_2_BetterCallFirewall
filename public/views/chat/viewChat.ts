@@ -214,7 +214,7 @@ export class ViewChat extends ViewHome {
 	}
 
 	private _addEmojiHandlers(): void {
-		this._chat.emojiBlockVNode.handlers.push({
+		this._chat.emojiVNode.handlers.push({
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();

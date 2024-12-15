@@ -102,13 +102,11 @@
     &__emoji-panel {
         position: absolute;
         display: flex;
-        overflow-y: scroll; 
+        overflow-y: auto; 
         flex-wrap: wrap;
         width: 8rem;
         height: 8rem;
-        height: auto;
         gap: .3rem;
-        overflow-y: auto;
         bottom: 6rem;
         right: 2rem;
         background-color: var(--main-bg-color);
