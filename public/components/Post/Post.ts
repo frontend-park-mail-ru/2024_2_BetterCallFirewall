@@ -162,7 +162,7 @@ export class Post extends Component {
 	}
 
 	get cancelEditButtonVNode(): VNode {
-		return this._findVNodeByClass('sender__cancel');
+		return this._findVNodeByClass('post__comment-edit-cancel');
 	}
 
 	addLikeHandler() {
@@ -201,6 +201,7 @@ export class Post extends Component {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
+					this.commentTextareaHTML.value = '';
 					this._sendAction(
 						new ActionCommentCancelEdit(
 							this._config.id,

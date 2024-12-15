@@ -160,6 +160,19 @@
                 }
             }
         }
+        &-send-action {
+            display: flex;
+        }
+        &-edit {
+            &-cancel {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+            &-apply {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
     }
     &__comments {
         border-top: var(--border);
