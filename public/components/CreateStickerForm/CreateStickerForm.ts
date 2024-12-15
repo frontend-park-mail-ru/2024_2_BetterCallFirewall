@@ -1,8 +1,7 @@
 import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
 import Component from '../Component';
 
-export interface ICreateStickerFormConfig extends BaseFormConfig {
-}
+export interface ICreateStickerFormConfig extends BaseFormConfig {}
 
 export class CreateStickerForm extends BaseForm {
 	protected override _config: ICreateStickerFormConfig;
