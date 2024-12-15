@@ -1,6 +1,6 @@
 import { PostConfig, SortOptions } from '../components';
 import { GroupPageConfig } from '../components/GroupPage/GroupPage';
-import { PAGE_URLS } from '../config';
+import { ATTACHMENT_COUNT_LIMIT, PAGE_URLS } from '../config';
 import parseFile from '../modules/parseFile';
 import parseTime from '../modules/parseTime';
 
@@ -49,6 +49,14 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 		commentsOpen: false,
 		commentEditId: 0,
 		commentsSort: SortOptions.Asc,
+		commentAttachmentInput: {
+			key: 'commentAttachmentInput',
+			files: [],
+			filesCountLimit: ATTACHMENT_COUNT_LIMIT.comment,
+			name: 'files[]',
+			type: 'file',
+			extra: 'multiple',
+		},
 		expanded: false,
 	};
 };

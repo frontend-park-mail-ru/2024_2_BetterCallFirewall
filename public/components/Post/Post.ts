@@ -16,6 +16,10 @@ import { throttle } from '../../modules/throttle';
 import { INPUT_LIMITS } from '../../modules/validation';
 import { findVNodeByClass, VNode } from '../../modules/vdom';
 import { Attachment } from '../Attachment/Attachment';
+import {
+	ChatAttachmentInput,
+	ChatAttachmentInputConfig,
+} from '../ChatAttachmentInput/ChatAttachmentInput';
 import { Comment, CommentConfig } from '../Comment/Comment';
 import Component, { ComponentConfig } from '../Component';
 
@@ -43,6 +47,7 @@ export interface PostConfig extends ComponentConfig {
 	commentsOpen: boolean;
 	commentEditId: number;
 	commentsSort: string;
+	commentAttachmentInput: ChatAttachmentInputConfig;
 	expanded: boolean;
 }
 
@@ -52,6 +57,7 @@ export interface PostConfig extends ComponentConfig {
 export class Post extends Component {
 	protected _config: PostConfig;
 	private _comments: Comment[] = [];
+	private _commentAttachmentInput: ChatAttachmentInput;
 
 	/**
 	 * Instance of post
@@ -62,6 +68,10 @@ export class Post extends Component {
 	constructor(config: PostConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
+		this._commentAttachmentInput = new ChatAttachmentInput(
+			config.commentAttachmentInput,
+			this,
+		);
 	}
 
 	get config(): PostConfig {
@@ -140,6 +150,10 @@ export class Post extends Component {
 
 	get contentVNode(): VNode {
 		return this._findVNodeByClass('post__content');
+	}
+
+	get commentAttachButton(): VNode {
+		return this._findVNodeByClass('post__comments-attach-button');
 	}
 
 	addLikeHandler() {
@@ -237,7 +251,7 @@ export class Post extends Component {
 		setTimeout(() => {
 			(this.expandButtonVNode.element as HTMLElement).style.display =
 				this._isContentHeightBig() ? 'block' : 'none';
-		}, 100);
+		}, 500);
 	}
 
 	protected _addHandlers(): void {
@@ -260,6 +274,16 @@ export class Post extends Component {
 				}
 			},
 		});
+		this.commentAttachButton.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				(
+					this._commentAttachmentInput.inputVNode
+						.element as HTMLElement
+				).click();
+			},
+		});
 	}
 
 	protected _prerender(): void {
@@ -277,6 +301,10 @@ export class Post extends Component {
 				this,
 			).render();
 		});
+		this._commentAttachmentInput = new ChatAttachmentInput(
+			this._config.commentAttachmentInput,
+			this,
+		);
 		this._templateContext = {
 			...this._templateContext,
 			comments: this._comments.map((comment) => {
@@ -288,6 +316,7 @@ export class Post extends Component {
 			hasCloseCommentsButton: this.hasCloseCommentsButton,
 			commentTextLimit: INPUT_LIMITS.commentText,
 			attachments,
+			commentAttachmentInput: this._commentAttachmentInput.render(),
 		};
 	}
 
@@ -303,12 +332,15 @@ export class Post extends Component {
 		const textarea = this.commentTextareaVNode
 			.element as HTMLTextAreaElement;
 		const text = textarea.value;
-		if (!text) {
+		const files = this._commentAttachmentInput.config.files.map(
+			(file) => file.src,
+		);
+		if (!text && !files.length) {
 			return;
 		}
 		const commentPayload: CommentPayload = {
 			text,
-			file: [],
+			file: files,
 		};
 		textarea.value = '';
 		if (this._config.commentEditId) {
@@ -333,6 +365,6 @@ export class Post extends Component {
 		const rootFontSize = parseFloat(
 			getComputedStyle(document.documentElement).fontSize,
 		);
-		return this.contentVNode.element.scrollHeight > rootFontSize * 50;
+		return this.contentVNode.element.scrollHeight > rootFontSize * 40;
 	}
 }

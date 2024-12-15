@@ -63,6 +63,7 @@ export const THROTTLE_LIMITS = {
 export const ATTACHMENT_COUNT_LIMIT = {
 	post: 10,
 	chat: 5,
+	comment: 5,
 };
 
 const homeConfig: HomeConfig = {
