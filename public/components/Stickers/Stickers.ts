@@ -1,6 +1,7 @@
 import { VNode } from '../../modules/vdom';
 import Component, { ComponentConfig } from '../Component';
 import { CreateStickerForm, ICreateStickerFormConfig } from '../CreateStickerForm/CreateStickerForm';
+import { InputConfig } from '../Input/Input';
 import { Sticker, StickerConfig } from '../Sticker/Sticker';
 
 export interface StickersConfig extends ComponentConfig {
@@ -47,7 +48,10 @@ export class Stickers extends Component {
 			return new Sticker(config, this);
 		});
 		console.log('inputs: ', this._config.stickerCreateForm.inputs);
-		const input = this._config.stickerCreateForm.inputs?.['avatar'] || {};
+		let input: InputConfig = {name: '', key: '', type: ''};
+		if (this._config.stickerCreateForm.inputs) {
+			input = this._config.stickerCreateForm.inputs.avatar;
+		}
 		this._templateContext = {
 			...this._templateContext,
 			stickers: this._stickers.map((sticker) => {
