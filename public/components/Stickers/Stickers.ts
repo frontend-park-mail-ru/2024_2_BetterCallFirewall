@@ -17,6 +17,7 @@ export class Stickers extends Component {
 	constructor(config: StickersConfig, parent: Component) {
 		super(config, parent);
 		this._config = config;
+		console.log('inputs: ', this._config.stickerCreateForm.inputs);
 		this._stickerCreateForm = new CreateStickerForm(this._config.stickerCreateForm, this);
 	}
 
