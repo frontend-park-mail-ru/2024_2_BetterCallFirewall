@@ -6,6 +6,10 @@ import {
 	ActionAttachmentsInputFileLoaded,
 } from '../actions/actionAttachmentsInput';
 import { ActionChatSendMessage } from '../actions/actionChat';
+import {
+	ActionCommentCreate,
+	ActionCommentEdit,
+} from '../actions/actionComment';
 import { ActionFeedPostCreateSuccess } from '../actions/actionFeed';
 import { ActionPostEditRequestSuccess } from '../actions/actionPostEdit';
 import { AttachmentsInputConfig } from '../components/AttachmentsInput/AttachmentsInput';
@@ -39,6 +43,8 @@ export const reducerAttachmentsInput = (
 		case action instanceof ActionPostEditRequestSuccess:
 		case action instanceof ActionChatSendMessage:
 		case action instanceof ActionAppGoTo:
+		case action instanceof ActionCommentCreate:
+		case action instanceof ActionCommentEdit:
 			newState.files = [];
 			break;
 	}

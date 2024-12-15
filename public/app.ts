@@ -392,6 +392,8 @@ class App {
 		this._stores.feed.subscribe(ACTION_POST_TYPES.commentEdit);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.commentsSortChange);
 		this._stores.feed.subscribe(ACTION_POST_TYPES.expandSwitch);
+		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.create);
+		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.edit);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.createSuccess);
 		this._stores.feed.subscribe(ACTION_COMMENT_TYPES.editSuccess);
@@ -433,6 +435,8 @@ class App {
 		this._stores.profile.subscribe(ACTION_POST_TYPES.commentEdit);
 		this._stores.profile.subscribe(ACTION_POST_TYPES.commentsSortChange);
 		this._stores.profile.subscribe(ACTION_POST_TYPES.expandSwitch);
+		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.create);
+		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.edit);
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.createSuccess);
 		this._stores.profile.subscribe(ACTION_COMMENT_TYPES.editSuccess);
@@ -532,6 +536,8 @@ class App {
 		this._stores.groupPage.subscribe(ACTION_POST_TYPES.commentEdit);
 		this._stores.groupPage.subscribe(ACTION_POST_TYPES.commentsSortChange);
 		this._stores.groupPage.subscribe(ACTION_POST_TYPES.expandSwitch);
+		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.create);
+		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.edit);
 		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.requestSuccess);
 		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.createSuccess);
 		this._stores.groupPage.subscribe(ACTION_COMMENT_TYPES.editSuccess);
