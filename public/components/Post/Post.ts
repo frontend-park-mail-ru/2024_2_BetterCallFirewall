@@ -234,8 +234,10 @@ export class Post extends Component {
 	}
 
 	onMount(): void {
-		(this.expandButtonVNode.element as HTMLElement).style.display =
-			this._isContentHeightBig() ? 'block' : 'none';
+		setTimeout(() => {
+			(this.expandButtonVNode.element as HTMLElement).style.display =
+				this._isContentHeightBig() ? 'block' : 'none';
+		}, 100);
 	}
 
 	protected _addHandlers(): void {
