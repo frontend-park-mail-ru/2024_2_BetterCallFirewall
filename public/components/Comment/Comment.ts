@@ -108,7 +108,7 @@ export class Comment extends Component {
 			? groupPageHref(this._config.communityId)
 			: profileHref(this._config.authorId);
 		const attachments = this._config.files.map((file, i) => {
-			new Attachment(
+			return new Attachment(
 				{
 					key: `attachment-${i}`,
 					file: filePayloadFromURL(file),
