@@ -38,7 +38,7 @@ export const fileTypeFromName = (file: string): FileType => {
 };
 
 export const fileNameFromURL = (file: string): string => {
-	const substr = 'files/';
+	const substr = '|';
 	const start = file.indexOf(substr);
 	if (start === -1) {
 		return file;
