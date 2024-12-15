@@ -4,6 +4,7 @@ import {
 	ActionAttachmentsInputDeleteFile,
 	ActionAttachmentsInputFileLoaded,
 } from '../actions/actionAttachmentsInput';
+import { ActionChatSendMessage } from '../actions/actionChat';
 import { ActionFeedPostCreateSuccess } from '../actions/actionFeed';
 import { ActionPostEditRequestSuccess } from '../actions/actionPostEdit';
 import { AttachmentsInputConfig } from '../components/AttachmentsInput/AttachmentsInput';
@@ -32,6 +33,7 @@ export const reducerAttachmentsInput = (
 			break;
 		case action instanceof ActionFeedPostCreateSuccess:
 		case action instanceof ActionPostEditRequestSuccess:
+		case action instanceof ActionChatSendMessage:
 			newState.files = [];
 			break;
 	}

@@ -65,6 +65,10 @@ export const reducerChat = (
 				);
 			}
 			newState.chat.inputText = '';
+			newState.chat.attachmentInput = reducerAttachmentsInput(
+				newState.chat.attachmentInput,
+				action,
+			);
 			return newState;
 		}
 		case ACTION_MESSAGES_TYPES.newMessage: {
