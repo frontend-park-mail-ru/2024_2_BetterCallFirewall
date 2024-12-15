@@ -47,14 +47,12 @@ export class Stickers extends Component {
 		this._stickers = this._config.stickersConfig.map((config) => {
 			return new Sticker(config, this);
 		});
-		const input = this._config.stickerCreateForm.inputs?.['avatar'] || {};
 		this._templateContext = {
 			...this._templateContext,
 			stickers: this._stickers.map((sticker) => {
 				return sticker.render();
 			}),
 			stickerCreateForm: this._stickerCreateForm.render(),
-			input: input,
 		};
 	}
 }
