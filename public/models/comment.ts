@@ -3,7 +3,6 @@ import { CommentConfig } from '../components/Comment/Comment';
 import { ROOT } from '../config';
 import parseFile from '../modules/parseFile';
 import parseTime from '../modules/parseTime';
-import { filePayloadFromURL } from './file';
 
 export interface Header {
 	author_id: number;
@@ -34,7 +33,7 @@ export const toCommentConfig = (
 	const hasEditButton = userId === commentResponse.header.author_id;
 	const hasDeleteButton = hasEditButton;
 	const files = commentResponse.content.file
-		? commentResponse.content.file.map((file) => filePayloadFromURL(file))
+		? commentResponse.content.file.map((file) => parseFile(file))
 		: [];
 	return {
 		id: commentResponse.id,

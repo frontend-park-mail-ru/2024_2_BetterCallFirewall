@@ -1,9 +1,10 @@
 import { ActionCommentDelete } from '../../actions/actionComment';
 import { ActionConfirmOpen } from '../../actions/actionConfirm';
 import { ActionPostCommentEdit } from '../../actions/actionPost';
-import { FilePayload } from '../../models/file';
+import { filePayloadFromURL } from '../../models/file';
 import { groupPageHref, profileHref } from '../../modules/urls';
 import { VNode } from '../../modules/vdom';
+import { Attachment } from '../Attachment/Attachment';
 import Component, { ComponentConfig } from '../Component';
 import { Style } from '../Confirm/Confirm';
 import { Post } from '../Post/Post';
@@ -19,7 +20,7 @@ export interface CommentConfig extends ComponentConfig {
 	text: string;
 	hasEditButton: boolean;
 	hasDeleteButton: boolean;
-	files: FilePayload[];
+	files: string[];
 }
 
 export class Comment extends Component {
@@ -106,9 +107,20 @@ export class Comment extends Component {
 		const authorHref = this._config.communityId
 			? groupPageHref(this._config.communityId)
 			: profileHref(this._config.authorId);
+		const attachments = this._config.files.map((file, i) => {
+			new Attachment(
+				{
+					key: `attachment-${i}`,
+					file: filePayloadFromURL(file),
+					hasDeleteButton: false,
+				},
+				this,
+			).render();
+		});
 		this._templateContext = {
 			...this._templateContext,
 			authorHref,
+			attachments,
 		};
 	}
 }
