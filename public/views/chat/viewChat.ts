@@ -135,15 +135,6 @@ export class ViewChat extends ViewHome {
 				event.preventDefault();
 			},
 		});
-		this._root.addDocumentHandler({
-			event: 'click',
-			callback: (event) => {
-				console.log(event);
-				if (this._chat.config.showEmojiPanel) {
-					this.sendAction(new ActionEmojiPanelSwitch(false));
-				}
-			},
-		});
 	}
 
 	private _addBackButtonHandler() {
@@ -241,7 +232,7 @@ export class ViewChat extends ViewHome {
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
-				this.sendAction(new ActionEmojiPanelSwitch(true));
+				this.sendAction(new ActionEmojiPanelSwitch(!this._chat.config.showEmojiPanel));
 			},
 		});
 	}
