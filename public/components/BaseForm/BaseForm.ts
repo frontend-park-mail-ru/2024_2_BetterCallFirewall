@@ -110,10 +110,10 @@ export abstract class BaseForm extends Component {
 
 	protected _prerender(): void {
 		super._prerender();
-		this.configInputsItems.forEach(([key, config]) => {
+		this._inputs = this.configInputsItems.map(([key, config]) => {
 			const input = new Input(config, this);
 			this._items[key] = input;
-			this._inputs.push(input);
+			return input;
 		});
 		this.configTextAreaItems.forEach(([key, config]) => {
 			const textArea = new TextArea(config, this);
