@@ -1,9 +1,8 @@
-import Component, { ComponentConfig } from "../Component";
-import { Metric, MetricConfig } from "../Metric/Metric";
-
+import { Component, ComponentConfig } from '../Component';
+import { Metric, MetricConfig } from '../Metric/Metric';
 
 export interface MetricsConfig extends ComponentConfig {
-    id: number;
+	id: number;
 	metricsConfig: MetricConfig[];
 }
 
@@ -23,7 +22,7 @@ export class Metrics extends Component {
 
 	protected _prerender(): void {
 		super._prerender();
-        this._metric = this._config.metricsConfig.map((config) => {
+		this._metric = this._config.metricsConfig.map((config) => {
 			return new Metric(config, this);
 		});
 		this._templateContext = {

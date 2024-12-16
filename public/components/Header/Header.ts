@@ -1,5 +1,5 @@
 import { findVNodeByClass, VNode } from '../../modules/vdom';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 import { SearchResult, SearchResultConfig } from '../SearchResult/SearchResult';
 
 export type HeaderProfile = {

@@ -3,7 +3,7 @@ import {
 	findVNodebyTagNameAll,
 	VNode,
 } from '../../modules/vdom';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 import { FormButton, FormButtonConfig } from '../FormButton/FormButton';
 import { InputConfig, Input } from '../Input/Input';
 import { TextAreaConfig, TextArea } from '../TextArea/TextArea';

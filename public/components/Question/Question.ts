@@ -1,5 +1,5 @@
 import { VNode } from '../../modules/vdom';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 import { Score, ScoreConfig } from '../Score/Score';
 
 export interface QuestionConfig extends ComponentConfig {
@@ -31,7 +31,7 @@ export class Question extends Component {
 		this._scores = this._config.scoresConfig.map((config) => {
 			return new Score(config, this);
 		});
-		this._templateContext = { 
+		this._templateContext = {
 			...this._templateContext,
 			scores: this._scores.map((score) => {
 				return score.render();

@@ -1,7 +1,7 @@
 import { FilePayload } from '../../models/file';
 import { fileNameFromURL, fileTypeFromName } from '../../modules/files';
 import { VNode } from '../../modules/vdom';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 import { Loader } from '../Loader/Loader';
 
 export enum FileType {

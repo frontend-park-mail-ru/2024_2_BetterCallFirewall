@@ -1,4 +1,4 @@
-import Component from '../Component';
+import { Component } from '../Component';
 import { Container, ContainerConfig, ContentMessage } from '../index';
 import { Loader } from '../Loader/Loader';
 

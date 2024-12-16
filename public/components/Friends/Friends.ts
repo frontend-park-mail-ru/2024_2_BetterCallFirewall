@@ -1,4 +1,4 @@
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 import { ContentMessage } from '../ContentMessage/ContentMessage';
 import { Friend, FriendConfig } from '../Friend/Friend';
 

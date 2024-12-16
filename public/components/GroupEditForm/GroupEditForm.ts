@@ -1,6 +1,6 @@
 import { VNode } from '../../modules/vdom';
 import { BaseForm, BaseFormConfig, ConfigInputs } from '../BaseForm/BaseForm';
-import Component from '../Component';
+import { Component } from '../Component';
 import { InputConfig } from '../Input/Input';
 
 export interface GroupEditFormInputs extends ConfigInputs {

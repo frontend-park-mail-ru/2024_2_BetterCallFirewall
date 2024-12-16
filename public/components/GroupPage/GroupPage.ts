@@ -1,5 +1,5 @@
 import { findVNodeByKey, VNode } from '../../modules/vdom';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 import { PostConfig, Post } from '../Post/Post';
 
 type Posts = Post[];

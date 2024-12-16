@@ -3,7 +3,7 @@ import {
 	BaseAttachmentInput,
 	BaseAttachmentInputConfig,
 } from '../BaseAttachmentInput/BaseAttachmentInput';
-import Component from '../Component';
+import { Component } from '../Component';
 
 export interface AttachmentsInputConfig extends BaseAttachmentInputConfig {}
 

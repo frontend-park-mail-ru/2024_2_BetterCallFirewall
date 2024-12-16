@@ -1,6 +1,6 @@
 import { findVNodeByClass, findVNodeByKey, VNode } from '../../modules/vdom';
 import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
-import Component from '../Component';
+import { Component } from '../Component';
 import { FormLink, FormLinkConfig } from '../FormLink/FormLink';
 import { InputConfig } from '../Input/Input';
 

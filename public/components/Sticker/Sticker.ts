@@ -1,7 +1,7 @@
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 
 export interface StickerConfig extends ComponentConfig {
-    file: string;
+	file: string;
 }
 
 export class Sticker extends Component {

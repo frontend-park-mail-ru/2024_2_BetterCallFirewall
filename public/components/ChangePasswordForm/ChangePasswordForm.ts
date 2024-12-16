@@ -2,7 +2,7 @@ import { ActionProfileChangePassword } from '../../actions/actionProfileEdit';
 import { ChangePasswordPayload } from '../../models/profile';
 import Validator from '../../modules/validation';
 import { BaseForm, BaseFormConfig, ConfigInputs } from '../BaseForm/BaseForm';
-import Component from '../Component';
+import { Component } from '../Component';
 import { InputConfig } from '../Input/Input';
 
 export interface ChangePasswordFormInputs extends ConfigInputs {

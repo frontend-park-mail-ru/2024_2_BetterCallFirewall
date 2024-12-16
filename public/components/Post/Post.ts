@@ -22,7 +22,7 @@ import {
 	ChatAttachmentInputConfig,
 } from '../ChatAttachmentInput/ChatAttachmentInput';
 import { Comment, CommentConfig } from '../Comment/Comment';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 
 export enum SortOptions {
 	Asc = 'asc',

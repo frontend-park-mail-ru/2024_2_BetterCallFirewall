@@ -4,7 +4,7 @@ import {
 	AttachmentsInputConfig,
 } from '../AttachmentsInput/AttachmentsInput';
 import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
-import Component from '../Component';
+import { Component } from '../Component';
 
 export interface PostEditFormConfig extends BaseFormConfig {
 	attachmentsInput: AttachmentsInputConfig;

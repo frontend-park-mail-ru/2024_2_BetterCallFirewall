@@ -1,5 +1,5 @@
 import { BaseForm, BaseFormConfig } from '../BaseForm/BaseForm';
-import Component from '../Component';
+import { Component } from '../Component';
 
 export interface ICreateStickerFormConfig extends BaseFormConfig {}
 

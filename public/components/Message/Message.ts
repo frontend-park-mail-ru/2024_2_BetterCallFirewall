@@ -1,4 +1,4 @@
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 
 export interface MessageConfig extends ComponentConfig {
 	authorId: number;

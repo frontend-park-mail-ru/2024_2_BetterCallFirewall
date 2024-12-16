@@ -1,4 +1,4 @@
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 
 export class Loader extends Component {
 	constructor(config: ComponentConfig, parent: Component) {
@@ -9,12 +9,4 @@ export class Loader extends Component {
 		this._prerender();
 		return this._render('Loader.hbs');
 	}
-
-	// show() {
-	// 	this.htmlElement.className = 'loader';
-	// }
-
-	// hide() {
-	// 	this.htmlElement.className = 'loader-hide';
-	// }
 }

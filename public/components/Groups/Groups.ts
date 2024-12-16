@@ -1,5 +1,5 @@
 import { VNode } from '../../modules/vdom';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 import { Group, GroupConfig } from '../Group/Group';
 
 export interface GroupsConfig extends ComponentConfig {
@@ -37,7 +37,7 @@ export class Groups extends Component {
 			}),
 		};
 	}
-    get createGroupButtonVNode(): VNode {
+	get createGroupButtonVNode(): VNode {
 		return this._findVNodeByKey('createGroup');
 	}
 }

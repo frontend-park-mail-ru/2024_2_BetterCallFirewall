@@ -1,6 +1,6 @@
 import { Action } from '../actions/action';
 import { Root } from '../components';
-import Component from '../components/Component';
+import { Component } from '../components/Component';
 import dispatcher from '../dispatcher/dispatcher';
 import { Change, Store } from '../stores/store';
 

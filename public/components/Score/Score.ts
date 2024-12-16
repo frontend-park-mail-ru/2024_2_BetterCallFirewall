@@ -1,5 +1,5 @@
 import { VNode } from '../../modules/vdom';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 
 export interface ScoreConfig extends ComponentConfig {
 	id: number;

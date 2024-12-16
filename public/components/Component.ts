@@ -12,7 +12,7 @@ export interface ComponentConfig {
 	key: string;
 }
 
-export default abstract class Component {
+export abstract class Component {
 	protected _config: ComponentConfig | null;
 	protected _parent: Component | null;
 	protected _templateContext: object = {};

@@ -2,7 +2,7 @@ import { VNode } from '../../modules/vdom';
 import { AttachmentsInputConfig } from '../AttachmentsInput/AttachmentsInput';
 import { ChatAttachmentInput } from '../ChatAttachmentInput/ChatAttachmentInput';
 import { ChatMessage, ChatMessageConfig } from '../ChatMessage/ChatMessage';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 import { Emoji, EmojiConfig } from '../Emoji/Emoji';
 import { Sticker, StickerConfig } from '../Sticker/Sticker';
 

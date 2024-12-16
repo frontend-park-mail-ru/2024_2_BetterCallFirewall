@@ -1,6 +1,6 @@
 import { filePayloadFromURL } from '../../models/file';
 import { Attachment } from '../Attachment/Attachment';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 
 export interface ChatMessageConfig extends ComponentConfig {
 	userId: number;

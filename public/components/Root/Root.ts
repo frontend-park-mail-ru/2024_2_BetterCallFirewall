@@ -1,6 +1,6 @@
 import deepClone from '../../modules/deepClone';
 import { ExtendedNode, Handler } from '../../modules/vdom';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 
 export class Root extends Component {
 	protected _config: ComponentConfig = { key: 'root' };

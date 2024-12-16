@@ -1,5 +1,5 @@
 import { ActionConfirmClose } from '../../actions/actionConfirm';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 
 export enum Style {
 	Main = 'button-action confirm__action_main',

@@ -5,7 +5,7 @@ import { filePayloadFromURL } from '../../models/file';
 import { groupPageHref, profileHref } from '../../modules/urls';
 import { VNode } from '../../modules/vdom';
 import { Attachment } from '../Attachment/Attachment';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 import { Style } from '../Confirm/Confirm';
 import { Post } from '../Post/Post';
 

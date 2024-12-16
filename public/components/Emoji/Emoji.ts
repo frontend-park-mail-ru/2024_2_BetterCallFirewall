@@ -1,5 +1,5 @@
 import { VNode } from '../../modules/vdom';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 
 export interface EmojiConfig extends ComponentConfig {
 	emoji: string;
@@ -21,7 +21,7 @@ export class Emoji extends Component {
 		this._prerender();
 		return this._render('Emoji.hbs');
 	}
-	
+
 	get emojiBtnVNode(): VNode {
 		return this._findVNodeByClass('emoji-button');
 	}
