@@ -17,8 +17,10 @@ EXPOSE 443
 
 FROM nginx:alpine
 
-COPY --from=build /app/dist /usr/share/nginx/html
+WORKDIR /nginx
 
-RUN ls -la /usr/share/nginx/html
+COPY --from=build /app/dist /nginx/usr/share/nginx/html
+
+RUN ls -la /nginx/usr/share/nginx/html
 
 CMD [ "nginx", "-g", "daemon off;"]
