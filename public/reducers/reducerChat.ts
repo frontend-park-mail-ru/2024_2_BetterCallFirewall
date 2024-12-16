@@ -20,10 +20,12 @@ import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileRequestSuccessData,
 } from '../actions/actionProfile';
+import { ActionStickersGetSuccess } from '../actions/actionStickers';
 import { ChatConfig } from '../components/Chat/Chat';
 import config from '../config';
 import { MessageResponse, toChatMessageConfig } from '../models/message';
 import { toChatConfig } from '../models/profile';
+import { toStickerConfig } from '../models/sticker';
 import deepClone from '../modules/deepClone';
 import { ViewChatConfig } from '../views/chat/viewChat';
 import { reducerAttachmentsInput } from './reducerAttachmentsInput';
@@ -123,6 +125,11 @@ export const reducerChat = (
 			break;
 		case action instanceof ActionChatPanelContentSwitch:
 			newState.chat.emojiPanelSelected = action.data.content;
+			break;
+		case action instanceof ActionStickersGetSuccess:
+			newState.chat.stickers = action.data.stickers.map((sticker) =>
+				toStickerConfig(sticker),
+			);
 			break;
 	}
 	return newState;

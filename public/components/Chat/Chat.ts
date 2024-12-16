@@ -1,4 +1,5 @@
 import { ActionChatPanelContentSwitch } from '../../actions/actionChat';
+import { ActionStickersGet } from '../../actions/actionStickers';
 import { EmojiPanels } from '../../config';
 import { VNode } from '../../modules/vdom';
 import { AttachmentsInputConfig } from '../AttachmentsInput/AttachmentsInput';
@@ -207,6 +208,7 @@ export class Chat extends Component {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
+					this._sendAction(new ActionStickersGet());
 					this._sendAction(
 						new ActionChatPanelContentSwitch(EmojiPanels.Stickers),
 					);

@@ -4,7 +4,7 @@ export interface StickerResponse {
 	file: string;
 }
 
-export const toStickersConfig = (
+export const toStickerConfig = (
 	stickerResponse: StickerResponse,
 ): StickerConfig => {
 	const stickerData: StickerConfig = {

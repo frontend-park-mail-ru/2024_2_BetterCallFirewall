@@ -4,7 +4,7 @@ import {
 	ActionStickersGetSuccessData,
 } from '../actions/actionStickers';
 import config from '../config';
-import { toStickersConfig } from '../models/sticker';
+import { toStickerConfig } from '../models/sticker';
 import deepClone from '../modules/deepClone';
 import { ViewStickersConfig } from '../views/stickers/viewStickers';
 
@@ -26,7 +26,7 @@ export const reducerStickers = (
 			const actionData = action.data as ActionStickersGetSuccessData;
 			newState.stickers.stickersConfig = actionData.stickers.map(
 				(sticker) => {
-					return toStickersConfig(sticker);
+					return toStickerConfig(sticker);
 				},
 			);
 			return newState;
