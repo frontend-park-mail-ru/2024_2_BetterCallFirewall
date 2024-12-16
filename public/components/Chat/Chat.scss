@@ -98,6 +98,7 @@
     &__emoji-panel {
         position: absolute;
         display: flex;
+        align-items: center;
         flex-direction: column;
         width: 15rem;
         height: 10rem;
@@ -137,6 +138,7 @@
     }
     &__content {
         display: flex;
+        justify-content: center;
         overflow-y: auto; 
         flex-wrap: wrap;
         gap: .3rem;
