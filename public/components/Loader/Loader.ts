@@ -1,7 +1,9 @@
 import { Component, ComponentConfig } from '../Component';
 
+export interface LoaderConfig extends ComponentConfig {}
+
 export class Loader extends Component {
-	constructor(config: ComponentConfig, parent: Component) {
+	constructor(config: LoaderConfig, parent: Component) {
 		super(config, parent);
 	}
 
