@@ -1,4 +1,7 @@
-import { ActionChatPanelContentSwitch } from '../../actions/actionChat';
+import {
+	ActionChatPanelContentSwitch,
+	ActionChatSendMessage,
+} from '../../actions/actionChat';
 import { ActionStickersGet } from '../../actions/actionStickers';
 import { EmojiPanels } from '../../config';
 import { VNode } from '../../modules/vdom';
@@ -192,18 +195,7 @@ export class Chat extends Component {
 				).click();
 			},
 		});
-		if (!this.isEmojisPanelSelected) {
-			this.emojiSwitcherVNode.handlers.push({
-				event: 'click',
-				callback: (event) => {
-					event.preventDefault();
-					this._sendAction(
-						new ActionChatPanelContentSwitch(EmojiPanels.Emojis),
-					);
-				},
-			});
-		}
-		if (!this.isStickersPanelSelected) {
+		if (this.isEmojisPanelSelected) {
 			this.stickerSwitcherVNode.handlers.push({
 				event: 'click',
 				callback: (event) => {
@@ -215,5 +207,34 @@ export class Chat extends Component {
 				},
 			});
 		}
+		if (this.isStickersPanelSelected) {
+			this.emojiSwitcherVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this._sendAction(
+						new ActionChatPanelContentSwitch(EmojiPanels.Emojis),
+					);
+				},
+			});
+			this._stickers.forEach((sticker) => {
+				sticker.vnode.handlers.push({
+					event: 'click',
+					callback: (event) => {
+						event.preventDefault();
+						this._sendSticker(sticker.config.file);
+					},
+				});
+			});
+		}
+	}
+
+	private _sendSticker(file: string) {
+		this._sendAction(
+			new ActionChatSendMessage({
+				content: { text: '', file_path: [], sticker_path: file },
+				receiver: this._config.companionId,
+			}),
+		);
 	}
 }
