@@ -1,6 +1,6 @@
 import { AppConfig, URLInterface } from './app';
 import { ILoginFormConfig, SignupFormConfig } from './components';
-import { ChatConfig, EmojiPanels } from './components/Chat/Chat';
+import { ChatConfig } from './components/Chat/Chat';
 import { MessageConfig } from './components/Message/Message';
 import { ProfileConfig } from './components/Profile/Profile';
 import { ViewChatConfig } from './views/chat/viewChat';
@@ -429,7 +429,7 @@ const emptyChatComponentConfig: ChatConfig = {
 		emoji,
 	})),
 	// stickers: [],
-	emojiPanelSelected: EmojiPanels.Emojis,
+	// emojiPanelSelected: EmojiPanels.Emojis,
 };
 
 const chatConfig: ViewChatConfig = {
