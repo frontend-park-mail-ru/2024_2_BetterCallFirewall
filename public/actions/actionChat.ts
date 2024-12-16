@@ -1,3 +1,4 @@
+import { EmojiPanels } from '../config';
 import { MessageResponse, MessagePayload } from '../models/message';
 import { Action, ActionType } from './action';
 
@@ -9,6 +10,7 @@ export const ACTION_CHAT_TYPES = {
 	requestChatFail: 'ActionChatRequestFail',
 	sendMessage: 'ActionChatSendMessage',
 	switchEmojiPanel: 'ActionSwitchEmojiPanel',
+	panelContentSwitch: 'actionChatPanelContentSwitch',
 };
 
 export class ActionUpdateChat implements Action {
@@ -89,5 +91,14 @@ export class ActionEmojiPanelSwitch implements Action {
 
 	constructor(show: boolean) {
 		this.data = { show };
+	}
+}
+
+export class ActionChatPanelContentSwitch implements Action {
+	type: string = ACTION_CHAT_TYPES.panelContentSwitch;
+	data: { content: EmojiPanels };
+
+	constructor(content: EmojiPanels) {
+		this.data = { content };
 	}
 }

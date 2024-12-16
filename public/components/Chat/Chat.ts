@@ -1,3 +1,4 @@
+import { ActionChatPanelContentSwitch } from '../../actions/actionChat';
 import { EmojiPanels } from '../../config';
 import { VNode } from '../../modules/vdom';
 import { AttachmentsInputConfig } from '../AttachmentsInput/AttachmentsInput';
@@ -133,6 +134,13 @@ export class Chat extends Component {
 		return this._config.emojiPanelSelected === EmojiPanels.Stickers;
 	}
 
+	get emojiSwitcherVNode(): VNode {
+		return this._findVNodeByKey('emoji-switcher');
+	}
+	get stickerSwitcherVNode(): VNode {
+		return this._findVNodeByKey('sticker-switcher');
+	}
+
 	render(): string {
 		this._prerender();
 		return this._render('Chat.hbs');
@@ -179,5 +187,27 @@ export class Chat extends Component {
 				).click();
 			},
 		});
+		if (!this.isEmojisPanelSelected) {
+			this.emojiSwitcherVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this._sendAction(
+						new ActionChatPanelContentSwitch(EmojiPanels.Emojis),
+					);
+				},
+			});
+		}
+		if (!this.isStickersPanelSelected) {
+			this.stickerSwitcherVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this._sendAction(
+						new ActionChatPanelContentSwitch(EmojiPanels.Stickers),
+					);
+				},
+			});
+		}
 	}
 }

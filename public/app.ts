@@ -81,7 +81,10 @@ import {
 import { StoreGroupEdit } from './stores/storeGroupEdit';
 import { ACTION_COMMENT_TYPES } from './actions/actionComment';
 import { ACTION_CONFIRM_TYPES } from './actions/actionConfirm';
-import { ViewStickers, ViewStickersConfig } from './views/stickers/viewStickers';
+import {
+	ViewStickers,
+	ViewStickersConfig,
+} from './views/stickers/viewStickers';
 import { StoreStickers } from './stores/storeStickers';
 import { ACTION_ATTACHMENTS_INPUT_TYPES } from './actions/actionAttachmentsInput';
 
@@ -129,8 +132,8 @@ export interface URLInterface {
 	csatMetrics: string;
 	image: string;
 	file: string;
-	stickers: string,
-	stickersAll: string,
+	stickers: string;
+	stickersAll: string;
 }
 
 export interface AppConfig {
@@ -501,6 +504,7 @@ class App {
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.requestChatFail);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.sendMessage);
 		this._stores.chat.subscribe(ACTION_CHAT_TYPES.switchEmojiPanel);
+		this._stores.chat.subscribe(ACTION_CHAT_TYPES.panelContentSwitch);
 		this._stores.chat.subscribe(ACTION_MESSAGES_TYPES.sendMessage);
 		this._stores.chat.subscribe(ACTION_MESSAGES_TYPES.newMessage);
 		this._stores.chat.subscribe(ACTION_PROFILE_TYPES.profileRequestSuccess);

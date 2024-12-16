@@ -5,9 +5,9 @@ export const ACTION_STICKERS_TYPES = {
 	get: 'actionStickersGet',
 	getSuccess: 'actionStickersGetSuccess',
 	getFail: 'actionStickersGetFail',
-	create: 'actionStickerCreate',
-	createSuccess: 'actionStickerCreateSuccess',
-	createFail: 'actionStickerCreateFail',
+	create: 'actionStickersCreate',
+	createSuccess: 'actionStickersCreateSuccess',
+	createFail: 'actionStickersCreateFail',
 };
 
 export class ActionStickersGet implements Action {

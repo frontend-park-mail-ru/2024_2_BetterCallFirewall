@@ -7,6 +7,7 @@ import {
 } from '../actions/actionAttachmentsInput';
 import {
 	ACTION_CHAT_TYPES,
+	ActionChatPanelContentSwitch,
 	ActionChatRequestSuccessData,
 	ActionChatSendMessageData,
 	ActionEmojiPanelSwitchData,
@@ -119,6 +120,9 @@ export const reducerChat = (
 				newState.chat.attachmentInput,
 				action,
 			);
+			break;
+		case action instanceof ActionChatPanelContentSwitch:
+			newState.chat.emojiPanelSelected = action.data.content;
 			break;
 	}
 	return newState;
