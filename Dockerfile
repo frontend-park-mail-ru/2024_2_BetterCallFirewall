@@ -10,15 +10,15 @@ COPY . .
 
 RUN npm run build
 
-RUN cp -R /node_modules/handlebars/dist /public/dist
+# RUN cp -R node_modules/handlebars/dist /public/dist
 
-EXPOSE 80
-EXPOSE 443
+# EXPOSE 80
+# EXPOSE 443
 
-FROM nginx:alpine
+# FROM nginx:alpine
 
-WORKDIR /nginx
+# WORKDIR /nginx
 
-COPY --from=build /app/public /nginx/usr/share/nginx/html
+# COPY --from=build /app/public /nginx/usr/share/nginx/html
 
-CMD [ "nginx", "-g", "daemon off;"]
+# CMD [ "nginx", "-g", "daemon off;"]
