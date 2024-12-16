@@ -21,6 +21,4 @@ WORKDIR /nginx
 
 COPY --from=build /app/public /nginx/var/www/frontend
 
-RUN chmod -R 777 /nginx/usr/share/nginx/html
-
 CMD [ "nginx", "-g", "daemon off;"]
