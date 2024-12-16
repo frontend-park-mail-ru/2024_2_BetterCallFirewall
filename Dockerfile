@@ -11,4 +11,4 @@ RUN cp -R ./node_modules/handlebars/dist ./dist
 
 EXPOSE 8000
 
-CMD [ "npm", "build"]
+CMD [ "npm", "run", "build"]
