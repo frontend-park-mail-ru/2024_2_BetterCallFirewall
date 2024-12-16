@@ -165,6 +165,13 @@ export class Post extends Component {
 		return this._findVNodeByClass('post__comment-edit-cancel');
 	}
 
+	get isAscentSort(): boolean {
+		return this._config.commentsSort === SortOptions.Asc;
+	}
+	get isDescentSort(): boolean {
+		return this._config.commentsSort === SortOptions.Desc;
+	}
+
 	addLikeHandler() {
 		this.likeButtonVNode.handlers.push({
 			event: 'click',
@@ -353,6 +360,8 @@ export class Post extends Component {
 			attachments,
 			commentAttachmentInput: this._commentAttachmentInput.render(),
 			isEdit: this.isCommentEdit,
+			isAscSort: this.isAscentSort,
+			isDescSort: this.isDescentSort,
 		};
 	}
 
