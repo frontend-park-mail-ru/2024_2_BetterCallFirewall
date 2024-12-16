@@ -7,7 +7,7 @@ import { FilePayload, filePayloadFromURL } from '../../models/file';
 import fileToString from '../../modules/fileToString';
 import { VNode } from '../../modules/vdom';
 import { Attachment } from '../Attachment/Attachment';
-import Component from '../Component';
+import { Component } from '../Component';
 import { Input, InputConfig } from '../Input/Input';
 import { Post } from '../Post/Post';
 
