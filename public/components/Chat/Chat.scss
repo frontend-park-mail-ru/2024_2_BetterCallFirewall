@@ -98,7 +98,8 @@
     &__emoji-panel {
         position: absolute;
         display: flex;
-        width: 10rem;
+        flex-direction: column;
+        width: 15rem;
         height: 10rem;
         bottom: 6rem;
         right: 2rem;
@@ -120,6 +121,15 @@
 .emoji-panel {
     &__header {
         display: flex;
+    }
+    &__switcher {
+        margin: 0.5rem;
+        padding: 0.25rem;
+        border: var(--border);
+        border-radius: 1rem;
+        &_active {
+            border-color: var(--main-color);
+        }
     }
     &__content {
         display: flex;
