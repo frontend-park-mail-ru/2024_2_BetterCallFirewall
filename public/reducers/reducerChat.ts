@@ -74,6 +74,7 @@ export const reducerChat = (
 				newState.chat.attachmentInput,
 				action,
 			);
+			newState.chat.showEmojiPanel = false;
 			return newState;
 		}
 		case ACTION_MESSAGES_TYPES.newMessage: {

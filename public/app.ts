@@ -512,6 +512,7 @@ class App {
 		this._stores.chat.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.addFiles);
 		this._stores.chat.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.deleteFile);
 		this._stores.chat.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.fileLoaded);
+		this._stores.chat.subscribe(ACTION_STICKERS_TYPES.getSuccess);
 
 		this._stores.createPost.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.createPost.subscribe(

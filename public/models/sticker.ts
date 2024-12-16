@@ -8,7 +8,7 @@ export const toStickerConfig = (
 	stickerResponse: StickerResponse,
 ): StickerConfig => {
 	const stickerData: StickerConfig = {
-		key: `sticker-${stickerResponse}`,
+		key: `sticker-${stickerResponse.file}`,
 		file: stickerResponse.file,
 	};
 
