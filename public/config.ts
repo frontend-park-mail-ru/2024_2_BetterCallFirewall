@@ -1,6 +1,6 @@
 import { AppConfig, URLInterface } from './app';
 import { ILoginFormConfig, SignupFormConfig } from './components';
-import { ChatConfig } from './components/Chat/Chat';
+import { ChatConfig, EmojiPanels } from './components/Chat/Chat';
 import { MessageConfig } from './components/Message/Message';
 import { ProfileConfig } from './components/Profile/Profile';
 import { ViewChatConfig } from './views/chat/viewChat';
@@ -379,7 +379,28 @@ const messagesConfig: ViewMessagesConfig = {
 	messages: messagesComponentConfig,
 };
 
-const emojiSymbols = ['😀', '👻', '🤡', '😂', '😍', '🥶', '😎', '😊', '😜', '😡', '🤔', '🥳', '💩', '🙀', '😈', '👽', '😡', '🤪', '😎', '😃'];
+const emojiSymbols = [
+	'😀',
+	'👻',
+	'🤡',
+	'😂',
+	'😍',
+	'🥶',
+	'😎',
+	'😊',
+	'😜',
+	'😡',
+	'🤔',
+	'🥳',
+	'💩',
+	'🙀',
+	'😈',
+	'👽',
+	'😡',
+	'🤪',
+	'😎',
+	'😃',
+];
 
 const emptyChatComponentConfig: ChatConfig = {
 	companionId: -1,
@@ -407,6 +428,8 @@ const emptyChatComponentConfig: ChatConfig = {
 		key: `emoji-${index}`,
 		emoji,
 	})),
+	stickers: [],
+	emojiPanelSelected: EmojiPanels.Emojis,
 };
 
 const chatConfig: ViewChatConfig = {
