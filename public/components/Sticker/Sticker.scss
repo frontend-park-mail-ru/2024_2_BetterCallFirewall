@@ -3,11 +3,11 @@
     height: 10rem;
     &__item {
         width: 100%;
-        height: auto;
+        height: 100%;
     }
-    &_img {
+    &__img {
         height: 100%;
         width: 100%;
-        border-radius: 1rem;
+        object-fit: cover;
     }
 }
