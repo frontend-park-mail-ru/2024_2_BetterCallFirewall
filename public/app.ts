@@ -87,6 +87,7 @@ import {
 } from './views/stickers/viewStickers';
 import { StoreStickers } from './stores/storeStickers';
 import { ACTION_ATTACHMENTS_INPUT_TYPES } from './actions/actionAttachmentsInput';
+import { ACTION_STICKERS_TYPES } from './actions/actionStickers';
 
 export const PAGES = {
 	home: 'home',
@@ -511,6 +512,7 @@ class App {
 		this._stores.chat.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.addFiles);
 		this._stores.chat.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.deleteFile);
 		this._stores.chat.subscribe(ACTION_ATTACHMENTS_INPUT_TYPES.fileLoaded);
+		this._stores.chat.subscribe(ACTION_STICKERS_TYPES.getSuccess);
 
 		this._stores.createPost.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.createPost.subscribe(
