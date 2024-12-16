@@ -1,7 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
 	entry: './public/index.ts',
@@ -52,7 +51,7 @@ module.exports = {
 		path: path.resolve(__dirname, 'public'),
 	},
 	optimization: {
-		minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin()],
+		minimizer: [new TerserPlugin()],
 	},
 	plugins: [new MiniCssExtractPlugin({ filename: 'styles.css' })],
 };
