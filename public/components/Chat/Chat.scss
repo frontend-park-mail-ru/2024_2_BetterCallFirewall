@@ -94,38 +94,42 @@
         height: 3rem;
         padding: 1rem;
     }
-
-    &__emoji-btn {
-
-    }
     
     &__emoji-panel {
         position: absolute;
         display: flex;
-        overflow-y: auto; 
-        flex-wrap: wrap;
         width: 10rem;
         height: 10rem;
-        gap: .3rem;
         bottom: 6rem;
         right: 2rem;
         background-color: var(--main-bg-color);
         padding: .5rem;
         border: var(--border);
         border-radius: 1rem;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
         &_hidden {
             display: none;
         }
-    }
-    &__emoji-panel::-webkit-scrollbar {
-        display: none;
     }
 
     &__attach-button {
         width: 1.5rem;
         height: 1.5rem;
+    }
+}
+
+.emoji-panel {
+    &__header {
+        display: flex;
+    }
+    &__content {
+        display: flex;
+        overflow-y: auto; 
+        flex-wrap: wrap;
+        gap: .3rem;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 }
 

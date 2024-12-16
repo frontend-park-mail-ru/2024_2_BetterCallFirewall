@@ -226,13 +226,17 @@ export class ViewChat extends ViewHome {
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
-				this.sendAction(new ActionEmojiPanelSwitch(!this._chat.config.showEmojiPanel));
+				this.sendAction(
+					new ActionEmojiPanelSwitch(
+						!this._chat.config.showEmojiPanel,
+					),
+				);
 			},
 		});
 	}
 
 	private _addEmojiBtnHandlers(emoji: Emoji) {
-		emoji.vnode.handlers.push({ //?
+		emoji.vnode.handlers.push({
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
