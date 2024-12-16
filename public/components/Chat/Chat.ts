@@ -141,6 +141,10 @@ export class Chat extends Component {
 		return this._findVNodeByKey('sticker-switcher');
 	}
 
+	get emojiPanelVNode(): VNode {
+		return this._findVNodeByKey('emoji-panel');
+	}
+
 	render(): string {
 		this._prerender();
 		return this._render('Chat.hbs');

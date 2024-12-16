@@ -138,6 +138,19 @@ export class ViewChat extends ViewHome {
 				event.preventDefault();
 			},
 		});
+		this._root.addDocumentHandler({
+			event: 'click',
+			callback: (event) => {
+				if (
+					this._chat.config.showEmojiPanel &&
+					!this._chat.emojiPanelVNode.element.contains(
+						event.target as Node,
+					)
+				) {
+					this.sendAction(new ActionEmojiPanelSwitch(false));
+				}
+			},
+		});
 	}
 
 	private _addBackButtonHandler() {
