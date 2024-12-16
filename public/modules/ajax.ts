@@ -551,10 +551,10 @@ class Ajax {
 	async createSticker(
 		formData: StickerPayload,
 	): Promise<AjaxResponse<PostResponse>> {
-		return this._genericRequestStringResponse(
+		return this._genericRequestResponse(
 			app.config.URL.stickers,
 			'post',
-			formData.file,
+			formData,
 		);
 	}
 
