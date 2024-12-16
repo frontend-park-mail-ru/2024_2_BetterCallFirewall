@@ -7,7 +7,7 @@ COPY package.json .
 RUN npm install
 
 COPY . .
-COPY ./node_modules/handlebars/dist ./dist
+RUN cp -R ./node_modules/handlebars/dist ./dist
 
 EXPOSE 8000
 
