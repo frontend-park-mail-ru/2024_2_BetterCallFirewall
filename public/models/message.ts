@@ -2,6 +2,7 @@ import { ChatConfig } from '../components/Chat/Chat';
 import { ChatMessageConfig } from '../components/ChatMessage/ChatMessage';
 import parseFile from '../modules/parseFile';
 import parseTime from '../modules/parseTime';
+import { stickerConfigFromURL } from './sticker';
 
 interface MessageContent {
 	text: string;
@@ -40,5 +41,6 @@ export const toChatMessageConfig = (
 		createdAtISO: messageResponse.created_at,
 		isAuthor: !isCompanion,
 		files,
+		sticker: stickerConfigFromURL(messageResponse.content.sticker_path),
 	};
 };

@@ -13,6 +13,13 @@ export const toStickerConfig = (
 	return stickerData;
 };
 
+export const stickerConfigFromURL = (sticker: string): StickerConfig => {
+	return {
+		key: `sticker-${sticker}`,
+		file: sticker,
+	};
+};
+
 export interface StickerPayload {
 	file: string;
 }
