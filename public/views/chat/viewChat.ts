@@ -220,7 +220,11 @@ export class ViewChat extends ViewHome {
 	}
 
 	private _addEmojiHandlers(): void {
-		this._chat.emojis.forEach((emoji) => this._addEmojiBtnHandlers(emoji));
+		if (this._chat.isEmojisPanelSelected) {
+			this._chat.emojis.forEach((emoji) =>
+				this._addEmojiBtnHandlers(emoji),
+			);
+		}
 
 		this._chat.emojiOpenBtn.handlers.push({
 			event: 'click',
