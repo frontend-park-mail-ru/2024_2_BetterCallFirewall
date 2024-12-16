@@ -24,6 +24,9 @@ import { ViewGroupEditConfig } from './views/groupEdit/viewGroupEdit';
 import { ViewStickersConfig } from './views/stickers/viewStickers';
 import { ICreateStickerFormConfig } from './components/CreateStickerForm/CreateStickerForm';
 
+// eslint-disable-next-line
+import Component from './components/Component';
+
 const DEBUG: boolean = false;
 
 export const ROOT: string = DEBUG
