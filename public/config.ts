@@ -428,7 +428,7 @@ const emptyChatComponentConfig: ChatConfig = {
 		key: `emoji-${index}`,
 		emoji,
 	})),
-	// stickers: [],
+	stickers: [],
 	// emojiPanelSelected: EmojiPanels.Emojis,
 };
 

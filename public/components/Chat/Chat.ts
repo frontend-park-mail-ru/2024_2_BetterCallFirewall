@@ -4,7 +4,7 @@ import { ChatAttachmentInput } from '../ChatAttachmentInput/ChatAttachmentInput'
 import { ChatMessage, ChatMessageConfig } from '../ChatMessage/ChatMessage';
 import { Component, ComponentConfig } from '../Component';
 import { Emoji, EmojiConfig } from '../Emoji/Emoji';
-// import { Sticker, StickerConfig } from '../Sticker/Sticker';
+import { Sticker, StickerConfig } from '../Sticker/Sticker';
 
 type Emojis = Emoji[];
 
@@ -28,7 +28,7 @@ export interface ChatConfig extends ComponentConfig {
 	showEmojiPanel: boolean;
 	attachmentInput: AttachmentsInputConfig;
 	emojis: EmojiConfig[];
-	// stickers: StickerConfig[];
+	stickers: StickerConfig[];
 	// emojiPanelSelected: EmojiPanels;
 }
 
@@ -37,7 +37,7 @@ export class Chat extends Component {
 	private _messages: ChatMessage[] = [];
 	private _attachmentInput: ChatAttachmentInput;
 	private _emojis: Emojis = [];
-	// private _stickers: Sticker[] = [];
+	private _stickers: Sticker[] = [];
 
 	/**
 	 * Instance of chat
@@ -154,9 +154,9 @@ export class Chat extends Component {
 		this._emojis = this._config.emojis.map((config) => {
 			return new Emoji(config, this);
 		});
-		// this._stickers = this._config.stickers.map(
-		// 	(config) => new Sticker(config, this),
-		// );
+		this._stickers = this._config.stickers.map(
+			(config) => new Sticker(config, this),
+		);
 		this._templateContext = {
 			...this._templateContext,
 			messages: this._messages.map((message) => {
@@ -166,7 +166,7 @@ export class Chat extends Component {
 			emojis: this._emojis.map((emoji) => {
 				return emoji.render();
 			}),
-			// stickers: this._stickers.map((sticker) => sticker.render()),
+			stickers: this._stickers.map((sticker) => sticker.render()),
 			// emojisPanelSelected: this.isEmojisPanelSelected,
 			// stickersPanelSelected: this.isStickersPanelSelected,
 		};
