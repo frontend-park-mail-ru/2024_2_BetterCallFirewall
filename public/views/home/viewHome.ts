@@ -1,4 +1,8 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
+import {
+	ACTION_CONFIRM_TYPES,
+	ActionConfirmOpen,
+} from '../../actions/actionConfirm';
 import { ActionGroupsSearch } from '../../actions/actionGroups';
 import {
 	ActionHeaderLogoutClickFail,
@@ -25,6 +29,11 @@ import {
 	ContentConfig,
 	Content,
 } from '../../components';
+import {
+	Confirm,
+	ConfirmConfig,
+	Style,
+} from '../../components/Confirm/Confirm';
 import { CSAT, CSATConfig } from '../../components/CSAT/CSAT';
 import Menu from '../../components/Menu/Menu';
 import { PAGE_LINKS, PAGE_URLS } from '../../config';
@@ -46,6 +55,7 @@ export interface HomeConfig {
 	menu: MenuConfig;
 	main: MainConfig;
 	csat: CSATConfig;
+	confirm?: ConfirmConfig;
 }
 
 export type ComponentsHome = {
@@ -54,6 +64,7 @@ export type ComponentsHome = {
 	header?: Header;
 	content?: Content;
 	aside?: Container;
+	confirm?: Confirm;
 	csat?: CSAT;
 } & Components;
 
@@ -72,11 +83,15 @@ export abstract class ViewHome extends View {
 
 	handleChange(change: ChangeHome): void {
 		switch (change.type) {
+			case ACTION_CONFIRM_TYPES.open:
+			case ACTION_CONFIRM_TYPES.close:
 			case ACTION_PROFILE_TYPES.getHeaderSuccess:
 			case ACTION_MENU_TYPES.updateProfileLinkHref:
 				this.updateViewHome(change.data);
 				break;
 			case ACTION_APP_TYPES.actionAppInit:
+				this.sendAction(new ActionAppGoTo(app.router.path));
+				break;
 			case ACTION_APP_TYPES.goTo:
 				this._configHome = change.data;
 				this.render(change.data);
@@ -129,6 +144,12 @@ export abstract class ViewHome extends View {
 			this._configHome.main.aside,
 			this._components.main,
 		);
+		if (this._configHome.confirm) {
+			this._components.confirm = new Confirm(
+				this._configHome.confirm,
+				this._root,
+			);
+		}
 	}
 
 	protected _addHandlers() {
@@ -178,6 +199,11 @@ export abstract class ViewHome extends View {
 		);
 	};
 
+	// true, если высота документа больше 2-х экранов
+	protected _isTwoScreenHeights() {
+		return window.innerHeight * 2 < document.body.offsetHeight;
+	}
+
 	private get menu(): Menu {
 		const menu = this._components.menu;
 		if (!menu) {
@@ -220,7 +246,7 @@ export abstract class ViewHome extends View {
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
-				logoutButtonClick();
+				this.logoutButtonClick();
 			},
 		});
 		this.header.profileLinkVNode.handlers.push({
@@ -319,9 +345,33 @@ export abstract class ViewHome extends View {
 			),
 		);
 	}, 200);
+
+	private logoutButtonClick() {
+		this.sendAction(
+			new ActionConfirmOpen({
+				key: 'confirm-logout',
+				title: 'Выйти из аккаунта?',
+				text: '',
+				actions: [
+					{
+						text: 'Выйти',
+						style: Style.Negative,
+						callback: (event) => {
+							event.preventDefault();
+							logout();
+						},
+					},
+					{
+						text: 'Отмена',
+						style: Style.Main,
+					},
+				],
+			}),
+		);
+	}
 }
 
-const logoutButtonClick = () => {
+const logout = () => {
 	ajax.post(app.config.URL.logout, {}, (data, error) => {
 		if (error) {
 			dispatcher.getAction(new ActionHeaderLogoutClickFail());

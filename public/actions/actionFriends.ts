@@ -10,8 +10,10 @@ export const ACTION_FRIENDS_TYPES = {
 	getSubscriptionsSuccess: 'actionFriendsGetSubscriptionsSuccess',
 	getUsersSuccess: 'actionFriendsGetUsersSuccess',
 	getUsersFail: 'actionFriendsGetUsersFail',
+	subscribe: 'actionFriendsSubscribe',
 	subscribeSuccess: 'actionFriendsSubscribeSuccess',
 	subscribeFail: 'actionFriendsSubscribeFail',
+	unsubscribe: 'actionFriendsUnsubscribe',
 	unsubscribeSuccess: 'actionFriendsUnsubscribeSuccess',
 	unsubscribeFail: 'actionFriendsUnsubscribeFail',
 	accept: 'actionFriendsAccept',
@@ -87,6 +89,15 @@ export class ActionFriendsGetUsersSuccess implements Action {
 	}
 }
 
+export class ActionFriendsSubscribe implements Action {
+	type: ActionType = ACTION_FRIENDS_TYPES.subscribe;
+	data: { profileId: number };
+
+	constructor(profileId: number) {
+		this.data = { profileId };
+	}
+}
+
 export class ActionFriendsSubscribeSuccess implements Action {
 	type: ActionType = ACTION_FRIENDS_TYPES.subscribeSuccess;
 	data: object = {};
@@ -95,6 +106,15 @@ export class ActionFriendsSubscribeSuccess implements Action {
 export class ActionFriendsSubscribeFail implements Action {
 	type: ActionType = ACTION_FRIENDS_TYPES.subscribeFail;
 	data: object = {};
+}
+
+export class ActionFriendsUnsubscribe implements Action {
+	type: ActionType = ACTION_FRIENDS_TYPES.unsubscribe;
+	data: { profileId: number };
+
+	constructor(profileId: number) {
+		this.data = { profileId };
+	}
 }
 
 export class ActionFriendsUnsubscribeSuccess implements Action {

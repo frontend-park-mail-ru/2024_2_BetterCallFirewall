@@ -3,6 +3,7 @@ import {
 	ACTION_CHAT_TYPES,
 	ActionChatRequest,
 	ActionChatSendMessage,
+	ActionEmojiPanelSwitch,
 	ActionUpdateChat,
 } from '../../actions/actionChat';
 import { ACTION_MESSAGES_TYPES } from '../../actions/actionMessages';
@@ -13,9 +14,11 @@ import {
 import app from '../../app';
 import { Root } from '../../components';
 import { Chat, ChatConfig } from '../../components/Chat/Chat';
+import { Emoji } from '../../components/Emoji/Emoji';
 import { PAGE_LINKS } from '../../config';
 import dispatcher from '../../dispatcher/dispatcher';
-import { MessageSend } from '../../models/message';
+import { MessagePayload } from '../../models/message';
+import { throttle } from '../../modules/throttle';
 import { update } from '../../modules/vdom';
 import { ChangeChat } from '../../stores/storeChat';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
@@ -57,9 +60,7 @@ export class ViewChat extends ViewHome {
 				this._configChat = Object.assign(this._configChat, change.data);
 				this.render();
 				if (app.router.chatId) {
-					this.sendAction(
-						new ActionProfileRequest(`/${app.router.chatId}`),
-					);
+					this._companionProfileRequest();
 				}
 				this._chatScrollBottom = 0;
 				break;
@@ -79,6 +80,11 @@ export class ViewChat extends ViewHome {
 			case ACTION_CHAT_TYPES.updateChat:
 				this.updateViewChat(change.data);
 				break;
+			case ACTION_CHAT_TYPES.switchEmojiPanel:
+				this.updateViewChat(change.data);
+				break;
+			default:
+				this.updateViewChat(change.data);
 		}
 	}
 
@@ -124,11 +130,28 @@ export class ViewChat extends ViewHome {
 		this._addEnterSendHandler();
 		this._addCompanionLink();
 		this._addScrollHandler();
+		this._addEmojiHandlers();
 		this._addEscapeHandler();
 		this._chat.settingsButtonVNode.handlers.push({
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
+			},
+		});
+		this._root.addDocumentHandler({
+			event: 'click',
+			callback: (event) => {
+				if (
+					this._chat.config.showEmojiPanel &&
+					!this._chat.emojiPanelVNode.element.contains(
+						event.target as Node,
+					) &&
+					!this._chat.emojiOpenBtn.element.contains(
+						event.target as Node,
+					)
+				) {
+					this.sendAction(new ActionEmojiPanelSwitch(false));
+				}
 			},
 		});
 	}
@@ -160,6 +183,9 @@ export class ViewChat extends ViewHome {
 			event: 'keydown',
 			callback: (event) => {
 				const keyboardEvent = event as KeyboardEvent;
+				if (keyboardEvent.key === 'Enter' && keyboardEvent.shiftKey) {
+					return;
+				}
 				if (keyboardEvent.key === 'Enter') {
 					event.preventDefault();
 					this._sendMessage();
@@ -209,6 +235,42 @@ export class ViewChat extends ViewHome {
 		});
 	}
 
+	private _addEmojiHandlers(): void {
+		if (this._chat.isEmojisPanelSelected) {
+			this._chat.emojis.forEach((emoji) =>
+				this._addEmojiBtnHandlers(emoji),
+			);
+		}
+
+		this._chat.emojiOpenBtn.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this.sendAction(
+					new ActionEmojiPanelSwitch(
+						!this._chat.config.showEmojiPanel,
+					),
+				);
+			},
+		});
+	}
+
+	private _addEmojiBtnHandlers(emoji: Emoji) {
+		emoji.vnode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				const target = event.target as HTMLElement;
+				if (target) {
+					const emoji = target.textContent;
+					const textarea = this._chat.textarea;
+					textarea.value += emoji;
+					textarea.focus();
+				}
+			},
+		});
+	}
+
 	private _addEscapeHandler() {
 		this._root.addDocumentHandler({
 			event: 'keydown',
@@ -245,14 +307,21 @@ export class ViewChat extends ViewHome {
 
 	private _sendMessage() {
 		const chatText = this._chat.text;
-		if (!chatText) {
+		const files = this._chat.attachmentInput.config.files.map(
+			(file) => file.src,
+		);
+		if (!chatText && !files.length) {
 			return;
 		}
-		const message: MessageSend = {
-			content: chatText,
+		const message: MessagePayload = {
+			content: { text: chatText, file_path: files, sticker_path: '' },
 			receiver: this._chat.config.companionId,
 		};
 		this._chat.textarea.value = '';
 		this.sendAction(new ActionChatSendMessage(message));
 	}
+
+	private _companionProfileRequest = throttle(() => {
+		this.sendAction(new ActionProfileRequest(`/${app.router.chatId}`));
+	}, 1000);
 }

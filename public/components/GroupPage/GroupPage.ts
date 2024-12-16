@@ -1,5 +1,5 @@
 import { findVNodeByKey, VNode } from '../../modules/vdom';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 import { PostConfig, Post } from '../Post/Post';
 
 type Posts = Post[];
@@ -58,6 +58,14 @@ export class GroupPage extends Component {
 
 	get groupEditButtonVNode(): VNode {
 		return this._findVNodeByKey('groupEdit');
+	}
+
+	get groupFollowButton(): VNode {
+		return this._findVNodeByKey('follow');
+	}
+
+	get groupUnfollowButton(): VNode {
+		return this._findVNodeByKey('unfollow');
 	}
 
 	get posts(): Post[] {

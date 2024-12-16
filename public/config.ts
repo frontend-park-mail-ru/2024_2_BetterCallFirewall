@@ -21,12 +21,16 @@ import { ViewCreateGroupConfig } from './views/createGroup/viewCreateGroup';
 import { ICreateGroupFormConfig } from './components/CreateGroupForm/CreateGroupForm';
 import { IGroupEditFormConfig } from './components/GroupEditForm/GroupEditForm';
 import { ViewGroupEditConfig } from './views/groupEdit/viewGroupEdit';
+import { ViewStickersConfig } from './views/stickers/viewStickers';
+import { ICreateStickerFormConfig } from './components/CreateStickerForm/CreateStickerForm';
 
 const DEBUG: boolean = false;
 
 export const ROOT: string = DEBUG
 	? 'http://127.0.0.1:8000'
-	: 'http://vilka.online';
+	: 'https://vilka.online';
+
+const ROOT_WS = ROOT.replace('https', 'wss');
 
 export const PAGE_URLS = {
 	feed: '/feed',
@@ -40,6 +44,7 @@ export const PAGE_URLS = {
 	profile: '',
 	postEdit: '/post-edit',
 	groups: '/groups',
+	stickers: '/stickers',
 	createGroup: '/create-group',
 	groupPage: '/groups',
 	groupEdit: '/group-edit',
@@ -52,6 +57,17 @@ export const PAGE_LINKS = { ...PAGE_URLS };
 PAGE_LINKS.groupPage += '/\\d+';
 PAGE_LINKS.chat += '/\\d+';
 PAGE_LINKS.profile += '/([\\w-]+)';
+
+export const THROTTLE_LIMITS = {
+	buttonClick: 500,
+	batchLoading: 500,
+};
+
+export const ATTACHMENT_COUNT_LIMIT = {
+	post: 10,
+	chat: 5,
+	comment: 5,
+};
 
 const homeConfig: HomeConfig = {
 	menu: {
@@ -107,6 +123,16 @@ const homeConfig: HomeConfig = {
 					<path d="M7.125 6C7.125 5.70163 7.24353 5.41548 7.45451 5.2045C7.66548 4.99353 7.95163 4.875 8.25 4.875H20.25C20.5484 4.875 20.8345 4.99353 21.0455 5.2045C21.2565 5.41548 21.375 5.70163 21.375 6C21.375 6.29837 21.2565 6.58452 21.0455 6.7955C20.8345 7.00647 20.5484 7.125 20.25 7.125H8.25C7.95163 7.125 7.66548 7.00647 7.45451 6.7955C7.24353 6.58452 7.125 6.29837 7.125 6ZM20.25 10.875H8.25C7.95163 10.875 7.66548 10.9935 7.45451 11.2045C7.24353 11.4155 7.125 11.7016 7.125 12C7.125 12.2984 7.24353 12.5845 7.45451 12.7955C7.66548 13.0065 7.95163 13.125 8.25 13.125H20.25C20.5484 13.125 20.8345 13.0065 21.0455 12.7955C21.2565 12.5845 21.375 12.2984 21.375 12C21.375 11.7016 21.2565 11.4155 21.0455 11.2045C20.8345 10.9935 20.5484 10.875 20.25 10.875ZM20.25 16.875H8.25C7.95163 16.875 7.66548 16.9935 7.45451 17.2045C7.24353 17.4155 7.125 17.7016 7.125 18C7.125 18.2984 7.24353 18.5845 7.45451 18.7955C7.66548 19.0065 7.95163 19.125 8.25 19.125H20.25C20.5484 19.125 20.8345 19.0065 21.0455 18.7955C21.2565 18.5845 21.375 18.2984 21.375 18C21.375 17.7016 21.2565 17.4155 21.0455 17.2045C20.8345 16.9935 20.5484 16.875 20.25 16.875ZM4.125 10.5C3.82833 10.5 3.53832 10.588 3.29165 10.7528C3.04497 10.9176 2.85271 11.1519 2.73918 11.426C2.62565 11.7001 2.59594 12.0017 2.65382 12.2926C2.7117 12.5836 2.85456 12.8509 3.06434 13.0607C3.27412 13.2704 3.54139 13.4133 3.83237 13.4712C4.12334 13.5291 4.42494 13.4994 4.69903 13.3858C4.97312 13.2723 5.20738 13.08 5.37221 12.8334C5.53703 12.5867 5.625 12.2967 5.625 12C5.625 11.6022 5.46697 11.2206 5.18566 10.9393C4.90436 10.658 4.52283 10.5 4.125 10.5ZM4.125 4.5C3.82833 4.5 3.53832 4.58797 3.29165 4.7528C3.04497 4.91762 2.85271 5.15189 2.73918 5.42597C2.62565 5.70006 2.59594 6.00166 2.65382 6.29264C2.7117 6.58361 2.85456 6.85088 3.06434 7.06066C3.27412 7.27044 3.54139 7.4133 3.83237 7.47118C4.12334 7.52906 4.42494 7.49935 4.69903 7.38582C4.97312 7.27229 5.20738 7.08003 5.37221 6.83336C5.53703 6.58668 5.625 6.29667 5.625 6C5.625 5.60218 5.46697 5.22064 5.18566 4.93934C4.90436 4.65804 4.52283 4.5 4.125 4.5ZM4.125 16.5C3.82833 16.5 3.53832 16.588 3.29165 16.7528C3.04497 16.9176 2.85271 17.1519 2.73918 17.426C2.62565 17.7001 2.59594 18.0017 2.65382 18.2926C2.7117 18.5836 2.85456 18.8509 3.06434 19.0607C3.27412 19.2704 3.54139 19.4133 3.83237 19.4712C4.12334 19.5291 4.42494 19.4994 4.69903 19.3858C4.97312 19.2723 5.20738 19.08 5.37221 18.8334C5.53703 18.5867 5.625 18.2967 5.625 18C5.625 17.6022 5.46697 17.2206 5.18566 16.9393C4.90436 16.658 4.52283 16.5 4.125 16.5Z" />
 				</svg>`,
 			},
+			stickers: {
+				key: 'stickers',
+				text: 'Стикеры',
+				href: PAGE_LINKS.stickers,
+				icon: `	
+				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M12 22H15C18.866 22 22 18.866 22 15V12C22 7.28595 22 4.92893 20.5355 3.46447C19.0711 2 16.714 2 12 2C7.28595 2 4.92893 2 3.46447 3.46447C2 4.92893 2 7.28595 2 12C2 16.714 2 19.0711 3.46447 20.5355C4.92893 22 7.28595 22 12 22Z" stroke-width="1.5"/>
+					<path d="M15 22C15 20.1387 15 19.2081 15.2447 18.4549C15.7393 16.9327 16.9327 15.7393 18.4549 15.2447C19.2081 15 20.1387 15 22 15" stroke-width="1.5"/>
+				</svg>`,
+			},
 		},
 	},
 	main: {
@@ -126,11 +152,13 @@ const homeConfig: HomeConfig = {
 			showSearchResults: false,
 			profilesSearch: [],
 			groupsSearch: [],
+			searchInfoMessage: '',
 		},
 		content: {
 			key: 'content',
 			className: 'content',
-			message: '',
+			errorMessage: '',
+			infoMessage: '',
 			showLoader: false,
 		},
 		aside: {
@@ -230,15 +258,14 @@ const createPostConfig: ViewCreatePostConfig = {
 				name: 'text',
 			},
 		},
-		inputs: {
-			image: {
-				key: 'image-input',
-				name: 'file',
-				type: 'file',
-				accept: 'image/*',
-				placeholder: 'Прикрепить картинку',
-				// extra: 'multiple',
-			},
+		attachmentsInput: {
+			key: 'files-input',
+			name: 'files[]',
+			type: 'file',
+			placeholder: 'Прикрепить файлы',
+			extra: 'multiple',
+			files: [],
+			filesCountLimit: ATTACHMENT_COUNT_LIMIT.post,
 		},
 		button: {
 			key: 'submitButton',
@@ -285,6 +312,33 @@ const profileEditConfig: ViewProfileEditConfig = {
 			text: 'Сохранить',
 		},
 	},
+	changePasswordForm: {
+		key: 'changePasswordForm',
+		inputs: {
+			oldPassword: {
+				key: 'oldPassword',
+				name: 'oldPassword',
+				type: 'password',
+				placeholder: 'Старый пароль',
+			},
+			newPassword: {
+				key: 'newPassword',
+				name: 'password',
+				type: 'password',
+				placeholder: 'Новый пароль',
+			},
+			repeatPassword: {
+				key: 'repeatPassword',
+				name: 'password_again',
+				type: 'password',
+				placeholder: 'Повторите пароль',
+			},
+		},
+		button: {
+			key: 'changePasswordButton',
+			text: 'Сменить пароль',
+		},
+	},
 };
 
 const feedConfig: ViewFeedConfig = {
@@ -308,6 +362,7 @@ const profileComponentConfig: ProfileConfig = {
 	isFriend: false,
 	isSubscriber: false,
 	isSubscription: false,
+	isUnknown: false,
 	posts: [],
 };
 
@@ -324,6 +379,34 @@ const messagesConfig: ViewMessagesConfig = {
 	messages: messagesComponentConfig,
 };
 
+const emojiSymbols = [
+	'😀',
+	'👻',
+	'🤡',
+	'😂',
+	'😍',
+	'🥶',
+	'😎',
+	'😊',
+	'😜',
+	'😡',
+	'🤔',
+	'🥳',
+	'💩',
+	'🙀',
+	'😈',
+	'👽',
+	'😡',
+	'🤪',
+	'😎',
+	'😃',
+];
+
+export enum EmojiPanels {
+	Emojis = 'emojis',
+	Stickers = 'stickers',
+}
+
 const emptyChatComponentConfig: ChatConfig = {
 	companionId: -1,
 	key: 'chat',
@@ -337,6 +420,21 @@ const emptyChatComponentConfig: ChatConfig = {
 	myAvatar: '',
 	inputText: '',
 	inputKey: 'chat-input',
+	showEmojiPanel: false,
+	attachmentInput: {
+		key: 'attachmentInput',
+		name: 'files[]',
+		type: 'file',
+		extra: 'multiple',
+		files: [],
+		filesCountLimit: ATTACHMENT_COUNT_LIMIT.chat,
+	},
+	emojis: emojiSymbols.map((emoji, index) => ({
+		key: `emoji-${index}`,
+		emoji,
+	})),
+	stickers: [],
+	emojiPanelSelected: EmojiPanels.Emojis,
 };
 
 const chatConfig: ViewChatConfig = {
@@ -350,21 +448,25 @@ const friendsConfig: ViewFriendsConfig = {
 		key: 'friends',
 		headerText: 'Друзья',
 		friendsConfig: [],
+		messageText: '',
 	},
 	subscribers: {
 		key: 'subscribers',
 		headerText: 'Подписчики',
 		friendsConfig: [],
+		messageText: '',
 	},
 	subscriptions: {
 		key: 'subscriptions',
 		headerText: 'Подписки',
 		friendsConfig: [],
+		messageText: '',
 	},
 	users: {
 		key: 'users',
 		headerText: 'Все люди',
 		friendsConfig: [],
+		messageText: '',
 	},
 	pendingUsersRequest: false,
 };
@@ -394,7 +496,8 @@ const groupPageComponentConfig: GroupPageConfig = {
 const groupPageConfig: ViewGroupPageConfig = {
 	...homeConfig,
 	groupPage: groupPageComponentConfig,
-	path: '/', //??
+	path: '/',
+	followRequestPending: false,
 };
 
 const groupFormConfig: ICreateGroupFormConfig = {
@@ -431,6 +534,33 @@ const createGroupConfig: ViewCreateGroupConfig = {
 	createGroupForm: groupFormConfig,
 };
 
+const stickerFormConfig: ICreateStickerFormConfig = {
+	key: 'createStickerForm',
+	inputs: {
+		avatar: {
+			key: 'avatar',
+			name: 'file',
+			type: 'file',
+			accept: 'image/*',
+			placeholder: 'Выбрать стикер',
+		},
+	},
+	button: {
+		key: 'submitButton',
+		text: 'Создать стикер',
+	},
+};
+
+const stickersConfig: ViewStickersConfig = {
+	...homeConfig,
+	stickers: {
+		key: 'stickers',
+		headerText: 'Стикеры',
+		stickersConfig: [],
+		stickerCreateForm: stickerFormConfig,
+	},
+};
+
 const editGroupFormConfig: IGroupEditFormConfig = {
 	key: 'editGroupForm',
 	inputs: {
@@ -463,7 +593,7 @@ const editGroupFormConfig: IGroupEditFormConfig = {
 const editGroupConfig: ViewGroupEditConfig = {
 	...homeConfig,
 	groupEditForm: editGroupFormConfig,
-	groupId: -1,
+	groupId: 0,
 };
 
 const postEditFormConfig: PostEditFormConfig = {
@@ -477,15 +607,14 @@ const postEditFormConfig: PostEditFormConfig = {
 			name: 'text',
 		},
 	},
-	inputs: {
-		image: {
-			key: 'image',
-			name: 'file',
-			type: 'file',
-			accept: 'image/*',
-			placeholder: 'Изменить картинку',
-			// extra: 'multiple',
-		},
+	attachmentsInput: {
+		key: 'files-input',
+		name: 'files[]',
+		type: 'file',
+		placeholder: 'Прикрепить файлы',
+		extra: 'multiple',
+		files: [],
+		filesCountLimit: ATTACHMENT_COUNT_LIMIT.post,
 	},
 	button: {
 		key: 'submitButton',
@@ -499,8 +628,6 @@ const editPostConfig: ViewPostEditConfig = {
 	postId: -1,
 };
 
-const ROOT_WS = ROOT.replace('http', 'ws');
-
 const apiv1 = '/api/v1';
 
 const URL: URLInterface = DEBUG
@@ -510,8 +637,10 @@ const URL: URLInterface = DEBUG
 			logout: ROOT + '/auth/logout',
 			feed: ROOT + '/api/post',
 			profile: ROOT + '/api/profile',
+			profileById: '',
 			profileYourOwn: ROOT + '/api/profile',
 			profiles: ROOT + '/api/profiles',
+			changePassword: '',
 			subscribers: ROOT + '/api/profile/{id}/subscribers',
 			header: ROOT + '/api/profile/header',
 			friends: ROOT + '/api/profile/{id}/friends',
@@ -537,6 +666,11 @@ const URL: URLInterface = DEBUG
 			csat: '',
 			csatMetrics: '',
 			image: '',
+			file: '',
+			comments: '',
+			comment: '',
+			stickers: '',
+			stickersAll: '',
 		}
 	: {
 			signup: ROOT + '/api/v1/auth/register',
@@ -544,8 +678,10 @@ const URL: URLInterface = DEBUG
 			logout: ROOT + '/api/v1/auth/logout',
 			feed: ROOT + '/api/v1/feed',
 			profile: ROOT + '/api/v1/profile',
+			profileById: ROOT + apiv1 + '/profile/{id}',
 			profileYourOwn: ROOT + '/api/v1/profile',
 			profiles: ROOT + '/api/v1/profiles',
+			changePassword: ROOT + apiv1 + '/profile/password',
 			subscribers: ROOT + '/api/v1/profile/{id}/subscribers',
 			header: ROOT + '/api/v1/profile/header',
 			friends: ROOT + '/api/v1/profile/{id}/friends',
@@ -556,6 +692,8 @@ const URL: URLInterface = DEBUG
 			removeFriend: ROOT + '/api/v1/profile/{id}/friend/remove',
 			profileSubscriptions: ROOT + apiv1 + '/profile/{id}/subscriptions',
 			post: ROOT + apiv1 + '/feed/{id}',
+			comments: ROOT + apiv1 + '/feed/{id}/comments',
+			comment: ROOT + apiv1 + '/feed/{id}/{comment_id}',
 			messages: ROOT + apiv1 + '/messages/chats',
 			chat: ROOT + apiv1 + '/messages/chat/{id}',
 			chatWS: ROOT_WS + apiv1 + '/message/ws',
@@ -572,6 +710,9 @@ const URL: URLInterface = DEBUG
 			csat: ROOT + apiv1 + '/csat',
 			csatMetrics: ROOT + apiv1 + '/csat/metrics',
 			image: ROOT + '/image',
+			file: ROOT + '/image',
+			stickers: ROOT + apiv1 + '/stickers',
+			stickersAll: ROOT + apiv1 + '/stickers/all',
 		};
 
 const config: AppConfig = {
@@ -591,6 +732,7 @@ const config: AppConfig = {
 	groupPageConfig,
 	editPostConfig,
 	editGroupConfig,
+	stickersConfig,
 	questionConfig: {
 		question: {
 			id: 1,
@@ -655,7 +797,7 @@ export const validators: Record<string, (value: string | File) => string> = {
 	password_again: (value) => Validator.validateConfirmation(value as string),
 	text: (value) => Validator.validatePost(value as string),
 	file: (value) => Validator.validateImg(value as File),
-	bio: (value) => Validator.validatePost(value as string),
+	bio: (value) => Validator.validateDescription(value as string),
 	avatar: (value) => Validator.validateImg(value as File),
 	description: (value) => Validator.validateDescription(value as string),
 	name: (value) => Validator.validateName(value as string),

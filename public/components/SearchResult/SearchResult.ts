@@ -1,4 +1,4 @@
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 
 export interface SearchResultConfig extends ComponentConfig {
 	id: number;

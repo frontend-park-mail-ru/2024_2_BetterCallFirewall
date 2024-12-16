@@ -7,9 +7,10 @@ import {
 	GroupEditForm,
 	IGroupEditFormConfig,
 } from '../../components/GroupEditForm/GroupEditForm';
-import { PAGE_LINKS, PAGE_URLS } from '../../config';
+import { PAGE_URLS } from '../../config';
 import { GroupPayload } from '../../models/group';
 import fileToString from '../../modules/fileToString';
+import { throttle } from '../../modules/throttle';
 import Validator from '../../modules/validation';
 import { update } from '../../modules/vdom';
 import { ChangeGroupEdit } from '../../stores/storeGroupEdit';
@@ -40,18 +41,13 @@ export class ViewGroupEdit extends ViewHome {
 	handleChange(change: ChangeGroupEdit): void {
 		super.handleChange(change);
 		switch (change.type) {
-			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_APP_TYPES.goTo:
-				this._configGroupEdit = Object.assign(
-					this._configGroupEdit,
-					change.data,
-				);
-				this.render();
+				this.render(change.data);
 				break;
 			case ACTION_GROUPS_TYPES.editSuccess:
 				this.sendAction(
 					new ActionAppGoTo(
-						PAGE_LINKS.groupPage +
+						PAGE_URLS.groupPage +
 							`/${this._configGroupEdit.groupId}`,
 					),
 				);
@@ -61,13 +57,14 @@ export class ViewGroupEdit extends ViewHome {
 		}
 	}
 
-	render(): void {
+	render(data?: ViewGroupEditConfig): void {
+		if (data) {
+			this._updateConfig(data);
+		}
 		this._render();
-		this.sendAction(
-			new ActionGroupPageRequest(
-				PAGE_URLS.groupPage + `/${this._configGroupEdit.groupId}`,
-			),
-		);
+		if (this._configGroupEdit.groupId) {
+			this._groupPageRequest();
+		}
 	}
 
 	updateViewGroupEdit(data: ViewGroupEditConfig): void {
@@ -179,6 +176,10 @@ export class ViewGroupEdit extends ViewHome {
 		);
 	}
 
+	private _updateConfig(config: ViewGroupEditConfig) {
+		this._configGroupEdit = Object.assign(this._configGroupEdit, config);
+	}
+
 	private get _groupEditForm(): GroupEditForm {
 		const form = this._components.groupEditForm;
 		if (!form) {
@@ -186,4 +187,12 @@ export class ViewGroupEdit extends ViewHome {
 		}
 		return form;
 	}
+
+	private _groupPageRequest = throttle(() => {
+		this.sendAction(
+			new ActionGroupPageRequest(
+				PAGE_URLS.groupPage + `/${this._configGroupEdit.groupId}`,
+			),
+		);
+	}, 1000);
 }

@@ -1,9 +1,9 @@
-import Component, { ComponentConfig } from "../Component";
+import { Component, ComponentConfig } from '../Component';
 
 export interface MetricConfig extends ComponentConfig {
-    id: number;
+	id: number;
 	name: string;
-    average: number;
+	average: number;
 }
 
 export class Metric extends Component {

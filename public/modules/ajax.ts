@@ -11,10 +11,14 @@ import { HeaderResponse } from '../models/header';
 import { MessageResponse } from '../models/message';
 import { PostPayload, PostResponse } from '../models/post';
 import {
+	ChangePasswordPayload,
 	FullProfileResponse,
 	ProfilePayload,
 	ShortProfileResponse,
 } from '../models/profile';
+import { CommentPayload, CommentResponse } from '../models/comment';
+import { SortOptions } from '../components';
+import { StickerPayload, StickerResponse } from '../models/sticker';
 
 type AjaxPromiseConfig = {
 	request: Request;
@@ -218,6 +222,14 @@ class Ajax {
 	}
 
 	/**
+	 * Удалить профиль
+	 */
+	async deleteProfile(): Promise<AjaxResponse<object>> {
+		const url = app.config.URL.profile;
+		return this._genericRequestResponse(url, 'delete');
+	}
+
+	/**
 	 * Получить хэдер
 	 */
 	async getHeader(): Promise<AjaxResponse<HeaderResponse>> {
@@ -326,11 +338,22 @@ class Ajax {
 		return this._deleteObjectResponse(url);
 	}
 
-	async getGroups(): Promise<AjaxResponse<ShortGroupResponse[]>> {
-		const url = app.config.URL.groups;
+	/**
+	 * Получить группы
+	 */
+	async getGroups(
+		lastId?: number,
+	): Promise<AjaxResponse<ShortGroupResponse[]>> {
+		let url = app.config.URL.groups;
+		if (lastId) {
+			url = insertQueryParams(url, { id: `${lastId}` });
+		}
 		return this._getShortGroupResponse(url);
 	}
 
+	/**
+	 * Создать группу
+	 */
 	async createGroup(formData: GroupPayload): Promise<AjaxResponse<number>> {
 		return this._genericRequestResponse(
 			app.config.URL.groups,
@@ -458,11 +481,101 @@ class Ajax {
 		return this._genericRequestResponse(app.config.URL.csatMetrics, 'get');
 	}
 
-	async sendImage(image: File): Promise<AjaxResponse<string>> {
+	/**
+	 * Отправить файл
+	 */
+	async sendFile(image: File): Promise<AjaxResponse<string>> {
 		const formData = new FormData();
 		formData.append('file', image);
-		const request = this._postFormRequest(app.config.URL.image, formData);
+		const request = this._postFormRequest(app.config.URL.file, formData);
 		return this._genericResponse(request);
+	}
+
+	/**
+	 * Создать комментарий
+	 */
+	async createComment(
+		postId: number,
+		comment: CommentPayload,
+	): Promise<AjaxResponse<CommentResponse>> {
+		const url = replaceId(app.config.URL.post, postId);
+		return this._genericRequestResponse(url, 'post', comment);
+	}
+
+	/**
+	 * Получить комментарии к посту
+	 */
+	async getComments(
+		postId: number,
+		sort: string,
+		lastId?: number,
+	): Promise<AjaxResponse<CommentResponse[]>> {
+		let url = replaceId(app.config.URL.comments, postId);
+		if (lastId) {
+			url = insertQueryParams(url, { id: `${lastId}` });
+		}
+		if (sort === SortOptions.Desc) {
+			url = insertQueryParams(url, { sort: 'old' });
+		}
+		return this._genericRequestResponse(url, 'get');
+	}
+
+	/**
+	 * Редактировать комментарий
+	 */
+	async editComment(
+		postId: number,
+		commentId: number,
+		commentPayload: CommentPayload,
+	): Promise<AjaxResponse<object>> {
+		let url = replaceId(app.config.URL.comment, postId);
+		url = url.replace('{comment_id}', `${commentId}`);
+		return this._genericRequestResponse(url, 'put', commentPayload);
+	}
+
+	/**
+	 * Удалить комментарий
+	 */
+	async deleteComment(
+		postId: number,
+		commentId: number,
+	): Promise<AjaxResponse<object>> {
+		let url = replaceId(app.config.URL.comment, postId);
+		url = url.replace('{comment_id}', `${commentId}`);
+		return this._genericRequestResponse(url, 'delete');
+	}
+
+	/**
+	 * Создать стикер
+	 */
+	async createSticker(
+		formData: StickerPayload,
+	): Promise<AjaxResponse<PostResponse>> {
+		return this._genericRequestResponse(
+			app.config.URL.stickers,
+			'post',
+			formData,
+		);
+	}
+
+	/**
+	 * Получить стикеры
+	 */
+	async getStickers(): Promise<AjaxResponse<StickerResponse[]>> {
+		return this._genericRequestResponse(app.config.URL.stickersAll, 'get');
+	}
+
+	/**
+	 * Сменить пароль
+	 */
+	async changePassword(
+		payload: ChangePasswordPayload,
+	): Promise<AjaxResponse<string>> {
+		return this._genericRequestResponse(
+			app.config.URL.changePassword,
+			'put',
+			payload,
+		);
 	}
 
 	/**
@@ -518,6 +631,26 @@ class Ajax {
 		return this._genericResponse(request);
 	}
 
+	private async _genericRequestStringResponse<T> (
+		url: string,
+		method: string,
+		data?: string,
+	): Promise<AjaxResponse<T>> {
+		const request = this._jsonStringRequest(url, method, data);
+		return this._genericResponse(request);
+	}
+
+	private _jsonStringRequest(baseUrl: string, method: string, body?: string) {
+		return new Request(baseUrl, {
+			method: method,
+			credentials: 'include',
+			body: body ? body : undefined,
+			headers: {
+				'Content-Type': 'application/json;charset=UTF-8',
+			},
+		});
+	}
+
 	private async _genericResponse<T>(
 		request: Request,
 	): Promise<AjaxResponse<T>> {
@@ -550,6 +683,26 @@ class Ajax {
 			}
 		}
 		return shortGroupResponse;
+	}
+
+	private async _getStickerResponse(
+		url: string,
+	): Promise<AjaxResponse<StickerResponse[]>> {
+		const request = this._getRequest(url);
+		const response = await this._response(request);
+		let stickerResponse: AjaxResponse<StickerResponse[]> = {
+			status: response.status,
+			success: false,
+		};
+		switch (stickerResponse.status) {
+			case STATUS.ok: {
+				const body = (await response.json()) as FetchResponse<
+					StickerResponse[]
+				>;
+				stickerResponse = Object.assign(stickerResponse, body);
+			}
+		}
+		return stickerResponse;
 	}
 
 	/**

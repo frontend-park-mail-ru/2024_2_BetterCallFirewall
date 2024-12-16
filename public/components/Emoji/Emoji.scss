@@ -1,0 +1,14 @@
+.search-result {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+    border: var(--border);
+    border-radius: 1rem;
+    padding: 0.5rem;
+    max-width: 20rem;
+}
+
+.search-result:hover {
+    border-color: var(--main-color);
+    cursor: pointer;
+}

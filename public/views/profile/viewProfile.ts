@@ -1,16 +1,24 @@
 import { ActionAppGoTo } from '../../actions/actionApp';
 import { ActionChatGoToChat } from '../../actions/actionChat';
-import { ActionFriendsAccept } from '../../actions/actionFriends';
-import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
+import { ActionConfirmOpen } from '../../actions/actionConfirm';
+import {
+	ACTION_FRIENDS_TYPES,
+	ActionFriendsAccept,
+	ActionFriendsSubscribe,
+	ActionFriendsUnsubscribe,
+} from '../../actions/actionFriends';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
+	ActionProfileDelete,
 	ActionProfileRequest,
 	ActionUpdateProfile,
 } from '../../actions/actionProfile';
+import { ActionUserUnauthorized } from '../../actions/actionUser';
 import api from '../../api/api';
 import app from '../../app';
 import { Post, Root } from '../../components';
+import { Style } from '../../components/Confirm/Confirm';
 import { ProfileConfig, Profile } from '../../components/Profile/Profile';
 import { PAGE_LINKS, PAGE_URLS } from '../../config';
 import { throttle } from '../../modules/throttle';
@@ -56,6 +64,15 @@ export class ViewProfile extends ViewHome {
 				this.sendAction(new ActionUpdateProfile());
 				this.sendAction(new ActionProfileRequest(app.router.path));
 				break;
+			case ACTION_FRIENDS_TYPES.subscribeSuccess:
+			case ACTION_FRIENDS_TYPES.unsubscribeSuccess:
+				this.sendAction(
+					new ActionProfileRequest(`/${this.profile.config.id}`),
+				);
+				break;
+			case ACTION_PROFILE_TYPES.deleteSuccess:
+				this.sendAction(new ActionUserUnauthorized());
+				break;
 			default:
 				this.updateViewProfile(change.data);
 		}
@@ -64,7 +81,7 @@ export class ViewProfile extends ViewHome {
 	render(): void {
 		this._render();
 		this.sendAction(new ActionUpdateProfile());
-		this.sendAction(new ActionProfileRequest(app.router.path));
+		this._requestProfile();
 	}
 
 	updateViewProfile(data: ViewProfileConfig): void {
@@ -84,6 +101,8 @@ export class ViewProfile extends ViewHome {
 		this._addHandlers();
 
 		update(rootNode, rootVNode);
+
+		this._root.onMount();
 	}
 
 	protected _renderProfile(): void {
@@ -114,6 +133,35 @@ export class ViewProfile extends ViewHome {
 					this.sendAction(new ActionAppGoTo(PAGE_LINKS.profileEdit));
 				},
 			});
+			this.profile.deleteProfileButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionConfirmOpen({
+							key: 'confirm-profile-delete',
+							title: 'Удалить аккаунт?',
+							text: '',
+							actions: [
+								{
+									text: 'Удалить',
+									style: Style.Negative,
+									callback: (event) => {
+										event.preventDefault();
+										this.sendAction(
+											new ActionProfileDelete(),
+										);
+									},
+								},
+								{
+									text: 'Отмена',
+									style: Style.Main,
+								},
+							],
+						}),
+					);
+				},
+			});
 		}
 		if (!this.profile.config.isAuthor) {
 			this.profile.writeMessageLinkVNode.handlers.push({
@@ -139,6 +187,28 @@ export class ViewProfile extends ViewHome {
 				},
 			});
 		}
+		if (this.profile.config.isSubscription) {
+			this.profile.unsubscribeButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionFriendsUnsubscribe(this.profile.config.id),
+					);
+				},
+			});
+		}
+		if (this.profile.config.isUnknown) {
+			this.profile.subscribeButtonVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionFriendsSubscribe(this.profile.config.id),
+					);
+				},
+			});
+		}
 		this.profile.posts.forEach((post) => this._addPostHandlers(post));
 	}
 
@@ -157,24 +227,35 @@ export class ViewProfile extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					api.deletePost(post.config.id);
+					this.sendAction(
+						new ActionConfirmOpen({
+							key: 'confirm-post-delete',
+							title: 'Удалить пост?',
+							text: '',
+							actions: [
+								{
+									text: 'Удалить',
+									style: Style.Negative,
+									callback: (event) => {
+										event.preventDefault();
+										api.deletePost(post.config.id);
+									},
+								},
+								{
+									text: 'Отмена',
+									style: Style.Main,
+								},
+							],
+						}),
+					);
 				},
 			});
 		}
-		post.likeButtonVNode.handlers.push({
-			event: 'click',
-			callback: (event) => {
-				event.preventDefault();
-				this._likePost(post);
-			},
-		});
+		post.addLikeHandler();
+		post.addCommentHandlers();
 	}
 
-	private _likePost = throttle((post: Post) => {
-		if (post.config.likedByUser) {
-			this.sendAction(new ActionPostUnlike(post.config.id));
-		} else {
-			this.sendAction(new ActionPostLike(post.config.id));
-		}
+	private _requestProfile = throttle(() => {
+		this.sendAction(new ActionProfileRequest(app.router.path));
 	}, 1000);
 }

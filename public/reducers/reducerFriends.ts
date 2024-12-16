@@ -11,6 +11,12 @@ import { toFriendConfig } from '../models/profile';
 import deepClone from '../modules/deepClone';
 import { ViewFriendsConfig } from '../views/friends/viewFriends';
 
+const MESSAGES = {
+	emptyFriends: 'Друзей нет',
+	emptySubscribers: 'Подписчиков нет',
+	emptySubscriptions: 'Подписок нет',
+};
+
 const initialState = deepClone(config.friendsConfig);
 
 export const reducerFriends = (
@@ -23,10 +29,15 @@ export const reducerFriends = (
 	const newState = deepClone(state);
 	switch (action.type) {
 		case ACTION_FRIENDS_TYPES.getFriends:
-			newState.friends.friendsConfig = [];
-			newState.subscribers.friendsConfig = [];
-			newState.subscriptions.friendsConfig = [];
-			newState.users.friendsConfig = [];
+			[
+				newState.friends,
+				newState.subscribers,
+				newState.subscriptions,
+				newState.users,
+			].forEach((item) => {
+				item.friendsConfig = [];
+				item.messageText = '';
+			});
 			newState.pendingUsersRequest = true;
 			return newState;
 		case ACTION_FRIENDS_TYPES.getUsersSuccess: {
@@ -52,6 +63,9 @@ export const reducerFriends = (
 			newState.subscribers.friendsConfig = actionData.subscribers.map(
 				(subscriber) => toFriendConfig(subscriber),
 			);
+			if (!newState.subscribers.friendsConfig.length) {
+				newState.subscribers.messageText = MESSAGES.emptySubscribers;
+			}
 			return newState;
 		}
 		case ACTION_FRIENDS_TYPES.getFriendsSuccess: {
@@ -60,6 +74,9 @@ export const reducerFriends = (
 			newState.friends.friendsConfig = actionData.friends.map((friend) =>
 				toFriendConfig(friend),
 			);
+			if (!newState.friends.friendsConfig.length) {
+				newState.friends.messageText = MESSAGES.emptyFriends;
+			}
 			return newState;
 		}
 		case ACTION_FRIENDS_TYPES.getSubscriptionsSuccess: {
@@ -68,6 +85,10 @@ export const reducerFriends = (
 			newState.subscriptions.friendsConfig = actionData.subscriptions.map(
 				(subscription) => toFriendConfig(subscription),
 			);
+			if (!newState.subscriptions.friendsConfig.length) {
+				newState.subscriptions.messageText =
+					MESSAGES.emptySubscriptions;
+			}
 			return newState;
 		}
 		default:

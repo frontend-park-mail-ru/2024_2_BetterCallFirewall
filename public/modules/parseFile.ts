@@ -1,6 +1,6 @@
 import { ROOT } from '../config';
 
-const parseImage = (img: string): string => {
+const parseFile = (img: string): string => {
 	if (!img) {
 		return '';
 	}
@@ -10,4 +10,4 @@ const parseImage = (img: string): string => {
 	return ROOT + img;
 };
 
-export default parseImage;
+export default parseFile;

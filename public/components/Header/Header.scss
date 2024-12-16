@@ -28,6 +28,9 @@
     }
 
     &__logout {
+        &:hover {
+            cursor: pointer;
+        }
         &:hover path {
             fill: var(--main-color);
             stroke: var(--main-color); 
@@ -63,6 +66,8 @@
         padding: 1rem;
         border-bottom-left-radius: 0.5rem;
         border-bottom-right-radius: 0.5rem;
+        border: var(--border);
+        border-top: none;
         &_hidden {
             display: none;
         }
@@ -88,7 +93,7 @@
         }
     }
 
-    @media (max-width: 1200px) {
+    @media (max-width: 768px) {
         .header__menu-opener {
             visibility: visible;
         }

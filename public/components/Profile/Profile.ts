@@ -4,7 +4,7 @@ import {
 	findVNodeByKey,
 	VNode,
 } from '../../modules/vdom';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 import { PostConfig, Post } from '../Post/Post';
 
 type Posts = Post[];
@@ -25,6 +25,7 @@ export interface ProfileConfig extends ComponentConfig {
 	isFriend: boolean;
 	isSubscriber: boolean;
 	isSubscription: boolean;
+	isUnknown: boolean;
 }
 
 export class Profile extends Component {
@@ -71,12 +72,24 @@ export class Profile extends Component {
 		return vnode;
 	}
 
+	get subscribeButtonVNode(): VNode {
+		return this._findVNodeByClass('subscribe-friend');
+	}
+
 	get acceptFriendButtonVNode(): VNode {
 		const vnode = findVNodeByClass(this.vnode, 'accept-friend');
 		if (!vnode) {
 			throw new Error('acceptFriendButton vnode not found');
 		}
 		return vnode;
+	}
+
+	get unsubscribeButtonVNode(): VNode {
+		return this._findVNodeByClass('unsubscribe-friend');
+	}
+
+	get deleteProfileButtonVNode(): VNode {
+		return this._findVNodeByKey('profile-delete');
 	}
 
 	get postsVNodes(): VNode[] {

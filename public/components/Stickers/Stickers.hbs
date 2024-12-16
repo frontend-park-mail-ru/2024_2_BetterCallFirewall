@@ -1,0 +1,11 @@
+<div class="stickers" data-key="{{ this.key }}">
+    {{{ this.stickerCreateForm }}}
+    <div class="stickers__header">
+        <h class="groups__header-text">Все Стикеры</h>
+    </div>
+    <div class="stickers__all">
+        {{#each stickers}}
+            {{{this}}}
+        {{/each}}
+    </div>
+</div>

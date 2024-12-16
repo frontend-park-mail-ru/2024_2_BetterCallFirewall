@@ -16,11 +16,17 @@ import {
 import { update } from '../../modules/vdom';
 import { ChangeGroupPage } from '../../stores/storeGroupPage';
 import { ComponentsHome, HomeConfig, ViewHome } from '../home/viewHome';
-import { PAGE_LINKS, PAGE_URLS, ROOT } from '../../config';
+import { PAGE_LINKS, PAGE_URLS, ROOT, THROTTLE_LIMITS } from '../../config';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import { ACTION_PROFILE_TYPES } from '../../actions/actionProfile';
 import { throttle } from '../../modules/throttle';
-import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
+import {
+	ACTION_GROUPS_TYPES,
+	ActionGroupsFollowGroup,
+	ActionGroupsUnfollowGroup,
+} from '../../actions/actionGroups';
+import { ActionConfirmOpen } from '../../actions/actionConfirm';
+import { Style } from '../../components/Confirm/Confirm';
 
 export type ComponentsGroupPage = {
 	groupPage?: GroupPage;
@@ -29,6 +35,7 @@ export type ComponentsGroupPage = {
 export interface ViewGroupPageConfig extends HomeConfig {
 	groupPage: GroupPageConfig;
 	path: string;
+	followRequestPending: boolean;
 }
 
 export class ViewGroupPage extends ViewHome {
@@ -55,6 +62,10 @@ export class ViewGroupPage extends ViewHome {
 	handleChange(change: ChangeGroupPage): void {
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_GROUPS_TYPES.groupsFollowGroupSuccess:
+			case ACTION_GROUPS_TYPES.groupsUnfollowGroupSuccess:
+				this.render(change.data);
+				break;
 			case ACTION_PROFILE_TYPES.deletePostSuccess:
 				this.updateViewGroupPage(change.data);
 				this.sendAction(
@@ -79,10 +90,16 @@ export class ViewGroupPage extends ViewHome {
 		}
 	}
 
-	render(): void {
+	render(config?: ViewGroupPageConfig): void {
+		if (config) {
+			this._configGroupPage = Object.assign(
+				this._configGroupPage,
+				config,
+			);
+		}
 		this._render();
 		this.sendAction(new ActionUpdateGroupPage());
-		this.sendAction(new ActionGroupPageRequest(app.router.path));
+		this._groupPageRequest();
 	}
 
 	updateViewGroupPage(data: ViewGroupPageConfig): void {
@@ -102,6 +119,8 @@ export class ViewGroupPage extends ViewHome {
 		this._addHandlers();
 
 		update(rootNode, rootVNode);
+
+		this._root.onMount();
 	}
 
 	protected _renderGroupPage(): void {
@@ -148,6 +167,28 @@ export class ViewGroupPage extends ViewHome {
 					);
 				},
 			});
+		} else {
+			if (this._configGroupPage.groupPage.isFollow) {
+				this.groupPage.groupUnfollowButton.handlers.push({
+					event: 'click',
+					callback: (event) => {
+						event.preventDefault();
+						if (!this._configGroupPage.followRequestPending) {
+							this._unfollowGroup();
+						}
+					},
+				});
+			} else {
+				this.groupPage.groupFollowButton.handlers.push({
+					event: 'click',
+					callback: (event) => {
+						event.preventDefault();
+						if (!this._configGroupPage.followRequestPending) {
+							this._followGroup();
+						}
+					},
+				});
+			}
 		}
 		this.groupPage.posts.forEach((post) => this._addPostHandlers(post));
 	}
@@ -175,26 +216,50 @@ export class ViewGroupPage extends ViewHome {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
-					api.deletePost(
-						post.config.id,
-						`?community=${this._configGroupPage.groupPage.id}`,
+					this.sendAction(
+						new ActionConfirmOpen({
+							key: 'confirm-post-delete',
+							title: 'Удалить пост?',
+							text: '',
+							actions: [
+								{
+									text: 'Удалить',
+									style: Style.Negative,
+									callback: (event) => {
+										event.preventDefault();
+										api.deletePost(
+											post.config.id,
+											`?community=${this._configGroupPage.groupPage.id}`,
+										);
+									},
+								},
+								{
+									text: 'Отмена',
+									style: Style.Main,
+								},
+							],
+						}),
 					);
 				},
 			});
 		}
-		post.likeButtonVNode.handlers.push({
-			event: 'click',
-			callback: (event) => {
-				event.preventDefault();
-				this._likePost(post);
-			},
-		});
+		post.addCommentHandlers();
+		post.addLikeHandler();
 	}
-	private _likePost = throttle((post: Post) => {
-		if (post.config.likedByUser) {
-			this.sendAction(new ActionPostUnlike(post.config.id));
-		} else {
-			this.sendAction(new ActionPostLike(post.config.id));
-		}
+
+	private _groupPageRequest = throttle(() => {
+		this.sendAction(new ActionGroupPageRequest(app.router.path));
 	}, 1000);
+
+	private _followGroup = throttle(() => {
+		this.sendAction(
+			new ActionGroupsFollowGroup(this._configGroupPage.groupPage.id),
+		);
+	}, THROTTLE_LIMITS.buttonClick);
+
+	private _unfollowGroup = throttle(() => {
+		this.sendAction(
+			new ActionGroupsUnfollowGroup(this._configGroupPage.groupPage.id),
+		);
+	}, THROTTLE_LIMITS.buttonClick);
 }

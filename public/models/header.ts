@@ -1,7 +1,7 @@
 import { HeaderConfig } from '../components';
 import { ProfileConfig } from '../components/Profile/Profile';
 import deepClone from '../modules/deepClone';
-import parseImage from '../modules/parseImage';
+import parseFile from '../modules/parseFile';
 
 export interface HeaderResponse {
 	author_id: number;
@@ -26,6 +26,6 @@ export const headerResponseToHeaderConfig = (
 	const newHeaderConfig = deepClone(headerConfig);
 	newHeaderConfig.profile.id = headerResponse.author_id;
 	newHeaderConfig.profile.name = headerResponse.author;
-	newHeaderConfig.profile.avatar = parseImage(headerResponse.avatar);
+	newHeaderConfig.profile.avatar = parseFile(headerResponse.avatar);
 	return newHeaderConfig;
 };

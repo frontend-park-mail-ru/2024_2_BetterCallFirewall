@@ -1,0 +1,15 @@
+<div class="confirm" data-key="{{this.key}}">
+    <div class="confirm-pad">
+        <div class="confirm__header">
+            {{this.title}}
+        </div>
+        <div class="confirm__text">
+            {{this.text}}
+        </div>
+        <div class="confirm__actions">
+            {{#each this.actions}}
+                <button class="confirm__action button-no-decoration {{this.style}}" data-key="action-{{@index}}">{{this.text}}</button>
+            {{/each}}
+        </div>
+    </div>
+</div>

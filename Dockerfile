@@ -1,27 +1,24 @@
-FROM node:latest
+FROM node:latest AS build
 
 WORKDIR /app
 
 COPY package.json .
 
-# RUN yarn install
 RUN npm install
 
 COPY . .
 
-EXPOSE 8000
+RUN npm run build
 
-# RUN npm build
-CMD [ "npm", "start"]
+RUN cp -R node_modules/handlebars/dist/ public
 
-# FROM nginx:latest
+EXPOSE 80
+EXPOSE 443
 
-# WORKDIR /app
+FROM nginx:alpine
 
-# COPY --from=build /app .
+WORKDIR /nginx
 
-# COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/public /nginx/var/www/frontend
 
-# EXPOSE 80
-
-# CMD [ "nginx", "-g", "daemon off;" ]
+CMD [ "nginx", "-g", "daemon off;"]

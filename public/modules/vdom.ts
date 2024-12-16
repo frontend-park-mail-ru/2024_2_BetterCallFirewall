@@ -18,6 +18,7 @@ export interface VNode {
 	attrubutes: Attributes;
 	handlers: Handler[];
 	children: (VNode | string)[];
+	element: Element;
 }
 
 export interface Handler {
@@ -89,12 +90,13 @@ const vNodeFromNode = (node: VChildNode): VNode | string | undefined => {
 			throw new Error('Element has no key and parent');
 		}
 	}
-	const vnode = {
+	const vnode: VNode = {
 		key,
 		tagName: elementNode.tagName,
 		attrubutes: attributesFromNode(elementNode),
 		handlers: [],
 		children,
+		element: elementNode,
 	};
 	elementNode._vnode = vnode;
 	return vnode;
@@ -133,6 +135,7 @@ export const create = (vnode: VNode | string): Node => {
 		element.appendChild(create(child));
 	});
 	element._vnode = vnode;
+	vnode.element = element;
 	return element;
 };
 
@@ -162,6 +165,7 @@ export const update = (node: ExtendedNode, vnode: VNode | string) => {
 		elementVNode.children,
 	);
 	elementNode._vnode = elementVNode;
+	elementVNode.element = elementNode;
 };
 
 const updateAttrs = (

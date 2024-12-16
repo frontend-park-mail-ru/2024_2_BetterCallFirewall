@@ -1,7 +1,9 @@
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
+
+export interface LoaderConfig extends ComponentConfig {}
 
 export class Loader extends Component {
-	constructor(config: ComponentConfig, parent: Component) {
+	constructor(config: LoaderConfig, parent: Component) {
 		super(config, parent);
 	}
 
@@ -9,12 +11,4 @@ export class Loader extends Component {
 		this._prerender();
 		return this._render('Loader.hbs');
 	}
-
-	// show() {
-	// 	this.htmlElement.className = 'loader';
-	// }
-
-	// hide() {
-	// 	this.htmlElement.className = 'loader-hide';
-	// }
 }

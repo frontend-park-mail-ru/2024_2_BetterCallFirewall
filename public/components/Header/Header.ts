@@ -1,5 +1,5 @@
 import { findVNodeByClass, VNode } from '../../modules/vdom';
-import Component, { ComponentConfig } from '../Component';
+import { Component, ComponentConfig } from '../Component';
 import { SearchResult, SearchResultConfig } from '../SearchResult/SearchResult';
 
 export type HeaderProfile = {
@@ -17,6 +17,7 @@ export interface HeaderConfig extends ComponentConfig {
 	showSearchResults: boolean;
 	profilesSearch: SearchResultConfig[];
 	groupsSearch: SearchResultConfig[];
+	searchInfoMessage: string;
 }
 
 /**

@@ -17,25 +17,26 @@ export const ACTION_GROUPS_TYPES = {
 
 export class ActionGroupsGetGroups implements Action {
 	type: ActionType;
-	data: object;
+	data: { lastId?: number };
 
-	constructor() {
+	constructor(lastId?: number) {
 		this.type = ACTION_GROUPS_TYPES.getGroups;
-		this.data = {};
+		this.data = { lastId };
 	}
 }
 
 export interface ActionGroupsGetGroupsSuccessData {
 	groups: ShortGroupResponse[];
+	append?: boolean;
 }
 
 export class ActionGroupsGetGroupsSuccess implements Action {
 	type: ActionType;
 	data: ActionGroupsGetGroupsSuccessData;
 
-	constructor(data: ActionGroupsGetGroupsSuccessData) {
+	constructor(groups: ShortGroupResponse[], append?: boolean) {
 		this.type = ACTION_GROUPS_TYPES.getGroupsSuccess;
-		this.data = data;
+		this.data = { groups, append };
 	}
 }
 

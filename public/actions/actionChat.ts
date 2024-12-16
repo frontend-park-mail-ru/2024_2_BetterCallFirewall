@@ -1,4 +1,5 @@
-import { MessageResponse, MessageSend } from '../models/message';
+import { EmojiPanels } from '../config';
+import { MessageResponse, MessagePayload } from '../models/message';
 import { Action, ActionType } from './action';
 
 export const ACTION_CHAT_TYPES = {
@@ -8,6 +9,8 @@ export const ACTION_CHAT_TYPES = {
 	requestChatSuccess: 'ActionChatRequestSuccess',
 	requestChatFail: 'ActionChatRequestFail',
 	sendMessage: 'ActionChatSendMessage',
+	switchEmojiPanel: 'ActionSwitchEmojiPanel',
+	panelContentSwitch: 'actionChatPanelContentSwitch',
 };
 
 export class ActionUpdateChat implements Action {
@@ -66,14 +69,36 @@ export class ActionChatRequestFail implements Action {
 }
 
 export interface ActionChatSendMessageData {
-	message: MessageSend;
+	message: MessagePayload;
 }
 
 export class ActionChatSendMessage implements Action {
 	type: ActionType = ACTION_CHAT_TYPES.sendMessage;
 	data: ActionChatSendMessageData;
 
-	constructor(message: MessageSend) {
+	constructor(message: MessagePayload) {
 		this.data = { message };
+	}
+}
+
+export interface ActionEmojiPanelSwitchData {
+	show: boolean;
+}
+
+export class ActionEmojiPanelSwitch implements Action {
+	type: string = ACTION_CHAT_TYPES.switchEmojiPanel;
+	data: ActionEmojiPanelSwitchData;
+
+	constructor(show: boolean) {
+		this.data = { show };
+	}
+}
+
+export class ActionChatPanelContentSwitch implements Action {
+	type: string = ACTION_CHAT_TYPES.panelContentSwitch;
+	data: { content: EmojiPanels };
+
+	constructor(content: EmojiPanels) {
+		this.data = { content };
 	}
 }

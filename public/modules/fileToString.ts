@@ -3,7 +3,7 @@ import api from '../api/api';
 const fileToString = async (file: File): Promise<string | null> => {
 	let fileStr;
 	if (file.size) {
-		fileStr = await api.sendImage(file);
+		fileStr = await api.sendFile(file);
 		if (!fileStr) {
 			return null;
 		}

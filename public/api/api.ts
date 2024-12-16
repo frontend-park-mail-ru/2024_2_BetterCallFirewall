@@ -34,12 +34,15 @@ import {
 	ActionFriendsGetSubscribersSuccess,
 	ActionFriendsGetSubscriptionsSuccess,
 	ActionFriendsGetUsersSuccess,
+	ActionFriendsUnsubscribe,
+	ActionFriendsSubscribe,
 } from '../actions/actionFriends';
 import {
 	ActionGroupsEditFail,
 	ActionGroupsEditSuccess,
 	ActionGroupsFollowGroupData,
 	ActionGroupsFollowGroupSuccess,
+	ActionGroupsGetGroups,
 	ActionGroupsUnfollowGroupSuccess,
 } from '../actions/actionGroups';
 import {
@@ -88,8 +91,14 @@ import {
 	ActionProfileSearchFail,
 	ActionProfileSearchSuccess,
 	ActionProfileSearchData,
+	ActionProfileDeleteSuccess,
+	ActionProfileDeleteFail,
+	ActionProfileDelete,
 } from '../actions/actionProfile';
 import {
+	ActionProfileChangePassword,
+	ActionProfileChangePasswordFail,
+	ActionProfileChangePasswordSuccess,
 	ActionProfileEditRequestFail,
 	ActionProfileEditRequestSuccess,
 } from '../actions/actionProfileEdit';
@@ -102,8 +111,33 @@ import dispatcher from '../dispatcher/dispatcher';
 import { GroupPayload } from '../models/group';
 import { PostPayload } from '../models/post';
 import ajax, { QueryParams } from '../modules/ajax';
-import { ProfilePayload } from '../models/profile';
+import { ChangePasswordPayload, ProfilePayload } from '../models/profile';
 import { ActionCreateGroupSuccess } from '../actions/actionCreateGroup';
+import {
+	ActionCommentCreate,
+	ActionCommentCreateFail,
+	ActionCommentCreateSuccess,
+	ActionCommentDelete,
+	ActionCommentDeleteFail,
+	ActionCommentDeleteSuccess,
+	ActionCommentEdit,
+	ActionCommentEditFail,
+	ActionCommentEditSuccess,
+	ActionCommentRequest,
+	ActionCommentRequestFail,
+	ActionCommentRequestSuccess,
+} from '../actions/actionComment';
+import { CommentPayload, commentPayloadToResponse } from '../models/comment';
+import { CommentConfig } from '../components/Comment/Comment';
+import { StickerPayload } from '../models/sticker';
+import {
+	ActionStickerCreateFail,
+	ActionStickerCreateSuccess,
+	ActionStickersCreate,
+	ActionStickersGet,
+	ActionStickersGetFail,
+	ActionStickersGetSuccess,
+} from '../actions/actionStickers';
 
 export const STATUS = {
 	ok: 200,
@@ -156,9 +190,6 @@ class API {
 			case ACTION_POST_TYPES.unlike:
 				this.unlikePost((action.data as ActionPostLikeData).postId);
 				break;
-			case ACTION_GROUPS_TYPES.getGroups:
-				this.requestGroups();
-				break;
 			case ACTION_GROUP_PAGE_TYPES.groupPageRequest:
 				this.requestGroupPage(
 					(action.data as ActionGroupPageRequestData).href,
@@ -185,6 +216,51 @@ class API {
 				break;
 			case action instanceof ActionGroupPagePostsRequest:
 				this.requestPosts(undefined, action.data.groupId);
+				break;
+			case action instanceof ActionFriendsUnsubscribe:
+				this.unsubscribeToProfile(action.data.profileId);
+				break;
+			case action instanceof ActionFriendsSubscribe:
+				this.subscribeToProfile(action.data.profileId);
+				break;
+			case action instanceof ActionProfileDelete:
+				this.deleteProfile();
+				break;
+			case action instanceof ActionCommentRequest:
+				this.getComments(
+					action.data.postId,
+					action.data.sort,
+					action.data.lastId,
+				);
+				break;
+			case action instanceof ActionCommentCreate:
+				this.createComment(
+					action.data.postId,
+					action.data.commentPayload,
+				);
+				break;
+			case action instanceof ActionCommentEdit:
+				this.editComment(
+					action.data.postId,
+					action.data.commentId,
+					action.data.commentConfig,
+					action.data.commentPayload,
+				);
+				break;
+			case action instanceof ActionCommentDelete:
+				this.deleteComment(action.data.postId, action.data.commentId);
+				break;
+			case action instanceof ActionProfileChangePassword:
+				this.changePassword(action.data.payload);
+				break;
+			case action instanceof ActionGroupsGetGroups:
+				this.requestGroups(action.data.lastId);
+				break;
+			case action instanceof ActionStickersGet:
+				this.getStickers();
+				break;
+			case action instanceof ActionStickersCreate:
+				this.createSticker(action.data.payload);
 				break;
 		}
 	}
@@ -478,8 +554,8 @@ class API {
 	}
 
 	async groupEdit(groupPayload: GroupPayload, id: number) {
-		const respone = await ajax.groupEdit(groupPayload, id);
-		switch (respone.status) {
+		const response = await ajax.groupEdit(groupPayload, id);
+		switch (response.status) {
 			case STATUS.ok:
 				this.sendAction(new ActionGroupsEditSuccess());
 				break;
@@ -488,24 +564,22 @@ class API {
 		}
 	}
 
-	async requestGroups() {
-		const response = await ajax.getGroups();
+	async requestGroups(lastId?: number) {
+		const response = await ajax.getGroups(lastId);
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
-					// this.sendAction();
 					break;
 				}
 				this.sendAction(
-					new ActionGroupsGetGroupsSuccess({
-						groups: response.data,
-					}),
+					new ActionGroupsGetGroupsSuccess(
+						response.data,
+						lastId ? true : false,
+					),
 				);
 				break;
 			case STATUS.noMoreContent:
-				this.sendAction(
-					new ActionGroupsGetGroupsSuccess({ groups: [] }),
-				);
+				this.sendAction(new ActionGroupsGetGroupsSuccess([], true));
 				break;
 		}
 	}
@@ -525,14 +599,6 @@ class API {
 				return;
 		}
 	}
-
-	// async followGroup() {
-	// 	const response = await ajax.followGroup(groupId);
-	// 	switch (response.status) {
-	// 		case STATUS.ok:
-	// 			this.sendAction(new ActionGroupsFollowGroup());
-	// 	}
-	// }
 
 	async unfollowGroup(groupId: number) {
 		const response = await ajax.unfollowGroup(groupId);
@@ -629,6 +695,17 @@ class API {
 		}
 	}
 
+	async deleteProfile() {
+		const response = await ajax.deleteProfile();
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionProfileDeleteSuccess());
+				break;
+			default:
+				this.sendAction(new ActionProfileDeleteFail());
+		}
+	}
+
 	async getMessages() {
 		const response = await ajax.getMessages();
 		switch (response.status) {
@@ -711,12 +788,12 @@ class API {
 	}
 
 	async groupsSearch(str: string, lastId?: number) {
-		const respone = await ajax.groupsSearch(str, lastId);
-		switch (respone.status) {
+		const response = await ajax.groupsSearch(str, lastId);
+		switch (response.status) {
 			case STATUS.ok:
-				if (respone.data) {
+				if (response.data) {
 					this.sendAction(
-						new ActionGroupsSearchSuccess(respone.data),
+						new ActionGroupsSearchSuccess(response.data),
 					);
 				} else {
 					this.sendAction(new ActionGroupsSearchFail());
@@ -745,9 +822,128 @@ class API {
 		}
 	}
 
-	async sendImage(image: File) {
-		const response = await ajax.sendImage(image);
+	async sendFile(image: File) {
+		const response = await ajax.sendFile(image);
 		return response.data;
+	}
+
+	async getComments(postId: number, sort: string, lastId?: number) {
+		const response = await ajax.getComments(postId, sort, lastId);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					this.sendAction(new ActionCommentRequestFail());
+					break;
+				}
+				this.sendAction(
+					new ActionCommentRequestSuccess(
+						response.data,
+						postId,
+						lastId ? true : false,
+					),
+				);
+				break;
+			default:
+				this.sendAction(new ActionCommentRequestFail());
+		}
+	}
+
+	async createComment(postId: number, commentPayload: CommentPayload) {
+		const response = await ajax.createComment(postId, commentPayload);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					this.sendAction(new ActionCommentCreateFail());
+					break;
+				}
+				this.sendAction(
+					new ActionCommentCreateSuccess(response.data, postId),
+				);
+				break;
+			default:
+				this.sendAction(new ActionCommentCreateFail());
+		}
+	}
+
+	async editComment(
+		postId: number,
+		commentId: number,
+		commentConfig: CommentConfig,
+		commentPayload: CommentPayload,
+	) {
+		const response = await ajax.editComment(
+			postId,
+			commentId,
+			commentPayload,
+		);
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					this.sendAction(new ActionCommentEditFail());
+					break;
+				}
+				this.sendAction(
+					new ActionCommentEditSuccess(
+						commentPayloadToResponse(commentConfig, commentPayload),
+						postId,
+					),
+				);
+				break;
+			default:
+				this.sendAction(new ActionCommentEditFail());
+		}
+	}
+
+	async deleteComment(postId: number, commentId: number) {
+		const response = await ajax.deleteComment(postId, commentId);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(
+					new ActionCommentDeleteSuccess(postId, commentId),
+				);
+				break;
+			default:
+				this.sendAction(new ActionCommentDeleteFail());
+		}
+	}
+
+	async changePassword(payload: ChangePasswordPayload) {
+		const response = await ajax.changePassword(payload);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionProfileChangePasswordSuccess());
+				break;
+			default:
+				this.sendAction(
+					new ActionProfileChangePasswordFail(response.status),
+				);
+		}
+	}
+
+	async createSticker(payload: StickerPayload) {
+		const response = await ajax.createSticker(payload);
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionStickerCreateSuccess());
+				break;
+			default:
+				this.sendAction(new ActionStickerCreateFail());
+		}
+	}
+
+	async getStickers() {
+		const response = await ajax.getStickers();
+		switch (response.status) {
+			case STATUS.ok:
+				if (!response.data) {
+					this.sendAction(new ActionStickersGetFail());
+					break;
+				}
+				this.sendAction(new ActionStickersGetSuccess(response.data));
+				break;
+			default:
+				this.sendAction(new ActionStickersGetFail());
+		}
 	}
 }
 

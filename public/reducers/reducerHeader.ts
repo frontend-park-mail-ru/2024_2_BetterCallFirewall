@@ -1,7 +1,6 @@
 import { Action } from '../actions/action';
 import {
 	ActionGroupsSearchFail,
-	ActionGroupsSearch,
 	ActionGroupsSearchSuccess,
 } from '../actions/actionGroups';
 import {
@@ -11,7 +10,6 @@ import {
 import {
 	ACTION_PROFILE_TYPES,
 	ActionProfileGetHeaderSuccessData,
-	ActionProfileSearchData,
 	ActionProfileSearchSuccessData,
 } from '../actions/actionProfile';
 import { ActionProfileEditRequestSuccess } from '../actions/actionProfileEdit';
@@ -49,44 +47,52 @@ export const reducerHeader = (
 				action.data as ActionHeaderSearchResultsSwitchData
 			).show;
 			return newState;
-		case ACTION_PROFILE_TYPES.search:
-			if (!(action.data as ActionProfileSearchData).lastId) {
-				newState.profilesSearch = [];
-			}
-			return newState;
 		case ACTION_PROFILE_TYPES.searchSuccess: {
 			const actionData = action.data as ActionProfileSearchSuccessData;
-			newState.profilesSearch = newState.profilesSearch.concat(
-				actionData.profilesResponses.map((profileResponse) => {
+			newState.searchInfoMessage = '';
+			newState.profilesSearch = actionData.profilesResponses.map(
+				(profileResponse) => {
 					return shortProfileResponseToSearchResultConfig(
 						profileResponse,
 					);
-				}),
+				},
 			);
+			if (
+				!newState.groupsSearch.length &&
+				!newState.profilesSearch.length
+			) {
+				newState.searchInfoMessage = 'Ничего не найдено';
+			}
 			newState.showSearchResults = true;
 			return newState;
 		}
 		case ACTION_PROFILE_TYPES.searchFail:
+			newState.searchInfoMessage = 'Что-то пошло не так';
 			newState.showSearchResults = true;
 			return newState;
 	}
 	switch (true) {
-		case action instanceof ActionGroupsSearch:
-			if (!action.data.lastId) {
-				newState.groupsSearch = [];
-			}
-			return newState;
 		case action instanceof ActionGroupsSearchSuccess:
-			newState.groupsSearch = newState.groupsSearch.concat(
-				action.data.groupsResponses.map((groupResponse) => {
+			newState.searchInfoMessage = '';
+			newState.groupsSearch = action.data.groupsResponses.map(
+				(groupResponse) => {
 					return shortGroupResponseToSearchResultConfig(
 						groupResponse,
 					);
-				}),
+				},
 			);
+			if (
+				!newState.groupsSearch.length &&
+				!newState.profilesSearch.length
+			) {
+				newState.searchInfoMessage = 'Ничего не найдено';
+			}
 			newState.showSearchResults = true;
 			return newState;
 		case action instanceof ActionGroupsSearchFail:
+			if (!newState.profilesSearch.length) {
+				newState.searchInfoMessage = 'Что-то пошло не так';
+			}
 			newState.showSearchResults = true;
 			return newState;
 		case action instanceof ActionProfileEditRequestSuccess:

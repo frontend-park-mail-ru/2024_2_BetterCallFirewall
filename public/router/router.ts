@@ -37,7 +37,7 @@ export class Router {
 			if (match) {
 				if (this._activeView) {
 					if (pushState) {
-						history.pushState(this._activeView.config, '', path);
+						history.pushState({}, '', path);
 					}
 					this._activeView.active = false;
 				}
@@ -61,10 +61,16 @@ export class Router {
 		return this._activeView;
 	}
 
+	/**
+	 * URL внутри домена (начиная с первого /)
+	 */
 	get path(): string {
 		return this._path;
 	}
 
+	/**
+	 * Полный URL
+	 */
 	get href() {
 		return window.location.href;
 	}

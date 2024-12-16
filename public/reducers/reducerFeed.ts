@@ -1,16 +1,38 @@
 import { Action } from '../actions/action';
 import {
+	ActionAttachmentsInputAddFiles,
+	ActionAttachmentsInputDeleteFile,
+	ActionAttachmentsInputFileLoaded,
+} from '../actions/actionAttachmentsInput';
+import {
+	ActionCommentCancelEdit,
+	ActionCommentCreate,
+	ActionCommentCreateSuccess,
+	ActionCommentDeleteSuccess,
+	ActionCommentEdit,
+	ActionCommentEditSuccess,
+	ActionCommentRequestSuccess,
+} from '../actions/actionComment';
+import {
 	ACTION_FEED_TYPES,
 	ActionFeedPostCreateSuccessData,
 	ActionPostsRequestFailData,
 	ActionPostsRequestSuccessData,
 } from '../actions/actionFeed';
-import { ACTION_POST_TYPES, ActionPostLikeData } from '../actions/actionPost';
+import {
+	ACTION_POST_TYPES,
+	ActionPostCommentEdit,
+	ActionPostCommentsOpenSwitch,
+	ActionPostCommentsSortChange,
+	ActionPostExpandSwitch,
+	ActionPostLikeData,
+} from '../actions/actionPost';
 import { STATUS } from '../api/api';
 import config from '../config';
 import { toPostConfig } from '../models/post';
 import deepClone from '../modules/deepClone';
 import { ViewFeedConfig } from '../views/feed/viewFeed';
+import { reducerPost } from './reducerPost';
 
 const initialState = deepClone(config.feedConfig);
 
@@ -32,12 +54,14 @@ export const reducerFeed = (
 		case ACTION_FEED_TYPES.postsRequest:
 			newState.pendingPostRequest = true;
 			newState.main.content.showLoader = true;
-			newState.main.content.message = '';
+			newState.main.content.infoMessage = '';
+			newState.main.content.errorMessage = '';
 			return newState;
 		case ACTION_FEED_TYPES.postsRequestSuccess: {
 			newState.pendingPostRequest = false;
 			newState.main.content.showLoader = false;
-			newState.main.content.message = '';
+			newState.main.content.infoMessage = '';
+			newState.main.content.errorMessage = '';
 			const newPosts = (
 				action.data as ActionPostsRequestSuccessData
 			).postsData.map((postResponse) => {
@@ -50,12 +74,12 @@ export const reducerFeed = (
 			newState.pendingPostRequest = false;
 			newState.main.content.showLoader = false;
 			const data = action.data as ActionPostsRequestFailData;
-			if (data.message) {
-				newState.main.content.message = data.message;
-			} else if (data.status === STATUS.noMoreContent) {
-				newState.main.content.message = 'Постов больше нет';
+			if (data.status === STATUS.noMoreContent) {
+				newState.main.content.infoMessage = 'Постов больше нет';
 			} else if (data.status !== STATUS.ok) {
-				newState.main.content.message = 'Что-то пошло не так';
+				newState.main.content.errorMessage = 'Что-то пошло не так';
+			} else if (data.message) {
+				newState.main.content.errorMessage = data.message;
 			}
 			return newState;
 		}
@@ -73,7 +97,28 @@ export const reducerFeed = (
 			});
 			return newState;
 		}
-		default:
-			return state;
 	}
+	switch (true) {
+		case action instanceof ActionPostCommentsOpenSwitch:
+		case action instanceof ActionPostCommentEdit:
+		case action instanceof ActionPostCommentsSortChange:
+		case action instanceof ActionPostExpandSwitch:
+		case action instanceof ActionCommentCreate:
+		case action instanceof ActionCommentEdit:
+		case action instanceof ActionCommentCancelEdit:
+		case action instanceof ActionCommentRequestSuccess:
+		case action instanceof ActionCommentCreateSuccess:
+		case action instanceof ActionCommentEditSuccess:
+		case action instanceof ActionCommentDeleteSuccess:
+		case action instanceof ActionAttachmentsInputAddFiles:
+		case action instanceof ActionAttachmentsInputDeleteFile:
+		case action instanceof ActionAttachmentsInputFileLoaded:
+			newState.posts.forEach((post) => {
+				if (post.id === action.data.postId) {
+					Object.assign(post, reducerPost(post, action));
+				}
+			});
+			break;
+	}
+	return newState;
 };

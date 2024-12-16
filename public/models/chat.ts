@@ -1,6 +1,6 @@
 import { MessageConfig } from '../components/Message/Message';
 import { PAGE_URLS } from '../config';
-import parseImage from '../modules/parseImage';
+import parseFile from '../modules/parseFile';
 import parseTime from '../modules/parseTime';
 import { HeaderResponse } from './header';
 
@@ -15,7 +15,7 @@ export const toMessageConfig = (chatResponse: ChatResponse): MessageConfig => {
 	return {
 		key: `message-${id}`,
 		authorId: id,
-		avatar: parseImage(chatResponse.receiver.avatar),
+		avatar: parseFile(chatResponse.receiver.avatar),
 		name: `${chatResponse.receiver.author}`,
 		lastMessage: chatResponse.last_message,
 		date: parseTime(chatResponse.last_date),

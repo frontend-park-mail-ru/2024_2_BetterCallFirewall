@@ -3,7 +3,7 @@
     flex-direction: row;
     align-items: center;
     margin-top: 0.5rem;
-    border: 0.05rem solid rgba(255, 255, 255, 0.5);
+    border: var(--border);
     border-radius: 1rem;
     padding: 0.5rem;
     max-width: 20rem;
@@ -21,4 +21,5 @@
 
 .search-result:hover {
     border-color: var(--main-color);
+    cursor: pointer;
 }

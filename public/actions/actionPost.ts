@@ -5,6 +5,10 @@ export const ACTION_POST_TYPES = {
 	unlike: 'actionPostUnlike',
 	likeSuccess: 'actionPostLikeSuccess',
 	likeFail: 'actionPostLikeFail',
+	commentsOpenSwitch: 'actionPostCommentsOpenSwitch',
+	commentEdit: 'actionPostCommentEdit',
+	commentsSortChange: 'actionPostCommentsSortChange',
+	expandSwitch: 'actionPostExpandSwitch',
 };
 
 export interface ActionPostLikeData {
@@ -48,4 +52,40 @@ export class ActionPostLikeSuccess implements Action {
 export class ActionPostLikeFail implements Action {
 	type: ActionType = ACTION_POST_TYPES.likeFail;
 	data: object = {};
+}
+
+export class ActionPostCommentsOpenSwitch implements Action {
+	type: ActionType = ACTION_POST_TYPES.commentsOpenSwitch;
+	data: { show: boolean; postId: number; sort: string };
+
+	constructor(show: boolean, postId: number, sort: string) {
+		this.data = { show, postId, sort };
+	}
+}
+
+export class ActionPostCommentEdit implements Action {
+	type: ActionType = ACTION_POST_TYPES.commentEdit;
+	data: { postId: number; commentId: number };
+
+	constructor(postId: number, commentId: number) {
+		this.data = { postId, commentId };
+	}
+}
+
+export class ActionPostCommentsSortChange implements Action {
+	type: string = ACTION_POST_TYPES.commentsSortChange;
+	data: { postId: number; sort: string };
+
+	constructor(postId: number, sort: string) {
+		this.data = { postId, sort };
+	}
+}
+
+export class ActionPostExpandSwitch implements Action {
+	type: string = ACTION_POST_TYPES.expandSwitch;
+	data: { postId: number; expand: boolean };
+
+	constructor(postId: number, expand: boolean) {
+		this.data = { postId, expand };
+	}
 }

@@ -1,4 +1,4 @@
-import { FullProfileResponse } from '../models/profile';
+import { ChangePasswordPayload, FullProfileResponse } from '../models/profile';
 import { Action, ActionType } from './action';
 
 export const ACTION_PROFILE_EDIT_TYPES = {
@@ -6,6 +6,9 @@ export const ACTION_PROFILE_EDIT_TYPES = {
 	goToProfileEdit: 'actionProfileEditGoTo',
 	requestSuccess: 'actionProfileEditRequestSuccess',
 	requestFail: 'actionProfileEditRequestFail',
+	changePassword: 'actionProfileChangePassword',
+	changePasswordSuccess: 'actionProfileChangePasswordSuccess',
+	changePasswordFail: 'actionProfileChangePasswordFail',
 };
 
 export interface ActionProfileEditUpdateData {
@@ -46,4 +49,25 @@ export class ActionProfileEditRequestSuccess implements Action {
 export class ActionProfileEditRequestFail implements Action {
 	type: ActionType = ACTION_PROFILE_EDIT_TYPES.requestFail;
 	data: object = {};
+}
+
+export class ActionProfileChangePassword implements Action {
+	type: string = ACTION_PROFILE_EDIT_TYPES.changePassword;
+	data: { payload: ChangePasswordPayload };
+
+	constructor(payload: ChangePasswordPayload) {
+		this.data = { payload };
+	}
+}
+export class ActionProfileChangePasswordSuccess implements Action {
+	type: string = ACTION_PROFILE_EDIT_TYPES.changePasswordSuccess;
+	data: object = {};
+}
+export class ActionProfileChangePasswordFail implements Action {
+	type: string = ACTION_PROFILE_EDIT_TYPES.changePasswordFail;
+	data: { status: number };
+
+	constructor(status: number) {
+		this.data = { status };
+	}
 }

@@ -1,5 +1,10 @@
 import { InputConfig } from '../components/index';
 import { validators } from '../config';
+
+export const INPUT_LIMITS = {
+	commentText: 500,
+};
+
 export default class Validator {
 	/**
 	 * Deleting content in elements with class '.error'

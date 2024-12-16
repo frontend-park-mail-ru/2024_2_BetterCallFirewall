@@ -35,15 +35,20 @@
     }
     &__content {
         padding: 1rem;
+        padding-bottom: unset;
         display: flex;
         flex-direction: column;
+        max-height: 40rem;
+        overflow: hidden;
+        &_expanded {
+            max-height: none;
+        }
         &-text {
             padding-left: .2rem;
             margin-bottom: .8rem;
             white-space: pre-line;
             max-width: 100%;
             overflow-wrap: break-word;
-            overflow: hidden;
         }
         &-image {
             border-radius: 10rem;
@@ -81,8 +86,8 @@
         width: 2rem;
         svg {
             &:hover path {
-                stroke: var(--main-color); 
-                fill: var(--main-color); 
+                stroke: var(--negative-color); 
+                fill: var(--negative-color); 
             }
             &:active path{
                 stroke: var(--main-text-color);
@@ -94,6 +99,9 @@
         height: 3rem;
         width: 3rem;
     }
+    &__footer {
+        display: flex;
+    }
     &__like {
         display: flex;
         align-items: center;
@@ -102,12 +110,21 @@
             height: 1.5rem;
             margin: 1rem;
             svg {
+                cursor: pointer;
+                overflow: visible;
+                path {
+                    fill: var(--main-text-color);
+                    stroke: var(--main-text-color);
+                }
                 &:hover {
-                    cursor: pointer;
+                    path {
+                        fill: var(--main-color);  
+                        stroke: var(--main-color);
+                    }
                 }
                 &:active path {
-                    fill: var(--main-color);
-                    stroke: var(--main-color);
+                    fill: var(--main-text-color);
+                    stroke: var(--main-text-color);
                 }
             }
             &_liked {
@@ -117,6 +134,96 @@
                 }
             }
         }
+    }
+    &__comment {
+        display: flex;
+        align-items: center;
+        &-button {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin: 1rem;
+            svg {
+                cursor: pointer;
+                overflow: visible;
+                &:active {
+                    path {
+                        fill: var(--main-color);
+                        stroke: var(--main-color);
+                    }
+                }
+            }
+            &_opened {
+                path {
+                    fill: var(--main-color);
+                    stroke: var(--main-color);
+                }
+            }
+        }
+        &-send-actions {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        &-edit {
+            &-cancel {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+            &-apply {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
+    }
+    &__comments {
+        border-top: var(--border);
+        &-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        &_hidden {
+            display: none;
+        }
+        &-input {
+            margin: 0.75rem;
+        }
+        &-sender {
+            margin: 0.75rem;
+        }
+        &-attach-button {
+            display: flex;
+            align-items: center;
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+    }
+    &__expand {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+    &__expand-button {
+        cursor: pointer;
+        color: var(--main-color);
+        margin: 1rem;
+    }
+}
+
+.comments {
+    &__action-button {
+        cursor: pointer;
+        color: var(--main-color);
+        text-decoration: none;
+        margin: 1rem;
+    }
+    &__close-button {
+        margin-left: auto;
+    }
+    &__sort-select {
+        color: var(--main-color);
+        background-color: var(--second-bg-color);
+        border: none;
+        margin: 0.5rem;
     }
 }
 
