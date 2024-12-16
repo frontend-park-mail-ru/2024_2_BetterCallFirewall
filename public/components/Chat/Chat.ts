@@ -1,3 +1,4 @@
+import { EmojiPanels } from '../../config';
 import { VNode } from '../../modules/vdom';
 import { AttachmentsInputConfig } from '../AttachmentsInput/AttachmentsInput';
 import { ChatAttachmentInput } from '../ChatAttachmentInput/ChatAttachmentInput';
@@ -7,11 +8,6 @@ import { Emoji, EmojiConfig } from '../Emoji/Emoji';
 import { Sticker, StickerConfig } from '../Sticker/Sticker';
 
 type Emojis = Emoji[];
-
-export enum EmojiPanels {
-	Emojis = 'emojis',
-	Stickers = 'stickers',
-}
 
 export interface ChatConfig extends ComponentConfig {
 	companionId: number;
@@ -29,7 +25,7 @@ export interface ChatConfig extends ComponentConfig {
 	attachmentInput: AttachmentsInputConfig;
 	emojis: EmojiConfig[];
 	stickers: StickerConfig[];
-	// emojiPanelSelected: EmojiPanels;
+	emojiPanelSelected: EmojiPanels;
 }
 
 export class Chat extends Component {
@@ -130,12 +126,12 @@ export class Chat extends Component {
 		return this._attachmentInput;
 	}
 
-	// get isEmojisPanelSelected(): boolean {
-	// 	return this._config.emojiPanelSelected === EmojiPanels.Emojis;
-	// }
-	// get isStickersPanelSelected(): boolean {
-	// 	return this._config.emojiPanelSelected === EmojiPanels.Stickers;
-	// }
+	get isEmojisPanelSelected(): boolean {
+		return this._config.emojiPanelSelected === EmojiPanels.Emojis;
+	}
+	get isStickersPanelSelected(): boolean {
+		return this._config.emojiPanelSelected === EmojiPanels.Stickers;
+	}
 
 	render(): string {
 		this._prerender();
@@ -167,8 +163,8 @@ export class Chat extends Component {
 				return emoji.render();
 			}),
 			stickers: this._stickers.map((sticker) => sticker.render()),
-			// emojisPanelSelected: this.isEmojisPanelSelected,
-			// stickersPanelSelected: this.isStickersPanelSelected,
+			emojisPanelSelected: this.isEmojisPanelSelected,
+			stickersPanelSelected: this.isStickersPanelSelected,
 		};
 	}
 

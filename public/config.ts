@@ -402,6 +402,11 @@ const emojiSymbols = [
 	'😃',
 ];
 
+export enum EmojiPanels {
+	Emojis = 'emojis',
+	Stickers = 'stickers',
+}
+
 const emptyChatComponentConfig: ChatConfig = {
 	companionId: -1,
 	key: 'chat',
@@ -429,7 +434,7 @@ const emptyChatComponentConfig: ChatConfig = {
 		emoji,
 	})),
 	stickers: [],
-	// emojiPanelSelected: EmojiPanels.Emojis,
+	emojiPanelSelected: EmojiPanels.Emojis,
 };
 
 const chatConfig: ViewChatConfig = {
