@@ -19,7 +19,7 @@ FROM nginx:alpine
 
 WORKDIR /nginx
 
-COPY --from=build /app/public /nginx/usr/share/nginx/html
+COPY --from=build /app/public /nginx/var/www/frontend
 
 RUN chmod -R 777 /nginx/usr/share/nginx/html
 
