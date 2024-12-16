@@ -1,4 +1,7 @@
-import { ActionStickersGet } from '../../actions/actionStickers';
+import {
+	ACTION_STICKERS_TYPES,
+	ActionStickersGet,
+} from '../../actions/actionStickers';
 import api from '../../api/api';
 import { Root } from '../../components';
 import { Stickers, StickersConfig } from '../../components/Stickers/Stickers';
@@ -41,6 +44,9 @@ export class ViewStickers extends ViewHome {
 	handleChange(change: ChangeStickers): void {
 		super.handleChange(change);
 		switch (change.type) {
+			case ACTION_STICKERS_TYPES.createSuccess:
+				this.sendAction(new ActionStickersGet());
+				break;
 			default:
 				this.updateViewStickers(change.data);
 		}
