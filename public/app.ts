@@ -648,6 +648,13 @@ class App {
 		this._stores.groupEdit.subscribe(ACTION_GROUPS_TYPES.editSuccess);
 		this._stores.groupEdit.subscribe(ACTION_GROUPS_TYPES.editFail);
 
+		this._stores.stickers.subscribe(ACTION_STICKERS_TYPES.get);
+		this._stores.stickers.subscribe(ACTION_STICKERS_TYPES.getSuccess);
+		this._stores.stickers.subscribe(ACTION_STICKERS_TYPES.getFail);
+		this._stores.stickers.subscribe(ACTION_STICKERS_TYPES.create);
+		this._stores.stickers.subscribe(ACTION_STICKERS_TYPES.createSuccess);
+		this._stores.stickers.subscribe(ACTION_STICKERS_TYPES.createFail);
+
 		loginView.register(this._stores.login);
 
 		signupView.register(this._stores.signup);
