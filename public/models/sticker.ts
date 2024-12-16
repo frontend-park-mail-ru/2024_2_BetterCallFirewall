@@ -1,4 +1,5 @@
 import { StickerConfig } from '../components/Sticker/Sticker';
+import { uuid } from '../modules/uuid';
 
 export type StickerResponse = string;
 
@@ -6,7 +7,7 @@ export const toStickerConfig = (
 	stickerResponse: StickerResponse,
 ): StickerConfig => {
 	const stickerData: StickerConfig = {
-		key: `sticker-${stickerResponse}`,
+		key: `sticker-${uuid()}`,
 		file: stickerResponse,
 	};
 
@@ -15,7 +16,7 @@ export const toStickerConfig = (
 
 export const stickerConfigFromURL = (sticker: string): StickerConfig => {
 	return {
-		key: `sticker-${sticker}`,
+		key: `sticker-${uuid()}`,
 		file: sticker,
 	};
 };
