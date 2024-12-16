@@ -145,6 +145,9 @@ export class ViewChat extends ViewHome {
 					this._chat.config.showEmojiPanel &&
 					!this._chat.emojiPanelVNode.element.contains(
 						event.target as Node,
+					) &&
+					!this._chat.emojiOpenBtn.element.contains(
+						event.target as Node,
 					)
 				) {
 					this.sendAction(new ActionEmojiPanelSwitch(false));
