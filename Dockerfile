@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build
 
-RUN cp -R node_modules/handlebars/dist public
+RUN cp -R node_modules/handlebars/dist/ public
 
 EXPOSE 80
 EXPOSE 443
