@@ -551,10 +551,10 @@ class Ajax {
 	async createSticker(
 		formData: StickerPayload,
 	): Promise<AjaxResponse<PostResponse>> {
-		return this._genericRequestResponse(
+		return this._genericRequestStringResponse(
 			app.config.URL.stickers,
 			'post',
-			formData,
+			formData.file,
 		);
 	}
 
@@ -629,6 +629,26 @@ class Ajax {
 	): Promise<AjaxResponse<T>> {
 		const request = this._jsonRequest(url, method, data);
 		return this._genericResponse(request);
+	}
+
+	private async _genericRequestStringResponse<T> (
+		url: string,
+		method: string,
+		data?: string,
+	): Promise<AjaxResponse<T>> {
+		const request = this._jsonStringRequest(url, method, data);
+		return this._genericResponse(request);
+	}
+
+	private _jsonStringRequest(baseUrl: string, method: string, body?: string) {
+		return new Request(baseUrl, {
+			method: method,
+			credentials: 'include',
+			body: body ? body : undefined,
+			headers: {
+				'Content-Type': 'application/json;charset=UTF-8',
+			},
+		});
 	}
 
 	private async _genericResponse<T>(
