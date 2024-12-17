@@ -582,7 +582,7 @@ class Ajax {
 	 * Разлогин
 	 */
 	async logout(): Promise<AjaxResponse<object>> {
-		return this._genericRequestResponse(app.config.URL.logout, 'put');
+		return this._genericRequestResponse(app.config.URL.logout, 'post');
 	}
 
 	/**
