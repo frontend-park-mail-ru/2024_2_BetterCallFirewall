@@ -5,8 +5,8 @@ import {
 } from '../../actions/actionConfirm';
 import { ActionGroupsSearch } from '../../actions/actionGroups';
 import {
-	ActionHeaderLogoutClickFail,
-	ActionHeaderLogoutClickSuccess,
+	ActionHeaderLogoutFail,
+	ActionHeaderLogoutSuccess,
 	ActionHeaderSearchResultsSwitch,
 } from '../../actions/actionHeader';
 import {
@@ -374,10 +374,10 @@ export abstract class ViewHome extends View {
 const logout = () => {
 	ajax.post(app.config.URL.logout, {}, (data, error) => {
 		if (error) {
-			dispatcher.getAction(new ActionHeaderLogoutClickFail());
+			dispatcher.getAction(new ActionHeaderLogoutFail());
 			return;
 		}
 		app.router.goToPage(PAGE_LINKS.login);
-		dispatcher.getAction(new ActionHeaderLogoutClickSuccess());
+		dispatcher.getAction(new ActionHeaderLogoutSuccess());
 	});
 };

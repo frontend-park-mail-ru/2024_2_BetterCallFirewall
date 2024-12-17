@@ -64,6 +64,7 @@ export class Dispatcher {
 						action.data.sort,
 					),
 				);
+				break;
 		}
 	}
 }

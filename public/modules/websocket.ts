@@ -3,6 +3,7 @@ import {
 	ACTION_CHAT_TYPES,
 	ActionChatSendMessageData,
 } from '../actions/actionChat';
+import { ACTION_HEADER_TYPES } from '../actions/actionHeader';
 import { ActionMessagesNewMessage } from '../actions/actionMessages';
 import { ACTION_USER_TYPES } from '../actions/actionUser';
 import { ActionWSClosed } from '../actions/actionWebsocket';
@@ -38,6 +39,7 @@ export default class WebsocketClient {
 
 	handleAction(action: Action) {
 		switch (action.type) {
+			case ACTION_HEADER_TYPES.logoutSuccess:
 			case ACTION_USER_TYPES.unauthorized:
 				this._close();
 				break;

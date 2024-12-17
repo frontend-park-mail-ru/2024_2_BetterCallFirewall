@@ -371,7 +371,7 @@ class App {
 		this._stores.home.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.titleClick);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.updateProfileLinkHref);
-		this._stores.home.subscribe(ACTION_HEADER_TYPES.logoutClickFail);
+		this._stores.home.subscribe(ACTION_HEADER_TYPES.logoutFail);
 		this._stores.home.subscribe(ACTION_HEADER_TYPES.searchResultsSwitch);
 		this._stores.home.subscribe(ACTION_MENU_TYPES.openSwitch);
 		this._stores.home.subscribe(
@@ -392,7 +392,7 @@ class App {
 		this._stores.login.subscribe(ACTION_APP_TYPES.goTo);
 		this._stores.login.subscribe(ACTION_USER_TYPES.unauthorized);
 		this._stores.login.subscribe(ACTION_USER_TYPES.auth);
-		this._stores.login.subscribe(ACTION_HEADER_TYPES.logoutClickSuccess);
+		this._stores.login.subscribe(ACTION_HEADER_TYPES.logoutSuccess);
 		this._stores.login.subscribe(ACTION_FORM_TYPES.formError);
 		this._stores.login.subscribe(ACTION_FEED_TYPES.postsRequestFail);
 

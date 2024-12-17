@@ -1,27 +1,27 @@
 import { Action, ActionType } from './action';
 
 export const ACTION_HEADER_TYPES = {
-	logoutClickSuccess: 'logoutClickSuccess',
-	logoutClickFail: 'logoutClickFail',
+	logoutSuccess: 'logoutSuccess',
+	logoutFail: 'logoutFail',
 	searchResultsSwitch: 'actionHeaderSearchResultsSwitch',
 };
 
-export class ActionHeaderLogoutClickSuccess implements Action {
+export class ActionHeaderLogoutSuccess implements Action {
 	type: ActionType;
 	data: object;
 
 	constructor() {
-		this.type = ACTION_HEADER_TYPES.logoutClickSuccess;
+		this.type = ACTION_HEADER_TYPES.logoutSuccess;
 		this.data = {};
 	}
 }
 
-export class ActionHeaderLogoutClickFail implements Action {
+export class ActionHeaderLogoutFail implements Action {
 	type: ActionType;
 	data: object;
 
 	constructor() {
-		this.type = ACTION_HEADER_TYPES.logoutClickFail;
+		this.type = ACTION_HEADER_TYPES.logoutFail;
 		this.data = {};
 	}
 }
