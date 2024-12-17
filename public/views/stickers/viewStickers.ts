@@ -68,7 +68,7 @@ export class ViewStickers extends ViewHome {
 					stickerForm.formData,
 					stickerForm.form,
 				);
-				if (!formData) {
+				if (!formData || !Object.keys(formData).length) {
 					return;
 				}
 				const fileStr = await fileToString(
