@@ -134,6 +134,9 @@
                 }
             }
         }
+        &-counter {
+            user-select: none;
+        }
     }
     &__comment {
         display: flex;
@@ -158,6 +161,9 @@
                     stroke: var(--main-color);
                 }
             }
+        }
+        &-counter {
+            user-select: none;
         }
         &-send-actions {
             display: flex;
