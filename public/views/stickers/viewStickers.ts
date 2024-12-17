@@ -63,15 +63,12 @@ export class ViewStickers extends ViewHome {
 			event: 'submit',
 			callback: async (event) => {
 				event.preventDefault();
-				if (stickerForm.formData) {
-					return;
-				}
 				const validator = new Validator();
 				const formData = validator.validateForm(
 					stickerForm.formData,
 					stickerForm.form,
 				);
-				if (!formData) {
+				if (!formData || !Array.from(formData.entries()).length) {
 					return;
 				}
 				const fileStr = await fileToString(
