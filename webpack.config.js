@@ -45,7 +45,7 @@ module.exports = {
 	resolve: {
 		extensions: ['.ts', '.js', '.scss'],
 	},
-	mode: 'production',
+	mode: 'development',
 	output: {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'public'),
