@@ -236,13 +236,14 @@ export class Post extends Component {
 				event: 'click',
 				callback: (event) => {
 					event.preventDefault();
+					const lastComment = this._config.commentsConfigs
+						.slice(-1)
+						.find((comment) => !comment.isJustCreated);
 					this._sendAction(
 						new ActionCommentRequest(
 							this._config.id,
 							this._config.commentsSort,
-							this._config.commentsConfigs[
-								this._config.commentsConfigs.length - 1
-							].id,
+							lastComment?.id,
 						),
 					);
 				},

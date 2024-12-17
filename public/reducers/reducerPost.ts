@@ -28,12 +28,13 @@ import { reducerAttachmentsInput } from './reducerAttachmentsInput';
 export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 	const newState = deepClone(state);
 	switch (true) {
-		case action instanceof ActionCommentCreateSuccess:
-			newState.commentsConfigs = [
-				toCommentConfig(action.data.commentResponse),
-			].concat(newState.commentsConfigs);
+		case action instanceof ActionCommentCreateSuccess: {
+			newState.commentsConfigs = newState.commentsConfigs.concat(
+				toCommentConfig(action.data.commentResponse, true),
+			);
 			newState.commentsCount++;
 			break;
+		}
 		case action instanceof ActionCommentRequestSuccess: {
 			const newComments = action.data.commentsResponses.map(
 				(commentResponse) => {

@@ -28,6 +28,7 @@ export interface CommentResponse {
 
 export const toCommentConfig = (
 	commentResponse: CommentResponse,
+	justCreated?: boolean,
 ): CommentConfig => {
 	const userId = app.stores.home.state.main.header.profile.id;
 	const hasEditButton = userId === commentResponse.header.author_id;
@@ -46,6 +47,7 @@ export const toCommentConfig = (
 		hasEditButton,
 		hasDeleteButton,
 		files,
+		isJustCreated: justCreated || false,
 	};
 };
 

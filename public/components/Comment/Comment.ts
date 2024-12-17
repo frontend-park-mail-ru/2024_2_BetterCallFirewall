@@ -21,6 +21,7 @@ export interface CommentConfig extends ComponentConfig {
 	hasEditButton: boolean;
 	hasDeleteButton: boolean;
 	files: string[];
+	isJustCreated: boolean;
 }
 
 export class Comment extends Component {
