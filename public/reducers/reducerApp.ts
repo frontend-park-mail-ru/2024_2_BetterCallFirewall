@@ -5,6 +5,7 @@ import {
 	ActionChatGoToChatData,
 } from '../actions/actionChat';
 import { ACTION_CREATE_GROUP_TYPES } from '../actions/actionCreateGroup';
+import { ACTION_HEADER_TYPES } from '../actions/actionHeader';
 import { ACTION_MENU_TYPES } from '../actions/actionMenu';
 import { ACTION_POST_EDIT_TYPES } from '../actions/actionPostEdit';
 import { ACTION_PROFILE_EDIT_TYPES } from '../actions/actionProfileEdit';
@@ -27,6 +28,7 @@ export const reducerApp = (activeView?: View, action?: Action) => {
 			case ACTION_MENU_TYPES.titleClick:
 				router.goToPage(PAGE_LINKS.feed);
 				break;
+			case ACTION_HEADER_TYPES.logoutSuccess:
 			case ACTION_USER_TYPES.unauthorized:
 				router.goToPage(PAGE_LINKS.login);
 				break;

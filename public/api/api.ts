@@ -138,6 +138,11 @@ import {
 	ActionStickersGetFail,
 	ActionStickersGetSuccess,
 } from '../actions/actionStickers';
+import {
+	ActionHeaderLogoutFail,
+	ActionHeaderLogoutSuccess,
+	ActionLogout,
+} from '../actions/actionHeader';
 
 export const STATUS = {
 	ok: 200,
@@ -261,6 +266,9 @@ class API {
 				break;
 			case action instanceof ActionStickersCreate:
 				this.createSticker(action.data.payload);
+				break;
+			case action instanceof ActionLogout:
+				this.logout();
 				break;
 		}
 	}
@@ -943,6 +951,18 @@ class API {
 				break;
 			default:
 				this.sendAction(new ActionStickersGetFail());
+		}
+	}
+
+	async logout() {
+		const response = await ajax.logout();
+		switch (response.status) {
+			case STATUS.ok:
+				this.sendAction(new ActionHeaderLogoutSuccess());
+				break;
+			default:
+				this.sendAction(new ActionHeaderLogoutFail());
+				break;
 		}
 	}
 }

@@ -579,6 +579,13 @@ class Ajax {
 	}
 
 	/**
+	 * Разлогин
+	 */
+	async logout(): Promise<AjaxResponse<object>> {
+		return this._genericRequestResponse(app.config.URL.logout, 'put');
+	}
+
+	/**
 	 * Sending data form data
 	 *
 	 * @param {string} url
@@ -631,7 +638,7 @@ class Ajax {
 		return this._genericResponse(request);
 	}
 
-	private async _genericRequestStringResponse<T> (
+	private async _genericRequestStringResponse<T>(
 		url: string,
 		method: string,
 		data?: string,

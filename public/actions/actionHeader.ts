@@ -1,11 +1,16 @@
 import { Action, ActionType } from './action';
 
 export const ACTION_HEADER_TYPES = {
+	logout: 'actionLogout',
 	logoutSuccess: 'logoutSuccess',
 	logoutFail: 'logoutFail',
 	searchResultsSwitch: 'actionHeaderSearchResultsSwitch',
 };
 
+export class ActionLogout implements Action {
+	type: string = ACTION_HEADER_TYPES.logout;
+	data: object = {};
+}
 export class ActionHeaderLogoutSuccess implements Action {
 	type: ActionType;
 	data: object;

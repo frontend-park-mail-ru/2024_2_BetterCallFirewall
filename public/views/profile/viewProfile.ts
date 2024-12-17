@@ -7,6 +7,7 @@ import {
 	ActionFriendsSubscribe,
 	ActionFriendsUnsubscribe,
 } from '../../actions/actionFriends';
+import { ActionLogout } from '../../actions/actionHeader';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
@@ -151,6 +152,7 @@ export class ViewProfile extends ViewHome {
 										this.sendAction(
 											new ActionProfileDelete(),
 										);
+										this.sendAction(new ActionLogout());
 									},
 								},
 								{
