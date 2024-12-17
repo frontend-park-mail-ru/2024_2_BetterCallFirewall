@@ -81,6 +81,12 @@ export class ViewStickers extends ViewHome {
 				const stickerPayload: StickerPayload = {
 					file: fileStr,
 				};
+				(
+					this.stickers.fileInputVNode.element as HTMLInputElement
+				).value = '';
+				const preview = this.stickers.stickerCreateForm
+					.img as HTMLImageElement;
+				preview.src = '';
 				api.createSticker(stickerPayload);
 				stickerForm.clearError();
 			},
