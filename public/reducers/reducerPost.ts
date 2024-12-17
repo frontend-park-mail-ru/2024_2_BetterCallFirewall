@@ -29,9 +29,10 @@ export const reducerPost = (state: PostConfig, action: Action): PostConfig => {
 	const newState = deepClone(state);
 	switch (true) {
 		case action instanceof ActionCommentCreateSuccess:
-			newState.commentsConfigs = newState.commentsConfigs.concat(
+			newState.commentsConfigs = [
 				toCommentConfig(action.data.commentResponse),
-			);
+			].concat(newState.commentsConfigs);
+			newState.commentsCount++;
 			break;
 		case action instanceof ActionCommentRequestSuccess: {
 			const newComments = action.data.commentsResponses.map(
