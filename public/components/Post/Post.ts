@@ -237,7 +237,7 @@ export class Post extends Component {
 				callback: (event) => {
 					event.preventDefault();
 					const lastComment = this._config.commentsConfigs
-						.slice(-1)
+						.reverse()
 						.find((comment) => !comment.isJustCreated);
 					this._sendAction(
 						new ActionCommentRequest(
