@@ -27,10 +27,10 @@ export class CreateStickerForm extends BaseForm {
 		return html;
 	}
 
-	get fileInput(): HTMLElement {
+	get fileInput(): HTMLInputElement {
 		const html = document.querySelector(
 			'input[type="file"]',
-		) as HTMLElement;
+		) as HTMLInputElement;
 		if (!html) {
 			throw new Error('input file not found');
 		}
