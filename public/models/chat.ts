@@ -17,7 +17,7 @@ export const toMessageConfig = (chatResponse: ChatResponse): MessageConfig => {
 		authorId: id,
 		avatar: parseFile(chatResponse.receiver.avatar),
 		name: `${chatResponse.receiver.author}`,
-		lastMessage: chatResponse.last_message,
+		lastMessage: chatResponse.last_message || 'Вложение',
 		date: parseTime(chatResponse.last_date),
 		unreadedCount: -1,
 		href: PAGE_URLS.chat + `/${id}`,
