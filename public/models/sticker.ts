@@ -9,6 +9,7 @@ export const toStickerConfig = (
 	const stickerData: StickerConfig = {
 		key: `sticker-${uuid()}`,
 		file: stickerResponse,
+		clickable: false,
 	};
 
 	return stickerData;
@@ -18,6 +19,7 @@ export const stickerConfigFromURL = (sticker: string): StickerConfig => {
 	return {
 		key: `sticker-${uuid()}`,
 		file: sticker,
+		clickable: false,
 	};
 };
 

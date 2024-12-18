@@ -50,6 +50,7 @@ export class Chat extends Component {
 		super(config, parent);
 		this._config = config;
 
+		this._config.stickers.forEach((sticker) => (sticker.clickable = true));
 		this._attachmentInput = new ChatAttachmentInput(
 			this._config.attachmentInput,
 			this,

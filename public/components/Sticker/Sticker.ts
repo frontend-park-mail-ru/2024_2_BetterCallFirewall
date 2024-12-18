@@ -2,6 +2,7 @@ import { Component, ComponentConfig } from '../Component';
 
 export interface StickerConfig extends ComponentConfig {
 	file: string;
+	clickable: boolean;
 }
 
 export class Sticker extends Component {
