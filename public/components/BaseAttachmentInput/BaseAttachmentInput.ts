@@ -74,6 +74,10 @@ export abstract class BaseAttachmentInput extends Input {
 					);
 					return;
 				}
+				if (files.filter((file) => !file.size).length) {
+					this.printError('Нельзя отправить пустой файл');
+					return;
+				}
 				let postId = 0;
 				if (this._parent instanceof Post) {
 					postId = this._parent.config.id;
