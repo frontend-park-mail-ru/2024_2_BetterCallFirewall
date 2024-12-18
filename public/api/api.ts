@@ -109,7 +109,7 @@ import {
 import app from '../app';
 import dispatcher from '../dispatcher/dispatcher';
 import { GroupPayload } from '../models/group';
-import { PostPayload } from '../models/post';
+import { POST_ERRORS_MAP, PostPayload } from '../models/post';
 import ajax, { QueryParams } from '../modules/ajax';
 import { ChangePasswordPayload, ProfilePayload } from '../models/profile';
 import { ActionCreateGroupSuccess } from '../actions/actionCreateGroup';
@@ -143,6 +143,7 @@ import {
 	ActionHeaderLogoutSuccess,
 	ActionLogout,
 } from '../actions/actionHeader';
+import { ERROR_MESSAGES } from '../models/errorMessages';
 
 export const STATUS = {
 	ok: 200,
@@ -637,7 +638,13 @@ class API {
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
-					return;
+					this.sendAction(
+						new ActionFeedPostCreateFail(
+							response.status,
+							ERROR_MESSAGES.SomethingWentWrong,
+						),
+					);
+					break;
 				}
 				if (response.data.header.community_id) {
 					this.sendAction(
@@ -653,8 +660,15 @@ class API {
 					);
 				}
 				break;
-			default:
-				this.sendAction(new ActionFeedPostCreateFail());
+			default: {
+				this.sendAction(
+					new ActionFeedPostCreateFail(
+						response.status,
+						POST_ERRORS_MAP[response.message || ''] ||
+							ERROR_MESSAGES.SomethingWentWrong,
+					),
+				);
+			}
 		}
 	}
 
@@ -663,7 +677,8 @@ class API {
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
-					return;
+					this.sendAction(new ActionPostEditRequestFail());
+					break;
 				}
 				this.sendAction(
 					new ActionPostEditRequestSuccess({

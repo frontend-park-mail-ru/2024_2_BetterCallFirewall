@@ -1,7 +1,7 @@
 export type ErrorMessages = Record<string, string>;
 
-export const ERROR_MESSAGES: ErrorMessages = {
-	UserAlreadyExists: 'user already exists',
+export const ERROR_MESSAGES = {
+	SomethingWentWrong: 'Что-то пошло не так',
 };
 
 export const ERROR_MESSAGES_MAP: ErrorMessages = {

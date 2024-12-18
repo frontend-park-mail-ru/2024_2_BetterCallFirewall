@@ -69,11 +69,11 @@ export class ActionFeedPostGroupCreateSuccess implements Action {
 
 export class ActionFeedPostCreateFail implements Action {
 	type: ActionType;
-	data: object;
+	data: { status: number; error?: string };
 
-	constructor() {
+	constructor(status: number, error?: string) {
 		this.type = ACTION_FEED_TYPES.postCreateFail;
-		this.data = {};
+		this.data = { status, error };
 	}
 }
 

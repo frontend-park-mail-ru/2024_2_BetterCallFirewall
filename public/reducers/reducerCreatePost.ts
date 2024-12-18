@@ -60,7 +60,7 @@ export const reducerCreatePost = (
 			newState.createPostForm.error = '';
 			break;
 		case action instanceof ActionFeedPostCreateFail:
-			newState.createPostForm.error = 'Введены некорректные данные';
+			newState.createPostForm.error = action.data.error;
 			break;
 	}
 	return newState;

@@ -3,6 +3,11 @@ import { GroupPageConfig } from '../components/GroupPage/GroupPage';
 import { ATTACHMENT_COUNT_LIMIT, PAGE_URLS } from '../config';
 import parseFile from '../modules/parseFile';
 import parseTime from '../modules/parseTime';
+import { ErrorMessages } from './errorMessages';
+
+export const POST_ERRORS_MAP: ErrorMessages = {
+	'content is bad': 'Введены некорректные данные',
+};
 
 export interface Header {
 	author_id: number;
