@@ -4,10 +4,10 @@ import {
 	ActionAttachmentsInputDeleteFile,
 	ActionAttachmentsInputFileLoaded,
 } from '../actions/actionAttachmentsInput';
-import { ACTION_FEED_TYPES } from '../actions/actionFeed';
 import {
 	ACTION_POST_EDIT_TYPES,
 	ActionPostEditGoToData,
+	ActionPostEditRequestFail,
 	ActionPostEditRequestSuccess,
 	ActionPostEditUpdateData,
 } from '../actions/actionPostEdit';
@@ -41,9 +41,6 @@ export const reducerPostEdit = (
 				);
 			break;
 		}
-		case ACTION_FEED_TYPES.postCreateFail:
-		case ACTION_FEED_TYPES.postCreateSuccess:
-			return newState;
 		case ACTION_POST_EDIT_TYPES.updatePostEdit:
 			return { ...state, ...(action.data as ActionPostEditUpdateData) };
 	}
@@ -56,6 +53,14 @@ export const reducerPostEdit = (
 				newState.postEditForm.attachmentsInput,
 				action,
 			);
+			break;
+	}
+	switch (true) {
+		case action instanceof ActionPostEditRequestSuccess:
+			newState.postEditForm.error = '';
+			break;
+		case action instanceof ActionPostEditRequestFail:
+			newState.postEditForm.error = 'Введены некорректные данные';
 			break;
 	}
 	return newState;
