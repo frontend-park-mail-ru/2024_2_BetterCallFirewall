@@ -143,7 +143,6 @@ import {
 	ActionHeaderLogoutSuccess,
 	ActionLogout,
 } from '../actions/actionHeader';
-import { ERROR_MESSAGES } from '../models/errorMessages';
 
 export const STATUS = {
 	ok: 200,
@@ -639,10 +638,7 @@ class API {
 			case STATUS.ok:
 				if (!response.data) {
 					this.sendAction(
-						new ActionFeedPostCreateFail(
-							response.status,
-							ERROR_MESSAGES.SomethingWentWrong,
-						),
+						new ActionFeedPostCreateFail(response.status),
 					);
 					break;
 				}
@@ -664,8 +660,7 @@ class API {
 				this.sendAction(
 					new ActionFeedPostCreateFail(
 						response.status,
-						POST_ERRORS_MAP[response.message || ''] ||
-							ERROR_MESSAGES.SomethingWentWrong,
+						POST_ERRORS_MAP[response.message || ''],
 					),
 				);
 			}
@@ -677,7 +672,9 @@ class API {
 		switch (response.status) {
 			case STATUS.ok:
 				if (!response.data) {
-					this.sendAction(new ActionPostEditRequestFail());
+					this.sendAction(
+						new ActionPostEditRequestFail(response.status),
+					);
 					break;
 				}
 				this.sendAction(
@@ -687,7 +684,12 @@ class API {
 				);
 				break;
 			default:
-				this.sendAction(new ActionPostEditRequestFail());
+				this.sendAction(
+					new ActionPostEditRequestFail(
+						response.status,
+						POST_ERRORS_MAP[response.message || ''],
+					),
+				);
 		}
 	}
 

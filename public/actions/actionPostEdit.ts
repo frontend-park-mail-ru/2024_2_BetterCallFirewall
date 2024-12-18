@@ -1,4 +1,5 @@
 import { PostConfig } from '../components';
+import { ERROR_MESSAGES } from '../models/errorMessages';
 import { PostResponse } from '../models/post';
 import { Action, ActionType } from './action';
 
@@ -53,5 +54,12 @@ export class ActionPostEditRequestSuccess implements Action {
 
 export class ActionPostEditRequestFail implements Action {
 	type: ActionType = ACTION_POST_EDIT_TYPES.requestFail;
-	data: object = {};
+	data: { status: number; error: string };
+
+	constructor(status: number, error?: string) {
+		this.data = {
+			status,
+			error: error || ERROR_MESSAGES.SomethingWentWrong,
+		};
+	}
 }

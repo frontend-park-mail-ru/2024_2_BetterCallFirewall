@@ -1,3 +1,4 @@
+import { ERROR_MESSAGES } from '../models/errorMessages';
 import { PostResponse } from '../models/post';
 import { Action, ActionType } from './action';
 
@@ -69,11 +70,14 @@ export class ActionFeedPostGroupCreateSuccess implements Action {
 
 export class ActionFeedPostCreateFail implements Action {
 	type: ActionType;
-	data: { status: number; error?: string };
+	data: { status: number; error: string };
 
 	constructor(status: number, error?: string) {
 		this.type = ACTION_FEED_TYPES.postCreateFail;
-		this.data = { status, error };
+		this.data = {
+			status,
+			error: error || ERROR_MESSAGES.SomethingWentWrong,
+		};
 	}
 }
 
