@@ -1,4 +1,5 @@
 import { Action } from '../actions/action';
+import { ActionAppGoTo } from '../actions/actionApp';
 import {
 	ActionAttachmentsInputAddFiles,
 	ActionAttachmentsInputDeleteFile,
@@ -56,6 +57,7 @@ export const reducerPostEdit = (
 			break;
 	}
 	switch (true) {
+		case action instanceof ActionAppGoTo:
 		case action instanceof ActionPostEditRequestSuccess:
 			newState.postEditForm.error = '';
 			break;
