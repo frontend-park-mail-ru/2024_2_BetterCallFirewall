@@ -10,7 +10,10 @@ import {
 	ACTION_CREATE_POST_TYPES,
 	ActionUpdateCreatePostData,
 } from '../actions/actionCreatePost';
-import { ActionFeedPostCreateSuccess } from '../actions/actionFeed';
+import {
+	ActionFeedPostCreateFail,
+	ActionFeedPostCreateSuccess,
+} from '../actions/actionFeed';
 import { CreatePostFormConfig } from '../components/CreatePostForm/CreatePostForm';
 import config from '../config';
 import deepClone from '../modules/deepClone';
@@ -49,6 +52,14 @@ export const reducerCreatePost = (
 				newState.createPostForm.attachmentsInput,
 				action,
 			);
+			break;
+	}
+	switch (true) {
+		case action instanceof ActionFeedPostCreateSuccess:
+			newState.createPostForm.error = '';
+			break;
+		case action instanceof ActionFeedPostCreateFail:
+			newState.createPostForm.error = 'Что-то пошло не так';
 			break;
 	}
 	return newState;
