@@ -26,6 +26,19 @@ import { ICreateStickerFormConfig } from './components/CreateStickerForm/CreateS
 
 const DEBUG: boolean = false;
 
+export const THROTTLE_LIMITS = {
+	buttonClick: 500,
+	batchLoading: 500,
+};
+
+export const ATTACHMENT_COUNT_LIMIT = {
+	post: 10,
+	chat: 5,
+	comment: 5,
+};
+
+export const MAX_FILE_SIZE = 100 * 1024 * 1024;
+
 export const ROOT: string = DEBUG
 	? 'http://127.0.0.1:8000'
 	: 'https://vilka.online';
@@ -57,17 +70,6 @@ export const PAGE_LINKS = { ...PAGE_URLS };
 PAGE_LINKS.groupPage += '/\\d+';
 PAGE_LINKS.chat += '/\\d+';
 PAGE_LINKS.profile += '/([\\w-]+)';
-
-export const THROTTLE_LIMITS = {
-	buttonClick: 500,
-	batchLoading: 500,
-};
-
-export const ATTACHMENT_COUNT_LIMIT = {
-	post: 10,
-	chat: 5,
-	comment: 5,
-};
 
 const homeConfig: HomeConfig = {
 	menu: {

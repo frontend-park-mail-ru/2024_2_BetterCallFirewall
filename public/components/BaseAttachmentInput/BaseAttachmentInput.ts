@@ -3,6 +3,7 @@ import {
 	ActionAttachmentsInputDeleteFile,
 	ActionAttachmentsInputFileLoaded,
 } from '../../actions/actionAttachmentsInput';
+import { MAX_FILE_SIZE } from '../../config';
 import { FilePayload, filePayloadFromURL } from '../../models/file';
 import fileToString from '../../modules/fileToString';
 import { VNode } from '../../modules/vdom';
@@ -66,6 +67,11 @@ export abstract class BaseAttachmentInput extends Input {
 						`Можно прикрепить не более ${this._config.filesCountLimit} файлов`,
 					);
 					return;
+				}
+				if (files.filter((file) => file.size > MAX_FILE_SIZE).length) {
+					this.printError(
+						'Максимальный размер прикрепляемых файлов - 100 Мб',
+					);
 				}
 				let postId = 0;
 				if (this._parent instanceof Post) {
