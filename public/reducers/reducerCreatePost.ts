@@ -55,6 +55,7 @@ export const reducerCreatePost = (
 			break;
 	}
 	switch (true) {
+		case action instanceof ActionAppGoTo:
 		case action instanceof ActionFeedPostCreateSuccess:
 			newState.createPostForm.error = '';
 			break;
