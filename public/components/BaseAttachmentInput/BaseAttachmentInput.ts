@@ -72,6 +72,7 @@ export abstract class BaseAttachmentInput extends Input {
 					this.printError(
 						'Максимальный размер прикрепляемых файлов - 100 Мб',
 					);
+					return;
 				}
 				let postId = 0;
 				if (this._parent instanceof Post) {
