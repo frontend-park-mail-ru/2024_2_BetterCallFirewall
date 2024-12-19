@@ -132,12 +132,6 @@ export class ViewChat extends ViewHome {
 		this._addScrollHandler();
 		this._addEmojiHandlers();
 		this._addEscapeHandler();
-		this._chat.settingsButtonVNode.handlers.push({
-			event: 'click',
-			callback: (event) => {
-				event.preventDefault();
-			},
-		});
 		this._root.addDocumentHandler({
 			event: 'click',
 			callback: (event) => {

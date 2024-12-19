@@ -95,10 +95,6 @@ export class Chat extends Component {
 		return this._findVNodeByKey('emoji-btn');
 	}
 
-	get settingsButtonVNode(): VNode {
-		return this._findVNodeByClass('chat__settings-button');
-	}
-
 	get formVNode(): VNode {
 		return this._findVNodeByKey('form');
 	}
