@@ -115,11 +115,20 @@ export class ViewStickers extends ViewHome {
 			{
 				event: 'change',
 				callback: (event) => {
+					this.stickers.stickerCreateForm.clearError();
 					const label = this.stickers.stickerCreateForm.label;
 					const preview = this.stickers.stickerCreateForm
 						.img as HTMLImageElement;
 					const input = event.target as HTMLInputElement;
-					if (input.files && input.files.length > 0) {
+					const files = input.files;
+					if (files && files.length > 0) {
+						const file = files[0];
+						if (!file.size) {
+							this.stickers.stickerCreateForm.printError(
+								'Нельзя прикрепить пустой файл',
+							);
+							return;
+						}
 						if (label) {
 							label.classList.add('active');
 							label.textContent =
@@ -129,7 +138,7 @@ export class ViewStickers extends ViewHome {
 						reader.onload = function (e) {
 							preview.src = e.target?.result as string;
 						};
-						reader.readAsDataURL(input.files[0]);
+						reader.readAsDataURL(file);
 					}
 				},
 			},
