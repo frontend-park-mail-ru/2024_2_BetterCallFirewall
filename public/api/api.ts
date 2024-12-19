@@ -475,6 +475,7 @@ class API {
 				this.sendAction(
 					new ActionFriendsGetUsersSuccess({
 						users: response.data,
+						append: !!lastId,
 					}),
 				);
 		}

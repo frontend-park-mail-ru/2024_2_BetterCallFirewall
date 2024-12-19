@@ -1,10 +1,11 @@
 import { Action } from '../actions/action';
 import {
 	ACTION_FRIENDS_TYPES,
+	ActionFriendsGetFriends,
 	ActionFriendsGetFriendsSuccessData,
 	ActionFriendsGetSubscribersSuccessData,
 	ActionFriendsGetSubscriptionsSuccessData,
-	ActionFriendsGetUsersSuccessData,
+	ActionFriendsGetUsersSuccess,
 } from '../actions/actionFriends';
 import config from '../config';
 import { toFriendConfig } from '../models/profile';
@@ -28,35 +29,6 @@ export const reducerFriends = (
 	}
 	const newState = deepClone(state);
 	switch (action.type) {
-		case ACTION_FRIENDS_TYPES.getFriends:
-			[
-				newState.friends,
-				newState.subscribers,
-				newState.subscriptions,
-				newState.users,
-			].forEach((item) => {
-				item.friendsConfig = [];
-				item.messageText = '';
-			});
-			newState.pendingUsersRequest = true;
-			return newState;
-		case ACTION_FRIENDS_TYPES.getUsersSuccess: {
-			const actionData = action.data as ActionFriendsGetUsersSuccessData;
-			newState.users.friendsConfig = newState.users.friendsConfig.concat(
-				actionData.users
-					.filter(
-						(user) =>
-							!user.is_subscriber &&
-							!user.is_friend &&
-							!user.is_subscription,
-					)
-					.map((user) => {
-						return toFriendConfig(user);
-					}),
-			);
-			newState.pendingUsersRequest = false;
-			return newState;
-		}
 		case ACTION_FRIENDS_TYPES.getSubscribersSuccess: {
 			const actionData =
 				action.data as ActionFriendsGetSubscribersSuccessData;
@@ -91,7 +63,31 @@ export const reducerFriends = (
 			}
 			return newState;
 		}
-		default:
-			return state;
 	}
+	switch (true) {
+		case action instanceof ActionFriendsGetFriends:
+			newState.pendingUsersRequest = true;
+			break;
+		case action instanceof ActionFriendsGetUsersSuccess: {
+			const newUsers = action.data.users
+				.filter(
+					(user) =>
+						!user.is_subscriber &&
+						!user.is_friend &&
+						!user.is_subscription,
+				)
+				.map((user) => {
+					return toFriendConfig(user);
+				});
+			if (action.data.append) {
+				newState.users.friendsConfig =
+					newState.users.friendsConfig.concat(newUsers);
+			} else {
+				newState.users.friendsConfig = newUsers;
+			}
+			newState.pendingUsersRequest = false;
+			break;
+		}
+	}
+	return newState;
 };

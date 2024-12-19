@@ -77,6 +77,7 @@ export class ActionFriendsGetSubscriptionsSuccess implements Action {
 
 export interface ActionFriendsGetUsersSuccessData {
 	users: ShortProfileResponse[];
+	append: boolean;
 }
 
 export class ActionFriendsGetUsersSuccess implements Action {
