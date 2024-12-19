@@ -5,6 +5,7 @@
     }
     &__file {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         gap: 1rem;
         &-icon {
@@ -13,6 +14,10 @@
             img {
                 border-radius: 0;
             }
+        }
+        &-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         &-link {
             color: var(--main-color);
