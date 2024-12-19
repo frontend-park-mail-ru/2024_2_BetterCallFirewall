@@ -1,13 +1,13 @@
 .chat-attachments-input {
     &__attachments-container {
         display: flex;
-        justify-content: start;
+        justify-content: space-between;
         flex-wrap: wrap;
         gap: 0.1rem;
         margin: 0 0.5rem;
     }
     &__preview {
-        width: 15%;
+        width: 19%;
     }
     &__error {
         margin: 0.5rem 0 0 0.5rem;
