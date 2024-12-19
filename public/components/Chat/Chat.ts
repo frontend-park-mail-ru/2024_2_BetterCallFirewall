@@ -5,8 +5,10 @@ import {
 import { ActionStickersGet } from '../../actions/actionStickers';
 import { EmojiPanels } from '../../config';
 import { VNode } from '../../modules/vdom';
-import { AttachmentsInputConfig } from '../AttachmentsInput/AttachmentsInput';
-import { ChatAttachmentInput } from '../ChatAttachmentInput/ChatAttachmentInput';
+import {
+	ChatAttachmentInput,
+	ChatAttachmentInputConfig,
+} from '../ChatAttachmentInput/ChatAttachmentInput';
 import { ChatMessage, ChatMessageConfig } from '../ChatMessage/ChatMessage';
 import { Component, ComponentConfig } from '../Component';
 import { Emoji, EmojiConfig } from '../Emoji/Emoji';
@@ -27,7 +29,7 @@ export interface ChatConfig extends ComponentConfig {
 	inputText: string;
 	inputKey: string;
 	showEmojiPanel: boolean;
-	attachmentInput: AttachmentsInputConfig;
+	attachmentInput: ChatAttachmentInputConfig;
 	emojis: EmojiConfig[];
 	stickers: StickerConfig[];
 	emojiPanelSelected: EmojiPanels;

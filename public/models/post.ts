@@ -60,6 +60,7 @@ export const toPostConfig = (postResponse: PostResponse): PostConfig => {
 			name: 'files[]',
 			type: 'file',
 			extra: 'multiple',
+			hidden: true,
 		},
 		expanded: false,
 	};

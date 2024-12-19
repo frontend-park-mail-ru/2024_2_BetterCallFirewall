@@ -27,4 +27,12 @@ export class ChatAttachmentInput extends BaseAttachmentInput {
 		this._prerender();
 		return this._render('ChatAttachmentInput.hbs');
 	}
+
+	protected _prerender(): void {
+		super._prerender();
+		this._templateContext = {
+			...this._templateContext,
+			hidden: this._config.files.length > 0,
+		};
+	}
 }
