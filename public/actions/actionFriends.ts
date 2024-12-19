@@ -2,7 +2,7 @@ import { ShortProfileResponse } from '../models/profile';
 import { Action, ActionType } from './action';
 
 export const ACTION_FRIENDS_TYPES = {
-	getFriends: 'actionFriendsGetFriends',
+	getAll: 'actionFriendsGetAll',
 	getFriendsSuccess: 'actionFriendsGetFriendsSuccess',
 	getFriendsFail: 'actionFriendsGetFriendsFail',
 	getSubscribersSuccess: 'actionFriendsGetSubscribersSuccess',
@@ -23,12 +23,12 @@ export const ACTION_FRIENDS_TYPES = {
 	removeFail: 'actionFriendsRemoveFail',
 };
 
-export class ActionFriendsGetFriends implements Action {
+export class ActionFriendsGetAll implements Action {
 	type: ActionType;
 	data: object;
 
 	constructor() {
-		this.type = ACTION_FRIENDS_TYPES.getFriends;
+		this.type = ACTION_FRIENDS_TYPES.getAll;
 		this.data = {};
 	}
 }

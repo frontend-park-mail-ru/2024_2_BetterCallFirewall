@@ -1,7 +1,7 @@
 import { Action } from '../actions/action';
 import {
 	ACTION_FRIENDS_TYPES,
-	ActionFriendsGetFriends,
+	ActionFriendsGetAll,
 	ActionFriendsGetFriendsSuccessData,
 	ActionFriendsGetSubscribersSuccessData,
 	ActionFriendsGetSubscriptionsSuccessData,
@@ -35,9 +35,10 @@ export const reducerFriends = (
 			newState.subscribers.friendsConfig = actionData.subscribers.map(
 				(subscriber) => toFriendConfig(subscriber),
 			);
-			if (!newState.subscribers.friendsConfig.length) {
-				newState.subscribers.messageText = MESSAGES.emptySubscribers;
-			}
+			newState.subscribers.messageText = newState.subscribers
+				.friendsConfig.length
+				? MESSAGES.emptySubscribers
+				: '';
 			return newState;
 		}
 		case ACTION_FRIENDS_TYPES.getFriendsSuccess: {
@@ -46,9 +47,9 @@ export const reducerFriends = (
 			newState.friends.friendsConfig = actionData.friends.map((friend) =>
 				toFriendConfig(friend),
 			);
-			if (!newState.friends.friendsConfig.length) {
-				newState.friends.messageText = MESSAGES.emptyFriends;
-			}
+			newState.friends.messageText = newState.friends.friendsConfig.length
+				? ''
+				: MESSAGES.emptyFriends;
 			return newState;
 		}
 		case ACTION_FRIENDS_TYPES.getSubscriptionsSuccess: {
@@ -57,15 +58,15 @@ export const reducerFriends = (
 			newState.subscriptions.friendsConfig = actionData.subscriptions.map(
 				(subscription) => toFriendConfig(subscription),
 			);
-			if (!newState.subscriptions.friendsConfig.length) {
-				newState.subscriptions.messageText =
-					MESSAGES.emptySubscriptions;
-			}
+			newState.subscriptions.messageText = newState.subscriptions
+				.friendsConfig.length
+				? ''
+				: MESSAGES.emptySubscriptions;
 			return newState;
 		}
 	}
 	switch (true) {
-		case action instanceof ActionFriendsGetFriends:
+		case action instanceof ActionFriendsGetAll:
 			newState.pendingUsersRequest = true;
 			break;
 		case action instanceof ActionFriendsGetUsersSuccess: {

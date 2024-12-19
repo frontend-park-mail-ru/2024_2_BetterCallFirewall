@@ -471,7 +471,7 @@ class App {
 			ACTION_ATTACHMENTS_INPUT_TYPES.fileLoaded,
 		);
 
-		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getFriends);
+		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getAll);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.subscribeSuccess);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.removeSuccess);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.unsubscribeSuccess);
