@@ -37,8 +37,8 @@ export const reducerFriends = (
 			);
 			newState.subscribers.messageText = newState.subscribers
 				.friendsConfig.length
-				? MESSAGES.emptySubscribers
-				: '';
+				? ''
+				: MESSAGES.emptySubscribers;
 			return newState;
 		}
 		case ACTION_FRIENDS_TYPES.getFriendsSuccess: {
