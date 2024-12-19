@@ -127,6 +127,7 @@ export class ViewStickers extends ViewHome {
 							this.stickers.stickerCreateForm.printError(
 								'Нельзя прикрепить пустой файл',
 							);
+							input.value = '';
 							return;
 						}
 						if (label) {
