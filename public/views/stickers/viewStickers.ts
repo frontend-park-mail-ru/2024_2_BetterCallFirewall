@@ -107,7 +107,7 @@ export class ViewStickers extends ViewHome {
 						input.value = '';
 						event.preventDefault();
 						label?.classList.remove('active');
-						label.textContent = 'Прикрепить картинку';
+						label.textContent = 'Выбрать стикер';
 						preview.src = '';
 					}
 				},
