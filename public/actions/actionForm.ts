@@ -10,7 +10,7 @@ export interface IFormErrorData {
 
 export class ActionFormError {
 	type: ActionType;
-	data: object;
+	data: IFormErrorData;
 	constructor(message: string) {
 		this.type = ACTION_FORM_TYPES.formError;
 		this.data = {
