@@ -32,7 +32,7 @@ export class ChatAttachmentInput extends BaseAttachmentInput {
 		super._prerender();
 		this._templateContext = {
 			...this._templateContext,
-			hidden: this._config.files.length > 0,
+			hidden: !this._config.files.length,
 		};
 	}
 }
