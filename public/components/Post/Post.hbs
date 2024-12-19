@@ -32,7 +32,9 @@
     </div>
     <hr>
     <div class="post__content {{#if expanded}}post__content_expanded{{/if}}">
-        <span class="post__content-text">{{this.text}}</span>
+        {{#if text}}
+            <span class="post__content-text">{{this.text}}</span>
+        {{/if}}
         {{#each attachments}}
             <div class="post__content-image">
                 {{{this}}}
