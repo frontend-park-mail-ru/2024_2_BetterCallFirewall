@@ -63,8 +63,6 @@ export class ViewGroupPage extends ViewHome {
 
 	handleChange(change: ChangeGroupPage): void {
 		switch (change.type) {
-			case ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess:
-				return;
 			case ACTION_GROUP_PAGE_TYPES.postsRequestSuccess:
 			case ACTION_FEED_TYPES.postsRequestFail:
 				this._postsFetched = true;
