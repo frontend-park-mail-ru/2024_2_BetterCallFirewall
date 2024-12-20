@@ -61,6 +61,10 @@ export class ViewProfile extends ViewHome {
 	handleChange(change: ChangeProfile): void {
 		switch (change.type) {
 			case ACTION_APP_TYPES.goTo:
+				this._requestProfile();
+				return;
+		}
+		switch (change.type) {
 			case ACTION_APP_TYPES.actionAppInit:
 			case ACTION_PROFILE_TYPES.getHeaderSuccess:
 			case ACTION_MENU_TYPES.updateProfileLinkHref:
