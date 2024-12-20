@@ -9,10 +9,6 @@
                 <h1>{{secondName}}</h1>
             </div>
             <span>{{description}}</span>
-            {{!-- <div class="profile__community">
-                <a href=""><span>Friends: {{friendsCount}}</span></a>
-                <a href=""><span>Groups: {{groupsCount}}</span></a>
-            </div> --}}
             <div class="profile__actions">
                 {{#if this.isFriend}}
                     <button class="remove-friend button-action-negative button-no-decorations" href="">Удалить из друзей</button>      
@@ -28,11 +24,12 @@
                 {{/if}}
 
                 {{#unless this.isAuthor}}
-                <a href="" class="write-message" data-key="writeMessage">Написать сообщение</a>
+                    <a href="" class="write-message" data-key="writeMessage">Написать сообщение</a>
                 {{/unless}}
                 {{#if this.isAuthor}}
-                <a href="{{this.editProfileHref}}" class="profile-edit" data-key="profileEdit">Редактировать профиль</a>
-                <button class="profile-delete button-action-negative button-no-decorations" data-key="profile-delete">Удалить аккаунт</button>
+                    <button class="profile-delete button-action-negative button-no-decorations" data-key="profile-delete">Удалить аккаунт</button>
+                    <a href="{{this.editProfileHref}}" class="profile-edit" data-key="profileEdit">Редактировать профиль</a>
+                    <a class="write-message" href="" data-key="writeMessage"><span>Написать себе сообщение</span></a>
                 {{/if}}
             </div>
         </div>

@@ -179,19 +179,17 @@ export class ViewProfile extends ViewHome {
 				},
 			});
 		}
-		if (!this.profile.config.isAuthor) {
-			this.profile.writeMessageLinkVNode.handlers.push({
-				event: 'click',
-				callback: (event) => {
-					event.preventDefault();
-					this.sendAction(
-						new ActionChatGoToChat({
-							href: PAGE_URLS.chat + `/${this.profile.config.id}`,
-						}),
-					);
-				},
-			});
-		}
+		this.profile.writeMessageLinkVNode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this.sendAction(
+					new ActionChatGoToChat({
+						href: PAGE_URLS.chat + `/${this.profile.config.id}`,
+					}),
+				);
+			},
+		});
 		if (this.profile.config.isSubscriber) {
 			this.profile.acceptFriendButtonVNode.handlers.push({
 				event: 'click',
