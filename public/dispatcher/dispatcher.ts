@@ -12,6 +12,7 @@ import {
 import { ActionProfileEditRequestSuccess } from '../actions/actionProfileEdit';
 import api from '../api/api';
 import app from '../app';
+import { PAGE_LINKS } from '../config';
 import { PROFILE_RESPONSE_MESSAGES } from '../models/profile';
 import { Router } from '../router/router';
 import { Store } from '../stores/store';
@@ -80,7 +81,7 @@ export class Dispatcher {
 					action.data.message ===
 					PROFILE_RESPONSE_MESSAGES.profileNotFound
 				) {
-					this.dispatch(new ActionAppGoTo(''));
+					this.dispatch(new ActionAppGoTo(PAGE_LINKS.feed));
 				}
 				break;
 		}
