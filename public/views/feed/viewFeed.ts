@@ -84,12 +84,6 @@ export class ViewFeed extends ViewHome {
 		super._addHandlers();
 		this._addScrollHandler();
 		this._addPostsHandler();
-		this._root.addDocumentHandler({
-			event: 'DOMContentLoaded',
-			callback: () => {
-				alert('DOMContentLoaded');
-			},
-		});
 	}
 
 	private get lastPostId(): number | undefined {
