@@ -54,6 +54,7 @@ import {
 	ActionGroupPageDeleteGroupSuccess,
 	ActionGroupPagePostsRequest,
 	ActionGroupPagePostsRequestSuccess,
+	ActionGroupPageRequestFail,
 } from '../actions/actionGroupPage';
 import {
 	ACTION_GROUPS_TYPES,
@@ -611,6 +612,13 @@ class API {
 					}),
 				);
 				return;
+			default:
+				this.sendAction(
+					new ActionGroupPageRequestFail(
+						response.status,
+						response.message,
+					),
+				);
 		}
 	}
 
