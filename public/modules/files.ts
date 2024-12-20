@@ -51,3 +51,19 @@ export const fileNameFromURL = (file: string): string => {
 	}
 	return file.slice(start + substr.length, stop);
 };
+
+export const shortenFileName = (fileName: string): string => {
+	const limit = 45;
+	if (fileName.length > limit) {
+		const lastDotIndex = fileName.lastIndexOf('.');
+		if (lastDotIndex !== -1) {
+			const name = fileName.substring(0, lastDotIndex);
+			const extension = fileName.substring(lastDotIndex);
+			const shortenedName =
+				name.substring(0, limit - 3) + '...' + extension;
+			return shortenedName;
+		}
+		return fileName.substring(0, limit - 3) + '...';
+	}
+	return fileName;
+};
