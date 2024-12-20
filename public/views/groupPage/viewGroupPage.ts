@@ -106,7 +106,6 @@ export class ViewGroupPage extends ViewHome {
 				config,
 			);
 		}
-		this._postsFetched = false;
 		this._groupPageRequest();
 		this._render();
 		this.sendAction(new ActionUpdateGroupPage());
@@ -268,6 +267,7 @@ export class ViewGroupPage extends ViewHome {
 	}
 
 	private _groupPageRequest = throttle(() => {
+		this._postsFetched = false;
 		this.sendAction(new ActionGroupPageRequest(app.router.path));
 	}, 1000);
 
