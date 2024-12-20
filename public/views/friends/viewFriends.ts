@@ -30,6 +30,7 @@ export interface ViewFriendsConfig extends HomeConfig {
 export class ViewFriends extends ViewHome {
 	protected _configFriends: ViewFriendsConfig;
 	protected _components: ComponentsFriends = {};
+	private _responseCounter = 0;
 
 	constructor(config: ViewFriendsConfig, root: Root) {
 		super(config, root);
@@ -41,6 +42,14 @@ export class ViewFriends extends ViewHome {
 	}
 
 	handleChange(change: ChangeFriends): void {
+		switch (change.type) {
+			case ACTION_FRIENDS_TYPES.getFriendsSuccess:
+			case ACTION_FRIENDS_TYPES.getSubscribersSuccess:
+			case ACTION_FRIENDS_TYPES.getSubscriptionsSuccess:
+			case ACTION_FRIENDS_TYPES.getUsersSuccess:
+				this._responseCounter++;
+				break;
+		}
 		super.handleChange(change);
 		switch (change.type) {
 			case ACTION_APP_TYPES.actionAppInit:
@@ -121,6 +130,11 @@ export class ViewFriends extends ViewHome {
 	}
 
 	protected _render(): void {
+		if (this._responseCounter < 4) {
+			return;
+		}
+		this._responseCounter = 0;
+
 		const rootNode = this._root.node;
 
 		super._render();
