@@ -37,6 +37,7 @@ import {
 	ActionFriendsUnsubscribe,
 	ActionFriendsSubscribe,
 	ActionFriendsGetUsersFail,
+	ActionFriendsRemove,
 } from '../actions/actionFriends';
 import {
 	ActionGroupsEditFail,
@@ -271,6 +272,9 @@ class API {
 				break;
 			case action instanceof ActionLogout:
 				this.logout();
+				break;
+			case action instanceof ActionFriendsRemove:
+				this.removeFriend(action.data.profileId);
 				break;
 		}
 	}

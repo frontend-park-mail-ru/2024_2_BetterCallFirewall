@@ -4,6 +4,7 @@ import { ActionConfirmOpen } from '../../actions/actionConfirm';
 import {
 	ACTION_FRIENDS_TYPES,
 	ActionFriendsAccept,
+	ActionFriendsRemove,
 	ActionFriendsSubscribe,
 	ActionFriendsUnsubscribe,
 } from '../../actions/actionFriends';
@@ -190,6 +191,17 @@ export class ViewProfile extends ViewHome {
 				);
 			},
 		});
+		if (this.profile.config.isFriend) {
+			this.profile.removeFriendVNode.handlers.push({
+				event: 'click',
+				callback: (event) => {
+					event.preventDefault();
+					this.sendAction(
+						new ActionFriendsRemove(this.profile.config.id),
+					);
+				},
+			});
+		}
 		if (this.profile.config.isSubscriber) {
 			this.profile.acceptFriendButtonVNode.handlers.push({
 				event: 'click',

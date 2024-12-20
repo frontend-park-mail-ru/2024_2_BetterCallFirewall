@@ -19,6 +19,7 @@ export const ACTION_FRIENDS_TYPES = {
 	accept: 'actionFriendsAccept',
 	acceptSuccess: 'actionFriendsAcceptSuccess',
 	acceptFail: 'actionFriendsAcceptFail',
+	remove: 'actionFriendsRemove',
 	removeSuccess: 'actionFriendsRemoveSuccess',
 	removeFail: 'actionFriendsRemoveFail',
 };
@@ -155,11 +156,18 @@ export class actionFriendsAcceptFail implements Action {
 	data: object = {};
 }
 
+export class ActionFriendsRemove implements Action {
+	type: string = ACTION_FRIENDS_TYPES.remove;
+	data: { profileId: number };
+
+	constructor(profileId: number) {
+		this.data = { profileId };
+	}
+}
 export class ActionFriendsRemoveSuccess implements Action {
 	type: ActionType = ACTION_FRIENDS_TYPES.removeSuccess;
 	data: object = {};
 }
-
 export class actionFriendsRemoveFail implements Action {
 	type: ActionType = ACTION_FRIENDS_TYPES.removeFail;
 	data: object = {};

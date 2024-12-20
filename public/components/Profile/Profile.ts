@@ -75,7 +75,6 @@ export class Profile extends Component {
 	get subscribeButtonVNode(): VNode {
 		return this._findVNodeByClass('subscribe-friend');
 	}
-
 	get acceptFriendButtonVNode(): VNode {
 		const vnode = findVNodeByClass(this.vnode, 'accept-friend');
 		if (!vnode) {
@@ -83,9 +82,11 @@ export class Profile extends Component {
 		}
 		return vnode;
 	}
-
 	get unsubscribeButtonVNode(): VNode {
 		return this._findVNodeByClass('unsubscribe-friend');
+	}
+	get removeFriendVNode(): VNode {
+		return this._findVNodeByClass('remove-friend');
 	}
 
 	get deleteProfileButtonVNode(): VNode {
