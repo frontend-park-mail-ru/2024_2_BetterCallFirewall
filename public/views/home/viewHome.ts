@@ -1,6 +1,7 @@
 import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import {
 	ACTION_CONFIRM_TYPES,
+	ActionConfirmClose,
 	ActionConfirmOpen,
 } from '../../actions/actionConfirm';
 import { ActionGroupsSearch } from '../../actions/actionGroups';
@@ -170,6 +171,14 @@ export abstract class ViewHome extends View {
 					!this.menu.html.contains(event.target as Node)
 				) {
 					this.sendAction(new ActionMenuOpenSwitch(false));
+				}
+				if (
+					this._homeComponents.confirm &&
+					!this._homeComponents.confirm.HTML.contains(
+						event.target as Node,
+					)
+				) {
+					this.sendAction(new ActionConfirmClose());
 				}
 			},
 		});

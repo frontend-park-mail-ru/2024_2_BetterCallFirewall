@@ -7,6 +7,7 @@ import {
 	VNode,
 	vNodesFromString,
 } from '../modules/vdom';
+import { Root } from './Root/Root';
 
 export interface ComponentConfig {
 	key: string;
@@ -56,6 +57,17 @@ export abstract class Component {
 			return this._vnode;
 		}
 		return this.newVNode();
+	}
+
+	get root(): Root {
+		if (this._parent) {
+			return this._parent.root;
+		}
+		return this as unknown as Root;
+	}
+
+	get HTML(): Element {
+		return this.vnode.element;
 	}
 
 	newVNode(html?: string): VNode {
