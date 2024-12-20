@@ -27,6 +27,7 @@ import {
 } from '../../actions/actionGroups';
 import { ActionConfirmOpen } from '../../actions/actionConfirm';
 import { Style } from '../../components/Confirm/Confirm';
+import { ACTION_FEED_TYPES } from '../../actions/actionFeed';
 
 export type ComponentsGroupPage = {
 	groupPage?: GroupPage;
@@ -67,7 +68,7 @@ export class ViewGroupPage extends ViewHome {
 				this._groupRequestPending = false;
 				break;
 			case ACTION_GROUP_PAGE_TYPES.postsRequestSuccess:
-			case ACTION_GROUP_PAGE_TYPES.postsRequestFail:
+			case ACTION_FEED_TYPES.postsRequestFail:
 				this._postsRequestPending = false;
 				break;
 		}
