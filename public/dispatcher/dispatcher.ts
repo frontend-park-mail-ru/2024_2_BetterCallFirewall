@@ -13,6 +13,7 @@ import {
 	ActionProfileRequestFail,
 } from '../actions/actionProfile';
 import { ActionProfileEditRequestSuccess } from '../actions/actionProfileEdit';
+import { ActionUserAuth } from '../actions/actionUser';
 import api, { STATUS } from '../api/api';
 import app from '../app';
 import { PAGE_LINKS } from '../config';
@@ -88,6 +89,9 @@ export class Dispatcher {
 				break;
 			case action instanceof ActionProfileDeleteSuccess:
 				this.dispatch(new ActionLogout());
+				break;
+			case action instanceof ActionUserAuth:
+				this.dispatch(new ActionAppGoTo(PAGE_LINKS.feed));
 				break;
 		}
 	}
