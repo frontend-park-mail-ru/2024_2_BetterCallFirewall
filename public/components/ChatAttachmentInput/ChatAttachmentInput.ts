@@ -21,6 +21,7 @@ export class ChatAttachmentInput extends BaseAttachmentInput {
 
 	printError(error: string): void {
 		this.errorFieldVNode.element.textContent = error;
+		this.vnode.element.classList.remove('hidden');
 	}
 
 	render(): string {
