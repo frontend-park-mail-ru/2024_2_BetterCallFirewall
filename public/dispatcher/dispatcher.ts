@@ -2,11 +2,13 @@ import { Action, ActionType } from '../actions/action';
 import { ActionAppGoTo } from '../actions/actionApp';
 import { ActionCommentRequest } from '../actions/actionComment';
 import { ActionGroupPageRequestFail } from '../actions/actionGroupPage';
+import { ActionLogout } from '../actions/actionHeader';
 import {
 	ActionPostCommentsOpenSwitch,
 	ActionPostCommentsSortChange,
 } from '../actions/actionPost';
 import {
+	ActionProfileDeleteSuccess,
 	ActionProfileGetHeader,
 	ActionProfileRequestFail,
 } from '../actions/actionProfile';
@@ -83,6 +85,9 @@ export class Dispatcher {
 				break;
 			case action instanceof ActionGroupPageRequestFail:
 				this.dispatch(new ActionAppGoTo(PAGE_LINKS.groups));
+				break;
+			case action instanceof ActionProfileDeleteSuccess:
+				this.dispatch(new ActionLogout());
 				break;
 		}
 	}
