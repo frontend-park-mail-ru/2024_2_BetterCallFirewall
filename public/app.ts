@@ -481,6 +481,7 @@ class App {
 			ACTION_FRIENDS_TYPES.getSubscribersSuccess,
 		);
 		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getUsersSuccess);
+		this._stores.friends.subscribe(ACTION_FRIENDS_TYPES.getUsersFail);
 		this._stores.friends.subscribe(
 			ACTION_FRIENDS_TYPES.getSubscriptionsSuccess,
 		);

@@ -5,6 +5,7 @@ import {
 	ActionFriendsGetFriendsSuccessData,
 	ActionFriendsGetSubscribersSuccessData,
 	ActionFriendsGetSubscriptionsSuccessData,
+	ActionFriendsGetUsersFail,
 	ActionFriendsGetUsersSuccess,
 } from '../actions/actionFriends';
 import config from '../config';
@@ -89,6 +90,9 @@ export const reducerFriends = (
 			newState.pendingUsersRequest = false;
 			break;
 		}
+		case action instanceof ActionFriendsGetUsersFail:
+			newState.pendingUsersRequest = false;
+			break;
 	}
 	return newState;
 };

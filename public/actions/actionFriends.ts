@@ -89,6 +89,10 @@ export class ActionFriendsGetUsersSuccess implements Action {
 		this.data = data;
 	}
 }
+export class ActionFriendsGetUsersFail implements Action {
+	type: string = ACTION_FRIENDS_TYPES.getUsersFail;
+	data: object = {};
+}
 
 export class ActionFriendsSubscribe implements Action {
 	type: ActionType = ACTION_FRIENDS_TYPES.subscribe;

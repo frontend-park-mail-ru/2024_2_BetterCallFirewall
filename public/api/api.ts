@@ -36,6 +36,7 @@ import {
 	ActionFriendsGetUsersSuccess,
 	ActionFriendsUnsubscribe,
 	ActionFriendsSubscribe,
+	ActionFriendsGetUsersFail,
 } from '../actions/actionFriends';
 import {
 	ActionGroupsEditFail,
@@ -478,6 +479,9 @@ class API {
 						append: !!lastId,
 					}),
 				);
+				break;
+			default:
+				this.sendAction(new ActionFriendsGetUsersFail());
 		}
 	}
 
