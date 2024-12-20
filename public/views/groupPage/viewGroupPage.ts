@@ -42,8 +42,7 @@ export interface ViewGroupPageConfig extends HomeConfig {
 export class ViewGroupPage extends ViewHome {
 	protected _configGroupPage: ViewGroupPageConfig;
 	protected _components: ComponentsGroupPage = {};
-	private _groupRequestPending = false;
-	private _postsRequestPending = false;
+	private _postsFetched = false;
 
 	constructor(config: ViewGroupPageConfig, root: Root) {
 		super(config, root);
@@ -65,11 +64,10 @@ export class ViewGroupPage extends ViewHome {
 	handleChange(change: ChangeGroupPage): void {
 		switch (change.type) {
 			case ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess:
-				this._groupRequestPending = false;
-				break;
+				return;
 			case ACTION_GROUP_PAGE_TYPES.postsRequestSuccess:
 			case ACTION_FEED_TYPES.postsRequestFail:
-				this._postsRequestPending = false;
+				this._postsFetched = false;
 				break;
 		}
 		super.handleChange(change);
@@ -91,7 +89,7 @@ export class ViewGroupPage extends ViewHome {
 				break;
 			case ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess:
 				this.updateViewGroupPage(change.data);
-				this._postsRequestPending = true;
+				this._postsFetched = false;
 				this.sendAction(
 					new ActionGroupPagePostsRequest(
 						this._configGroupPage.groupPage.id,
@@ -122,7 +120,7 @@ export class ViewGroupPage extends ViewHome {
 	}
 
 	protected _render(): void {
-		if (this._groupRequestPending || this._postsRequestPending) {
+		if (!this._postsFetched) {
 			return;
 		}
 
@@ -265,7 +263,6 @@ export class ViewGroupPage extends ViewHome {
 	}
 
 	private _groupPageRequest = throttle(() => {
-		this._groupRequestPending = true;
 		this.sendAction(new ActionGroupPageRequest(app.router.path));
 	}, 1000);
 
