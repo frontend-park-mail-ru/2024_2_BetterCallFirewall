@@ -77,6 +77,8 @@ export class ViewProfile extends ViewHome {
 				this.sendAction(new ActionUpdateProfile());
 				this.sendAction(new ActionProfileRequest(app.router.path));
 				break;
+			case ACTION_FRIENDS_TYPES.removeSuccess:
+			case ACTION_FRIENDS_TYPES.acceptSuccess:
 			case ACTION_FRIENDS_TYPES.subscribeSuccess:
 			case ACTION_FRIENDS_TYPES.unsubscribeSuccess:
 				this.sendAction(
