@@ -53,7 +53,7 @@ export const fileNameFromURL = (file: string): string => {
 };
 
 export const shortenFileName = (fileName: string): string => {
-	const limit = 45;
+	const limit = 40;
 	if (fileName.length > limit) {
 		const lastDotIndex = fileName.lastIndexOf('.');
 		if (lastDotIndex !== -1) {
