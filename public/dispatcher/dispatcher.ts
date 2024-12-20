@@ -10,10 +10,9 @@ import {
 	ActionProfileRequestFail,
 } from '../actions/actionProfile';
 import { ActionProfileEditRequestSuccess } from '../actions/actionProfileEdit';
-import api from '../api/api';
+import api, { STATUS } from '../api/api';
 import app from '../app';
 import { PAGE_LINKS } from '../config';
-import { PROFILE_RESPONSE_MESSAGES } from '../models/profile';
 import { Router } from '../router/router';
 import { Store } from '../stores/store';
 
@@ -77,10 +76,7 @@ export class Dispatcher {
 				this.dispatch(new ActionProfileGetHeader());
 				break;
 			case action instanceof ActionProfileRequestFail:
-				if (
-					action.data.message ===
-					PROFILE_RESPONSE_MESSAGES.profileNotFound
-				) {
+				if (action.data.status === STATUS.badRequest) {
 					this.dispatch(new ActionAppGoTo(PAGE_LINKS.feed));
 				}
 				break;
