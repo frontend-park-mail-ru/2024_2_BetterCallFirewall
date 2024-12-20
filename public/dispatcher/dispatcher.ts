@@ -1,5 +1,5 @@
 import { Action, ActionType } from '../actions/action';
-import { ActionAppGoTo } from '../actions/actionApp';
+import { ActionAppGoTo, ActionAppInit } from '../actions/actionApp';
 import { ActionCommentRequest } from '../actions/actionComment';
 import { ActionGroupPageRequestFail } from '../actions/actionGroupPage';
 import { ActionLogout } from '../actions/actionHeader';
@@ -88,6 +88,9 @@ export class Dispatcher {
 				break;
 			case action instanceof ActionProfileDeleteSuccess:
 				this.dispatch(new ActionLogout());
+				break;
+			case action instanceof ActionAppInit:
+				this.dispatch(new ActionAppGoTo(PAGE_LINKS.feed));
 				break;
 		}
 	}
