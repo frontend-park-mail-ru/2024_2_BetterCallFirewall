@@ -4,6 +4,8 @@ import {
 	ActionPostCommentsOpenSwitch,
 	ActionPostCommentsSortChange,
 } from '../actions/actionPost';
+import { ActionProfileGetHeader } from '../actions/actionProfile';
+import { ActionProfileEditRequestSuccess } from '../actions/actionProfileEdit';
 import api from '../api/api';
 import app from '../app';
 import { Router } from '../router/router';
@@ -64,6 +66,9 @@ export class Dispatcher {
 						action.data.sort,
 					),
 				);
+				break;
+			case action instanceof ActionProfileEditRequestSuccess:
+				this.dispatch(new ActionProfileGetHeader());
 				break;
 		}
 	}
