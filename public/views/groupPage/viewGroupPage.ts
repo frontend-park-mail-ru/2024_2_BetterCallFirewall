@@ -187,7 +187,10 @@ export class ViewGroupPage extends ViewHome {
 					event: 'click',
 					callback: (event) => {
 						event.preventDefault();
-						if (!this._configGroupPage.followRequestPending) {
+						if (
+							!this._configGroupPage.followRequestPending &&
+							this._postsFetched
+						) {
 							this._unfollowGroup();
 						}
 					},
@@ -197,7 +200,10 @@ export class ViewGroupPage extends ViewHome {
 					event: 'click',
 					callback: (event) => {
 						event.preventDefault();
-						if (!this._configGroupPage.followRequestPending) {
+						if (
+							!this._configGroupPage.followRequestPending &&
+							this._postsFetched
+						) {
 							this._followGroup();
 						}
 					},
