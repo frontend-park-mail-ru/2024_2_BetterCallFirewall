@@ -67,7 +67,7 @@ export class ViewGroupPage extends ViewHome {
 				return;
 			case ACTION_GROUP_PAGE_TYPES.postsRequestSuccess:
 			case ACTION_FEED_TYPES.postsRequestFail:
-				this._postsFetched = false;
+				this._postsFetched = true;
 				break;
 		}
 		super.handleChange(change);
