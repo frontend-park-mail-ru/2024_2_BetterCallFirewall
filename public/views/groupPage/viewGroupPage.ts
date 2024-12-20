@@ -176,7 +176,29 @@ export class ViewGroupPage extends ViewHome {
 				callback: (event) => {
 					event.preventDefault();
 					this.sendAction(
-						new ActionGroupPageDeleteGroup(this.groupPage.id),
+						new ActionConfirmOpen({
+							key: 'confirm-group-delete',
+							title: 'Удалить группу?',
+							text: '',
+							actions: [
+								{
+									text: 'Удалить',
+									style: Style.Negative,
+									callback: (event) => {
+										event.preventDefault();
+										this.sendAction(
+											new ActionGroupPageDeleteGroup(
+												this.groupPage.id,
+											),
+										);
+									},
+								},
+								{
+									text: 'Отмена',
+									style: Style.Main,
+								},
+							],
+						}),
 					);
 				},
 			});
