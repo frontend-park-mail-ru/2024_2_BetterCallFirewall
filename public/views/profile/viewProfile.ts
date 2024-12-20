@@ -63,7 +63,7 @@ export class ViewProfile extends ViewHome {
 			case ACTION_APP_TYPES.goTo:
 			case ACTION_APP_TYPES.actionAppInit:
 				this._requestProfile();
-				return;
+				break;
 			case ACTION_PROFILE_TYPES.profileRequestSuccess:
 				this._pendingProfileRequest = false;
 				this.updateViewProfile(change.data);
