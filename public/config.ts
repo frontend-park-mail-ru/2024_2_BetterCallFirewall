@@ -792,8 +792,8 @@ const config: AppConfig = {
 };
 
 export const validators: Record<string, (value: string | File) => string> = {
-	first_name: (value) => Validator.validateName(value as string),
-	last_name: (value) => Validator.validateName(value as string),
+	first_name: (value) => Validator.validateProfileName(value as string),
+	last_name: (value) => Validator.validateProfileName(value as string),
 	email: (value) => Validator.validateEmail(value as string),
 	password: (value) => Validator.validatePassword(value as string),
 	password_again: (value) => Validator.validateConfirmation(value as string),

@@ -133,6 +133,22 @@ export default class Validator {
 		return '';
 	}
 
+	static validateProfileName(name: string): string {
+		const value = Validator.shieldingData(name);
+		if (!value) {
+			return 'Поле не может быть пустым';
+		}
+		if (value.length < 3) {
+			return 'Поле должно содержать не менее 3 символов';
+		} else if (value.length > 30) {
+			return 'Поле должно содержать не более 30 символов';
+		}
+		if (value.replace(/\s+/g, '') !== value) {
+			return 'Поле не должно содержать пробелов';
+		}
+		return '';
+	}
+
 	static validateDescription(description: string): string {
 		const nameValue: string = Validator.shieldingData(description);
 		if (nameValue.length > 60) {
