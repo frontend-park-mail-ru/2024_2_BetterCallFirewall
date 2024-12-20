@@ -173,8 +173,8 @@ export abstract class ViewHome extends View {
 					this.sendAction(new ActionMenuOpenSwitch(false));
 				}
 				if (
-					this._homeComponents.confirm &&
-					!this._homeComponents.confirm.HTML.contains(
+					this._configHome.confirm &&
+					!this._homeComponents.confirm?.HTML.contains(
 						event.target as Node,
 					)
 				) {
