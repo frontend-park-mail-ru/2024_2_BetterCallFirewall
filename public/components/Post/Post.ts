@@ -173,12 +173,17 @@ export class Post extends Component {
 		return this._config.commentsSort === SortOptions.Desc;
 	}
 
-	get lastAttachmentImage(): HTMLImageElement | undefined {
+	get lastAttachmentImageVNode(): VNode | undefined {
 		const images = this._attachments.filter((attachment) => {
 			return attachment.isImage;
 		});
 		if (images.length) {
-			return images.at(-1)?.attachmentImage;
+			return images.at(-1)?.attachmentImageVNode;
+		}
+	}
+	get lastAttachmentImage(): HTMLImageElement | undefined {
+		if (this.lastAttachmentImageVNode) {
+			return this.lastAttachmentImageVNode.element as HTMLImageElement;
 		}
 	}
 
@@ -303,15 +308,8 @@ export class Post extends Component {
 	}
 
 	onMount(): void {
-		if (this.lastAttachmentImage) {
-			this.lastAttachmentImage.onload = () => {
-				(this.expandButtonVNode.element as HTMLElement).style.display =
-					this._isContentHeightBig() ? 'block' : 'none';
-			};
-		} else {
-			(this.expandButtonVNode.element as HTMLElement).style.display =
-				this._isContentHeightBig() ? 'block' : 'none';
-		}
+		(this.expandButtonVNode.element as HTMLElement).style.display =
+			this._isContentHeightBig() ? 'block' : 'none';
 	}
 
 	protected _addHandlers(): void {
@@ -342,6 +340,13 @@ export class Post extends Component {
 					this._commentAttachmentInput.inputVNode
 						.element as HTMLElement
 				).click();
+			},
+		});
+		this.lastAttachmentImageVNode?.handlers.push({
+			event: 'load',
+			callback: () => {
+				(this.expandButtonVNode.element as HTMLElement).style.display =
+					this._isContentHeightBig() ? 'block' : 'none';
 			},
 		});
 	}
