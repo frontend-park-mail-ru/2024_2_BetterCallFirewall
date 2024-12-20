@@ -64,11 +64,12 @@ export class ViewProfile extends ViewHome {
 			case ACTION_APP_TYPES.actionAppInit:
 				this._requestProfile();
 				return;
-		}
-		switch (change.type) {
 			case ACTION_PROFILE_TYPES.getHeaderSuccess:
 			case ACTION_MENU_TYPES.updateProfileLinkHref:
 			case ACTION_MENU_TYPES.openSwitch:
+				return;
+			case ACTION_PROFILE_TYPES.profileRequestSuccess:
+				this.updateViewProfile(change.data);
 				return;
 		}
 		super.handleChange(change);
