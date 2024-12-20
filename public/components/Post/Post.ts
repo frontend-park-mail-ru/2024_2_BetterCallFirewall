@@ -345,12 +345,15 @@ export class Post extends Component {
 		this.lastAttachmentImageVNode?.handlers.push({
 			event: 'load',
 			callback: () => {
-				// try {
-				(this.expandButtonVNode.element as HTMLElement).style.display =
-					this._isContentHeightBig() ? 'block' : 'none';
-				// } catch {
-				// 	return;
-				// }
+				try {
+					(
+						this.expandButtonVNode.element as HTMLElement
+					).style.display = this._isContentHeightBig()
+						? 'block'
+						: 'none';
+				} catch {
+					return;
+				}
 			},
 		});
 	}
