@@ -6,13 +6,16 @@
     &:first-child {
         margin-top: 2rem;
     }
+    &__info {
+        width: 60%;
+    }
     &__state {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: end;
         height: 100%;
-        width: 50%;
+        margin-left: auto;
     }
     &__link {
         color: var(--main-color)
