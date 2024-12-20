@@ -1,13 +1,18 @@
 import { Action, ActionType } from '../actions/action';
+import { ActionAppGoTo } from '../actions/actionApp';
 import { ActionCommentRequest } from '../actions/actionComment';
 import {
 	ActionPostCommentsOpenSwitch,
 	ActionPostCommentsSortChange,
 } from '../actions/actionPost';
-import { ActionProfileGetHeader } from '../actions/actionProfile';
+import {
+	ActionProfileGetHeader,
+	ActionProfileRequestFail,
+} from '../actions/actionProfile';
 import { ActionProfileEditRequestSuccess } from '../actions/actionProfileEdit';
 import api from '../api/api';
 import app from '../app';
+import { PROFILE_RESPONSE_MESSAGES } from '../models/profile';
 import { Router } from '../router/router';
 import { Store } from '../stores/store';
 
@@ -69,6 +74,14 @@ export class Dispatcher {
 				break;
 			case action instanceof ActionProfileEditRequestSuccess:
 				this.dispatch(new ActionProfileGetHeader());
+				break;
+			case action instanceof ActionProfileRequestFail:
+				if (
+					action.data.message ===
+					PROFILE_RESPONSE_MESSAGES.profileNotFound
+				) {
+					this.dispatch(new ActionAppGoTo(''));
+				}
 				break;
 		}
 	}

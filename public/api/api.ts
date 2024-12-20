@@ -284,12 +284,6 @@ class API {
 			case STATUS.unauthorized:
 				this.sendAction(new ActionUserUnauthorized());
 				break;
-			case STATUS.badRequest:
-			case STATUS.wrongMethod:
-				this.sendAction(
-					new ActionProfileRequestFail({ status: response.status }),
-				);
-				break;
 			case STATUS.ok:
 				if (!response.data) {
 					this.sendAction(
@@ -306,6 +300,13 @@ class API {
 					}),
 				);
 				break;
+			default:
+				this.sendAction(
+					new ActionProfileRequestFail({
+						status: response.status,
+						message: response.message,
+					}),
+				);
 		}
 	}
 

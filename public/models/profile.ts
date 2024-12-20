@@ -8,6 +8,10 @@ import deepClone from '../modules/deepClone';
 import parseFile from '../modules/parseFile';
 import { PostResponse, toPostConfig } from './post';
 
+export const PROFILE_RESPONSE_MESSAGES = {
+	profileNotFound: 'profile not found',
+};
+
 export interface ShortProfileResponse {
 	id: number;
 	first_name: string;
