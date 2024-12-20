@@ -70,6 +70,7 @@ export class ViewFriends extends ViewHome {
 				break;
 			case ACTION_FRIENDS_TYPES.getAll:
 				this.updateViewFriends(change.data);
+				this._responseCounter = 0;
 				api.requestFriends(this._configFriends.main.header.profile.id);
 				api.requestSubscribers(
 					this._configFriends.main.header.profile.id,
@@ -133,7 +134,6 @@ export class ViewFriends extends ViewHome {
 		if (this._responseCounter < 4) {
 			return;
 		}
-		this._responseCounter = 0;
 
 		const rootNode = this._root.node;
 
