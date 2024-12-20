@@ -174,6 +174,9 @@ export abstract class ViewHome extends View {
 				}
 				if (
 					this._configHome.confirm &&
+					document.querySelector(
+						`[data-key=${this._homeComponents.confirm?.key}]`,
+					) &&
 					!this._homeComponents.confirm?.HTML.contains(
 						event.target as Node,
 					)
