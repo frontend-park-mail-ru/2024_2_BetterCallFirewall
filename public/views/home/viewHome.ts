@@ -12,7 +12,6 @@ import {
 import {
 	ACTION_MENU_TYPES,
 	ActionMenuOpenSwitch,
-	ActionMenuTitleClick,
 } from '../../actions/actionMenu';
 import {
 	ACTION_PROFILE_TYPES,
@@ -236,7 +235,7 @@ export abstract class ViewHome extends View {
 			event: 'click',
 			callback: (event) => {
 				event.preventDefault();
-				this.sendAction(new ActionMenuTitleClick());
+				this.sendAction(new ActionAppGoTo(PAGE_LINKS.feed));
 			},
 		});
 	}
