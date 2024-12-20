@@ -8,7 +8,6 @@ import {
 	ActionFriendsUnsubscribe,
 } from '../../actions/actionFriends';
 import { ActionLogout } from '../../actions/actionHeader';
-import { ACTION_MENU_TYPES } from '../../actions/actionMenu';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
@@ -40,6 +39,7 @@ export interface ViewProfileConfig extends HomeConfig {
 export class ViewProfile extends ViewHome {
 	protected _configProfile: ViewProfileConfig;
 	protected _components: ComponentsProfile = {};
+	private _pendingProfileRequest = false;
 
 	constructor(config: ViewProfileConfig, root: Root) {
 		super(config, root);
@@ -64,19 +64,12 @@ export class ViewProfile extends ViewHome {
 			case ACTION_APP_TYPES.actionAppInit:
 				this._requestProfile();
 				return;
-			case ACTION_PROFILE_TYPES.getHeaderSuccess:
-			case ACTION_MENU_TYPES.updateProfileLinkHref:
-			case ACTION_MENU_TYPES.openSwitch:
-				return;
 			case ACTION_PROFILE_TYPES.profileRequestSuccess:
+				this._pendingProfileRequest = false;
 				this.updateViewProfile(change.data);
 				return;
 		}
 		super.handleChange(change);
-		switch (change.type) {
-			case ACTION_PROFILE_TYPES.profileRequest:
-				return;
-		}
 		switch (change.type) {
 			case ACTION_PROFILE_TYPES.deletePostSuccess:
 				this.updateViewProfile(change.data);
@@ -110,6 +103,9 @@ export class ViewProfile extends ViewHome {
 	}
 
 	protected _render(): void {
+		if (this._pendingProfileRequest) {
+			return;
+		}
 		const rootNode = this._root.node;
 
 		super._render();
