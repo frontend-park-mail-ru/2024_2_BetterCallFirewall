@@ -1,4 +1,4 @@
-import { ActionAppGoTo } from '../../actions/actionApp';
+import { ACTION_APP_TYPES, ActionAppGoTo } from '../../actions/actionApp';
 import { ActionChatGoToChat } from '../../actions/actionChat';
 import { ActionConfirmOpen } from '../../actions/actionConfirm';
 import {
@@ -8,6 +8,7 @@ import {
 	ActionFriendsUnsubscribe,
 } from '../../actions/actionFriends';
 import { ActionLogout } from '../../actions/actionHeader';
+import { ACTION_MENU_TYPES } from '../../actions/actionMenu';
 import { ActionPostEditGoTo } from '../../actions/actionPostEdit';
 import {
 	ACTION_PROFILE_TYPES,
@@ -58,7 +59,19 @@ export class ViewProfile extends ViewHome {
 	}
 
 	handleChange(change: ChangeProfile): void {
+		switch (change.type) {
+			case ACTION_APP_TYPES.goTo:
+			case ACTION_APP_TYPES.actionAppInit:
+			case ACTION_PROFILE_TYPES.getHeaderSuccess:
+			case ACTION_MENU_TYPES.updateProfileLinkHref:
+			case ACTION_MENU_TYPES.openSwitch:
+				return;
+		}
 		super.handleChange(change);
+		switch (change.type) {
+			case ACTION_PROFILE_TYPES.profileRequest:
+				return;
+		}
 		switch (change.type) {
 			case ACTION_PROFILE_TYPES.deletePostSuccess:
 				this.updateViewProfile(change.data);
