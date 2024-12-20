@@ -1,6 +1,7 @@
 import { Action, ActionType } from '../actions/action';
 import { ActionAppGoTo } from '../actions/actionApp';
 import { ActionCommentRequest } from '../actions/actionComment';
+import { ActionGroupPageRequestFail } from '../actions/actionGroupPage';
 import {
 	ActionPostCommentsOpenSwitch,
 	ActionPostCommentsSortChange,
@@ -79,6 +80,9 @@ export class Dispatcher {
 				if (action.data.status === STATUS.badRequest) {
 					this.dispatch(new ActionAppGoTo(PAGE_LINKS.feed));
 				}
+				break;
+			case action instanceof ActionGroupPageRequestFail:
+				this.dispatch(new ActionAppGoTo(PAGE_LINKS.groups));
 				break;
 		}
 	}

@@ -390,6 +390,7 @@ class Ajax {
 				const body =
 					(await response.json()) as FetchResponse<FullGroupResponse>;
 				groupPageResponse = Object.assign(groupPageResponse, body);
+				break;
 			}
 		}
 		return groupPageResponse;

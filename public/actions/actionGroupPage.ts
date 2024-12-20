@@ -5,6 +5,7 @@ import { Action, ActionType } from './action';
 export const ACTION_GROUP_PAGE_TYPES = {
 	groupPageRequest: 'actionGroupPageRequest',
 	groupPageRequestSuccess: 'actionGroupPageRequestSuccess',
+	groupPageRequestFail: 'actionGroupPageRequestFail',
 	updateGroupPage: 'actionUpdateGroupPage',
 	deleteGroup: 'actionDeleteGroup',
 	deleteGroupSuccess: 'actionDeleteGroupSuccess',
@@ -45,6 +46,14 @@ export class ActionGroupPageRequestSuccess implements Action {
 	constructor(data: ActionGroupPageRequestSuccessData) {
 		this.type = ACTION_GROUP_PAGE_TYPES.groupPageRequestSuccess;
 		this.data = data;
+	}
+}
+export class ActionGroupPageRequestFail implements Action {
+	type: string = ACTION_GROUP_PAGE_TYPES.groupPageRequestFail;
+	data: { status: number; message?: string };
+
+	constructor(status: number, message?: string) {
+		this.data = { status, message };
 	}
 }
 
