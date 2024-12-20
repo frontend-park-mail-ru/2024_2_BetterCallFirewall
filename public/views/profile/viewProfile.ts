@@ -272,6 +272,7 @@ export class ViewProfile extends ViewHome {
 	}
 
 	private _requestProfile = throttle(() => {
+		this._pendingProfileRequest = true;
 		this.sendAction(new ActionProfileRequest(app.router.path));
 	}, 1000);
 }
