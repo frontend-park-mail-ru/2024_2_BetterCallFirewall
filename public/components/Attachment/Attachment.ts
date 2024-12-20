@@ -43,6 +43,13 @@ export class Attachment extends Component {
 		return this._findVNodeByClass('attachment__delete-button');
 	}
 
+	get attachmentImage(): HTMLImageElement | undefined {
+		if (this.isImage) {
+			return this._findVNodeByClass('attachment__image')
+				.element as HTMLImageElement;
+		}
+	}
+
 	render(): string {
 		this._prerender();
 		return this._render('Attachment.hbs');

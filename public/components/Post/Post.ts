@@ -59,6 +59,7 @@ export class Post extends Component {
 	protected _config: PostConfig;
 	private _comments: Comment[] = [];
 	private _commentAttachmentInput: ChatAttachmentInput;
+	private _attachments: Attachment[] = [];
 
 	/**
 	 * Instance of post
@@ -170,6 +171,15 @@ export class Post extends Component {
 	}
 	get isDescentSort(): boolean {
 		return this._config.commentsSort === SortOptions.Desc;
+	}
+
+	get lastAttachmentImage(): HTMLImageElement | undefined {
+		const images = this._attachments.filter((attachment) => {
+			return attachment.isImage;
+		});
+		if (images.length) {
+			return images.at(-1)?.attachmentImage;
+		}
 	}
 
 	addLikeHandler() {
@@ -293,8 +303,15 @@ export class Post extends Component {
 	}
 
 	onMount(): void {
-		(this.expandButtonVNode.element as HTMLElement).style.display =
-			this._isContentHeightBig() ? 'block' : 'none';
+		if (this.lastAttachmentImage) {
+			this.lastAttachmentImage.onload = () => {
+				(this.expandButtonVNode.element as HTMLElement).style.display =
+					this._isContentHeightBig() ? 'block' : 'none';
+			};
+		} else {
+			(this.expandButtonVNode.element as HTMLElement).style.display =
+				this._isContentHeightBig() ? 'block' : 'none';
+		}
 	}
 
 	protected _addHandlers(): void {
@@ -334,7 +351,7 @@ export class Post extends Component {
 		this._comments = this._config.commentsConfigs.map((config) => {
 			return new Comment(config, this);
 		});
-		const attachments = this._config.files.map((file, i) => {
+		this._attachments = this._config.files.map((file, i) => {
 			return new Attachment(
 				{
 					key: `attachment-${i}`,
@@ -342,7 +359,7 @@ export class Post extends Component {
 					hasDeleteButton: false,
 				},
 				this,
-			).render();
+			);
 		});
 		this._commentAttachmentInput = new ChatAttachmentInput(
 			this._config.commentAttachmentInput,
@@ -358,7 +375,9 @@ export class Post extends Component {
 			sortOptions: SortOptions,
 			hasCloseCommentsButton: this.hasCloseCommentsButton,
 			commentTextLimit: INPUT_LIMITS.commentText,
-			attachments,
+			attachments: this._attachments.map((attachment) =>
+				attachment.render(),
+			),
 			commentAttachmentInput: this._commentAttachmentInput.render(),
 			isEdit: this.isCommentEdit,
 			isAscSort: this.isAscentSort,
