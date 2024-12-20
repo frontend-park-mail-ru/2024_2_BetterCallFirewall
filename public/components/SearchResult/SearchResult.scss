@@ -7,6 +7,9 @@
     border-radius: 1rem;
     padding: 0.5rem;
     max-width: 20rem;
+    &__content {
+        max-width: 70%;
+    }
     &__avatar-container {
         min-width: 3rem;
         width: 3rem;
@@ -16,6 +19,11 @@
     &__avatar {
         width: 100%;
         height: 100%;
+    }
+    &__name {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 
