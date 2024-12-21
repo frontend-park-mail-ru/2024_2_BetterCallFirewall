@@ -31,9 +31,15 @@ export default class Validator {
 			return '';
 		}
 
-		const validImageTypes = ['image/jpeg', 'image/png', 'image/webp'];
+		const validImageTypes = [
+			'image/jpeg',
+			'image/png',
+			'image/webp',
+			'image/gif',
+			'image/x-icon',
+		];
 		if (!validImageTypes.includes(file.type)) {
-			return 'Разрешены только изображения (jpeg, png, webp)';
+			return 'Разрешены только изображения (jpeg, png, webp, gif)';
 		}
 
 		const maxSizeInMB = 5;
