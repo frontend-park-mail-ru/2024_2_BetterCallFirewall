@@ -360,6 +360,9 @@ input::placeholder, textarea::placeholder {
     }
     .menu {
         display: none;
+        .logo {
+            display: none;
+        }
     }
     .menu.show {
         display: flex;
