@@ -100,8 +100,8 @@
         display: flex;
         align-items: center;
         flex-direction: column;
-        width: 15rem;
-        height: 15rem;
+        width: 25rem;
+        height: 25rem;
         bottom: 6rem;
         right: 2rem;
         background-color: var(--main-bg-color);
@@ -122,6 +122,7 @@
 .emoji-panel {
     &__header {
         display: flex;
+        gap: 1rem;
     }
     &__switcher {
         cursor: pointer;
@@ -158,5 +159,11 @@
     }
     &:active {
         stroke: var(--main-text-color);
+    }
+}
+
+@media (max-width: 768px) {
+    .emoji-btn {
+        font-size: 2rem;
     }
 }
