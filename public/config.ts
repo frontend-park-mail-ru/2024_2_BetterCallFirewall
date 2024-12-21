@@ -382,7 +382,8 @@ const messagesConfig: ViewMessagesConfig = {
 	messages: messagesComponentConfig,
 };
 
-const emojiString = '😮‍💨😵‍💫😶‍🌫️❤️‍🔥❤️‍🩹😀😃😄😁😆😅😂🤣🥲😊😇🙂🙃😉😌😍🥰😘😗😙😚😋😛😝😜🤪🤨🧐🤓😎🥸🤩🥳😏😒😞😔😟😕🙁😣😖😫😩🥺😢😭😡🤯😳🥵🥶😱😨😰😑😬😮🥱😴🥴🤢🤮😈🤡💩👻👽😺😸😹🙀';
+const emojiString =
+	'😮‍💨😵‍💫😶‍🌫️❤️‍🔥❤️‍🩹😀😃😄😁😆😅😂🤣🥲😊😇🙂🙃😉😌😍🥰😘😗😙😚😋😛😝😜🤪🤨🧐🤓😎 🤩 🥳 😏 😒 😞 😔 😟 😕🙁😣😖😫😩🥺😢😭😡🤯😳🥵🥶😱😨😰😑😬😮🥱😴🥴🤢🤮😈🤡💩👻👽😺😸😹🙀';
 const emojiSymbols = Array.from(emojiString);
 
 export enum EmojiPanels {
