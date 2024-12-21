@@ -4,19 +4,15 @@
             <img class="avatar" src="{{img}}" alt="">
         </div>
         <div class="group-page__header-info">
-            <div class="group-page__name">
-                <h1>{{name}}</h1>
+            <div class="group-page__name-container">
+                <h1 class="group-page__name">{{name}}</h1>
             </div>
-            <span>{{description}}</span>
+            <span class="group-page__name">{{description}}</span>
             <span>Количество подписчиков: {{countSubscribers}}</span>
-            {{!-- <div class="group-page__community">
-                <a href=""><span>Friends: {{friendsCount}}</span></a>
-                <a href=""><span>Groups: {{groupsCount}}</span></a>
-            </div> --}}
             <div class="group-page__actions">
                 {{#if this.isAdmin}}
                     <button class="header__link button-action-negative button-no-decorations" data-key="deleteGroup">Удалить группу</button>
-                    <a class="profile-edit" href="" data-key="groupEdit">Редактировать группу</a>
+                    <button class="header__link button-action button-no-decorations" data-key="groupEdit">Редактировать группу</button>
                 {{else}}
                     {{#if this.isFollow}}
                         <button class="header__link button-action-negative button-no-decorations" data-key="unfollow">Отписаться</button>

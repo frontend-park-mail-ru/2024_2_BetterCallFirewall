@@ -5,6 +5,8 @@ import {
 } from '../../actions/actionFeed';
 import { ActionPostLike, ActionPostUnlike } from '../../actions/actionPost';
 import { PostConfig, Post, Root } from '../../components';
+import { Button } from '../../components/Button/Button';
+import { PAGE_LINKS } from '../../config';
 import { throttle } from '../../modules/throttle';
 import { update } from '../../modules/vdom';
 import { ChangeFeed } from '../../stores/storeFeed';
@@ -16,6 +18,7 @@ export interface ViewFeedConfig extends HomeConfig {
 }
 
 export type FeedComponents = {
+	createPostButton?: Button;
 	posts?: Post[];
 } & ComponentsHome;
 
@@ -69,6 +72,7 @@ export class ViewFeed extends ViewHome {
 		const rootNode = this._root.node;
 
 		super._render();
+		this._renderCreatePostButton();
 		this._renderPosts();
 
 		const rootVNode = this._root.newVNode();
@@ -84,6 +88,7 @@ export class ViewFeed extends ViewHome {
 		super._addHandlers();
 		this._addScrollHandler();
 		this._addPostsHandler();
+		this._addCreatePostHandler();
 	}
 
 	private get lastPostId(): number | undefined {
@@ -91,6 +96,17 @@ export class ViewFeed extends ViewHome {
 		if (posts.length) {
 			return posts[posts.length - 1].id;
 		}
+	}
+
+	private _renderCreatePostButton() {
+		this._components.createPostButton = new Button(
+			{
+				key: 'createPostButton',
+				text: 'Создать пост',
+				className: 'feed__create-post',
+			},
+			this.content,
+		);
 	}
 
 	private _renderPosts(): void {
@@ -127,6 +143,16 @@ export class ViewFeed extends ViewHome {
 					this.sendAction(new ActionAppGoTo(post.config.authorHref));
 				},
 			});
+		});
+	}
+
+	private _addCreatePostHandler() {
+		this._components.createPostButton?.vnode.handlers.push({
+			event: 'click',
+			callback: (event) => {
+				event.preventDefault();
+				this.sendAction(new ActionAppGoTo(PAGE_LINKS.createPost));
+			},
 		});
 	}
 
