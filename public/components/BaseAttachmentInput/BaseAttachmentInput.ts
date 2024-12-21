@@ -5,6 +5,7 @@ import {
 } from '../../actions/actionAttachmentsInput';
 import { MAX_FILE_SIZE } from '../../config';
 import { FilePayload, filePayloadFromURL } from '../../models/file';
+import { shortenFileName } from '../../modules/files';
 import fileToString from '../../modules/fileToString';
 import { VNode } from '../../modules/vdom';
 import { Attachment } from '../Attachment/Attachment';
@@ -86,7 +87,11 @@ export abstract class BaseAttachmentInput extends Input {
 					new ActionAttachmentsInputAddFiles(files.length, postId),
 				);
 				files.forEach(async (file, i) => {
-					const fileStr = await fileToString(file);
+					const newFileName = shortenFileName(file.name);
+					const formData = new FormData();
+					formData.append('file', file, newFileName);
+					const newFile = formData.get('file') as File;
+					const fileStr = await fileToString(newFile);
 					if (fileStr) {
 						this._sendAction(
 							new ActionAttachmentsInputFileLoaded(

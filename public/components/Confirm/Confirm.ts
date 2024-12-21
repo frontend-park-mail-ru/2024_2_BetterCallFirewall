@@ -32,6 +32,7 @@ export class Confirm extends Component {
 	}
 
 	protected _addHandlers(): void {
+		super._addHandlers();
 		this._config.actions.forEach((actionConfig, i) => {
 			const action = this._findVNodeByKey(`action-${i}`);
 			action.handlers.push({
