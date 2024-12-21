@@ -14,3 +14,11 @@
         object-fit: cover;
     }
 }
+
+@media (max-width: 768px) {
+    .sticker {
+        width: 9rem;
+        height: 9rem;
+    }    
+}
+
