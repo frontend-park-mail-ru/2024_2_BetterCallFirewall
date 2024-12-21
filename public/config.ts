@@ -383,7 +383,7 @@ const messagesConfig: ViewMessagesConfig = {
 };
 
 const emojiString = '😮‍💨😵‍💫😶‍🌫️❤️‍🔥❤️‍🩹😀😃😄😁😆😅😂🤣🥲😊😇🙂🙃😉😌😍🥰😘😗😙😚😋😛😝😜🤪🤨🧐🤓😎🥸🤩🥳😏😒😞😔😟😕🙁😣😖😫😩🥺😢😭😡🤯😳🥵🥶😱😨😰😑😬😮🥱😴🥴🤢🤮😈🤡💩👻👽😺😸😹🙀';
-const emojiSymbols = emojiString.split('');
+const emojiSymbols = Array.from(emojiString);
 
 export enum EmojiPanels {
 	Emojis = 'emojis',
